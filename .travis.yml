@@ -17,5 +17,3 @@ script:
 - pdflatex -output-directory _build tesi.tex
 - pdflatex -output-directory _build tesi.tex
 - ./dropbox_uploader.sh upload _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf
-notifications:
-  email: false
