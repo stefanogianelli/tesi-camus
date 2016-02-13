@@ -22,7 +22,7 @@ L'architettura del sistema CAMUS è composta da tre parti, ognuna delle quali è c
 Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Le due principali soluzioni che vengono adottate nelle piattaforme di mashup per dispositivi mobile sono \emph{Server Mashup} e \emph{Cold Client Mashup} \textcolor{red}{(trovare qualche reference qui?)}
 Nel Server Mashup tutte le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
 Il Cold Client Mashup, invece, lo schema di mashup viene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
-Entrambe le soluzioni non sono molto bilanciate. Ha senso utilizzare il server come unico componenete che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
+Entrambe le soluzioni non sono molto bilanciate. Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
 Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, tuttavia questo non risolve diverse problematiche.
 I servizi non è detto che abbiano i medesimi tempi di risposta, quindi l'applicazione per eseguire una query dovrebbe avere una propria cache. Questo inoltre aggiunge un problema con le API keys dei servizi, che nel caso in cui fossero limitate, porterebbero ad eseguire tante richieste, portando a costi maggiori o a un esaurimento di queries verso il servizio. Questo problema verrebbe risolto utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre l'incidenza di questo problema.
 Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, consumando maggiormente la batteria integrata. Con una query unica e con i dati già aggregati ovviamente riduce il consumo delle risorse energetiche e dei dati in connessione mobile.
@@ -35,6 +35,21 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 \section{Creazione dell'ecosistema dei servizi\label{sec:ecosistema-servizi}}
 
 \textcolor{red}{Divisione tra servizi primari e di supporto}
+
+Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di mantenere una repository dei servizi che il sistema può utilizzare.
+
+Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per interrogare i servizi. In particolare, sono composti dalle seguenti sezioni:
+
+\begin{itemize}
+	\item \emph{Elenco dei parametri} In questa sezione vengono elencati i parametri necessari per la composizione della query di ricerca. I valori possono essere acquisiti secondo 3 differenti modalità:
+	\begin{enumerate}
+		\item \emph{Default}: il valore viene impostato direttamente nel descrittore (es.: l'API key per l'autenticazione)
+		\item \emph{Mapping CDT}: viene definita l'associazione con uno o più nodi del CDT e il valore viene recuperato in base alla selezione effettuata dall'utente (es.: le coordinate geografiche). Questi valori possono essere eventualmente trasformati da quelli simbolici del contesto ad un'altra rappresentazione adatta per effettuare la query (es.: dal valore 'Restaurant' del contesto viene associata la tipologia 'food')
+		\item \emph{Mapping Term}: questa modalità viene utilizzata esclusivamente per i servizi di supporto e fornisce un placeholder nelle query che verrà rimpiazzato a runtime con il valore reale acquisito dalla risposta ricevuto o dal dispositivo
+	\end{enumerate}
+	\item \emph{Schema della risposta} Per ottenere omogeneità tra le risposte ottenute dai diversi servizi, i dati ricevuti devono essere trasformati secondo uno schema comprensibile per la mobile app. Per effettuare questa trasformazione vengono in aiuto i \emph{termini} (es.: titolo, indirizzo, descrizione, \dots), che rappresentano le classi semantiche di appartenenza degli attributi
+	\item \emph{Gestione della paginazione} I dati che vengono restituiti a seguito di una query possono essere molteplici. Per semplificare la gestione delle risposte, i servizi implementano delle politiche di paginazione, dove vengono specificati il numero di risultati che si vogliono ottenere in una pagina e un numero che indica la pagina che è stata richiesta \cite{masse2011rest}. Questa sezione serve appositamente per indicare quali sono i parametri che vengono utilizzati dal servizio per richiamare le diverse pagine che compongono i risultati
+\end{itemize}
 
 \section{Universal CDT\label{sec:universal-cdt}}
 
