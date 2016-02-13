@@ -34,21 +34,24 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 
 \section{Creazione dell'ecosistema dei servizi\label{sec:ecosistema-servizi}}
 
-\textcolor{red}{Divisione tra servizi primari e di supporto}
+I servizi rappresentano un punto cardine del sistema, in quanto mettono a disposizione le risorse che verranno mostrate all'utente. Si è deciso di dividere i servizi in due categorie ben distinte, in base alla funzionalità del servizio:
 
-Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di mantenere una repository dei servizi che il sistema può utilizzare.
+\begin{enumerate}
+	\item{\emph{Primari}} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni relative al contesto nel quale si trova l'utente (es.: Google Places)
+	\item{\emph{Supporto}} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari, come ad esempio le informazioni sul meteo o la cartina geografica del luogo
+\end{enumerate}
 
-Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per interrogare i servizi. In particolare, sono composti dalle seguenti sezioni:
+Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di creare una repository con tutti i servizi che possono essere utilizzati dal sistema. Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per la gestione dei servizi. I descrittori sono composti dalle seguenti sezioni:
 
 \begin{itemize}
-	\item \emph{Elenco dei parametri} In questa sezione vengono elencati i parametri necessari per la composizione della query di ricerca. I valori possono essere acquisiti secondo 3 differenti modalità:
+	\item{\emph{Elenco dei parametri}} Per interrogare un servizio è necessario comporre una query con i dati che si vogliono richiedere. Queste informazioni sono dipendenti dalla specifica implementazione del servizio e variano tra un servizio e l'altro. Nel descrittore vengono dunque elencati i parametri necessari per la composizione della query e dove andare a recuperare i relativi valori. L'acquisizione dei valori può avvenire secondo tre differenti modalità:
 	\begin{enumerate}
-		\item \emph{Default}: il valore viene impostato direttamente nel descrittore (es.: l'API key per l'autenticazione)
-		\item \emph{Mapping CDT}: viene definita l'associazione con uno o più nodi del CDT e il valore viene recuperato in base alla selezione effettuata dall'utente (es.: le coordinate geografiche). Questi valori possono essere eventualmente trasformati da quelli simbolici del contesto ad un'altra rappresentazione adatta per effettuare la query (es.: dal valore 'Restaurant' del contesto viene associata la tipologia 'food')
-		\item \emph{Mapping Term}: questa modalità viene utilizzata esclusivamente per i servizi di supporto e fornisce un placeholder nelle query che verrà rimpiazzato a runtime con il valore reale acquisito dalla risposta ricevuto o dal dispositivo
+		\item{\emph{Default}} Il valore viene impostato direttamente nel descrittore (es.: l'API key per l'autenticazione)
+		\item{\emph{Mapping CDT}} Viene definita l'associazione con uno o più nodi del CDT e il valore viene recuperato in base alla selezione effettuata dall'utente (es.: le coordinate geografiche). Questi valori possono essere eventualmente trasformati da quelli simbolici del contesto ad un'altra rappresentazione adatta per effettuare la query (es.: dal valore 'Restaurant' del contesto viene associata la tipologia 'food')
+		\item{\emph{Mapping Term}} Questa modalità viene utilizzata esclusivamente per i servizi di supporto e fornisce un placeholder nelle query che verrà rimpiazzato a runtime con il valore reale acquisito dalla risposta ricevuto o dal dispositivo
 	\end{enumerate}
-	\item \emph{Schema della risposta} Per ottenere omogeneità tra le risposte ottenute dai diversi servizi, i dati ricevuti devono essere trasformati secondo uno schema comprensibile per la mobile app. Per effettuare questa trasformazione vengono in aiuto i \emph{termini} (es.: titolo, indirizzo, descrizione, \dots), che rappresentano le classi semantiche di appartenenza degli attributi
-	\item \emph{Gestione della paginazione} I dati che vengono restituiti a seguito di una query possono essere molteplici. Per semplificare la gestione delle risposte, i servizi implementano delle politiche di paginazione, dove vengono specificati il numero di risultati che si vogliono ottenere in una pagina e un numero che indica la pagina che è stata richiesta \cite{masse2011rest}. Questa sezione serve appositamente per indicare quali sono i parametri che vengono utilizzati dal servizio per richiamare le diverse pagine che compongono i risultati
+	\item{\emph{Schema della risposta}} Per ottenere omogeneità tra le risposte ottenute dai diversi servizi, i dati ricevuti devono essere trasformati secondo uno schema comprensibile per la mobile app. Per effettuare questa trasformazione vengono in aiuto i \emph{termini} (es.: titolo, indirizzo, descrizione, \dots), che rappresentano le classi semantiche di appartenenza degli attributi
+	\item{\emph{Gestione della paginazione}} I dati che vengono restituiti a seguito di una query possono essere molteplici. Per semplificare la gestione delle risposte, i servizi implementano delle politiche di paginazione, dove vengono specificati il numero di risultati che si vogliono ottenere in una pagina e un numero che indica la pagina che è stata richiesta \cite{masse2011rest}. Questa sezione serve appositamente per indicare quali sono i parametri che vengono utilizzati dal servizio per richiamare le diverse pagine che compongono i risultati
 \end{itemize}
 
 \section{Universal CDT\label{sec:universal-cdt}}
