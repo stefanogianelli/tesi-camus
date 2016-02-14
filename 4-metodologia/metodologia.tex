@@ -37,32 +37,50 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 I servizi rappresentano un punto cardine del sistema, in quanto mettono a disposizione le risorse che verranno mostrate all'utente. Si è deciso di dividere i servizi in due categorie ben distinte, in base alla funzionalità del servizio:
 
 \begin{enumerate}
-	\item{\emph{Primari}} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni relative al contesto nel quale si trova l'utente (es.: Google Places)
-	\item{\emph{Supporto}} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari, come ad esempio le informazioni sul meteo o la cartina geografica del luogo
+	\item \textbf{Primari} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni relative al contesto nel quale si trova l'utente (es.: Google Places)
+	\item \textbf{Supporto} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari, come ad esempio le informazioni sul meteo o la cartina geografica del luogo
 \end{enumerate}
 
-Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di creare una repository con tutti i servizi che possono essere utilizzati dal sistema. Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per la gestione dei servizi. I descrittori sono composti dalle seguenti sezioni:
+Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di creare una repository con tutti i servizi che possono essere utilizzati dal sistema. Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per la gestione dei servizi. Ogni descrittore è composto da una prima parte comune relativa alle informazioni del servizio (es.: nome, categoria, url base, \dots) e da una parte specifica, costituita dall'elenco delle operazioni che espone. Ogni operazione rappresenta l'unità principale di ogni servizio, in quanto fornisce le seguenti informazioni che permettono di effettuare le richieste:
 
 \begin{itemize}
-	\item{\emph{Elenco dei parametri}} Per interrogare un servizio è necessario comporre una query con i dati che si vogliono richiedere. Queste informazioni sono dipendenti dalla specifica implementazione del servizio e variano tra un servizio e l'altro. Nel descrittore vengono dunque elencati i parametri necessari per la composizione della query e dove andare a recuperare i relativi valori. L'acquisizione dei valori può avvenire secondo tre differenti modalità:
+	\item \textbf{Elenco dei parametri} Per interrogare un servizio è necessario comporre una query con i dati che si vogliono richiedere. Queste informazioni sono dipendenti dalla specifica implementazione del servizio e variano tra un servizio e l'altro. Nel descrittore vengono dunque elencati i parametri necessari per la composizione della query e dove andare a recuperare i relativi valori. L'acquisizione dei valori può avvenire secondo tre differenti modalità:
 	\begin{enumerate}
-		\item{\emph{Default}} Il valore viene impostato direttamente nel descrittore (es.: l'API key per l'autenticazione)
-		\item{\emph{Mapping CDT}} Viene definita l'associazione con uno o più nodi del CDT e il valore viene recuperato in base alla selezione effettuata dall'utente (es.: le coordinate geografiche). Questi valori possono essere eventualmente trasformati da quelli simbolici del contesto ad un'altra rappresentazione adatta per effettuare la query (es.: dal valore 'Restaurant' del contesto viene associata la tipologia 'food')
-		\item{\emph{Mapping Term}} Questa modalità viene utilizzata esclusivamente per i servizi di supporto e fornisce un placeholder nelle query che verrà rimpiazzato a runtime con il valore reale acquisito dalla risposta ricevuto o dal dispositivo
+		\item \emph{Default} Il valore viene impostato direttamente nel descrittore (es.: l'API key per l'autenticazione)
+		\item \emph{Mapping CDT} Viene definita l'associazione con uno o più nodi del CDT e il valore viene recuperato in base alla selezione effettuata dall'utente (es.: le coordinate geografiche). Questi valori possono essere eventualmente trasformati da quelli simbolici del contesto ad un'altra rappresentazione adatta per effettuare la query (es.: dal valore \virgolette{Restaurant} del contesto viene associata la tipologia \virgolette{food})
+		\item \emph{Mapping Term} Questa modalità viene utilizzata esclusivamente per i servizi di supporto e fornisce un placeholder nelle query che verrà rimpiazzato a runtime con il valore reale acquisito dalla risposta ricevuto o dal dispositivo
 	\end{enumerate}
-	\item{\emph{Schema della risposta}} Per ottenere omogeneità tra le risposte ottenute dai diversi servizi, i dati ricevuti devono essere trasformati secondo uno schema comprensibile dalla mobile app. Per effettuare questa trasformazione vengono in aiuto i \emph{termini} (es.: titolo, indirizzo, descrizione, \dots), che rappresentano le classi semantiche di appartenenza degli attributi. L'elenco dei termini disponibili viene mantenuto in una repository come per i descrittori dei servizi. Queste annotazioni hanno una duplice utilità: in primo luogo, definendo il significato semantico di ogni attributo, semplificano l'integrazione dei dati provenienti da diversi servizi, in secondo luogo semplificano la creazione dei mashup, in quanto permettono di ragionare su categorie astratte di dati rispetto a dati reali forniti dai vari servizi e agevolano la riusabilità degli schemi in diversi contesti 
-	\item{\emph{Gestione della paginazione}} I dati che vengono restituiti a seguito di una query possono essere molteplici. Per semplificare la gestione delle risposte, i servizi implementano delle politiche di paginazione, dove vengono specificati il numero di risultati che si vogliono ottenere in una pagina e un numero che indica la pagina che è stata richiesta \cite{masse2011rest}. Questa sezione serve appositamente per indicare quali sono i parametri che vengono utilizzati dal servizio per richiamare le diverse pagine che compongono i risultati
+	\item \textbf{Schema della risposta} Per ottenere omogeneità tra le risposte ottenute dai diversi servizi, i dati ricevuti devono essere trasformati secondo uno schema comprensibile dalla mobile app. Per effettuare questa trasformazione vengono in aiuto i \emph{termini} (es.: titolo, indirizzo, descrizione, \dots), che rappresentano le classi semantiche di appartenenza degli attributi. L'elenco dei termini disponibili viene mantenuto in una repository come per i descrittori dei servizi. Queste annotazioni hanno una duplice utilità: in primo luogo, definendo il significato semantico di ogni attributo, semplificano l'integrazione dei dati provenienti da diversi servizi, in secondo luogo semplificano la creazione dei mashup, in quanto permettono di ragionare su categorie astratte di dati rispetto a dati reali forniti dai vari servizi e agevolano la riusabilità degli schemi in diversi contesti 
+	\item \textbf{Gestione della paginazione} I dati che vengono restituiti a seguito di una query possono essere molteplici. Per semplificare la gestione delle risposte, i servizi implementano delle politiche di paginazione, dove vengono specificati il numero di risultati che si vogliono ottenere in una pagina e un numero che indica la pagina che è stata richiesta \cite{masse2011rest}. Questa sezione serve appositamente per indicare quali sono i parametri che vengono utilizzati dal servizio per richiamare le diverse pagine che compongono i risultati
 \end{itemize}
-
-\section{Universal CDT\label{sec:universal-cdt}}
-
-\textcolor{red}{Spiegare come viene applicato il modello teorico in pratica\\
-Divisione dei nodi filter e ranking\\
-Divisione tra schema globale e tailored}
 
 \section{Associazione dei servizi al CDT\label{sec:associazione-servizi-cdt}}
 
-\textcolor{red}{Come vengono associati i servizi al contesto + ranking}
+Una volta che i servizi sono stati aggiunti alla repository è necessario specificare le associazioni che permettono la selezione dei servizi in base al contesto nel quale si trova l'utente.
+
+%dove diciamo che è stato scelto il CDT come modello?
+Rispetto alla classificazione dei nodi di un CDT definita nella Sezione \ref{sec:context-awareness} viene aggiunta un'ulteriore divisione in base al ruolo che un nodo assume durante la fase di selezione dei servizi:
+
+\begin{itemize}
+	\item \textbf{Nodi filtro} \`E la tipologia predefinita. I nodi di tipo filtro permettono, come si può dedurre dal nome, di filtrare i servizi che sono idonei all'uso in un determinato contesto
+	\item \textbf{Nodi ranking} Questa tipologia viene assegnata ad alcuni nodi specifici, come ad esempio quello relativo alla \emph{località}, che assumono una maggiore importanza durante la selezione dei servizi, in quanto permettono di scegliere dei servizi che hanno un maggior impatto nel contesto specifico
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/associazioni-cdt.png}
+	\caption{Associazione dei servizi al CDT}\label{fig:associazione-servizi-cdt}
+\end{figure}
+
+Come si può notare dalla Figura \ref{fig:associazione-servizi-cdt} le operazioni vengono associate ai nodi del CDT di tipo \virgolette{contesto} o alle \virgolette{variabili}. Nel primo caso l'operazione viene aggiunta all'elenco di operazioni che ogni nodo definisce, nel secondo caso è necessario associare a quale/i valore/i associare l'operazione (es.: per il campo \virgolette{Città} bisogna definire il nome della città, invece per l'attributo \virgolette{Coordinate} è necessario specificare la latitudine e longitudine del luogo).
+
+Per quanto riguarda i \emph{servizi primari}, quando vengono associati ad un determinato contesto viene definito anche un indice di \emph{priorità}: questo valore è un numero intero, a partire da 1 e crescente all'interno del singolo nodo. Definisce l'importanza che il servizio assume in quel determinato contesto e verrà utilizzato nella fase di selezione dei servizi illustrata nel Capitolo \ref{sec:primary-service-selection}. Questo indicatore ha senso di essere utilizzato esclusivamente nei \emph{nodi contesto}, in quanto contengono una raccolta generica di servizi, mentre per gli \emph{attributi} non è necessario, in quanto l'ordinamento all'interno di una categoria di attributi non è sempre univoca. Se si prende per esempio un elenco di servizi associati ad una città tramite le sue coordinate geografica, si può considerare come indice di priorità la lontananza rispetto all'utente, che può essere calcolata solamente a runtime e può variare spesso.
+
+Per i \emph{servizi di supporto} non è sempre necessario definire le associazioni con i nodi del CDT. Alcuni servizi di supporto possono essere richiamati in modo statico quando non necessitano del contesto per essere scelti (es.: servizi generici come Wikipedia o Flickr). Per altri servizi, come per esempio quelli relativi ai mezzi di trasporto, è invece necessario basarsi sul contesto per selezionare il servizio più idoneo alla situazione. Per esempio, se un utente specifica che non dispone di un'auto e che si trova a Milano, allora il sistema proporrà i mezzi di trasporto pubblici presenti nella città, insieme all'elenco di altri tipologie di trasporto come i taxi o il car sharing. In questo caso è dunque necessario, come per i servizi primari, definire le associazioni delle operazioni con i nodi del CDT. Il processo di associazione è simile a quello dei servizi primari, la principale differenza risiede nel fatto che non bisogna specificare la priorità dei servizi, mentre le altre assunzioni rimangono valide.
+
+\section{CDT su misura per gli utenti}
+
+\textcolor{red}{Divisione tra schema globale e tailored}
 
 \section{Mashup Design\label{sec:mashup-design}}
 
