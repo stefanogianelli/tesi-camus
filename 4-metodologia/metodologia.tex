@@ -9,13 +9,13 @@ come comunicano le app (flussi e GraphQL)\\
 Interazione con l'utente}
 L'architettura del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con l'utente finale del sistema.
 
-\begin{itemize}
-	\item \emph{Server.} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale non ha bisogno di molta astrazione di alto livello per eseguire le sue funzioni. Qui vengono registrati i servizi poi che vengono mappati dall'esperto nel \emph{Visual Design Environment} 
+\begin{enumerate}
+	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale non ha bisogno di molta astrazione di alto livello per eseguire le sue funzioni. Qui vengono registrati i servizi poi che vengono mappati dall'esperto nel \emph{Visual Design Environment} 
 	
-	\item \emph{Visual Design Environment.} La piattaforma di visual design ha il compito di costruire le views per i dispositivi mobile e assegnare i termini presenti sul server. 
+	\item \textbf{Web App} La piattaforma di visual design ha il compito di costruire le views per i dispositivi mobile e assegnare i termini presenti sul server. 
 	
-	\item \emph{App Mobile.} 
-\end{itemize}
+	\item \textbf{App Mobile} 
+\end{enumerate}
 
 \subsection{Dove eseguire le query verso i servizi?}
 %Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
@@ -30,7 +30,12 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 \subsection{Architettura utilizzata}
 
 
-\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
+	\caption{Architettura del sistema}\label{fig:architettura-sistema}
+\end{figure}
+
 
 \section{Creazione dell'ecosistema dei servizi\label{sec:ecosistema-servizi}}
 
