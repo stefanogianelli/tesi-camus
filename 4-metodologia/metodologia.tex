@@ -75,22 +75,24 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 
 \section{Architettura utilizzata\label{sec:architettura-sistema}}
 
-\textcolor{red}{Spiegare com'\`e composta l'architettura (mobile app, server, web app)\\
-	Scelta di effettuare le query sul server per i servizi primari e sul dispositivo per i servizi di supporto\\
-	come comunicano le app (flussi e GraphQL)\\
-	Interazione con l'utente}
-L'architettura del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con l'utente finale del sistema.
-
-\begin{enumerate}
-	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale non ha bisogno di molta astrazione di alto livello per eseguire le sue funzioni. Qui vengono registrati i servizi poi che vengono mappati dall'esperto nel \emph{Visual Design Environment} 
-	
-	\item \textbf{Web App} La piattaforma di visual design ha il compito di costruire le views per i dispositivi mobile e assegnare i termini presenti sul server. 
-	
-	\item \textbf{App Mobile} 
-\end{enumerate}
-
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
 	\caption{Architettura del sistema}\label{fig:architettura-sistema}
 \end{figure}
+
+Come evidenziato nella figura \ref{fig:architettura-sistema}, l'architettura finale del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con l'utente finale del sistema.
+
+\begin{enumerate}
+	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale ha una visione maggiore della complessità del sistema. Ha il compito di aggiungere i servizi disponibili compilando un campo Qui vengono registrati i servizi poi che vengono mappati dall'esperto nelle \emph{Web App} 
+	Data una query proveniente dall'applicazione mobile, comprendente il contesto e i dati che ha bisogno il client,il server seleziona i servizi da contattare tramite il \emph{Service Selector}, esegue le query verso i servizi esterni e compone i risultati a seconda a seconda delle regole associate a ciascun servizio.
+	
+	\item \textbf{Web App} Le web app sono collegate all'esperto di settore che compone l'applicazione mobile. Questo attore non è necessariamente un esperto di informatica e della tecnologia utilizzata, quindi ha bisogno di un astrazione maggiore rispetto all'amministratore. Sono disponibili due funzionalità di base: una permette di associare i servizi al CDT dell'utente, mentre l'altra permette di creare i mashup per le pagine dell'applicazione, collegando i termini con i componenti che verranno poi renderizzati nell'applicazione.
+	
+	\item \textbf{App Mobile} La app mobile è l'interfaccia dell'utente finale con il sistema. Essa ha il compito di renderizzare i mashup definiti dall'esperto e di permettere all'utente di inserire il proprio contesto per richiedere al server i risultati associati ad esso. I dati occorrenti per generare un contesto possono essere anche aggiunti utilizzando i sensori del dispositivo, come il GPS o l'ora corrente.
+\end{enumerate}
+
+
+
+
+
