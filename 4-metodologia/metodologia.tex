@@ -37,9 +37,11 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 I servizi rappresentano un punto cardine del sistema, in quanto mettono a disposizione le risorse che verranno mostrate all'utente. Si è deciso di dividere i servizi in due categorie ben distinte, in base alla funzionalità del servizio:
 
 \begin{enumerate}
-	\item \textbf{Primari} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni relative al contesto nel quale si trova l'utente (es.: Google Places)
-	\item \textbf{Supporto} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari, come ad esempio le informazioni sul meteo o la cartina geografica del luogo
+	\item \textbf{Primari} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni di interesse relative al contesto nel quale si trova l'utente. Per esempio, se si effettua la ricerca di un ristorante, le informazioni principali saranno il nome del ristorante, l'indirizzo e il numero di telefono. TripAdvisor\footnote{\url{https://www.tripadvisor.it/}} e Zoomato\footnote{\url{https://www.zomato.com/it}} sono due esempi di servizi primari
+	\item \textbf{Supporto} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari. Possono mettere a disposizione dati aggiuntivi, contenuti multimediali (es.: foto e video) oppure possono fornire un'integrazione con altre app presenti sul dispositivo. Alcuni esempi di servizi di supporto sono le informazioni sul meteo, la cartina geografica del luogo o le indicazioni dei mezzi di trasporto per raggiungere il posto. Invece l'apertura del dialer telefonico quando viene selezionato il numero di telefono o l'utilizzo dell'app di navigazione preferita quando si sceglie un indirizzo rappresentano degli esempi di integrazione con altre app %Aggiungere anche degli esempi di servizi?
 \end{enumerate}
+
+Per quanto queste categorie rappresentino una divisione molto precisa dei servizi, non vengono considerate come rigide. Come già evidenziato in Corvetta et al \cite{rizzo2015progettazione}, ogni servizio espone uno o più metodi, e non è detto che tutti rientrino nella medesima categoria. Può capitare che un servizio metta a disposizione un metodo che viene considerato primario ed un altro che invece fornisce informazioni di supporto. Si è deciso quindi di non effettuare una categorizzazione a livello di servizio, bensì per ogni operazione, in modo da garantire una maggiore flessibilità.
 
 Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di creare una repository con tutti i servizi che possono essere utilizzati dal sistema. Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per la gestione dei servizi. Ogni descrittore è composto da una prima parte comune relativa alle informazioni del servizio (es.: nome, categoria, url base, \dots) e da una parte specifica, costituita dall'elenco delle operazioni che espone. Ogni operazione rappresenta l'unità principale di ogni servizio, in quanto fornisce le seguenti informazioni che permettono di effettuare le richieste:
 
@@ -59,6 +61,7 @@ Per l'acquisizione dei dati è importante che il server sappia come interrogare i
 Una volta che i servizi sono stati aggiunti alla repository è necessario specificare le associazioni che permettono la selezione dei servizi in base al contesto nel quale si trova l'utente.
 
 %dove diciamo che è stato scelto il CDT come modello?
+%definire metodo diverso di associazione rispetto alle view SQL
 Rispetto alla classificazione dei nodi di un CDT definita nella Sezione \ref{sec:context-awareness} viene aggiunta un'ulteriore divisione in base al ruolo che un nodo assume durante la fase di selezione dei servizi:
 
 \begin{itemize}
@@ -76,11 +79,13 @@ Come si può notare dalla Figura \ref{fig:associazione-servizi-cdt} le operazioni
 
 Per quanto riguarda i \emph{servizi primari}, quando vengono associati ad un determinato contesto viene definito anche un indice di \emph{priorità}: questo valore è un numero intero, a partire da 1 e crescente all'interno del singolo nodo. Definisce l'importanza che il servizio assume in quel determinato contesto e verrà utilizzato nella fase di selezione dei servizi illustrata nel Capitolo \ref{sec:primary-service-selection}. Questo indicatore ha senso di essere utilizzato esclusivamente nei \emph{nodi contesto}, in quanto contengono una raccolta generica di servizi, mentre per gli \emph{attributi} non è necessario, in quanto l'ordinamento all'interno di una categoria di attributi non è sempre univoca. Se si prende per esempio un elenco di servizi associati ad una città tramite le sue coordinate geografica, si può considerare come indice di priorità la lontananza rispetto all'utente, che può essere calcolata solamente a runtime e può variare spesso.
 
-Per i \emph{servizi di supporto} non è sempre necessario definire le associazioni con i nodi del CDT. Alcuni servizi di supporto possono essere richiamati in modo statico quando non necessitano del contesto per essere scelti (es.: servizi generici come Wikipedia o Flickr). Per altri servizi, come per esempio quelli relativi ai mezzi di trasporto, è invece necessario basarsi sul contesto per selezionare il servizio più idoneo alla situazione. Per esempio, se un utente specifica che non dispone di un'auto e che si trova a Milano, allora il sistema proporrà i mezzi di trasporto pubblici presenti nella città, insieme all'elenco di altri tipologie di trasporto come i taxi o il car sharing. In questo caso è dunque necessario, come per i servizi primari, definire le associazioni delle operazioni con i nodi del CDT. Il processo di associazione è simile a quello dei servizi primari, la principale differenza risiede nel fatto che non bisogna specificare la priorità dei servizi, mentre le altre assunzioni rimangono valide.
+Per i \emph{servizi di supporto} non è sempre necessario definire le associazioni con i nodi del CDT. Alcuni servizi di supporto possono essere richiamati in modo statico quando non necessitano del contesto per essere scelti (es.: servizi generici come Wikipedia\footnote{\url{https://en.wikipedia.org/wiki/Main_Page}} o Flickr\footnote{\url{https://www.flickr.com/}}). Per altri servizi, come per esempio quelli relativi ai mezzi di trasporto, è invece necessario basarsi sul contesto per selezionare il servizio più idoneo alla situazione. Per esempio, se un utente specifica che non dispone di un'auto e che si trova a Milano, allora il sistema proporrà i mezzi di trasporto pubblici presenti nella città, insieme all'elenco di altri tipologie di trasporto come i taxi o il car sharing. In questo caso è dunque necessario, come per i servizi primari, definire le associazioni delle operazioni con i nodi del CDT. Il processo di associazione è simile a quello dei servizi primari, la principale differenza risiede nel fatto che non bisogna specificare la priorità dei servizi, mentre le altre assunzioni rimangono valide.
 
 \section{CDT su misura per gli utenti}
 
-\textcolor{red}{Divisione tra schema globale e tailored}
+\textcolor{red}{Divisione tra schema universale e tailored}\\
+
+Il modello del CDT definito nella Sezione \ref{sec:associazione-servizi-cdt} viene chiamato \emph{CDT universale}, in quanto rappresenta lo schema più completo del quale il sistema può disporre.
 
 \section{Mashup Design\label{sec:mashup-design}}
 
