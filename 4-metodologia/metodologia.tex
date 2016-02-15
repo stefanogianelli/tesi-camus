@@ -1,40 +1,6 @@
 
 In questo capitolo presentiamo la metodologia seguita per il design e la creazione delle applicazioni CAMUS, utilizzando un approccio di visual programming dei mashup. Abbiamo scelto di mettere l'utente finale al centro della nostra progettazione, tenendo conto delle sue esigenze di utilizzo, cercando di mascherare la complessità delle operazioni. %Esempio Viaggio???%
 Nelle sezioni successive saranno esposti i problemi che abbiamo incontrato e le conseguenti scelte progettuali. 
-\section{Architettura del sistema\label{sec:architettura-sistema}}
-
-\textcolor{red}{Spiegare com'\`e composta l'architettura (mobile app, server, web app)\\
-Scelta di effettuare le query sul server per i servizi primari e sul dispositivo per i servizi di supporto\\
-come comunicano le app (flussi e GraphQL)\\
-Interazione con l'utente}
-L'architettura del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con l'utente finale del sistema.
-
-\begin{enumerate}
-	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale non ha bisogno di molta astrazione di alto livello per eseguire le sue funzioni. Qui vengono registrati i servizi poi che vengono mappati dall'esperto nel \emph{Visual Design Environment} 
-	
-	\item \textbf{Web App} La piattaforma di visual design ha il compito di costruire le views per i dispositivi mobile e assegnare i termini presenti sul server. 
-	
-	\item \textbf{App Mobile} 
-\end{enumerate}
-
-\subsection{Dove eseguire le query verso i servizi?}
-%Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
-Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Le due principali soluzioni che vengono adottate nelle piattaforme di mashup per dispositivi mobile sono \emph{Server Mashup} e \emph{Cold Client Mashup} \textcolor{red}{(trovare qualche reference qui?)}
-Nel Server Mashup tutte le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
-Il Cold Client Mashup, invece, lo schema di mashup viene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
-Entrambe le soluzioni non sono molto bilanciate. Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
-Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, tuttavia questo non risolve diverse problematiche.
-I servizi non è detto che abbiano i medesimi tempi di risposta, quindi l'applicazione per eseguire una query dovrebbe avere una propria cache. Questo inoltre aggiunge un problema con le API keys dei servizi, che nel caso in cui fossero limitate, porterebbero ad eseguire tante richieste, portando a costi maggiori o a un esaurimento di queries verso il servizio. Questo problema verrebbe risolto utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre l'incidenza di questo problema.
-Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, consumando maggiormente la batteria integrata. Con una query unica e con i dati già aggregati ovviamente riduce il consumo delle risorse energetiche e dei dati in connessione mobile.
-
-\subsection{Architettura utilizzata}
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
-	\caption{Architettura del sistema}\label{fig:architettura-sistema}
-\end{figure}
 
 
 \section{Creazione dell'ecosistema dei servizi\label{sec:ecosistema-servizi}}
@@ -92,6 +58,34 @@ Per i \emph{servizi di supporto} non è sempre necessario definire le associazion
 \textcolor{red}{Spiegare lo schema per la generazione dinamica delle schermate\\
 Descrizione web app per la creazione degli schemi}
 
-\section{App Execution\label{sec:app-execution}}
+\section{Dove eseguire le query verso i servizi?}
+%Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
+Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Le due principali soluzioni che vengono adottate nelle piattaforme di mashup per dispositivi mobile sono \emph{Server Mashup} e \emph{Cold Client Mashup} \textcolor{red}{(trovare qualche reference qui?)}
+Nel Server Mashup tutte le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
+Il Cold Client Mashup, invece, lo schema di mashup viene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
+Entrambe le soluzioni non sono molto bilanciate. Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
+Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, tuttavia questo non risolve diverse problematiche.
+I servizi non è detto che abbiano i medesimi tempi di risposta, quindi l'applicazione per eseguire una query dovrebbe avere una propria cache. Questo inoltre aggiunge un problema con le API keys dei servizi, che nel caso in cui fossero limitate, porterebbero ad eseguire tante richieste, portando a costi maggiori o a un esaurimento di queries verso il servizio. Questo problema verrebbe risolto utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre l'incidenza di questo problema.
+Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, consumando maggiormente la batteria integrata. Con una query unica e con i dati già aggregati ovviamente riduce il consumo delle risorse energetiche e dei dati in connessione mobile.
 
-\textcolor{red}{Interazione con l'app: flussi delle comunicazioni con il server (login, getPersonalData, contesto, ...)}
+\section{Architettura utilizzata\label{sec:architettura-sistema}}
+
+\textcolor{red}{Spiegare com'\`e composta l'architettura (mobile app, server, web app)\\
+	Scelta di effettuare le query sul server per i servizi primari e sul dispositivo per i servizi di supporto\\
+	come comunicano le app (flussi e GraphQL)\\
+	Interazione con l'utente}
+L'architettura del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con l'utente finale del sistema.
+
+\begin{enumerate}
+	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale non ha bisogno di molta astrazione di alto livello per eseguire le sue funzioni. Qui vengono registrati i servizi poi che vengono mappati dall'esperto nel \emph{Visual Design Environment} 
+	
+	\item \textbf{Web App} La piattaforma di visual design ha il compito di costruire le views per i dispositivi mobile e assegnare i termini presenti sul server. 
+	
+	\item \textbf{App Mobile} 
+\end{enumerate}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
+	\caption{Architettura del sistema}\label{fig:architettura-sistema}
+\end{figure}
