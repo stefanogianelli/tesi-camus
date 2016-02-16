@@ -16,4 +16,4 @@ script:
 - bibtex _build/tesi
 - pdflatex -output-directory _build tesi.tex
 - pdflatex -output-directory _build tesi.tex
-- ./dropbox_uploader.sh upload -q _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf
+- ./dropbox_uploader.sh upload _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf

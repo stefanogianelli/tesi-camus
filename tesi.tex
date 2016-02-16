@@ -17,7 +17,7 @@
 \onehalfspacing
 \usepackage[unicode=true,pdfusetitle,
  bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
- breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false,hidelinks=true]
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
  {hyperref}
 
 \makeatletter
@@ -45,10 +45,6 @@
 \usepackage[table]{xcolor}
 \usepackage{booktabs}
 \usepackage{algpseudocode}
-
-% questa è uno sporca soluzione per gestire il fatto che le versioni
-% LTS di Ubuntu/Kubuntu hanno un pacchetto "geometry" vecchio
-\include{geometry.sty}
 
 % sistema il numero pagina nelle prime pagine dei capitoli
 \fancypagestyle{plain}{
