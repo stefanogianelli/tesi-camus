@@ -2,6 +2,25 @@
 In questo capitolo presentiamo la metodologia seguita per il design e la creazione delle applicazioni CAMUS, utilizzando un approccio di visual programming dei mashup. Abbiamo scelto di mettere l'utente finale al centro della nostra progettazione, tenendo conto delle sue esigenze di utilizzo, cercando di mascherare la complessità delle operazioni. %Esempio Viaggio???%
 Nelle sezioni successive saranno esposti i problemi che abbiamo incontrato e le conseguenti scelte progettuali. 
 
+\section{Modello del contesto\label{sec:modello-contesto}}
+
+Come illustrato nella Sezione \ref{sec:context-awareness}, esistono diversi modelli per rappresentare il contesto. Ai fini del progetto si è resa necessaria la scelta di un modello che soddisfi le seguenti caratteristiche:
+
+\begin{itemize}
+	\item Permetta di rappresentare informazioni categoriche (??) e parametri (??)
+	\item Deve consentire una rappresentazione gerarchica (es.: Mezzi di trasporto pubblici si può specializzare in bus, treno, car sharing, \dots)
+	\item Deve essere facilmente personalizzabile ed adattarsi a diversi ambiti di utilizzo
+	\item Deve possedere una rappresentazione visiva semplice e chiara, in modo che sia utilizzabile anche da persone non esperte di informatica
+\end{itemize}
+
+Tra i diversi modelli a disposizione, si è ritenuto che il Context Dimension Tree (CDT) sia il modello che rispetta maggiormente le richieste precedentemente elencate.
+
+Oltre alla classificazione dei nodi originale del CDT, viene aggiunta un'ulteriore divisione in base al ruolo che un nodo può assumere durante la fase di selezione dei servizi:
+
+\begin{itemize}
+	\item \textbf{Nodo filtro} \`E la tipologia predefinita. I nodi di tipo filtro permettono, come si può dedurre dal nome, di filtrare i servizi che sono idonei all'uso in un determinato contesto
+	\item \textbf{Nodo ranking} Questa tipologia viene assegnata ad alcuni nodi specifici, come ad esempio quello relativo alla \emph{località}, che assumono una maggiore importanza durante la selezione dei servizi, in quanto permettono di scegliere dei servizi che hanno un maggior impatto nel contesto specifico
+\end{itemize}
 
 \section{Creazione dell'ecosistema dei servizi\label{sec:ecosistema-servizi}}
 
@@ -12,7 +31,7 @@ I servizi rappresentano un punto cardine del sistema, in quanto mettono a dispos
 	\item \textbf{Supporto} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari. Possono mettere a disposizione dati aggiuntivi, contenuti multimediali (es.: foto e video) oppure possono fornire un'integrazione con altre app presenti sul dispositivo. Alcuni esempi di servizi di supporto sono le informazioni sul meteo, la cartina geografica del luogo o le indicazioni dei mezzi di trasporto per raggiungere il posto. Invece l'apertura del dialer telefonico quando viene selezionato il numero di telefono o l'utilizzo dell'app di navigazione preferita quando si sceglie un indirizzo rappresentano degli esempi di integrazione con altre app %Aggiungere anche degli esempi di servizi?
 \end{enumerate}
 
-Per quanto queste categorie rappresentino una divisione molto precisa dei servizi, non vengono considerate come rigide. Come già evidenziato in Corvetta et al \cite{rizzo2015progettazione}, ogni servizio espone uno o più metodi, e non è detto che tutti rientrino nella medesima categoria. Può capitare che un servizio metta a disposizione un metodo che viene considerato primario ed un altro che invece fornisce informazioni di supporto. Si è deciso quindi di non effettuare una categorizzazione a livello di servizio, bensì per ogni operazione, in modo da garantire una maggiore flessibilità.
+Per quanto queste categorie rappresentino una divisione molto precisa dei servizi, non vengono considerate come rigide. Come già evidenziato in \cite{rizzo2015progettazione}, ogni servizio espone uno o più metodi, e non è detto che tutti rientrino nella medesima categoria. Può capitare che un servizio metta a disposizione un metodo che viene considerato primario ed un altro che invece fornisce informazioni di supporto. Si è deciso quindi di non effettuare una categorizzazione a livello di servizio, bensì per ogni operazione, in modo da garantire una maggiore flessibilità.
 
 Per l'acquisizione dei dati è importante che il server sappia come interrogare i servizi e come interpretare le risposte. Si è deciso dunque di creare una repository con tutti i servizi che possono essere utilizzati dal sistema. Questa repository è composta dai \emph{descrittori dei servizi}, che contengono le informazioni necessarie per la gestione dei servizi. Ogni descrittore è composto da una prima parte comune relativa alle informazioni del servizio (es.: nome, categoria, url base, \dots) e da una parte specifica, costituita dall'elenco delle operazioni che espone. Ogni operazione rappresenta l'unità principale di ogni servizio, in quanto fornisce le seguenti informazioni che permettono di effettuare le richieste:
 
@@ -31,25 +50,26 @@ Per l'acquisizione dei dati è importante che il server sappia come interrogare i
 
 Una volta che i servizi sono stati aggiunti alla repository è necessario specificare le associazioni che permettono la selezione dei servizi in base al contesto nel quale si trova l'utente.
 
-%dove diciamo che è stato scelto il CDT come modello?
-%definire metodo diverso di associazione rispetto alle view SQL
-Rispetto alla classificazione dei nodi di un CDT definita nella Sezione \ref{sec:context-awareness} viene aggiunta un'ulteriore divisione in base al ruolo che un nodo assume durante la fase di selezione dei servizi:
+Nel modello originale del CDT, presentato nella Sezione \ref{sec:context-awareness}, il processo di selezione dei dati rilevanti per un determinato contesto avveniva tramite la definizione di viste, che venivano create in linguaggio SQL e associate ai \virgolette{nodi valore}. Come evidenziato anche nella precedente ricerca \cite{rizzo2015progettazione}, questa metodologia non è più applicabile principalmente per due motivi:
 
-\begin{itemize}
-	\item \textbf{Nodi filtro} \`E la tipologia predefinita. I nodi di tipo filtro permettono, come si può dedurre dal nome, di filtrare i servizi che sono idonei all'uso in un determinato contesto
-	\item \textbf{Nodi ranking} Questa tipologia viene assegnata ad alcuni nodi specifici, come ad esempio quello relativo alla \emph{località}, che assumono una maggiore importanza durante la selezione dei servizi, in quanto permettono di scegliere dei servizi che hanno un maggior impatto nel contesto specifico
-\end{itemize}
+\begin{enumerate}
+	\item Si vuole rendere il funzionamento del sistema il più semplice possibile per essere utilizzato da persone che non hanno profonde conoscenze di informatica, e la scrittura di query in SQL non è alla portata di chiunque
+	\item Non avendo a disposizione direttamente i dati, bensì i servizi da invocare per acquisirli, la selezione tramite viste non è la più idonea ad essere utilizzata
+\end{enumerate}
 
-\begin{figure}
+Volendo mantenere un approccio che sia semplice e allo stesso tempo funzionale, si è deciso di associare le operazioni definite dai singoli servizi ai nodi dell'albero di contesto. 
+
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/associazioni-cdt.png}
 	\caption{Associazione dei servizi al CDT}\label{fig:associazione-servizi-cdt}
 \end{figure}
 
-Come si può notare dalla Figura \ref{fig:associazione-servizi-cdt} le operazioni vengono associate ai nodi del CDT di tipo \virgolette{contesto} o alle \virgolette{variabili}. Nel primo caso l'operazione viene aggiunta all'elenco di operazioni che ogni nodo definisce, nel secondo caso è necessario associare a quale/i valore/i associare l'operazione (es.: per il campo \virgolette{Città} bisogna definire il nome della città, invece per l'attributo \virgolette{Coordinate} è necessario specificare la latitudine e longitudine del luogo).
+Come si può notare dalla Figura \ref{fig:associazione-servizi-cdt}, le operazioni vengono associate ai nodi di tipo \virgolette{valore} o \virgolette{attributo}. Nel primo caso l'operazione viene aggiunta all'elenco di operazioni che ogni nodo definisce, nel secondo caso è necessario associare a quale/i valore/i associare l'operazione (es.: per il campo \virgolette{Città} bisogna definire il nome della città, invece per l'attributo \virgolette{Coordinate} è necessario specificare la latitudine e longitudine del luogo). Generalmente le associazioni vengono effettuate nei nodi foglia; resta tuttavia possibile effettuare delle associazioni anche nei nodi che hanno dei figli, quando per esempio un servizio copre diverse categorie e non ha senso che sia scelto in una sola di esse.
 
-Per quanto riguarda i \emph{servizi primari}, quando vengono associati ad un determinato contesto viene definito anche un indice di \emph{priorità}: questo valore è un numero intero, a partire da 1 e crescente all'interno del singolo nodo. Definisce l'importanza che il servizio assume in quel determinato contesto e verrà utilizzato nella fase di selezione dei servizi illustrata nel Capitolo \ref{sec:primary-service-selection}. Questo indicatore ha senso di essere utilizzato esclusivamente nei \emph{nodi contesto}, in quanto contengono una raccolta generica di servizi, mentre per gli \emph{attributi} non è necessario, in quanto l'ordinamento all'interno di una categoria di attributi non è sempre univoca. Se si prende per esempio un elenco di servizi associati ad una città tramite le sue coordinate geografica, si può considerare come indice di priorità la lontananza rispetto all'utente, che può essere calcolata solamente a runtime e può variare spesso.
+Per quanto riguarda i \emph{servizi primari}, quando vengono associati ad un determinato contesto viene definito anche un indice di \emph{priorità}: questo valore è un numero intero, a partire da 1 e crescente all'interno del singolo nodo. Definisce l'importanza che il servizio assume in quel determinato contesto e verrà utilizzato nella fase di selezione dei servizi illustrata nel Capitolo \ref{sec:primary-service-selection}. Questo indicatore ha senso di essere utilizzato esclusivamente nei \emph{nodi valore}, in quanto contengono una raccolta generica di servizi, mentre per i \emph{nodi attributo} non è necessario, in quanto l'ordinamento all'interno di una categoria di attributi non è sempre univoca. Se si prende per esempio un elenco di servizi associati ad una città tramite le sue coordinate geografiche, si può considerare come indice di priorità la lontananza rispetto all'utente, che può essere calcolata solamente a runtime e può variare spesso.
 
+%bisogna parlare degli interest topic?
 Per i \emph{servizi di supporto} non è sempre necessario definire le associazioni con i nodi del CDT. Alcuni servizi di supporto possono essere richiamati in modo statico quando non necessitano del contesto per essere scelti (es.: servizi generici come Wikipedia\footnote{\url{https://en.wikipedia.org/wiki/Main_Page}} o Flickr\footnote{\url{https://www.flickr.com/}}). Per altri servizi, come per esempio quelli relativi ai mezzi di trasporto, è invece necessario basarsi sul contesto per selezionare il servizio più idoneo alla situazione. Per esempio, se un utente specifica che non dispone di un'auto e che si trova a Milano, allora il sistema proporrà i mezzi di trasporto pubblici presenti nella città, insieme all'elenco di altri tipologie di trasporto come i taxi o il car sharing. In questo caso è dunque necessario, come per i servizi primari, definire le associazioni delle operazioni con i nodi del CDT. Il processo di associazione è simile a quello dei servizi primari, la principale differenza risiede nel fatto che non bisogna specificare la priorità dei servizi, mentre le altre assunzioni rimangono valide.
 
 \section{CDT su misura per gli utenti}
@@ -89,7 +109,7 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 
 \section{Architettura utilizzata\label{sec:architettura-sistema}}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
 	\caption{Architettura del sistema}\label{fig:architettura-sistema}
