@@ -2,7 +2,7 @@ language:
 - ruby
 before_install:
 - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || openssl aes-256-cbc -K $encrypted_3d69c5542c5a_key -iv $encrypted_3d69c5542c5a_iv
-  -in .dropbox_uploader.enc -out .dropbox_uploader -d'
+  -in .dropbox_uploader.enc -out ~/.dropbox_uploader -d'
 - sudo add-apt-repository ppa:texlive-backports/ppa -y
 - sudo apt-get update -qq
 - sudo apt-get install -y texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-science texlive-lang-italian
@@ -16,4 +16,4 @@ script:
 - bibtex _build/tesi
 - pdflatex -output-directory _build tesi.tex
 - pdflatex -output-directory _build tesi.tex
-- ./dropbox_uploader.sh upload _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf -f ./dropbox_uploader -q
+- ./dropbox_uploader.sh upload -q _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf
