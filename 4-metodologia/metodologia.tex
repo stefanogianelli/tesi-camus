@@ -93,6 +93,20 @@ Per risolvere questa ulteriore problematica, relativa più al profilo specifico d
 \textcolor{red}{Spiegare lo schema per la generazione dinamica delle schermate\\
 Descrizione web app per la creazione degli schemi}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/visual_mapping_nuovo.png}
+	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
+\end{figure}
+
+Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo viene eseguito dall'esperto di settore per mezzo della web app di Visual Mapping \ref{fig:visual-mapping}, la quale genera come output un file che comprende i mashup occorrenti per visualizzare i dati che servono all'utente finale.
+L'associazione dei termini viene fatta mediante \emph{drag and drop} dove i singoli termini sono collegati al singolo componente della view.
+Essendo uno degli aspetti che caratterizzano la diversità dei dati l'\emph{Interest Topic} selezionato, viene lasciata aperta la possibilità di creare degli schemi totalmente differenti a seconda del tipo di dato rappresentato dall'\emph{interest topic} selezionato. 
+Ad esempio se viene selezionato \emph{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \emph{Museum}. Anche se ci sono parametri in comune, come \emph{Titolo, indirizzo, numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di differenziazione per quanto riguarda il design del mashup. Per esempio rimane possibile cambiare il tipo e l'ordine dei componenti da visualizzare e anche alcuni elementi stilistici puramente grafici.
+Per questo motivo ogni schema è taggato con il nome del topic a cui è associato e viene dinamicamente renderizzato dall'applicazione mobile.
+
+
+
 \section{Dove eseguire le query verso i servizi?}
 %Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
 Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Le due principali soluzioni che vengono adottate nelle piattaforme di mashup per dispositivi mobile sono \emph{Server Mashup} e \emph{Cold Client Mashup} \textcolor{red}{(trovare qualche reference qui?)}
@@ -111,7 +125,8 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 	\caption{Architettura del sistema}\label{fig:architettura-sistema}
 \end{figure}
 
-Come evidenziato nella figura \ref{fig:architettura-sistema}, l'architettura finale del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con l'utente finale del sistema.
+Da tutte queste considerazioni si è arrivati a definire una nuova struttura dell'architettura del sistema.
+Come evidenziato nella figura \ref{fig:architettura-sistema}, l'architettura finale del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con un utilizzatore finale del sistema.
 
 \begin{enumerate}
 	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale ha una visione maggiore della complessità del sistema. Ha il compito di aggiungere i servizi disponibili compilando un campo Qui vengono registrati i servizi poi che vengono mappati dall'esperto nelle \emph{Web App} 
