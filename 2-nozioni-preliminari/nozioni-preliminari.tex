@@ -1,4 +1,6 @@
 
+In questa sezione ...
+
 \section{Context-Awareness\label{sec:context-awareness}}
 
 \textcolor{red}{STEFANO\\Informazioni storiche sulle ricerche relative al contesto} \cite{DBLP:journals/sigmod/BolchiniCQST07} \cite{baldauf2007survey}
@@ -7,7 +9,19 @@
 
 \textcolor{red}{STEFANO\\Definizione del CDT}
 
-In questa sezione verrà presentato il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, che è il modello di rappresentazione del contesto che verrà utilizzato in CAMUS.
+In questa sezione verrà presentato il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, che è il modello di rappresentazione del contesto che verrà utilizzato in CAMUS. Il CDT è rappresentato come un albero $ \mathcal{T} = <N, E, r> $ ,composto da una radice e da nodi con etichetta, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i valori che possono assumere le dimensioni. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/esempio_cdt.png}
+	\caption{Context Dimension Tree}\label{fig:context-dimension-tree}
+\end{figure}
+
+Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. \textcolor{red}{aggiungere figura ed esempio} Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. \textcolor{red}{aggiungere esempio}
+
+Ogni nodo del CDT è caratterizzato dalla sua tipologia, che può essere \emph{dimensione} o \emph{concetto}, e dalla sua etichetta. Ogni nodo può essere identificato univocamente tramite l'unico percorso che lo collega alla radice. Senza perdita di generalità, viene adottata l'ipotesi che ogni etichetta sia unica in un albero, quindi ogni nodo può essere identificato semplicemente dalla sua etichetta. I collegamenti tra i vari nodi non vengono invece etichettati.
+
+L'alternanza tra nodi \emph{dimensione} e \emph{concetto} fa sì che vengano create delle \emph{generazioni}, ognuna delle quali sarà formata da nodi dello stesso colore, e ogni colore verrà alternato man mano che si prosegue discendendo nell'albero: dunque ogni \emph{nodo dimensione} può avere come figli solo nodi di tipo \emph{concetto} e viceversa.
 
 \section{Mobile Mashup\label{sec:mobile-mashup}}
 
