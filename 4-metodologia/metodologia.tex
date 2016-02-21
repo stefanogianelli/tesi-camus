@@ -27,7 +27,7 @@ Oltre alla classificazione dei nodi originale del CDT, viene aggiunta un'ulterio
 I servizi rappresentano un punto cardine del sistema, in quanto mettono a disposizione le risorse che verranno mostrate all'utente. Si è deciso di dividere i servizi in due categorie ben distinte, in base alla funzionalità del servizio:
 
 \begin{enumerate}
-	\item \textbf{Primari} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni di interesse relative al contesto nel quale si trova l'utente. Per esempio, se si effettua la ricerca di un ristorante, le informazioni principali saranno il nome del ristorante, l'indirizzo e il numero di telefono. TripAdvisor\footnote{\url{https://www.tripadvisor.it/}} e Zoomato\footnote{\url{https://www.zomato.com/it}} sono due esempi di servizi primari
+	\item \textbf{Primari} Sono i servizi che vengono interrogati in prima istanza per acquisire le informazioni di interesse relative al contesto nel quale si trova l'utente. Per esempio, se si effettua la ricerca di un ristorante, le informazioni principali saranno il nome del ristorante, l'indirizzo e il numero di telefono. TripAdvisor\footnote{\url{https://www.tripadvisor.it/}} e Zomato\footnote{\url{https://www.zomato.com/it}} sono due esempi di servizi primari
 	\item \textbf{Supporto} Sono i servizi che vengono utilizzati per arricchire le informazioni acquisite tramite i servizi primari. Possono mettere a disposizione dati aggiuntivi, contenuti multimediali (es.: foto e video) oppure possono fornire un'integrazione con altre app presenti sul dispositivo. Alcuni esempi di servizi di supporto sono le informazioni sul meteo, la cartina geografica del luogo o le indicazioni dei mezzi di trasporto per raggiungere il posto. Invece l'apertura del dialer telefonico quando viene selezionato il numero di telefono o l'utilizzo dell'app di navigazione preferita quando si sceglie un indirizzo rappresentano degli esempi di integrazione con altre app
 \end{enumerate}
 
@@ -91,10 +91,19 @@ Per risolvere questa ulteriore problematica, relativa più al profilo specifico d
 	\item \`E possibile inoltre modificare le associazioni delle operazioni con i nodi del CDT, comprese, solo per le \emph{operazioni primarie}, le priorità che assumono all'interno di ogni nodo. Questa funzionalità tende a sfruttare in maniera più marcata le conoscenze dell'\emph{esperto di settore} per migliorare la qualità dei risultati ottenuti dal sistema. Può essere utilizzata per diversi scopi, come favorire l'uso di determinati servizi rispetto ad altri o sostituire alcuni servizi che in una certa località non sono disponibili o non forniscono dei buoni risultati.
 \end{itemize}
 
-\section{Mashup Design\label{sec:mashup-design}}
+\section{Dove eseguire le query verso i servizi?}
+%Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
+Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Si sono presentate due possibilità diametralmente opposte di scelta: richieste tutte eseguite dalla app e richieste tutte eseguite dal server.
+\begin{itemize}
+	\item \textbf{Client centric} In questa tipologia di architettura le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
+	\item \textbf{Server centric} Tutte le richieste verso i servizi esterni vengono eseguiteviene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
+\end{itemize}
+Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
+Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, tuttavia questo non risolve diverse problematiche.
+I servizi non è detto che abbiano i medesimi tempi di risposta, quindi l'applicazione per eseguire una query dovrebbe avere una propria cache. Questo inoltre aggiunge un problema con le API keys dei servizi, che nel caso in cui fossero limitate, porterebbero ad eseguire tante richieste, portando a costi maggiori o a un esaurimento di queries verso il servizio. Questo problema verrebbe risolto utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre l'incidenza di questo problema.
+Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, consumando maggiormente la batteria integrata. Con una query unica e con i dati già aggregati ovviamente riduce il consumo delle risorse energetiche e dei dati in connessione mobile.
 
-\textcolor{red}{Spiegare lo schema per la generazione dinamica delle schermate\\
-Descrizione web app per la creazione degli schemi}
+\section{Mashup Design\label{sec:mashup-design}}
 
 \begin{figure}[h]
 	\centering
@@ -102,24 +111,32 @@ Descrizione web app per la creazione degli schemi}
 	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
 \end{figure}
 
-Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo viene eseguito dall'esperto di settore per mezzo della web app di Visual Mapping \ref{fig:visual-mapping}, la quale genera come output un file che comprende i mashup occorrenti per visualizzare i dati che servono all'utente finale.
-L'associazione dei termini viene fatta mediante \emph{drag and drop} dove i singoli termini sono collegati al singolo componente della view.
-Essendo uno degli aspetti che caratterizzano la diversità dei dati l'\emph{Interest Topic} selezionato, viene lasciata aperta la possibilità di creare degli schemi totalmente differenti a seconda del tipo di dato rappresentato dall'\emph{interest topic} selezionato. 
-Ad esempio se viene selezionato \emph{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \emph{Museum}. Anche se ci sono parametri in comune, come \emph{Titolo, indirizzo, numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di differenziazione per quanto riguarda il design del mashup. Per esempio rimane possibile cambiare il tipo e l'ordine dei componenti da visualizzare e anche alcuni elementi stilistici puramente grafici.
-Per questo motivo ogni schema è taggato con il nome del topic a cui è associato e viene dinamicamente renderizzato dall'applicazione mobile.
+Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo viene eseguito dall'esperto di settore per mezzo della web app di Visual Mapping (Figura \ref{fig:visual-mapping}), la quale genera come output un file che comprende i mashup occorrenti per visualizzare i dati che servono all'utente finale.
+\begin{itemize}
+	\item \textbf{Associazione dei termini} 
+	L'associazione dei termini viene fatta mediante \emph{drag and drop} dove i singoli termini sono collegati al singolo componente della view. 
+	I termini sono definiti dal server e il designer può scegliere se utilizzarli tutti o solo una parte nella creazione dello schema e questi sono poi utilizzati dall'applicazione per richiedere i dati occorrenti a popolare le views.
+	Nella figura \ref{fig:associazione-servizi-cdt} è mostrata la sequenza di operazioni che deve compiere il designer.
+	\begin{enumerate}
+		\item Selezione del componente da inserire nella schermata del telefono e modifica lo stile a seconda delle opzioni disponibili
+		\item Associazione del termine tra l'elenco di tutti quelli disponibili dato dal server CAMUS.
+	\end{enumerate}
+	%allungare questa parte
+	
+	\item \textbf{Differenziazione dei mashup} 
+	Essendo l'\emph{Interest Topic} selezionato uno degli aspetti che caratterizzano la diversità dei dati , viene lasciata aperta la possibilità di creare degli schemi totalmente differenti a seconda del tipo di dato rappresentato dall'\emph{interest topic} selezionato. 
+	Ad esempio se viene selezionato \virgolette{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \virgolette{Museum}. Anche se ci sono parametri in comune, come \virgolette{Titolo}, \virgolette{Indirizzo}, \virgolette{Numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di scelta per quanto riguarda il design del mashup. Per esempio rimane possibile cambiare il tipo e l'ordine dei componenti da visualizzare e anche alcuni elementi stilistici puramente grafici al variare dell'\virgolette{Interest topic}
 
-
-
-\section{Dove eseguire le query verso i servizi?}
-%Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
-Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Le due principali soluzioni che vengono adottate nelle piattaforme di mashup per dispositivi mobile sono \emph{Server Mashup} e \emph{Cold Client Mashup} \textcolor{red}{(trovare qualche reference qui?)}
-Nel Server Mashup tutte le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
-Il Cold Client Mashup, invece, lo schema di mashup viene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
-Entrambe le soluzioni non sono molto bilanciate. Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
-Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, tuttavia questo non risolve diverse problematiche.
-I servizi non è detto che abbiano i medesimi tempi di risposta, quindi l'applicazione per eseguire una query dovrebbe avere una propria cache. Questo inoltre aggiunge un problema con le API keys dei servizi, che nel caso in cui fossero limitate, porterebbero ad eseguire tante richieste, portando a costi maggiori o a un esaurimento di queries verso il servizio. Questo problema verrebbe risolto utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre l'incidenza di questo problema.
-Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, consumando maggiormente la batteria integrata. Con una query unica e con i dati già aggregati ovviamente riduce il consumo delle risorse energetiche e dei dati in connessione mobile.
-
+	\item \textbf{Associazione dei servizi di supporto}
+	Come spiegato nella sezione \ref{sec:ecosistema-servizi}, i servizi di supporto hanno la funzione di arricchire le informazioni che sono fornite dai servizi primari. La loro integrazione nei mashup può essere fatta principalmente in due modi:
+	\begin{enumerate}
+	\item La prima possibilità è di associare a un termine una app già installata sul device. Utilizzando il solito caso d'uso del turismo e considerando la categoria ristoranti, si supponga servizio di ristoranti ritorna un numero di telefono e questo può essere collegato al dialer di default per effettuare direttamente una chiamata o alla app di gestione degli SMS. Oppure l'indirizzo email può essere associato alla funzione \virgolette{Crea Email} della app predefinita di gestione della posta elettronica. Un altro esempio può essere quello di associare il browser di sistema al sito ufficiale o alle pagine Facebook del ristorante.
+	\item La seconda possibilità è invece l'utilizzo di un modulo che mostri direttamente i risultati dei servizi di supporto all'interno della app. 
+	Questa possibilità può essere utilizzata per mostrare nuovi dati relativi a un singolo item proveniente dai servizi primari, ad esempio le informazioni sulla posizione. In questo modo è possibile associare una mappa oppure una segnalazione che indica la distanza o i tempi di percorrenza, oppure, citando sempre l'esempio dei locali, i mezzi pubblici, car sharing o taxi che si possono utilizzare per raggiungere il ristorante.
+	\end{enumerate}
+	
+	
+\end{itemize}
 \section{Architettura utilizzata\label{sec:architettura-sistema}}
 
 \begin{figure}[h]
@@ -135,9 +152,10 @@ Come evidenziato nella figura \ref{fig:architettura-sistema}, l'architettura fin
 	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale ha una visione maggiore della complessità del sistema. Ha il compito di aggiungere i servizi disponibili compilando un campo Qui vengono registrati i servizi poi che vengono mappati dall'esperto nelle \emph{Web App} 
 	Data una query proveniente dall'applicazione mobile, comprendente il contesto e i dati che ha bisogno il client,il server seleziona i servizi da contattare tramite il \emph{Service Selector}, esegue le query verso i servizi esterni e compone i risultati a seconda a seconda delle regole associate a ciascun servizio.
 	
-	\item \textbf{Web App} Le web app sono collegate all'esperto di settore che compone l'applicazione mobile. Questo attore non è necessariamente un esperto di informatica e della tecnologia utilizzata, quindi ha bisogno di un astrazione maggiore rispetto all'amministratore. Sono disponibili due funzionalità di base: una permette di associare i servizi al CDT dell'utente, mentre l'altra permette di creare i mashup per le pagine dell'applicazione, collegando i termini con i componenti che verranno poi renderizzati nell'applicazione.
+	\item \textbf{Web App} Le web app sono collegate all'esperto di settore che compone l'applicazione mobile. Questo attore non è necessariamente un esperto di informatica e della tecnologia utilizzata, quindi ha bisogno di un astrazione maggiore rispetto all'amministratore. Sono disponibili due funzionalità di base: una permette di associare i servizi al CDT dell'utente, mentre l'altra permette di creare i mashup per le pagine dell'applicazione, collegando i termini con i componenti che verranno poi renderizzati nell'applicazione. Al termine delle definizioni di servizi e mashup da parte dell'esperto di settore, il CDT con le associazioni e i mashup vengono caricati sul server, il quale si occuperà di gestire il flusso dei dati direttamente con la mobile app. 
 	
 	\item \textbf{App Mobile} La app mobile è l'interfaccia dell'utente finale con il sistema. Essa ha il compito di renderizzare i mashup definiti dall'esperto e di permettere all'utente di inserire il proprio contesto per richiedere al server i risultati associati ad esso. I dati occorrenti per generare un contesto possono essere anche aggiunti utilizzando i sensori del dispositivo, come il GPS o l'ora corrente.
+	Una volta che l'utente finale ha effettuato il login, la app riceve i mashup e il CDT completo dal server e si occupa di fornire le interfacce grafiche per gestire il contesto e i dati, seguendo tutte le linee guida fornite dai mashup. 
 \end{enumerate}
 
 
