@@ -7,9 +7,7 @@ In questa sezione ...
 
 \subsection{Context Dimension Model\label{sec:contex-dimension-model}}
 
-\textcolor{red}{STEFANO\\Definizione del CDT}
-
-In questa sezione verrà presentato il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, che è il modello di rappresentazione del contesto che verrà utilizzato in CAMUS. Il CDT è rappresentato come un albero $ \mathcal{T} = <N, E, r> $ ,composto da una radice e da nodi con etichetta, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i valori che possono assumere le dimensioni. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
+In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Il CDT è rappresentato come un albero, composto da una radice e da nodi con etichetta, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i valori che possono assumere le dimensioni. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
 
 \begin{figure}[h]
 	\centering
@@ -17,11 +15,27 @@ In questa sezione verrà presentato il \emph{Context Dimension Tree} \cite{DBLP:j
 	\caption{Context Dimension Tree}\label{fig:context-dimension-tree}
 \end{figure}
 
-Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. \textcolor{red}{aggiungere figura ed esempio} Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. \textcolor{red}{aggiungere esempio}
+Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. Nell'esempio in Figura \ref{fig:context-dimension-tree}, le \emph{dimensioni principali} sono il \emph{ruolo} dell'utente, l'\emph{interfaccia} tramite la quale accede ai dati, l'\emph{interest topic} e la \emph{posizione} in cui si trova. Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. Per esempio, l'interest topic \virgolette{ordine} può essere analizzato in base allo \emph{stato} in cui si trovi oppure in base alla sua \emph{tipologia}.
 
 Ogni nodo del CDT è caratterizzato dalla sua tipologia, che può essere \emph{dimensione} o \emph{concetto}, e dalla sua etichetta. Ogni nodo può essere identificato univocamente tramite l'unico percorso che lo collega alla radice. Senza perdita di generalità, viene adottata l'ipotesi che ogni etichetta sia unica in un albero, quindi ogni nodo può essere identificato semplicemente dalla sua etichetta. I collegamenti tra i vari nodi non vengono invece etichettati.
 
 L'alternanza tra nodi \emph{dimensione} e \emph{concetto} fa sì che vengano create delle \emph{generazioni}, ognuna delle quali sarà formata da nodi dello stesso colore, e ogni colore verrà alternato man mano che si prosegue discendendo nell'albero: dunque ogni \emph{nodo dimensione} può avere come figli solo nodi di tipo \emph{concetto} e viceversa.
+
+\`E inoltre possibile associare uno o più \emph{parametri} ai nodi concetto e ai nodi dimensione che sono foglie dell'albero. Ogni parametro permette di raffinare ulteriormente la selezione dei dati e selezionare un sottoinsieme del dataset particolare. Per esempio, il parametro \virgolette{intervallo} associato al concetto \emph{ordini} permette di indicare un intervallo di date e quindi di selezionare esclusivamente gli ordini che sono riferiti alle date indicate.
+
+Per ogni \emph{nodo dimensione} è possibile selezionare al massimo un nodo concetto tra i suoi figli oppure un nodo parametro. L'utilizzo dei parametri aumenta il potere espressivo del modello, in quanto lo rende più semplice per l'utilizzo da parte del designer. Si è resa necessaria l'introduzione dei parametri in quanto non tutti i concetti espressi da una dimensione possono essere enumerati. Per esempio, la dimensione \virgolette{costo} può assumere infiniti valori e quindi è più appropriato l'utilizzo di un parametro.
+
+Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un Context Dimension Tree \textcolor{red}{formula?}, un \emph{contesto} è una formula congiunta $ \land (d\_name_i = value_i) $, dove ogni $ d\_name_i$ è l'etichetta di ogni (sotto-)dimensione, e ogni $ value_i $ è uno dei possibili valori di quella specifica dimensione, cioè è l'etichetta di uno dei nodi concetto tra i suoi figli, che può assumere una tra le seguenti forme:
+
+\begin{equation*}
+	concept\_name | concept\_name (p\_name_i = p\_value_i) | p\_name = p\_value
+\end{equation*}
+
+Una dichiarazione del tipo $ d\_name_i = value_i $ viene chiamata \emph{elemento del contesto}, in quanto un contesto è formata dalla congiunzione di diversi elementi del contesto. Un esempio di contesto è:
+
+\begin{equation*}
+	C \equiv ( role = customer(\$cid = ''Smith'')) \land (interest\_topic = orders) \land (interface = smartphone)
+\end{equation*}
 
 \section{Mobile Mashup\label{sec:mobile-mashup}}
 
