@@ -76,7 +76,7 @@ Al fine di far rispettare questa classificazione è stato introdotto il vincolo c
 
 Per le \emph{operazioni di supporto} non è sempre necessario definire le associazioni con i nodi del CDT. Alcuni operazioni di supporto possono essere richiamate in modo statico quando non necessitano del contesto per essere scelte (es.: i servizi generici come Wikipedia\footnote{\url{https://en.wikipedia.org/wiki/Main_Page}} o Flickr\footnote{\url{https://www.flickr.com/}}). Per altre operazioni, come per esempio quelle relative ai mezzi di trasporto, è invece necessario basarsi sul contesto per selezionare la più idonea alla situazione. Per esempio, se un utente specifica che non dispone di un'auto e che si trova a Milano, allora il sistema proporrà i mezzi di trasporto pubblici presenti nella città, insieme all'elenco di altre tipologie di trasporto come i taxi o il car sharing. In questo caso è dunque necessario, come nel caso delle operazioni primarie, definire le associazioni delle operazioni con i nodi del CDT. Il processo di associazione è simile a quello delle operazioni primarie, la principale differenza risiede nel fatto che non bisogna specificare la priorità dei servizi, mentre le altre assunzioni rimangono valide.
 
-\section{CDT su misura per gli utenti}
+\section{CDT su misura per gli utenti\label{sec:cdt-su-misura}}
 
 Il modello del CDT definito nella Sezione \ref{sec:associazione-servizi-cdt} viene chiamato \emph{CDT Universale}, in quanto rappresenta lo schema più completo del quale il sistema dispone. Questo CDT deve descrivere tutti i possibili contesti che si vogliono gestire; possono coesistere diversi ambiti in parallelo, con le relative dimensioni che vanno a specializzare il dominio generale. Com'è facilmente intuibile, questo schema può diventare di enormi dimensioni, rendendolo di fatto inutilizzabile per via della moltitudine di selezioni possibili. Inoltre emerge il problema dei \emph{contesti non validi}, cioè quei contesti che non possono esistere nella realtà. Per esempio, scegliere come \emph{Interest Topic} la ricerca di \virgolette{Ristoranti} e selezionare di voler fare un viaggio \virgolette{Rilassante} non è un contesto valido, in quanto la dimensione \virgolette{Tipologia di Viaggio} ha senso di essere attivata solo quando viene selezionato come \emph{Interest Topic} quello relativo ai viaggi. Queste due problematiche vanno in senso contrario con i principi di usabilità e semplicità che sono stati presi come linee guida per il progetto.
 
@@ -91,6 +91,16 @@ Per risolvere questa ulteriore problematica, relativa più al profilo specifico d
 	\item \`E possibile inoltre modificare le associazioni delle operazioni con i nodi del CDT, comprese, solo per le \emph{operazioni primarie}, le priorità che assumono all'interno di ogni nodo. Questa funzionalità tende a sfruttare in maniera più marcata le conoscenze dell'\emph{esperto di settore} per migliorare la qualità dei risultati ottenuti dal sistema. Può essere utilizzata per diversi scopi, come favorire l'uso di determinati servizi rispetto ad altri o sostituire alcuni servizi che in una certa località non sono disponibili o non forniscono dei buoni risultati.
 \end{itemize}
 
+\section{Selezione delle operazioni in base al contesto\label{sec:selezione-operazioni}}
+
+\textcolor{red}{spiegare algoritmo di selezione dei servizi primari e di supporto\\
+	spiegare come vengono selezionati i nodi con figli}
+
+\section{Integrazione dei dati\label{(sec:integrazione-dati)}}
+
+\textcolor{red}{come vengono integrati i dati (algoritmo merge)\\
+	rimozione duplicati}
+
 \section{Mashup Design\label{sec:mashup-design}}
 
 \begin{figure}[h]
@@ -99,17 +109,17 @@ Per risolvere questa ulteriore problematica, relativa più al profilo specifico d
 	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
 \end{figure}
 
-Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo viene eseguito dall'esperto di settore per mezzo della web app di Visual Mapping (Figura \ref{fig:visual-mapping}), la quale genera come output uno schema che comprende i mashup occorrenti per visualizzare i dati che servono all'utente finale.
+Un altro aspetto fondamentale del sistema è legato all'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo compito viene svolto dall'\emph{esperto di settore} per mezzo della web app di Visual Mapping (Figura \ref{fig:visual-mapping}), la quale genera uno schema che definisce come e quali informazioni vengono mostrate all'utente.
 
-\upe stato scelto di adottare due tipologie di schemi fondamentali, uno per la lista di risultati e uno per i dettagli dell'elemento selezionato, perché fondamentalmente sono queste due le pagine dell'applicazione che necessitano di associazioni dei termini con gli elementi grafici.
-Gli schemi generati possono essere ulteriormente differenziati per due motivi principali. 
+\upe stato scelto di adottare due tipologie di schemi fondamentali, uno per la lista dei risultati e uno per i dettagli dell'elemento selezionato, perché fondamentalmente sono queste due le pagine dell'applicazione che necessitano di associazioni dei termini con gli elementi grafici.
+Gli schemi generati possono essere ulteriormente differenziati per due motivi principali:
 
 \begin{enumerate}
-	\item Il primo di essi è la tipologia dei dati, che nel nostro caso viene differenziata usando il parametro dell' \virgolette{Interest Topic}.
-	Ad esempio se viene selezionato \virgolette{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \virgolette{Museum}. Anche se ci sono parametri in comune, come \virgolette{Titolo}, \virgolette{Indirizzo}, \virgolette{Numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di scelta per quanto riguarda il design del mashup. 
+	\item Il primo di essi è la tipologia dei dati, che nel nostro caso viene differenziata usando il parametro dell'\emph{Interest Topic}.
+	Ad esempio se viene selezionato \virgolette{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \virgolette{Museum}. Anche se ci sono parametri in comune, come \emph{Titolo}, \emph{Indirizzo}, \emph{Numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di scelta per quanto riguarda il design del mashup. 
 	\item
-	Il secondo aspetto è la possibilità di differenziare i dati da mostrare a livello di utente, dato che non a tutti possono interessare gli stessi dati oppure può essere preferibile mostrare i dati e le view in maniera differente in stili grafici e componenti. Infatti, una volta generato lo schema, viene associato nel database del server all'id dell'utente, in maniera tale da renderli disponibili su richiesta della mobile app, dopo che è stato effettuato il login.
-	Nella web app l'esperto seleziona l'utente al quale deve generare l'applicazione e, in aggiunta alle associazioni al CDT, carica gli schemi generati sul server, i quali vengono associati all'id dell'utente. In questo modo ogni utente dell'applicazione può avere dei mashup personalizzati.
+	Il secondo aspetto è la possibilità di differenziare i dati da mostrare a livello di utente, dato che non a tutti gli utenti possono interessare le stesse informazioni oppure può essere preferibile mostrare i dati e le view in maniera differente in stili grafici e componenti. Infatti, una volta generato lo schema, viene associato allo specifico utente, in maniera tale da essere disponibile su richiesta della mobile app, dopo che è stato effettuato l'accesso.
+	Nella web app l'esperto seleziona l'utente al quale deve generare l'applicazione e, in aggiunta alle modifiche al CDT evidenziate nella Sezione \ref{sec:cdt-su-misura}, carica gli schemi predefiniti che verranno utilizzati come base per lo schema personalizzato per l'utente. In questo modo ogni utente dell'applicazione può avere i propri mashup personalizzati.
 	In aggiunta alla definizione dei termini nei mashup, è possibile aggiungere le proprietà stilistiche relative al singolo schema, se diverse da quelle definite globalmente.
 \end{enumerate}
 
@@ -118,44 +128,46 @@ Gli schemi generati possono essere ulteriormente differenziati per due motivi pr
 	\includegraphics{4-metodologia/Immagini/view_schema.png}
 	\caption{Schema delle views}\label{fig:view-schema}
 \end{figure}
-Lo schema delle view che è stato adottato è raffigurato nella figura \ref{fig:view-schema}. A ogni pagina definita viene associato uno o più valori di \virgolette{Interest Topics}, perché può essere che uno schema venga utilizzato per più di un topic. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che serve poi all'app a renderizzare il componente associato.
+Lo schema delle view che è stato adottato è raffigurato nella Figura \ref{fig:view-schema}. Ad ogni pagina definita viene associato uno o più valori di \virgolette{Interest Topic}, perché può essere che uno schema venga utilizzato per più di un ambito. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che servirà all'app per renderizzare il componente associato.
 
+Per personalizzare uno schema, al \emph{designer} spettano i seguenti passaggi:
 
 \begin{itemize}
 	\item \textbf{Associazione dei termini} 
-	L'associazione dei termini viene fatta mediante \emph{drag and drop} dove i singoli termini sono collegati al singolo componente della view. 
-	I termini sono definiti dal server e il designer può scegliere se utilizzarli tutti o solo una parte nella creazione dello schema e questi sono poi utilizzati dall'applicazione per richiedere i dati occorrenti a popolare le views.
-	Nella figura \ref{fig:associazione-servizi-cdt} è mostrata la sequenza di operazioni che deve compiere il designer.
+	L'associazione dei termini viene effettuata mediante \emph{drag} \& \emph{drop} dove i singoli termini sono collegati allo specifico componente della view. 
+	I termini possono essere acquisiti da una repository mantenuta sul server o da una \emph{knowledge base}\footnote{\url{http://schema.org/}}, che permette di associare un significato semantico ad ogni termine in modo da agevolare l'interoperabilità dei dati, e il designer può scegliere se utilizzarli tutti o solo una parte nella creazione dello schema, in modo che a runtime l'applicazione possa richiedere solamente i dati necessari alla popolazione della view.
+	Nella Figura \ref{fig:visual-mapping} viene mostrata la sequenza di operazioni che deve compiere il designer e che vengono elencati di seguito:
 	\begin{enumerate}
-		\item Selezione del componente da inserire nella schermata del telefono e modifica lo stile a seconda delle opzioni disponibili
-		\item Associazione del termine tra l'elenco di tutti quelli disponibili dato dal server CAMUS.
+		\item Selezione del componente da inserire nella schermata del telefono e modifica dello stile a seconda delle opzioni disponibili
+		\item Associazione del termine tra l'elenco di tutti quelli disponibili
 	\end{enumerate}
-	Ad esempio per mostrare il titolo dell'elemento selezionato l'esperto deve prendere un campo di testo dai componenti, trascinarlo all'interno del mashup dell'applicazione e associare il campo titolo dai termini sulla sinistra della web app. A questo è possibile aggiungere degli elementi di stile aggiuntivi, che, aggiunti allo schema, sovrascrivono eventuali stili presenti di default nell'app.
+	Ad esempio, per mostrare il titolo dell'elemento selezionato l'esperto deve selezionare un campo di testo dai componenti, trascinarlo all'interno del dispositivo virtuale e associare il campo titolo dai termini sulla sinistra della web app. A questo punto è possibile modificare alcuni elementi di stile che, definiti sullo schema, sovrascrivono eventuali stili presenti nello schema predefinito.
 	%allungare questa parte
 	\item \textbf{Associazione dei servizi di supporto}
-	Come spiegato nella sezione \ref{sec:ecosistema-servizi}, i servizi di supporto hanno la funzione di arricchire le informazioni che sono fornite dai servizi primari. La loro integrazione nei mashup può essere fatta principalmente in due modi:
+	Come spiegato nella Sezione \ref{sec:ecosistema-servizi}, i servizi di supporto hanno la funzione di arricchire le informazioni che sono fornite dai servizi primari. La loro integrazione nei mashup può essere fatta principalmente in due modi:
 	\begin{enumerate}
-	\item La prima possibilità è di associare a un termine una app già installata sul device. Utilizzando il solito caso d'uso del turismo e considerando la categoria ristoranti, si supponga servizio di ristoranti ritorna un numero di telefono e questo può essere collegato al dialer di default per effettuare direttamente una chiamata o alla app di gestione degli SMS. Oppure l'indirizzo email può essere associato alla funzione \virgolette{Crea Email} della app predefinita di gestione della posta elettronica. Un altro esempio può essere quello di associare il browser di sistema al sito ufficiale o alle pagine Facebook del ristorante.
-	\item La seconda possibilità è invece l'utilizzo di un modulo che mostri direttamente i risultati dei servizi di supporto all'interno della app. 
-	Questa possibilità può essere utilizzata per mostrare nuovi dati relativi a un singolo item proveniente dai servizi primari, ad esempio le informazioni sulla posizione. In questo modo è possibile associare una mappa oppure una segnalazione che indica la distanza o i tempi di percorrenza, oppure, citando sempre l'esempio dei locali, i mezzi pubblici, car sharing o taxi che si possono utilizzare per raggiungere il ristorante.
+	\item La prima possibilità è di associare ad un termine una app già installata sul device. Utilizzando il solito caso d'uso del turismo e considerando la categoria ristoranti, si supponga un servizio di ristoranti che restituisce un numero di telefono: questo dato può essere collegato al dialer di default per effettuare direttamente una chiamata o all'app di gestione degli SMS. Oppure l'indirizzo email può essere associato alla funzione \virgolette{Crea Email} dell'app predefinita di gestione della posta elettronica. Un altro esempio può essere quello di associare il browser di sistema al sito ufficiale o alle pagine Facebook del ristorante
+	\item La seconda possibilità riguarda invece l'utilizzo di un modulo che mostri direttamente i risultati dei servizi di supporto all'interno dell'app. 
+	Questa possibilità può essere utilizzata per mostrare nuovi dati relativi a un singolo elemento proveniente dai servizi primari, ad esempio le informazioni sulla posizione. In questo modo è possibile associare una mappa oppure una segnalazione che indica la distanza o i tempi di percorrenza, oppure, citando sempre l'esempio dei locali, i mezzi pubblici, car sharing o taxi che si possono utilizzare per raggiungere il ristorante
 	\end{enumerate}
 	
-	
 \end{itemize}
+
 \section{Architettura utilizzata\label{sec:architettura-sistema}}
-Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Si sono presentate due possibilità diametralmente opposte di scelta: richieste tutte eseguite dalla app e richieste tutte eseguite dal server.
+
+I fattori discriminanti nella scelta dell'architettura più idonea riguardano quale componente del sistema avrà il compito di interrogare i servizi per acquisire le informazioni da mostrare all'utente e l'integrazione dei dati.
+Per quanto riguarda l'interrogazione dei servizi sono state valutate due possibilità diametralmente opposte:
+
 \begin{itemize}
-	\item \textbf{Server centric} In questa tipologia di architettura le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
-	\item \textbf{Client centric} Tutte le richieste verso i servizi esterni vengono eseguite viene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
+	\item \textbf{Server centric} In questa tipologia di architettura tutto il carico computazionale viene gestito dal server. Quando viene effettuata una richiesta, sarà quindi il server ad occuparsi di contattare i servizi necessari a recuperare i dati, integrare le informazioni ricevute e contattare i servizi di supporto definiti nello schema di mashup per arricchire il precedente dataset
+	\item \textbf{Client centric} In questa tipologia tutte le richieste verso i servizi esterni vengono eseguite sul dispositivo, che si occuperà inoltre di integrare le informazioni ricevute e contattare i servizi di supporto
 \end{itemize}
 
-
-Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
+\textcolor{red}{Da modificare ...}
 Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, come presentato nella precedente implementazione del sistema \cite{rizzo2015progettazione}. In quella versione del sistema nello schema era specificato il metodo per poter effettuare le query direttamente verso i servizi primari e i risultati venivano elaborati dal dispositivo mobile, che quindi si occupava di tutte le operazioni sui dati (\emph{Union} e \emph{Merge}).
 Una delle prime osservazioni che sono state fatte è legata ai tempi di risposta dei servizi esterni, dovuto sia ai server dei provider che alle condizioni di rete.  Per questo motivo non è detto che due servizi abbiano i medesimi tempi di risposta, quindi l'applicazione potrebbe ottenere delle risposte parziali o comunque avere tempi di risposta più alti nel caso di una richiesta senza caching. Questo inoltre aggiunge un problema con le API keys dei servizi, che, nel caso di tante richieste verso il medesimo servizio da più client, porterebbe a un esaurimento dei limiti o a maggiori costi per il servizio dati. Un chiaro esempio di servizi di questo tipo può essere considerato Google Places\footnote{Google Places Developers: \url{https://developers.google.com/places/}}, che offre un numero limitato di queries giornaliere verso il servizio usando una sola API key.
 Esiste un altro problema, il quale è legato all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, utilizzando maggiormente la batteria integrata e, anche se i dati scambiati non sono di grandi dimensioni.
 Questi problemi verrebbero risolti utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre il numero di query verso i servizi esterni. Inoltre, anche la mobile app non deve consumare maggiori risorse richiedendo dati da più servizi, ma utilizza un unico punto dal quale riceve dei dati già pronti per essere visualizzati e già filtrati dal server.
-
 
 \begin{figure}[h]
 	\centering
@@ -175,8 +187,3 @@ Come evidenziato nella figura \ref{fig:architettura-sistema}, l'architettura fin
 	\item \textbf{App Mobile} La app mobile è l'interfaccia dell'utente finale con il sistema. Essa ha il compito di renderizzare i mashup definiti dall'esperto e di permettere all'utente di inserire il proprio contesto per richiedere al server i risultati associati ad esso. I dati occorrenti per generare un contesto possono essere anche aggiunti utilizzando i sensori del dispositivo, come il GPS o l'ora corrente.
 	Una volta che l'utente finale ha effettuato il login, la app riceve i mashup e il CDT completo dal server e si occupa di fornire le interfacce grafiche per gestire il contesto e i dati, seguendo tutte le linee guida fornite dai mashup. 
 \end{enumerate}
-
-
-
-
-
