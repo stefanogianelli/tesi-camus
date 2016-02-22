@@ -91,18 +91,6 @@ Per risolvere questa ulteriore problematica, relativa più al profilo specifico d
 	\item \`E possibile inoltre modificare le associazioni delle operazioni con i nodi del CDT, comprese, solo per le \emph{operazioni primarie}, le priorità che assumono all'interno di ogni nodo. Questa funzionalità tende a sfruttare in maniera più marcata le conoscenze dell'\emph{esperto di settore} per migliorare la qualità dei risultati ottenuti dal sistema. Può essere utilizzata per diversi scopi, come favorire l'uso di determinati servizi rispetto ad altri o sostituire alcuni servizi che in una certa località non sono disponibili o non forniscono dei buoni risultati.
 \end{itemize}
 
-\section{Dove eseguire le query verso i servizi?}
-%Non sono sicuro di mettere questa sezione qui, poi vediamo dove spostarla
-Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Si sono presentate due possibilità diametralmente opposte di scelta: richieste tutte eseguite dalla app e richieste tutte eseguite dal server.
-\begin{itemize}
-	\item \textbf{Client centric} In questa tipologia di architettura le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
-	\item \textbf{Server centric} Tutte le richieste verso i servizi esterni vengono eseguiteviene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
-\end{itemize}
-Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
-Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, tuttavia questo non risolve diverse problematiche.
-I servizi non è detto che abbiano i medesimi tempi di risposta, quindi l'applicazione per eseguire una query dovrebbe avere una propria cache. Questo inoltre aggiunge un problema con le API keys dei servizi, che nel caso in cui fossero limitate, porterebbero ad eseguire tante richieste, portando a costi maggiori o a un esaurimento di queries verso il servizio. Questo problema verrebbe risolto utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre l'incidenza di questo problema.
-Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, consumando maggiormente la batteria integrata. Con una query unica e con i dati già aggregati ovviamente riduce il consumo delle risorse energetiche e dei dati in connessione mobile.
-
 \section{Mashup Design\label{sec:mashup-design}}
 
 \begin{figure}[h]
@@ -111,7 +99,28 @@ Esistono altri due problemi, i quali sono legati all'autonomia e all'utilizzo de
 	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
 \end{figure}
 
-Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo viene eseguito dall'esperto di settore per mezzo della web app di Visual Mapping (Figura \ref{fig:visual-mapping}), la quale genera come output un file che comprende i mashup occorrenti per visualizzare i dati che servono all'utente finale.
+Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per costruire le view dell'applicazione mobile e per associare a ogni singolo elemento il termine da richiedere al server. Questo viene eseguito dall'esperto di settore per mezzo della web app di Visual Mapping (Figura \ref{fig:visual-mapping}), la quale genera come output uno schema che comprende i mashup occorrenti per visualizzare i dati che servono all'utente finale.
+
+\upe stato scelto di adottare due tipologie di schemi fondamentali, uno per la lista di risultati e uno per i dettagli dell'elemento selezionato, perché fondamentalmente sono queste due le pagine dell'applicazione che necessitano di associazioni dei termini con gli elementi grafici.
+Gli schemi generati possono essere ulteriormente differenziati per due motivi principali. 
+
+\begin{enumerate}
+	\item Il primo di essi è la tipologia dei dati, che nel nostro caso viene differenziata usando il parametro dell' \virgolette{Interest Topic}.
+	Ad esempio se viene selezionato \virgolette{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \virgolette{Museum}. Anche se ci sono parametri in comune, come \virgolette{Titolo}, \virgolette{Indirizzo}, \virgolette{Numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di scelta per quanto riguarda il design del mashup. 
+	\item
+	Il secondo aspetto è la possibilità di differenziare i dati da mostrare a livello di utente, dato che non a tutti possono interessare gli stessi dati oppure può essere preferibile mostrare i dati e le view in maniera differente in stili grafici e componenti. Infatti, una volta generato lo schema, viene associato nel database del server all'id dell'utente, in maniera tale da renderli disponibili su richiesta della mobile app, dopo che è stato effettuato il login.
+	Nella web app l'esperto seleziona l'utente al quale deve generare l'applicazione e, in aggiunta alle associazioni al CDT, carica gli schemi generati sul server, i quali vengono associati all'id dell'utente. In questo modo ogni utente dell'applicazione può avere dei mashup personalizzati.
+	In aggiunta alla definizione dei termini nei mashup, è possibile aggiungere le proprietà stilistiche relative al singolo schema, se diverse da quelle definite globalmente.
+\end{enumerate}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics{4-metodologia/Immagini/view_schema.png}
+	\caption{Schema delle views}\label{fig:view-schema}
+\end{figure}
+Lo schema delle view che è stato adottato è raffigurato nella figura \ref{fig:view-schema}. A ogni pagina definita viene associato uno o più valori di \virgolette{Interest Topics}, perché può essere che uno schema venga utilizzato per più di un topic. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che serve poi all'app a renderizzare il componente associato.
+
+
 \begin{itemize}
 	\item \textbf{Associazione dei termini} 
 	L'associazione dei termini viene fatta mediante \emph{drag and drop} dove i singoli termini sono collegati al singolo componente della view. 
@@ -121,12 +130,8 @@ Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per 
 		\item Selezione del componente da inserire nella schermata del telefono e modifica lo stile a seconda delle opzioni disponibili
 		\item Associazione del termine tra l'elenco di tutti quelli disponibili dato dal server CAMUS.
 	\end{enumerate}
+	Ad esempio per mostrare il titolo dell'elemento selezionato l'esperto deve prendere un campo di testo dai componenti, trascinarlo all'interno del mashup dell'applicazione e associare il campo titolo dai termini sulla sinistra della web app. A questo è possibile aggiungere degli elementi di stile aggiuntivi, che, aggiunti allo schema, sovrascrivono eventuali stili presenti di default nell'app.
 	%allungare questa parte
-	
-	\item \textbf{Differenziazione dei mashup} 
-	Essendo l'\emph{Interest Topic} selezionato uno degli aspetti che caratterizzano la diversità dei dati , viene lasciata aperta la possibilità di creare degli schemi totalmente differenti a seconda del tipo di dato rappresentato dall'\emph{interest topic} selezionato. 
-	Ad esempio se viene selezionato \virgolette{Food and Drink} può essere necessario visualizzare dati diversi rispetto a \virgolette{Museum}. Anche se ci sono parametri in comune, come \virgolette{Titolo}, \virgolette{Indirizzo}, \virgolette{Numero di telefono}, ci possono essere parametri peculiari, come il tipo di cucina per il primo caso o il tipo di museo per il secondo caso. Questi dati possono essere visualizzati quindi in maniera differente, e si è scelto di utilizzare oltre ad una differenziazione a livello di termini, anche di lasciare libertà di scelta per quanto riguarda il design del mashup. Per esempio rimane possibile cambiare il tipo e l'ordine dei componenti da visualizzare e anche alcuni elementi stilistici puramente grafici al variare dell'\virgolette{Interest topic}
-
 	\item \textbf{Associazione dei servizi di supporto}
 	Come spiegato nella sezione \ref{sec:ecosistema-servizi}, i servizi di supporto hanno la funzione di arricchire le informazioni che sono fornite dai servizi primari. La loro integrazione nei mashup può essere fatta principalmente in due modi:
 	\begin{enumerate}
@@ -138,6 +143,19 @@ Un altro aspetto fondamentale del sistema è quello dell'utilizzo dei mashup per 
 	
 \end{itemize}
 \section{Architettura utilizzata\label{sec:architettura-sistema}}
+Uno dei primi problemi che abbiamo dovuto affrontare è quello di pensare a come eseguire le richieste verso i servizi esterni. Si sono presentate due possibilità diametralmente opposte di scelta: richieste tutte eseguite dalla app e richieste tutte eseguite dal server.
+\begin{itemize}
+	\item \textbf{Server centric} In questa tipologia di architettura le operazioni vengono eseguite sul server, precisamente, dato un mashup, si occupa di tutte le operazioni di richiesta, integrazione e composizione dei dati, portando tutta la complessità delle operazioni sul server.
+	\item \textbf{Client centric} Tutte le richieste verso i servizi esterni vengono eseguite viene scaricato sul dispositivo, quindi le operazioni di richiesta, integrazione e composizione vengono eseguite direttamente dal dispositivo.
+\end{itemize}
+
+
+Ha senso utilizzare il server come unico componente che esegue tutte le operazioni sui dati e usare l'app mobile solo come semplice browser dove a partire da una richiesta ottengo una o un insieme di risposte? Oppure ha senso spostare tutta la complessità computazionale sul dispositivo mobile?
+Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, come presentato nella precedente implementazione del sistema \cite{rizzo2015progettazione}. In quella versione del sistema nello schema era specificato il metodo per poter effettuare le query direttamente verso i servizi primari e i risultati venivano elaborati dal dispositivo mobile, che quindi si occupava di tutte le operazioni sui dati (\emph{Union} e \emph{Merge}).
+Una delle prime osservazioni che sono state fatte è legata ai tempi di risposta dei servizi esterni, dovuto sia ai server dei provider che alle condizioni di rete.  Per questo motivo non è detto che due servizi abbiano i medesimi tempi di risposta, quindi l'applicazione potrebbe ottenere delle risposte parziali o comunque avere tempi di risposta più alti nel caso di una richiesta senza caching. Questo inoltre aggiunge un problema con le API keys dei servizi, che, nel caso di tante richieste verso il medesimo servizio da più client, porterebbe a un esaurimento dei limiti o a maggiori costi per il servizio dati. Un chiaro esempio di servizi di questo tipo può essere considerato Google Places\footnote{Google Places Developers: \url{https://developers.google.com/places/}}, che offre un numero limitato di queries giornaliere verso il servizio usando una sola API key.
+Esiste un altro problema, il quale è legato all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, utilizzando maggiormente la batteria integrata e, anche se i dati scambiati non sono di grandi dimensioni.
+Questi problemi verrebbero risolti utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre il numero di query verso i servizi esterni. Inoltre, anche la mobile app non deve consumare maggiori risorse richiedendo dati da più servizi, ma utilizza un unico punto dal quale riceve dei dati già pronti per essere visualizzati e già filtrati dal server.
+
 
 \begin{figure}[h]
 	\centering
