@@ -5,9 +5,9 @@ In questa sezione ...
 
 \textcolor{red}{STEFANO\\Informazioni storiche sulle ricerche relative al contesto} \cite{DBLP:journals/sigmod/BolchiniCQST07} \cite{baldauf2007survey}
 
-\subsection{Context Dimension Model\label{sec:contex-dimension-model}}
+\subsection{Context Dimension Model\label{sec:context-dimension-model}}
 
-In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Il CDT è rappresentato come un albero, composto da una radice e da nodi con etichetta, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i valori che possono assumere le dimensioni. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
+In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Nel \emph{Context Dimension Model} il contesto viene rappresentato come un albero $\mathcal{T} = \textless N, E, r \textgreater $, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i valori che possono assumere le dimensioni. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
 
 \begin{figure}[h]
 	\centering
@@ -15,31 +15,40 @@ In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree
 	\caption{Context Dimension Tree}\label{fig:context-dimension-tree}
 \end{figure}
 
-Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. Nell'esempio in Figura \ref{fig:context-dimension-tree}, le \emph{dimensioni principali} sono il \emph{ruolo} dell'utente, l'\emph{interfaccia} tramite la quale accede ai dati, l'\emph{interest topic} e la \emph{posizione} in cui si trova. Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. Per esempio, l'interest topic \virgolette{ordine} può essere analizzato in base allo \emph{stato} in cui si trovi oppure in base alla sua \emph{tipologia}.
+Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. Nell'esempio in Figura \ref{fig:context-dimension-tree}, le \emph{dimensioni principali} sono il \emph{ruolo} dell'utente, l'\emph{interfaccia} tramite la quale accede ai dati, l'\emph{interest topic} e la \emph{posizione} in cui si trova. Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. Per esempio, l'interest topic \virgolette{ordine} può essere analizzato in base allo \emph{stato} in cui si trova oppure in base alla sua \emph{tipologia}.
 
-Ogni nodo del CDT è caratterizzato dalla sua tipologia, che può essere \emph{dimensione} o \emph{concetto}, e dalla sua etichetta. Ogni nodo può essere identificato univocamente tramite l'unico percorso che lo collega alla radice. Senza perdita di generalità, viene adottata l'ipotesi che ogni etichetta sia unica in un albero, quindi ogni nodo può essere identificato semplicemente dalla sua etichetta. I collegamenti tra i vari nodi non vengono invece etichettati.
+Ogni nodo del CDT è caratterizzato dalla sua tipologia, che può essere \emph{dimensione} o \emph{concetto}, e dalla sua etichetta. Ogni nodo può essere identificato univocamente tramite l'unico percorso che lo collega fino alla radice. Senza perdita di generalità, viene adottata l'ipotesi che ogni etichetta sia unica in un albero, quindi ogni nodo può essere identificato semplicemente dalla sua etichetta. I collegamenti tra i vari nodi non vengono invece etichettati.
 
 L'alternanza tra nodi \emph{dimensione} e \emph{concetto} fa sì che vengano create delle \emph{generazioni}, ognuna delle quali sarà formata da nodi dello stesso colore, e ogni colore verrà alternato man mano che si prosegue discendendo nell'albero: dunque ogni \emph{nodo dimensione} può avere come figli solo nodi di tipo \emph{concetto} e viceversa.
 
 \`E inoltre possibile associare uno o più \emph{parametri} ai nodi concetto e ai nodi dimensione che sono foglie dell'albero. Ogni parametro permette di raffinare ulteriormente la selezione dei dati e selezionare un sottoinsieme del dataset particolare. Per esempio, il parametro \virgolette{intervallo} associato al concetto \emph{ordini} permette di indicare un intervallo di date e quindi di selezionare esclusivamente gli ordini che sono riferiti alle date indicate.
 
-Per ogni \emph{nodo dimensione} è possibile selezionare al massimo un nodo concetto tra i suoi figli oppure un nodo parametro. L'utilizzo dei parametri aumenta il potere espressivo del modello, in quanto lo rende più semplice per l'utilizzo da parte del designer. Si è resa necessaria l'introduzione dei parametri in quanto non tutti i concetti espressi da una dimensione possono essere enumerati. Per esempio, la dimensione \virgolette{costo} può assumere infiniti valori e quindi è più appropriato l'utilizzo di un parametro.
+Per ogni \emph{nodo dimensione} è possibile selezionare al massimo un nodo concetto tra i suoi figli oppure, se non possiede alcun nodo figlio, deve essere selezionato obbligatoriamente uno ed un solo parametro. L'utilizzo dei parametri aumenta il potere espressivo del modello, in quanto lo rende più semplice per l'utilizzo da parte del designer. Si è resa necessaria l'introduzione dei parametri in quanto non tutti i concetti espressi da una dimensione possono essere enumerati. Per esempio, la dimensione \virgolette{costo} può assumere infiniti valori ed è quindi più appropriato l'utilizzo di un parametro.
 
-Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un Context Dimension Tree \textcolor{red}{formula?}, un \emph{contesto} è una formula congiunta $ \land (d\_name_i = value_i) $, dove ogni $ d\_name_i$ è l'etichetta di ogni (sotto-)dimensione, e ogni $ value_i $ è uno dei possibili valori di quella specifica dimensione, cioè è l'etichetta di uno dei nodi concetto tra i suoi figli, che può assumere una tra le seguenti forme:
+Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = \textless N, E, r \textgreater $, un \emph{contesto} è definito dalla seguente grammatica:
 
 \begin{equation*}
-	concept\_name | concept\_name (p\_name_i = p\_value_i) | p\_name = p\_value
+	C =
+	\begin{cases}
+		\textless context \textgreater \leftarrow \textless context\_element \textgreater\ |\ \textless context\_element \textgreater \land \textless context \textgreater\\
+		\textless context\_element \textgreater \leftarrow dim\_name: \textless value\_item \textgreater\ |\ dim\_name\ (\textless parameter \textgreater)\\
+		\textless value\_item \textgreater \leftarrow value\ |\ value\ (\textless parameters \textgreater)\\
+		\textless parameters \textgreater \leftarrow \textless parameters \textgreater \land \textless parameter \textgreater\ |\ \textless parameter \textgreater\\
+		\textless parameter \textgreater \leftarrow param\_name: param\_value
+	\end{cases}
 \end{equation*}
 
-Una dichiarazione del tipo $ d\_name_i = value_i $ viene chiamata \emph{elemento del contesto}, in quanto un contesto è formata dalla congiunzione di diversi elementi del contesto. Non selezionare alcun valore relativo ad una dimensione equivale a selezionare tutti i suoi valori, cioè si è indifferenti rispetto quella particolare situazione. Ogni dimensione che non viene selezionata non influirà nel processo di acquisizione dei dati contestuali.
+Un contesto è formato dalla congiunzione tra uno o più \emph{elementi del contesto}. Ogni elemento del contesto è formato dal nome della dimensione seguita da uno dei valori scelto tra i nodi che sono suoi figli diretti, oppure dal valore che assume l'unico parametro ad essa associato, nel caso in cui la dimensione è una foglia dell'albero. Ogni valore può essere a sua volta raffinato aggiungendo il/i parametro/i ad esso associati. Non è necessario selezionare per forza tutte le dimensioni presenti nell'albero: non selezionare alcun valore relativo ad una dimensione equivale ad essere indifferenti rispetto quella particolare situazione. Ogni dimensione che non viene selezionata non influirà nel processo di acquisizione dei dati contestuali.
 
 Un esempio di contesto è:
 
-\begin{equation*}
-	C \equiv ( role = customer(\$cid = ''Smith'')) \land (interest\_topic = orders) \land (interface = smartphone)
-\end{equation*}
+\begin{align*}
+	C =\ &role : customer\ (\$cid : ``Bill")\ \land \\
+		&interest\_topic : orders\ \land \\
+		&interface : smartphone
+\end{align*}
 
-che rappresenta il contesto in cui il cliente Smith è interessato nel ricevere informazioni sui suoi ordine sul proprio smartphone. Il contesto \emph{C} è quindi composto da tre elementi del contesto.
+che rappresenta il contesto in cui il cliente Bill è interessato nel ricevere informazioni sui propri ordini sullo smartphone. Il contesto \emph{C} è quindi composto da tre elementi del contesto.
 
 Infine, dopo aver discusso del modello e di come vengono rappresentati i vari contesti, resta da definire come è possibile acquisire i dati che sono pertinenti ad un determinato contesto. Come evidenziato in \cite{DBLP:journals/cacm/BolchiniCOQRST09}, esistono due strategie principali per definire le associazioni tra i contesti e la porzione di dati rilevanti per i vari contesti, chiamate \emph{configuration-based mapping} e \emph{value-based mapping}.
 
@@ -49,7 +58,7 @@ Infine, dopo aver discusso del modello e di come vengono rappresentati i vari co
 	\caption{Configuration-based mapping}\label{fig:configuration-based-mapping}
 \end{figure}
 
-La strategia \emph{configuration-based mapping} prevede che il designer definisca per ogni contesto possibile la relativa porzione del dataset. Questa operazione può essere effettuata definendo delle viste nel linguaggio specifico del database che si utilizza. In Figura \ref{fig:configuration-based-mapping} viene mostrato un esempio per il contesto nel quale un manager è interessato alle informazioni relative le sue agenzie. In questo caso il designer specifica delle viste in linguaggio SQL relative al contesto specifico, mettendo in evidenza i dati del personale che lavora nelle agenzie gestite dal manager, i contratti di affitto e vendita ed infine le informazioni relative alle proprietà.
+La strategia \emph{configuration-based mapping} prevede che il designer definisca per ogni contesto possibile la relativa porzione del dataset da mostrare. Questa operazione può essere effettuata definendo delle viste nel linguaggio specifico del database adottato. In Figura \ref{fig:configuration-based-mapping} viene mostrato un esempio per il contesto nel quale un manager è interessato alle informazioni relative le sue agenzie. In questo caso il designer specifica delle viste in linguaggio SQL relative al contesto specifico, mettendo in evidenza i dati del personale che lavora nelle agenzie gestite dal manager, i contratti di affitto e vendita ed infine le informazioni relative alle proprietà.
 
 Questa strategia ha il vantaggio di generare delle viste molto precise rispetto al contesto che vogliono rappresentare, ma ha l'enorme svantaggio che deve essere ripetuta per ognuno dei possibili contesti che, com'è facilmente intuibile, possono essere in quantità molto elevata. Inoltre, se in futuro dovesse essere aggiunta un'ulteriore dimensione, sarebbe necessario modificare le varie associazioni per includere la nuova dimensione.
 
@@ -59,7 +68,7 @@ Questa strategia ha il vantaggio di generare delle viste molto precise rispetto 
 	\caption{Value-based mapping}\label{fig:value-based-mapping}
 \end{figure}
 
-La strategia \emph{value-based mapping} permette di superare i limiti evidenziati per la strategia precedente. Questa strategia prevede che il designer definisca le viste parziali relative ad un particolare elemento del contesto, indipendentemente dagli altri. Quindi, una volta selezionato un contesto, la vista relativa viene creata da un algoritmo che combina assieme le varie viste parziali definite dai singoli elementi per formare la vista globale adatta allo specifico contesto. La figura \ref{fig:value-based-mapping} mostra come il contesto delll'esempio precedente viene mappato tramite questa strategia. Le linee tratteggiate mostrano le viste parziali che vengono associate ai vari elementi del contesto, mentre nel riquadro in basso viene mostrata la vista globale generate dalla combinazione delle viste parziali. L'algoritmo di composizione delle view parziali è basato sull'utilizzo di diverse policy e operatori di composizione, tra i quali i più utilizzati sono \emph{double union}, \emph{double intersection} e \emph{double difference} \cite{DBLP:conf/er/BolchiniQR07}.
+La strategia \emph{value-based mapping} permette di superare i limiti evidenziati per la strategia precedente. Questa strategia prevede che il designer definisca le viste parziali relative ad un particolare elemento del contesto, indipendentemente dagli altri. Quindi, una volta selezionato un contesto, la vista relativa viene creata da un algoritmo che combina assieme le varie viste parziali definite dai singoli elementi per formare la vista globale adatta allo specifico contesto. La figura \ref{fig:value-based-mapping} mostra come il contesto delll'esempio precedente viene mappato tramite questa strategia. Le linee tratteggiate mostrano le viste parziali che vengono associate ai vari elementi del contesto, mentre nel riquadro in basso viene mostrata la vista globale generata dalla combinazione delle viste parziali. L'algoritmo di composizione delle view parziali è basato sull'utilizzo di diverse policy e operatori di composizione, tra i quali i più utilizzati sono \emph{double union}, \emph{double intersection} e \emph{double difference} \cite{DBLP:conf/er/BolchiniQR07}.
 
 \section{Mobile Mashup\label{sec:mobile-mashup}}
 
