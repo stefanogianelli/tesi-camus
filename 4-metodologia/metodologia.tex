@@ -105,7 +105,7 @@ Per risolvere questa ulteriore problematica, relativa più al profilo specifico d
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{4-metodologia/Immagini/visual_mapping_nuovo.png}
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/visual-mapping-nuovo.png}
 	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
 \end{figure}
 
@@ -125,7 +125,7 @@ Gli schemi generati possono essere ulteriormente differenziati per due motivi pr
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics{4-metodologia/Immagini/view_schema.png}
+	\includegraphics{4-metodologia/Immagini/view-schema.png}
 	\caption{Schema delle views}\label{fig:view-schema}
 \end{figure}
 Lo schema delle view che è stato adottato è raffigurato nella Figura \ref{fig:view-schema}. Ad ogni pagina definita viene associato uno o più valori di \virgolette{Interest Topic}, perché può essere che uno schema venga utilizzato per più di un ambito. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che servirà all'app per renderizzare il componente associato.
@@ -146,7 +146,7 @@ Per personalizzare uno schema, al \emph{designer} spettano i seguenti passaggi:
 	\item \textbf{Associazione dei servizi di supporto}
 	Come spiegato nella Sezione \ref{sec:ecosistema-servizi}, i servizi di supporto hanno la funzione di arricchire le informazioni che sono fornite dai servizi primari. La loro integrazione nei mashup può essere fatta principalmente in due modi:
 	\begin{enumerate}
-	\item La prima possibilità è di associare ad un termine una app già installata sul device. Utilizzando il solito caso d'uso del turismo e considerando la categoria ristoranti, si supponga un servizio di ristoranti che restituisce un numero di telefono: questo dato può essere collegato al dialer di default per effettuare direttamente una chiamata o all'app di gestione degli SMS. Oppure l'indirizzo email può essere associato alla funzione \virgolette{Crea Email} dell'app predefinita di gestione della posta elettronica. Un altro esempio può essere quello di associare il browser di sistema al sito ufficiale o alle pagine Facebook del ristorante
+	\item La prima possibilità è di associare ad un termine una app già installata sul device. Si consideri il caso d'uso del turismo e un servizio di ristoranti che restituisce un numero di telefono: questo dato può essere collegato al dialer di default per effettuare direttamente una chiamata o all'app di gestione degli SMS. Oppure l'indirizzo email può essere associato alla funzione \virgolette{Crea Email} dell'app predefinita di gestione della posta elettronica. Un altro esempio può essere quello di associare il browser di sistema al sito ufficiale o alle pagine Facebook del ristorante
 	\item La seconda possibilità riguarda invece l'utilizzo di un modulo che mostri direttamente i risultati dei servizi di supporto all'interno dell'app. 
 	Questa possibilità può essere utilizzata per mostrare nuovi dati relativi a un singolo elemento proveniente dai servizi primari, ad esempio le informazioni sulla posizione. In questo modo è possibile associare una mappa oppure una segnalazione che indica la distanza o i tempi di percorrenza, oppure, citando sempre l'esempio dei locali, i mezzi pubblici, car sharing o taxi che si possono utilizzare per raggiungere il ristorante
 	\end{enumerate}
@@ -159,31 +159,33 @@ I fattori discriminanti nella scelta dell'architettura più idonea riguardano qua
 Per quanto riguarda l'interrogazione dei servizi sono state valutate due possibilità diametralmente opposte:
 
 \begin{itemize}
-	\item \textbf{Server centric} In questa tipologia di architettura tutto il carico computazionale viene gestito dal server. Quando viene effettuata una richiesta, sarà quindi il server ad occuparsi di contattare i servizi necessari a recuperare i dati, integrare le informazioni ricevute e contattare i servizi di supporto definiti nello schema di mashup per arricchire il precedente dataset
 	\item \textbf{Client centric} In questa tipologia tutte le richieste verso i servizi esterni vengono eseguite sul dispositivo, che si occuperà inoltre di integrare le informazioni ricevute e contattare i servizi di supporto
+	\item \textbf{Server centric} In questa tipologia di architettura tutto il carico computazionale viene gestito dal server. Quando viene effettuata una richiesta, sarà quindi il server ad occuparsi di contattare i servizi necessari a recuperare i dati, integrare le informazioni ricevute e contattare i servizi di supporto definiti nello schema di mashup per arricchire il precedente dataset
 \end{itemize}
 
-\textcolor{red}{Da modificare ...}
-Data la crescente potenza di calcolo dei processori destinati al comparto mobile la tentazione di far fare molte operazioni anche complesse al dispositivo mobile è molto forte, come presentato nella precedente implementazione del sistema \cite{rizzo2015progettazione}. In quella versione del sistema nello schema era specificato il metodo per poter effettuare le query direttamente verso i servizi primari e i risultati venivano elaborati dal dispositivo mobile, che quindi si occupava di tutte le operazioni sui dati (\emph{Union} e \emph{Merge}).
-Una delle prime osservazioni che sono state fatte è legata ai tempi di risposta dei servizi esterni, dovuto sia ai server dei provider che alle condizioni di rete.  Per questo motivo non è detto che due servizi abbiano i medesimi tempi di risposta, quindi l'applicazione potrebbe ottenere delle risposte parziali o comunque avere tempi di risposta più alti nel caso di una richiesta senza caching. Questo inoltre aggiunge un problema con le API keys dei servizi, che, nel caso di tante richieste verso il medesimo servizio da più client, porterebbe a un esaurimento dei limiti o a maggiori costi per il servizio dati. Un chiaro esempio di servizi di questo tipo può essere considerato Google Places\footnote{Google Places Developers: \url{https://developers.google.com/places/}}, che offre un numero limitato di queries giornaliere verso il servizio usando una sola API key.
-Esiste un altro problema, il quale è legato all'autonomia e all'utilizzo dei dati del mobile device. L'esecuzione di richieste e operazioni sui dati porta ovviamente a un maggiore consumo di risorse hardware di calcolo e di telecomunicazione, utilizzando maggiormente la batteria integrata e, anche se i dati scambiati non sono di grandi dimensioni.
-Questi problemi verrebbero risolti utilizzando un unico punto di esecuzione delle query con un meccanismo di caching, in modo da evitare ripetizioni di richieste, tentando di ridurre il numero di query verso i servizi esterni. Inoltre, anche la mobile app non deve consumare maggiori risorse richiedendo dati da più servizi, ma utilizza un unico punto dal quale riceve dei dati già pronti per essere visualizzati e già filtrati dal server.
+Nel caso \emph{Mobile centric} il vantaggio è dato principalmente dal fatto che ogni dispositivo esegue le query e le operazioni che occorrono, e, data la non indifferente potenza di calcolo dei moderni processori mobile, la complessità computazionale non introduce problemi.
+Purtroppo in questo modo non è possibile fare caching tra diversi utenti. Per esempio, se due utenti eseguono la medesima ricerca di ristoranti a Milano in zona Duomo verso Google Places o TripAdvisor, partiranno due query uguali per ogni servizio e aumentando il numero di utenti la quantità di richieste aumenta considerevolmente, con un aumento dell'utilizzo di API keys con un numero limitato di richieste (es. le API di Google). Inoltre il fatto di eseguire query verso i servizi esterni comporta un aumento del consumo energetico del device, non solo per la quantità di dati che le interfacce di rete devono gestire, ma anche per la necessità di eseguire le operazioni sui dati di \emph{Merge} e \emph{Union}, definite nella sezione \ref{sec:mobile-mashup}. 
+Esiste anche un problema legato alla sincronizzazione dei descrittori dei servizi, che nel caso in cui è necessario sostituirli, andrebbero aggiornati su tutte le applicazioni che utilizzano quel servizio.
+Il caso \emph{Server centric}, invece, risolve alcuni dei problemi sopra citati. In particolare è possibile fare caching dei risultati a livello multiutente, cioè se arrivano due query uguali con un breve intervallo l'una dall'altra dal server ne parte una sola diretta verso il servizio esterno e i dati della seconda richiesta sono presi dalla cache ottimizzando il numero di query nel caso di API key limitanti in richieste. Un altro aspetto che viene risolto è il fatto di non avere praticamente limiti computazionali ed energetici, perchè un server può elaborare più velocemente e in maniera più efficiente i dati. Il mobile device non ha più il carico computazionale del caso \emph{Client centric},avendo un unico endpoint per eseguire le query verso il server, che le permette di ricevere i dati già elaborati con \emph{Merge} e \emph{Union}. Anche i descrittori dei servizi non hanno più il problema di essere distribuiti in ogni singolo device, quindi una volta che uno di essi viene modificato sul server, è già pronto e funzionante per tutte le richieste verso quel servizio.
+Uno degli svantaggi principali di questa architettura è di avere un unico collo di bottiglia per tutto il sistema, che sarebbe ovviamente il server e questo potrebbe essere risolto utilizzando più repliche. Inoltre, per quanto riguarda i servizi di supporto in particolare, non ci sarebbero molte richieste, dato che principalmente sono utilizzati quando un utente ha selezionato i dettagli di un item, e quindi sarebbe un carico di operazioni pressoché inutile.
+Nel lavoro precedente \cite{rizzo2015progettazione}, si era scelto di utilizzare un architettura di tipo ibrido, ma comunque il carico di complessità era collocato principalmente nella applicazione mobile
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{4-metodologia/Immagini/ArchitectureGen2016.png}
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/architettura-generale.png}
 	\caption{Architettura del sistema}\label{fig:architettura-sistema}
 \end{figure}
-
-Da tutte queste considerazioni si è arrivati a definire una nuova struttura dell'architettura del sistema.
-Come evidenziato nella figura \ref{fig:architettura-sistema}, l'architettura finale del sistema CAMUS è composta da tre parti, ognuna delle quali è collegata con un utilizzatore finale del sistema.
+Ora, come evidenziato nella figura \ref{fig:architettura-sistema}, si è scelto di usare un altro tipo di sistema ibrido, con l'elaborazione del contesto e l'esecuzione delle query sul server, mantenendo in quel punto i descrittori dei servizi e il carico computazionale per le operazioni di \emph{Merge} e \emph{Union}, quindi restituendo all'applicazione mobile i dati già pronti. Di seguito sono elencati i tre componenti del sistema CAMUS:
 
 \begin{enumerate}
-	\item \textbf{Server} Il server è l'endpoint al quale si interfaccia l'amministratore del sistema, il quale ha una visione maggiore della complessità del sistema. Ha il compito di aggiungere i servizi disponibili compilando un campo Qui vengono registrati i servizi poi che vengono mappati dall'esperto nelle \emph{Web App} 
-	Data una query proveniente dall'applicazione mobile, comprendente il contesto e i dati che ha bisogno il client,il server seleziona i servizi da contattare tramite il \emph{Service Selector}, esegue le query verso i servizi esterni e compone i risultati a seconda a seconda delle regole associate a ciascun servizio.
+	\item \textbf{Server} Il server è il punto in cui si interfaccia l'amministratore di sistema ed è il punto dal quale è possibile avere una visione della complessità del sistema senza astrazioni. Qui l'amministratore ha il compiti di registrare i nuovi servizi e di configurare i termini per le traduzioni dai risultati dei servizi
 	
-	\item \textbf{Web App} Le web app sono collegate all'esperto di settore che compone l'applicazione mobile. Questo attore non è necessariamente un esperto di informatica e della tecnologia utilizzata, quindi ha bisogno di un astrazione maggiore rispetto all'amministratore. Sono disponibili due funzionalità di base: una permette di associare i servizi al CDT dell'utente, mentre l'altra permette di creare i mashup per le pagine dell'applicazione, collegando i termini con i componenti che verranno poi renderizzati nell'applicazione. Al termine delle definizioni di servizi e mashup da parte dell'esperto di settore, il CDT con le associazioni e i mashup vengono caricati sul server, il quale si occuperà di gestire il flusso dei dati direttamente con la mobile app. 
+	\item \textbf{Web App} Le web app sono collegate all'esperto di settore che compone l'applicazione mobile. Questo attore non è necessariamente un esperto di informatica e della tecnologia utilizzata, quindi ha bisogno di un astrazione maggiore rispetto all'amministratore. Sono disponibili due funzionalità di base: una permette di associare i servizi al CDT dell'utente, mentre l'altra permette di creare i mashup per le pagine dell'applicazione, collegando i termini con i componenti che verranno poi renderizzati nell'applicazione. Al termine delle definizioni di servizi e mashup da parte dell'esperto di settore, il CDT con le associazioni e i mashup vengono caricati sul server, il quale si occuperà di gestire il flusso dei dati direttamente con la mobile app
 	
 	\item \textbf{App Mobile} La app mobile è l'interfaccia dell'utente finale con il sistema. Essa ha il compito di renderizzare i mashup definiti dall'esperto e di permettere all'utente di inserire il proprio contesto per richiedere al server i risultati associati ad esso. I dati occorrenti per generare un contesto possono essere anche aggiunti utilizzando i sensori del dispositivo, come il GPS o l'ora corrente.
 	Una volta che l'utente finale ha effettuato il login, la app riceve i mashup e il CDT completo dal server e si occupa di fornire le interfacce grafiche per gestire il contesto e i dati, seguendo tutte le linee guida fornite dai mashup. 
+	I risultati ottenuti sono caricati prima in un elenco di dati mostrati in una lista; solo successivamente, dopo che l'utente seleziona un item per vedere maggiori dettagli, entrano in gioco i servizi di supporto, la cui definizione è inviata in coda all'insieme dei risultati
 \end{enumerate}
+
+
+\textcolor{red}{Aggiungere sequence diagram di una richiesta in generale?}
