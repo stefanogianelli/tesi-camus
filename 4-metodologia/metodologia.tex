@@ -160,8 +160,55 @@ In Figura \ref{fig:esempio-gerarchia} viene mostrato un esempio di albero gerarc
 
 \section{Integrazione dei dati\label{(sec:integrazione-dati)}}
 
-\textcolor{red}{come vengono integrati i dati (algoritmo merge)\\
-	rimozione duplicati}
+Una volta che sono stati selezionati i servizi che più si adattano al contesto dell'utente, il passo successivo è interrogare i servizi per acquisire le risposte. Una volta ricevute le informazioni si presenta un nuovo problema: ogni servizio ha il proprio formato di risposta. \upe necessario dunque fare sì che tutte le risposte vengano trasformate in una rappresentazione comune tale che sia utilizzabile dall'app mobile. Al fine di effettuare questa trasformazione vengono utilizzati una serie di \emph{termini semantici}: questi termini permettono di identificare univocamente una risorsa all'interno delle varie rappresentazioni ricevute, associando ad ogni attributo il rispettivo valore semantico. Come precedentemente introdotto nella Sezione \ref{sec:ecosistema-servizi}, le associazioni tra gli elementi di una risposta e il termine di riferimento viene definito nel descrittore del servizio. In seguito alla trasformazione viene creato un set di risposte unificato, composto da tutti i dati ricevuti dai servizi.
+
+Un ulteriore problema che si è dovuto affrontare riguarda gli elementi duplicati: può accadere che due o più servizi diversi restituiscano uno stesso elemento. Queste entità duplicate devono essere unificate a formare un singolo elemento. Il termine \virgolette{unificare} viene usato di proposito, in quanto anche gli elementi duplicati possono essere utilizzati per arricchire le informazioni ottenute. Si prenda per esempio due servizi che restituiscono il medesimo ristorante: il primo fornisce informazioni sul \emph{nome} del ristorante, l'\emph{indirizzo} e il \emph{numero di telefono} mentre il secondo mette a disposizione sempre il \emph{nome}, l'\emph{indirizzo}, l'\emph{url} del sito web e l'\emph{indirizzo email}. Come si può notare non è conveniente semplicemente ignorare uno dei due risultati in quanto si perderebbero alcuni informazioni che possono essere rilevanti. La procedura che viene adottata in questi casi è quella appunto di \emph{unificare} i due elementi. Resta da definire come comportarsi nel caso dei dati in comune tra gli elementi. Nell'esempio precedente si tratta del \emph{nome} del ristorante e del suo \emph{indirizzo}. In questa situazione entra in gioco il \emph{punteggio} del servizio calcolato come descritto nella Sezione \ref{sec:selezione-operazioni}. Vengono mantenute solamente le informazioni in comune fornite dal servizio col punteggio più elevato. Questa scelta ha una semplice spiegazione: si ipotizza che il servizio col punteggio migliore fornisca i dati più rilevanti o comunque più affidabili rispetto ad un altro servizio con un punteggio inferiore. Per questo motivo si è scelto di utilizzare questo criterio per la definizione di un elemento di base per l'operazione di \emph{unificazione}.
+
+L'altro punto importante nella ricerca degli elementi duplicati riguarda il numero di confronti da eseguire. Infatti, per effettuare un'analisi approfondita sarebbe necessario analizzare tutte le possibili coppie di elementi, che equivale ad un algoritmo con complessità temporale $ O(n^2) $. Questa soluzione è sconveniente in quanto richiede diverso tempo per essere completata e perché alcuni confronti potrebbero essere evitati. Per esempio, se due ristoranti hanno un nome completamente diverso è ovvio che non possono essere duplicati.
+
+Lo pseudocodice viene mostrato nell'Algoritmo \ref{alg:algoritmo-rimozione-duplicati}. Per evitare i confronti inutili, il dataset viene diviso in vari \virgolette{bucket}. All'interno di questi \emph{bucket} vengono inseriti gli elementi che hanno una certa somiglianza tra loro. Questa tecnica viene chiamata \emph{blocking} \cite{elmagarmid2007duplicate} e permette di migliorare l'efficienza dell'algoritmo, in quanto si occupa di raggruppare l'intero dataset in porzioni ridotte in base alla somiglianza degli elementi che ne fanno parte. Per assegnare ogni elemento ad uno specifico \emph{bucket} viene utilizzato l'algoritmo denominato \virgolette{Soundex} \cite{odell1918soundex}. Questo algoritmo genera un codice per ogni elemento in base alla pronuncia fonetica. Questo codice viene utilizzato come \emph{chiave} per l'assegnazione dell'elemento ad uno specifico \emph{bucket}. Per effettuare questa operazione viene utilizzato per il confronto esclusivamente il campo \virgolette{titolo} dell'elemento.
+
+Una volta che i \emph{bucket} sono stati creati, è necessario effettuare una comparazione più approfondita all'interno dei singoli gruppi, in quanto l'appartenenza allo stesso gruppo indica che esiste una certa affinità tra gli elementi ma non garantisce che siano duplicati. Vengono dunque effettuate delle comparazioni tra ogni coppia di elementi appartenenti allo stesso \emph{bucket}. Questa comparazione produce come risultato un valore di somiglianza. Se questo valore è superiore ad una soglia predefinita, allora gli elementi sono duplicati. Per calcolare l'indice di somiglianza viene utilizzato il coefficiente di Dice \cite{dice1945measures}. In questo caso vengono presi in considerazione tutti i campi che sono in comune tra gli elementi in analisi. Ogni volta che due elementi risultano come duplicati vengono \emph{unificati} tramite la tecnica descritta precedentemente.
+
+\begin{algorithm}
+	\caption{Algoritmo di rimozione dei duplicati}
+	\label{alg:algoritmo-rimozione-duplicati}
+	\begin{algorithmic}
+		\ForAll{$ item\; in\; responses $}
+			\State $ class\_key \gets Soundex(item.title) $
+			\State $ buckets.add(class\_key, item) $
+		\EndFor
+		\ForAll{$ items\; in\; buckets $}
+			\State $ len \gets items.length $
+			\If{$ len > 1 $}
+				\State $ i \gets 0 $
+				\While{$ i < len $}
+					\State $ j \gets i + 1 $
+					\While{$ j < len $}
+						\State $ sim\_value \gets calculateObjectSimilarity(items[i], items[j])$
+						\If{$ sim\_value > threshold $}
+							\If{$ items[i].rank \ge items[j].rank $}
+								\State $ items[i] \gets mergeItems(items[i], items[j]) $
+								\State $ items.remove(j) $
+							\Else
+								\State $ items[j] \gets mergeItems(items[j], items[i]) $
+								\State $ items.remove(i) $
+							\EndIf
+							\State $ len \gets len - 1 $
+						\Else
+							\State $ j \gets j + 1 $
+						\EndIf
+					\EndWhile
+					\State $ output.push(items[i]) $
+					\State $ i \gets i + 1 $
+				\EndWhile
+			\Else
+				\State $ output.push(items[0]) $
+			\EndIf
+		\EndFor\\
+		\Return $ output $
+	\end{algorithmic}
+\end{algorithm}
 
 \section{Mashup Design\label{sec:mashup-design}}
 
@@ -187,9 +234,10 @@ Gli schemi generati possono essere ulteriormente differenziati per due motivi pr
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics{4-metodologia/Immagini/view-schema.png}
+	\includegraphics[width=0.4\textwidth]{4-metodologia/Immagini/view-schema.png}
 	\caption{Schema delle views}\label{fig:view-schema}
 \end{figure}
+
 Lo schema delle view che è stato adottato è raffigurato nella Figura \ref{fig:view-schema}. Ad ogni pagina definita viene associato uno o più valori di \virgolette{Interest Topic}, perché può essere che uno schema venga utilizzato per più di un ambito. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che servirà all'app per renderizzare il componente associato.
 
 Per personalizzare uno schema, al \emph{designer} spettano i seguenti passaggi:
@@ -230,7 +278,7 @@ Purtroppo in questo modo non è possibile fare caching tra diversi utenti. Per es
 Esiste anche un problema legato alla sincronizzazione dei descrittori dei servizi: nel caso in cui ne vengano aggiunti di nuovi o modificati alcuni già esistenti, si rende necessario un aggiornamento su tutte le applicazioni che utilizzano i descrittori coinvolti dalle modifiche.
 
 Il caso \emph{Server centric} permette di ottenere dei miglioramenti ai problemi sopra citati. In particolare è possibile fare \emph{caching} dei risultati a livello multiutente, cioè se arrivano due query uguali con un breve intervallo l'una dall'altra, il server effettuerà una singola richiesta verso il servizio esterno e i dati della seconda richiesta verranno recuperati dalla cache. In particolare, il caching permette di ridurre il problema del numero limitato di richieste che possono essere effettuate tramite una particolare API key. Un altro aspetto che viene risolto è il fatto di non avere praticamente limiti computazionali ed energetici, perchè un server può elaborare più velocemente e in maniera più efficiente i dati. Il dispositivo mobile non ha più il carico computazionale del caso \emph{Client centric}, ma sfrutta la potenza di calcolo del server, che permette di ricevere i dati già elaborati con \emph{Merge} e \emph{Union}. Anche i descrittori dei servizi non hanno più il problema di essere distribuiti in ogni singolo device in seguito ad un aggiornamento: una volta che uno di essi viene modificato sul server, è già pronto e funzionante per tutte le richieste verso quel servizio.
-Uno degli svantaggi principali di questa architettura è di avere un unico collo di bottiglia per tutto il sistema, che sarebbe ovviamente il server. Si dovrà dimensionare correttamente le capacità computazionali del sistema per permettere l'evasione rapida delle richieste anche in situazioni di elevato carico, cioè quando diversi utenti effettuano nello stesso istante un vasto numero di richieste. Inoltre si presenta un problema che riguarda l'interrogazione dei servizi di supporto: questo compito dovrebbe essere ripetuto dal server per ogni elemento appartenente alla risposta che deve essere inviata al client. Molte richieste potrebbero essere invece evitate, in quanto le informazioni messe a disposizione dai servizi di supporto hanno validità nella pagina di dettaglio di ogni elemento: non è detto che l'utente selezioni tutti gli elementi di un risposta ma generalmente ne visualizza una porzione ristretta \textcolor{red}{necessario qualche paper?}. Nel lavoro precedente \cite{rizzo2015progettazione} si era scelto di utilizzare un'architettura di tipo ibrido, dove però il carico di complessità era collocato principalmente nell'applicazione mobile.
+Uno degli svantaggi principali di questa architettura è di avere un unico collo di bottiglia per tutto il sistema, che sarebbe ovviamente il server. Si dovrà dimensionare correttamente le capacità computazionali del sistema per permettere l'evasione rapida delle richieste anche in situazioni di elevato carico, cioè quando diversi utenti effettuano nello stesso istante un vasto numero di richieste. Inoltre si presenta un problema che riguarda l'interrogazione dei servizi di supporto: questo compito dovrebbe essere ripetuto dal server per ogni elemento appartenente alla risposta che deve essere inviata al client. Molte richieste potrebbero essere invece evitate, in quanto le informazioni messe a disposizione dai servizi di supporto hanno validità nella pagina di dettaglio di ogni elemento: non è detto che l'utente selezioni tutti gli elementi di un risposta ma generalmente ne visualizza una porzione ristretta \cite{van2009using}. Nel lavoro precedente \cite{rizzo2015progettazione} si era scelto di utilizzare un'architettura di tipo ibrido, dove però il carico di complessità era collocato principalmente nell'applicazione mobile.
 
 \begin{figure}[h]
 	\centering
