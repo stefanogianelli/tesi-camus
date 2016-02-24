@@ -90,7 +90,7 @@ Il motivo principale che ha spinto verso questa scelta è da ricercare nella defi
 
 Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizzati per la creazione di servizi, tra cui SOAP, REST e GraphQL.
 
-\subsection*{SOAP}
+\subsection{SOAP}
 
 \upe l'acronimo di \emph{Simple Object Access Protocol}, fornisce un framework per lo scambio di messaggi.  Utilizza come formato di risposta XML e nella maggior parte si appoggia al protocollo HTTP come livello di trasporto. Vengono scambiate delle \emph{buste}, che contengono le informazioni come interrogare il servizio e come sono rappresentate le risposte. L'architettura SOAP viene distinta per tre caratteristiche principali:
 
@@ -102,7 +102,7 @@ Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizzat
 
 In seguito, SOAP è stato utilizzato come base per altre tecnologie legate ai web services, come il \emph{Web Services Description Language} (WSDL), che è un'interfaccia di descrizione delle funzionalità fornite dal servizio, e l'\emph{Universal Description Discovery and Integration} (UDDI), che è un registro dove è possibile ricercare i servizi.
 
-\subsection*{REST}
+\subsection{REST}
 
 \upe è l'acronimo di \emph{REpresentational State Transfer} ed è uno stile architetturale che definisce determinati vincoli di comportamento per i componenti, connettori e dati che compongono un sistema distribuito ipermediale. \emph{REST} è prima di tutto un paradigma: non vengono infatti menzionati nè i dettagli relativi all'implementazione dei componenti nè i protocolli da utilizzare proprio per concentrarsi sul ruolo dei componenti, sulle interazioni con altri componenti e come interpretare le informazioni. Il termine \emph{REpresentational State Transfer} è stato utilizzato per la prima volta nella tesi di dottorato di Roy Fielding \cite{fielding2000architectural}. \emph{REST} viene largamente utilizzato per descrivere i servizi web, in modo tale da non generare contraddizioni durante l'implementazione. I sistemi che rispettano i principi \emph{REST} vengono chiamati \emph{RESTful}. Nella maggior parte dei casi, i sistemi \emph{RESTful} comunicano attraverso i verbi standard del protocollo HTTP (GET, POST, PUT, DELETE, ecc.). Utilizza come interfaccia per comunicare con i sistemi esterni le \emph{web resources}, identificate tramite un \emph{Uniform Resource Identifier} (URI). L'applicazione dei vincoli definiti dall'architettura permette di ottenere i seguenti vantaggi: performance, scalabilità, semplicità, manutenibilità, visibilità, portabilità ed affidabilità.
 
@@ -132,19 +132,32 @@ Applicando i principi REST alle API dei servizi web si ottengono quelle che veng
 	\item Utilizzano dei link come referenza dello stato
 \end{itemize}
 
-Solitamente ad una URI può essere associata una funzione diversa in base al verbo con la quale viene invocata, come si può notare nell'esempio in Tabella ???
+Solitamente ad una URI può essere associata una funzione diversa in base al verbo con la quale viene chiamata, come si può notare nell'esempio in Tabella \ref{table:esempio-rest-api}.
 
-\textcolor{red}{da completare}
+\begin{table}[h]
+	\caption{Esempio RESTful API}
+	\label{table:esempio-rest-api}
+	\noindent\makebox[\textwidth]{%
+	\begin{tabularx}{1.3\textwidth}{ | l | X | X | X | X |}
+		\hline
+		\textbf{Risorsa} & \textbf{GET} & \textbf{PUT} & \textbf{POST} & \textbf{DELETE} \\
+		\hline
+		\url{http://api.example.com/resources/} & \textbf{Elenca} le URI insieme ad eventuali altri dettagli sulla collezione & \textbf{Sostituisce} la collezione con un'altra & \textbf{Aggiunge} un nuovo elemento alla collezione. L'URI viene generato automaticamente e restituito dall'operazione & \textbf{Elimina} l'intera collezione \\
+		\hline
+		\url{http://api.example.com/resources/item17} & \textbf{Restituisce} una rappresentazione dell'oggetto, espresso con un particolare \emph{media type} & \textbf{Sostituisce} l'elemento della collezione o, se non esiste, ne crea uno nuovo & \textbf{Crea} un nuovo elemento & \textbf{Rimuove} l'elemento dalla collezione \\
+		\hline
+	\end{tabularx}}
+\end{table}
 
-\begin{tabular}{c c c c c}
-	Risorsa & GET & PUT & POST & DELETE\\
-	http://api.example.com/resources/ & List & Replace & Create & Delete\\
-	http://api.example.com/resources/item17 & Retrieve & Replace & Create? & Delete
-\end{tabular}
+\subsection{GraphQL}
 
-\subsection*{GraphQL}
+\emph{GraphQL} è, come suggeriscono le ultime due lettere del nome, un \emph{query language}, creato come supporto alla realizzazione di applicazioni client, che mette a disposizione una sintassi intuitiva e flessibile ed un sistema che permette al client di specificare i requisiti e le interazioni sui dati \cite{website:graphql-specs}. Rispetto all'approccio REST, GraphQL permette di effettuare richieste più efficienti dei dati ed evita la duplicazione della logica lato server che può verificarsi nel caso di endpoint personalizzati. Permette infatti di specificare quali informazioni servono per una vista e permette di effettuare diverse query tramite una singola richiesta.
 
-abc
+\textcolor{red}{fare esempio di una query in graphql\\
+	mettere in risalto la possibilità di richiedere quali dati si vogliono ricevere e perchè è utile\\
+	mostrare paginazione\\
+	fare esempio di interazione con più "tabelle" e confronto con caso REST che richiede più interazioni\\
+	elencare principi}
 
 \section{Stato dell'arte\label{sec:stato-arte}}
 
