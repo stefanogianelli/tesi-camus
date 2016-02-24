@@ -79,10 +79,72 @@ Sottosezione relativa a React Native (spiegare profonda integrazione con la piat
 
 \section{Web Services\label{sec:web-services}}
 
-\textcolor{red}{STEFANO\\Introduzione su cosa sono i servizi web\\
-Caratteristiche dei servizi web (free, pagamento, paradigmi, ...)\\
-Classificazione dei servizi esistenti (SOAP, REST, ...) e modi di interrogazione\\
-Descrizione GraphQL, problemi che vuole risolvere e paragone con REST}
+Per \emph{Web Service} si intendono tutti quei software che vengono utilizzati per favorire la comunicazione tra diverse macchine. Secondo la definizione formale fornita dal Consorzio W3C \virgolette{un Web Service è un sistema software creato allo scopo di permettere la comunicazione tra macchine attraverso un network. \upe composto da un'interfaccia descritta in un linguaggio interpretabile dalle macchine (WSDL in particolare). [...]} \cite{world2004web}. In questa definizione viene citato l'utilizzo del protocollo SOAP: in realtà, qualche anno più tardi, la definizione è stata estesa \cite{w3c2004web}, includendo nell'elenco:
+
+\begin{itemize}
+	\item \emph{REST Web Services}, dove l'obiettivo principale è la manipolazione di \emph{risorse} utilizzando operazioni che non necessitano di mantenere uno stato
+	\item \emph{Servizi Web Arbitrari}, dove è possibile esporre a piacimento un insieme di operazioni
+\end{itemize}
+
+Il motivo principale che ha spinto verso questa scelta è da ricercare nella definizione stessa di \emph{web service}: l'obiettivo principale è quello di permettere lo scambio di informazioni tra macchine, favorendo l'interoperabilità tra sistemi e linguaggi di programmazione differenti. La maggior parte dei servizi utilizza il protocollo HTTP come livello di trasporto: questa scelta ha l'enorme vantaggio di poter sfruttare lo stesso protocollo già utilizzato per le comunicazioni via internet, così da ridurre i costi di gestione necessari per la messa in opera di un diverso protocollo. Nel corso del tempo sono nate diverse tipologie di servizi: alcuni, come SOAP, forniscono una struttura standardizzata da seguire per l'implementazione dei servizi compatibili mentre altri, come REST, forniscono delle linee guida sulla metodologia da seguire per l'implementazione del servizio, ma non sono dipendenti da nessuna tecnologia in particolare. La creazione di servizi che adempiono ad uno specifico compito ha favorito un ulteriore aspetto: la composizione. \upe possibile creare dei servizi che ne sfruttano contemporaneamente diversi al fine di realizzare un processo più complesso \cite{weerawarana2005web}. Recentemente questo concetto è stato ulteriormente esteso con la realizzazione dei cosiddetti \emph{mashup} \cite{benslimane2008services}, applicazioni web che permettono di combinare assieme informazioni provenienti da diverse fonti dinamicamente, in modo da fornire un'esperienza utente migliore.
+
+Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizzati per la creazione di servizi, tra cui SOAP, REST e GraphQL.
+
+\subsection*{SOAP}
+
+\upe l'acronimo di \emph{Simple Object Access Protocol}, fornisce un framework per lo scambio di messaggi.  Utilizza come formato di risposta XML e nella maggior parte si appoggia al protocollo HTTP come livello di trasporto. Vengono scambiate delle \emph{buste}, che contengono le informazioni come interrogare il servizio e come sono rappresentate le risposte. L'architettura SOAP viene distinta per tre caratteristiche principali:
+
+\begin{enumerate}
+	\item \textbf{Estensibilità} Le funzionalità di base possono essere ampliate attraverso l'utilizzo di estensioni
+	\item \textbf{Neutralità} Non dipende da nessun protocollo di comunicazione in particolare. Quello più utilizzato è HTTP, ma esistono delle implementazioni per SMTP, TCP, UDP o JMS per citarne alcuni
+	\item \textbf{Indipendenza} Può essere utilizzato da diversi linguaggi di programmazione
+\end{enumerate}
+
+In seguito, SOAP è stato utilizzato come base per altre tecnologie legate ai web services, come il \emph{Web Services Description Language} (WSDL), che è un'interfaccia di descrizione delle funzionalità fornite dal servizio, e l'\emph{Universal Description Discovery and Integration} (UDDI), che è un registro dove è possibile ricercare i servizi.
+
+\subsection*{REST}
+
+\upe è l'acronimo di \emph{REpresentational State Transfer} ed è uno stile architetturale che definisce determinati vincoli di comportamento per i componenti, connettori e dati che compongono un sistema distribuito ipermediale. \emph{REST} è prima di tutto un paradigma: non vengono infatti menzionati nè i dettagli relativi all'implementazione dei componenti nè i protocolli da utilizzare proprio per concentrarsi sul ruolo dei componenti, sulle interazioni con altri componenti e come interpretare le informazioni. Il termine \emph{REpresentational State Transfer} è stato utilizzato per la prima volta nella tesi di dottorato di Roy Fielding \cite{fielding2000architectural}. \emph{REST} viene largamente utilizzato per descrivere i servizi web, in modo tale da non generare contraddizioni durante l'implementazione. I sistemi che rispettano i principi \emph{REST} vengono chiamati \emph{RESTful}. Nella maggior parte dei casi, i sistemi \emph{RESTful} comunicano attraverso i verbi standard del protocollo HTTP (GET, POST, PUT, DELETE, ecc.). Utilizza come interfaccia per comunicare con i sistemi esterni le \emph{web resources}, identificate tramite un \emph{Uniform Resource Identifier} (URI). L'applicazione dei vincoli definiti dall'architettura permette di ottenere i seguenti vantaggi: performance, scalabilità, semplicità, manutenibilità, visibilità, portabilità ed affidabilità.
+
+I vincoli definiti dall'architettura sono:
+
+\begin{itemize}
+	\item \textbf{Client-server} C'è una separazione delle attività che devono essere eseguite sul client e sul server. Per esempio, i client non devono occuparsi della memorizzazione dei dati, che rimane interna al server, in modo da favorire la \emph{portabilità} del codice del client. Il server invece non deve preoccuparsi dell'interfaccia utente e dello stato dell'utente, in modo da rendere l'implementazione del server più semplice e \emph{scalabile}. Il client e il server possono essere sostituiti e sviluppati separatamente fintanto che le interfacce tra di essi rimangono immutate
+	\item \textbf{Stateless} Lo stato non deve essere assolutamente salvato sul server. Ogni richieste che proviene dal client deve contenere tutte le informazioni necessarie alla sua esecuzione. Sarà compito del client mantenere memorizzato lo stato corrente. Lo stato della sessione può però essere trasferito dal server verso un ulteriore servizio di memorizzazione, per esempio un database, per un periodo di tempo limitato. Al client viene affidato il compito di decidere quando è pronto a passare ad un nuovo stato
+	\item \textbf{Cacheable} Sia il client sia il server possono effettuare caching delle risposte. Le risposte però devono essere innanzitutto definire se possono essere salvate in cache o meno, in modo da limitare situazione nelle quali il client utilizza informazioni non corrette o non più valide. Implementare un ottimo sistema di cache permette di ridurre il numero di interazioni tra il client e il server, migliorando la scalabilità e le performance del sistema
+	\item \textbf{Layered system} Un client non può specificare se è connesso direttamente al server di più basso livello oppure ad un server intermediario. L'utilizzo di server intermediari permette di migliorare la scalabilità del sistema, tramite l'utilizzo di load balancer e di cache distribuite. Possono inoltre fornire ulteriori misure di sicurezza
+	\item \textbf{Uniform interface} L'utilizzo delle \emph{uniform interface} permette di semplificare e disaccoppiare i vari componenti dell'architettura, rendendo possibile lo sviluppo indipendente delle varie parti del sistema. I quattro vincoli riguardo le \emph{uniform interface} sono:
+	\begin{enumerate}
+		\item \textbf{Identificazione delle risorse} Le singole risorse vengono identificate nella richiesta tramite, per esempio, un \emph{URI}. Le risorse sono concettualmente separate dalle rappresentazioni che vengono inviate al client. Per esempio, un server può inviare dati dal database come HTML, XML o JSON, che sono diversi dalla rappresentazione interna del server
+		\item \textbf{Manipolazione delle risorse tramite le rappresentazioni} Ogni rappresentazione di una risorsa che viene inviata al client deve contenere tutte le informazioni che permettano la modifica o la eliminazione della risorsa
+		\item \textbf{Messaggi autoesplicativi} Ogni messaggio deve contenere informazioni riguardo come trattare l'informazione che porta con sè, tramite per esempio i \emph{media type}
+		\item \textbf{Sfruttamento dell'hypermedia (HATEOAS)} I client possono effettuare delle azioni che vengono dinamicamente messe a disposizione dal server tramite hypermedia (es.: link). Ad eccezione dello stato iniziale, il client conosce le azioni che possono essere eseguite a partire da una data rappresentazione solamente attraverso le azioni che essa espone
+	\end{enumerate}
+\end{itemize}
+
+Applicando i principi REST alle API dei servizi web si ottengono quelle che vengono definite \emph{RESTful API}. Le \emph{RESTful API} che sfruttano il protocollo HTTP sono definite tramite le seguenti caratteristiche:
+
+\begin{itemize}
+	\item Possiedono un URI di base
+	\item Definiscono un media type, che indica il formato della risposta, che nelle implementazioni più comuni è JSON
+	\item Utilizzano i verbi standard del protocollo HTTP (es.: OPTIONS, GET, PUT, POST e DELETE)
+	\item Mettono a disposizione dei link come referenza per passare alle risorse correlate
+	\item Utilizzano dei link come referenza dello stato
+\end{itemize}
+
+Solitamente ad una URI può essere associata una funzione diversa in base al verbo con la quale viene invocata, come si può notare nell'esempio in Tabella ???
+
+\textcolor{red}{da completare}
+
+\begin{tabular}{c c c c c}
+	Risorsa & GET & PUT & POST & DELETE\\
+	http://api.example.com/resources/ & List & Replace & Create & Delete\\
+	http://api.example.com/resources/item17 & Retrieve & Replace & Create? & Delete
+\end{tabular}
+
+\subsection*{GraphQL}
+
+abc
 
 \section{Stato dell'arte\label{sec:stato-arte}}
 
