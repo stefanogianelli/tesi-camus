@@ -280,6 +280,42 @@ Esiste anche un problema legato alla sincronizzazione dei descrittori dei serviz
 
 Il caso \emph{Server centric} permette di ottenere dei miglioramenti ai problemi sopra citati. In particolare è possibile fare \emph{caching} dei risultati a livello multiutente, cioè se arrivano due query uguali con un breve intervallo l'una dall'altra, il server effettuerà una singola richiesta verso il servizio esterno e i dati della seconda richiesta verranno recuperati dalla cache. In particolare, il caching permette di ridurre il problema del numero limitato di richieste che possono essere effettuate tramite una particolare API key. Un altro aspetto che viene risolto è il fatto di non avere praticamente limiti computazionali ed energetici, perchè un server può elaborare più velocemente e in maniera più efficiente i dati. Il dispositivo mobile non ha più il carico computazionale del caso \emph{Client centric}, ma sfrutta la potenza di calcolo del server, che permette di ricevere i dati già elaborati con \emph{Merge} e \emph{Union}. Anche i descrittori dei servizi non hanno più il problema di essere distribuiti in ogni singolo device in seguito ad un aggiornamento: una volta che uno di essi viene modificato sul server, è già pronto e funzionante per tutte le richieste verso quel servizio.
 Uno degli svantaggi principali di questa architettura è di avere un unico collo di bottiglia per tutto il sistema, che sarebbe ovviamente il server. Si dovrà dimensionare correttamente le capacità computazionali del sistema per permettere l'evasione rapida delle richieste anche in situazioni di elevato carico, cioè quando diversi utenti effettuano nello stesso istante un vasto numero di richieste. Inoltre si presenta un problema che riguarda l'interrogazione dei servizi di supporto: questo compito dovrebbe essere ripetuto dal server per ogni elemento appartenente alla risposta che deve essere inviata al client. Molte richieste potrebbero essere invece evitate, in quanto le informazioni messe a disposizione dai servizi di supporto hanno validità nella pagina di dettaglio di ogni elemento: non è detto che l'utente selezioni tutti gli elementi di un risposta ma generalmente ne visualizza una porzione ristretta \cite{van2009using}. Nel lavoro precedente \cite{rizzo2015progettazione} si era scelto di utilizzare un'architettura di tipo ibrido, dove però il carico di complessità era collocato principalmente nell'applicazione mobile.
+I dati sono sintetizzati nella tabella \ref{table:sintesi_architetturei}
+
+\begin{table}[h]
+	\caption{Sintesi architetture}
+	\label{table:sintesi_architetturei}
+	\noindent\makebox[\textwidth]{%
+		\begin{tabularx}{\textwidth}{ | l |>{\centering}X | X |}
+			\hline
+			\textbf{Architettura} & \textbf{PROs} & \textbf{CONs} \\
+			\hline
+			\emph{Client Centric} & 
+			\begin{itemize}
+				\item{} Poco carico computazionale sul server
+				\item{} Utilizzo migliore dei dati dai servizi di supporto
+			\end{itemize} &
+			\begin{itemize}
+				\item{} No caching tra diversi utenti e "consumo" API keys
+				\item{} Consumo di batteria e dati
+				\item{} No sincronizzazione dei descrittori dei servizi
+			\end{itemize} \\
+			\hline
+			\emph{Server Centric} &
+			\begin{itemize}
+				\item{} Caching dei risultati tra diversi utenti
+				\item{} No limiti computazionali e energetici
+				\item{} Migliore gestione dei descrittori
+				\item{} Unico endpoint per tutte le richieste dai client
+			\end{itemize} &
+			\begin{itemize}
+				\item{} Unico collo di bottiglia nel sistema
+				\item{} Dati inutilizzati dai servizi di supporto
+			\end{itemize}
+			\\
+			\hline
+		\end{tabularx}}
+	\end{table}
 
 \begin{figure}[h]
 	\centering
