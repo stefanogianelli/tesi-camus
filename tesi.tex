@@ -75,6 +75,20 @@
 %\addto\captionsitalian{\renewcommand{\algorithmname}{Algoritmo}}
 %\addto\captionsitalian{\renewcommand{\lstlistingname}{Listato}}
 %\renewcommand{\lstlistingname}{Listato}
+\renewcommand{\lstlistingname}{Blocco}
+
+\definecolor{graphBlue}{rgb}{0.12,0.38,0.63}
+\definecolor{graphViolet}{rgb}{0.55,0.17,0.73}
+\definecolor{graphRed}{rgb}{0.84,0.26,0.57}
+
+\lstset{
+	breaklines=true,
+	tabsize=2,
+	literate={\ \ }{{\ }}1,
+	moredelim=**[is][\color{graphViolet}]{@}{@},
+	moredelim=**[is][\color{graphRed}]{~}{~},
+	moredelim=**[is][\color{graphBlue}]{!}{!}
+}
 
 %comandi personalizzati
 \newcommand{\virgolette}[1]{``#1''}
