@@ -74,10 +74,30 @@ La strategia \emph{value-based mapping} permette di superare i limiti evidenziat
 
 \textcolor{red}{VALERIO\\Informazioni generali sui mashup (non solo mobile)\\
 Modello Visuale utilizzato\\
-Sottosezione relativa a React Native (spiegare profonda integrazione con la piattaforma di riferimento e confronto con le webview)}
-In questa sezione vengono introdotti i Mashups, la seconda anima del sistema CAMUS, e il loro ruolo nell'applicazione finale.
-Nell'informatica i mashups sono applicazioni che utilizzano contenuti provenienti da due o più sorgenti, combinandole in un unica applicazione. \cite{DBLP:books/sp/DanielM14}
-Dato il proliferare di dati e servizi sul Web, si è reso necessario creare applicazioni che siano più semplici e soltanto con i dati che servono all'utente finale. Storicamente sono stati introdotti per velocizzare il lavoro di creazione di nuove applicazioni Web con APIs programmabili e contenuti provenienti da pagine Web diverse, permettendo anche a persone che non sono molto pratiche di informatica. 
+Sottosezione relativa a React Native (spiegare profonda integrazione con la piattaforma di riferimento e confronto con le webview)} \\
+
+In questa sezione vengono introdotti i \emph{Mashup}, la seconda anima del sistema CAMUS, e il loro ruolo nell'applicazione finale.
+La parola \emph{Mashup}, che significa letteralmente miscuglio o combinazione, è un termine che può essere adottato in diversi campi.
+Ad esempio, in campo musicale, indicano due o più brani le cui tracce audio vengono tagliate e sovrapposte creando un nuovo brano. Un altro esempio è l'ambito dei contenuti video, dove due o più filmati o spezzoni sono montati in sequenza per ottenere un video dal significato diverso da quelli originali.
+In informatica questo termine assume un significato, perché i mashup sono applicazioni che utilizzano contenuti provenienti da due o più sorgenti, che possono essere servizi privati o pubblici o Web API \cite{DBLP:books/sp/DanielM14}.
+Inizialmente la composizione era basata solamente sul contesto del web, perché permetteva di creare nuove applicazione molto rapidamente, date le API. 
+
+Molto diffuse in questa prima fase sono state le applicazioni basate su Google Maps, come \emph{HousingMaps} \footnote{Housing Maps: \url{http://www.housingmaps.com}}, che si combinava le informazioni tra Google Maps, per quanto riguarda ovviamente le mappe, e Craiglist, un portale che ospita annunci di diversa tipologia (es. lavoro, incontri, ecc...).
+Altri esempi sono le mappe interattive che è possibile creare a partire da Google Maps o servizi simili; in questi casi viene arricchita la mappa con altre informazioni, ad esempio traffico, dati demografici o altri dati. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/potholes_service.jpg}
+	\caption{Context Dimension Tree}\label{fig:potholes}
+\end{figure}
+
+L'esempio in Figura \ref{fig:potholes} è un simpatico esempio di mashup che posiziona nella mappa le buche stradali segnalate dagli utenti presenti a Montreal in Canada, fornendo anche la possibilità di calcolare un itinerario per evitarle o almeno trovarne il meno possibile \footnote{Articolo con altri esempi: \url{http://www.pcworld.com/article/252243/top_10_cool_and_useful_google_maps_mashups.html}}. 
+
+Con lo sviluppo dei social network e delle piattaforme di condivisione di contenuti multimediali, hanno assunto grande importanza i mashup perché è stato possibile creare nuove applicazioni utilizzando i metadati associati ai contenuti, arricchendo di informazioni il contenuto originale.
+La diffusione dei mashup è presente anche in domini più critici, soprattutto per la facilità di creazione e la possibilità di essere utilizzati anche da utenti non esperti in ambito IT; un esempio possono essere gli \emph{enterprise mashups} \cite{Jhingran:2006:EIM:1182635.1164128}.
+La crescita esponenziale della quantità di informazioni presente nel web, con i Big Data e il moltiplicarsi dei Web Service, ha portato i mashup ad elemento fondamentale nella creazione delle applicazioni, per la possibilità di filtrare i dati necessari all'utente finale e quindi rendere la visione di una parte significativa delle informazioni provenienti da più servizi.
+Tra le diverse tipologie di mashups elencate in \cite{picozziTesiDottorato}, per quanto riguarda il progetto CAMUS, ci si soffermerà principalmente sui \emph{mobile mashups}.
+I mobile mashups sono l'applicazione dei mashup web ai mobile devices, pensati come applicazioni native che integrano dati provenienti da servizi differenti (\cite{Cappiello2013}). 
+In CAMUS è stato adottato l'esempio in \cite{Cappiello:2015:UAE:2788341.2735632}, che pone al centro l'interfaccia utente per integrare i dati, dove durante la creazione delle view dell'applicazione è possibile vedere quasi istantaneamente il risultato del visual mapping. 
 
 
 \section{Web Services\label{sec:web-services}}
