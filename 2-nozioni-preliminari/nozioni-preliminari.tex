@@ -161,14 +161,14 @@ Solitamente ad una URI può essere associata una funzione diversa in base al verb
 	\caption{Esempio RESTful API}
 	\label{table:esempio-rest-api}
 	\noindent\makebox[\textwidth]{%
-	\begin{tabularx}{1.3\textwidth}{ | l | X | X | X | X |}
-		\hline
-		\textbf{Risorsa} & \textbf{GET} & \textbf{PUT} & \textbf{POST} & \textbf{DELETE} \\
-		\hline
+	\begin{tabularx}{1.3\textwidth}{lXXXX}
+		\toprule
+		\thead{Risorsa} & \thead{GET} & \thead{PUT} & \thead{POST} & \thead{DELETE} \\
+		\midrule
 		\url{http://api.example.com/resources/} & \textbf{Elenca} le URI insieme ad eventuali altri dettagli sulla collezione & \textbf{Sostituisce} la collezione con un'altra & \textbf{Aggiunge} un nuovo elemento alla collezione. L'URI viene generato automaticamente e restituito dall'operazione & \textbf{Elimina} l'intera collezione \\
 		\hline
 		\url{http://api.example.com/resources/item17} & \textbf{Restituisce} una rappresentazione dell'oggetto, espresso con un particolare \emph{media type} & \textbf{Sostituisce} l'elemento della collezione o, se non esiste, ne crea uno nuovo & \textbf{Crea} un nuovo elemento & \textbf{Rimuove} l'elemento dalla collezione \\
-		\hline
+		\bottomrule
 	\end{tabularx}}
 \end{table}
 
@@ -187,7 +187,7 @@ Alla base di \emph{GraphQL} ci sono i seguenti principi:
 \end{itemize}
 
 \begin{center}
-	\begin{minipage}[c]{0.4\textwidth}
+	\begin{minipage}[t]{0.5\textwidth}
 		\begin{lstlisting}[caption=Esempio di query GraphQL, label=lst:esempio-query-graphql]
 {
 	!user!(@id@: ~2~) {
@@ -197,9 +197,9 @@ Alla base di \emph{GraphQL} ci sono i seguenti principi:
 }
 		\end{lstlisting}
 	\end{minipage}%
-	\hspace{10mm}%
-	\begin{minipage}[c]{0.4\textwidth}
-		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-graphql]
+	\hspace{5mm}%
+	\begin{minipage}[t]{0.4\textwidth}
+		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-graphql, style=json]
 {
 	"user": {
 		"name": "Mario",
@@ -214,8 +214,9 @@ Nel Blocco \ref{lst:esempio-query-graphql} viene riportato un semplice esempio d
 
 \emph{GraphQL} fornisce inoltre un'altra funzionalità estremamente utile: le \emph{connessioni}. Una \emph{connessione} permette ad un oggetto di definire i legami che ha con altri oggetti, anche di tipo diverso dal suo. In questo modo è possibile richiedere direttamente le informazioni riguardo altri oggetti tramite un'unica query; questa caratteristica non è presente nei sistemi REST e permette di ottenere un netto miglioramento delle performance. Inoltre, GraphQL mette a disposizione per ogni connessione la \emph{paginazione} dei risultati, ossia la possibilità di richiedere un determinato numero di elementi ad ogni richiesta. Ad ogni oggetto viene automaticamente associato un \emph{token} che lo identifica univocamente: in questo modo è possibile chiedere ulteriori elementi in una seconda query, specificando il \emph{token} dell'oggetto di partenza.
 
-\begin{minipage}[c]{1.2\textwidth}
-	\begin{minipage}[c]{0.55\textwidth}
+\begin{center}
+	\hspace*{-1.3cm}
+	\begin{minipage}[t]{0.62\textwidth}
 		\begin{lstlisting}[caption=Esempio di connessione GraphQL, label=lst:esempio-connessione-graphql]
 {
 	!user! (@id@: ~4802170~) {
@@ -238,9 +239,8 @@ Nel Blocco \ref{lst:esempio-query-graphql} viene riportato un semplice esempio d
 }
 		\end{lstlisting}
 	\end{minipage}%
-	\hspace{5mm}%
-	\begin{minipage}[c]{0.55\textwidth}
-		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-connessione-graphql]
+	\begin{minipage}[t]{0.62\textwidth}
+		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-connessione-graphql,style=json]
 {
 	"user": {
 		"id": 4802170,
@@ -268,9 +268,9 @@ Nel Blocco \ref{lst:esempio-query-graphql} viene riportato un semplice esempio d
 }
 		\end{lstlisting}
 	\end{minipage}	
-\end{minipage}
+\end{center}
 
-Nel Blocco \ref{lst:esempio-connessione-graphql} viene mostrata una query più complessa della precedente. La \emph{connessione} viene definita da \virgolette{friendConnection}, che viene utilizzata per recuperare gli amici dell'utente corrente. Si vuole far notare che gli oggetti che vengono restituiti nel campo \virgolette{friends} sono dello stesso tipo dell'utente richiesto in origine: questo vuol dire che è possibile produrre infiniti livelli gerarchici. Se, all'interno di un utente amico, si specifica di nuovo la connessione \virgolette{friendConnection}, verranno restituiti anche gli amici di quello specifico utente. Altro punto interessante, come citato in precedenza, delle \emph{connessioni} riguarda la possibilità di richiedere solo un sottoinsieme dei risultati: nell'esempio vengono richiesti solamente i primi due amici dell'utente. Come si può notare nel Blocco \ref{lst:esempio-risposta-connessione-graphql}, vengono restituiti solamente i primi due amici, nonostante il campo \virgolette{totalCount} indichi che l'utente ha in totale 13 amici. Tramite altre query possono essere richiesti gli altri amici dell'utente.
+Nel Blocco \ref{lst:esempio-connessione-graphql} viene mostrata una query più complessa della precedente. La \emph{connessione} viene definita da \virgolette{friendConnection}, che viene utilizzata per recuperare gli amici dell'utente corrente. Si vuole far notare che gli oggetti che vengono restituiti nel campo \virgolette{friends} sono dello stesso tipo dell'utente richiesto in origine: questo vuol dire che è possibile produrre infiniti livelli gerarchici. Se, all'interno di un utente amico, si specifica di nuovo la connessione \virgolette{friendConnection}, verranno restituiti anche gli amici di quello specifico utente. Altro punto interessante, come citato in precedenza, delle \emph{connessioni} riguarda la possibilità di richiedere solo un sottoinsieme dei risultati: nell'esempio vengono richiesti solamente i primi due amici dell'utente. Come si può notare nel Blocco \ref{lst:esempio-risposta-connessione-graphql}, vengono restituiti solamente i primi due amici, nonostante il campo \virgolette{totalCount} indichi che l'utente ha in totale 13 amici. Tramite ulteriori query possono essere richiesti gli altri amici dell'utente.
 
 \section{Stato dell'arte\label{sec:stato-arte}}
 

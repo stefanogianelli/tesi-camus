@@ -77,10 +77,12 @@
 %\renewcommand{\lstlistingname}{Listato}
 \renewcommand{\lstlistingname}{Blocco}
 
+%definizione colori per sintassi graphql
 \definecolor{graphBlue}{rgb}{0.12,0.38,0.63}
 \definecolor{graphViolet}{rgb}{0.55,0.17,0.73}
 \definecolor{graphRed}{rgb}{0.84,0.26,0.57}
 
+%personalizzazione listing per graphql
 \lstset{
 	breaklines=true,
 	tabsize=2,
@@ -90,8 +92,57 @@
 	moredelim=**[is][\color{graphBlue}]{!}{!}
 }
 
+%START json definition
+\newcommand\JSONnumbervaluestyle{\color{blue}}
+\newcommand\JSONstringvaluestyle{\color{red}}
+
+% switch used as state variable
+\newif\ifcolonfoundonthisline
+
+\makeatletter
+
+\lstdefinestyle{json}
+{
+	showstringspaces    = false,
+	keywords            = {false,true},
+	alsoletter          = 0123456789.,
+	morestring          = [s]{"}{"},
+	stringstyle         = \ifcolonfoundonthisline\JSONstringvaluestyle\fi,
+	MoreSelectCharTable =%
+	\lst@DefSaveDef{`:}\colon@json{\processColon@json},
+	basicstyle          = \ttfamily,
+	keywordstyle        = \ttfamily\bfseries,
+}
+
+% flip the switch if a colon is found in Pmode
+\newcommand\processColon@json{%
+	\colon@json%
+	\ifnum\lst@mode=\lst@Pmode%
+	\global\colonfoundonthislinetrue%
+	\fi
+}
+
+\lst@AddToHook{Output}{%
+	\ifcolonfoundonthisline%
+	\ifnum\lst@mode=\lst@Pmode%
+	\def\lst@thestyle{\JSONnumbervaluestyle}%
+	\fi
+	\fi
+	%override by keyword style if a keyword is detected!
+	\lsthk@DetectKeywords% 
+}
+
+% reset the switch at the end of line
+\lst@AddToHook{EOL}%
+{\global\colonfoundonthislinefalse}
+
+\makeatother
+%END json definition
+
 %colonna centrata per tabularx
-\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+%header per tabularx
+\newcommand*{\thead}[1]{\multicolumn{1}{c}{\bfseries #1}}
 
 %comandi personalizzati
 \newcommand{\virgolette}[1]{``#1''}
