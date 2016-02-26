@@ -3,7 +3,19 @@ In questa sezione ...
 
 \section{Context-Awareness\label{sec:context-awareness}}
 
-\textcolor{red}{STEFANO\\Informazioni storiche sulle ricerche relative al contesto} \cite{DBLP:journals/sigmod/BolchiniCQST07} \cite{baldauf2007survey}
+\textcolor{red}{STEFANO\\Informazioni storiche sulle ricerche relative al contesto} \cite{baldauf2007survey}
+
+Il concetto di \emph{contesto} viene citato in diverse aree di ricerca, come la filosofia, la psicologia e l'informatica. Il \emph{contesto} gioca spesso un ruolo importante nel definire un comportamento o l'interpretazione dell'ambiente; dei cambiamenti nel contesto possono cambiare la percezione del momento che si sta vivendo. La parola \virgolette{contesto} deriva dalle parole latine \emph{con} e \emph{texere}, che significa tessere intrecciate, intrecciare. Viene definito come \virgolette{il complesso delle circostanze e delle situazioni nelle quali un fatto o un fenomeno si verificano} \footnote{Dizionario Garzanti: \url{http://www.garzantilinguistica.it/ricerca/?q=contesto}}.
+
+In informatica il concetto di \emph{contesto} è riferito all'idea che i computer possano avere una percezione dell'ambiente e che riescano dunque a modificare il loro comportamento in base alla situazione. I dispositivi devono dunque acquisire informazioni relative l'ambiente in cui operano e tramite alcune regole, che possono essere sia statiche che dinamicamente dedotte, riescano a reagire di conseguenza.
+
+Agli albori per \emph{contesto} veniva inteso solamente come la posizione nella quale si trova l'utente, come discusso da Dey in \cite{dey2001understanding}; negli ultimi anni invece si è iniziato a pensare al \emph{conteso} non solo come uno stato, bensì come un processo più vasto che coinvolge l'utente. Sono stati dunque ideati modelli di \emph{contesto} sofisticati e generali, in modo che possano adattarsi a diverse situazioni d'utilizzo \cite{DBLP:journals/sigmod/BolchiniCQST07}.
+
+In particolare il \emph{contesto} viene utilizzato per realizzare applicazioni che siano in grado di \emph{a)} adattare l'interfaccia grafica, \emph{b)} filtrare l'insieme dei dati che sono realmente rilevanti, \emph{c)} migliorare la precisione dei dati raccolti, \emph{d)} scoprire servizi, \emph{e)} predirre alcune scelte dell'utente o \emph{f)} realizzare ambienti \virgolette{smart}.
+
+\textcolor{red}{to be continued ...}
+
+Nella seguente sezione verrà presentato nel dettaglio il \emph{Context Dimension Model}, un modello di contesto che sfrutta una struttura ad albero per descrivere la situazione nel quale si trova l'utente. Tra la moltitudine di alternative esistenti viene presentato questo modello in particolare perchè è quello che verrà utilizzato nel progetto CAMUS, quindi la comprensione della sua rappresentazione e delle potenzialità saranno utili per i successivi capitoli.
 
 \subsection{Context Dimension Model\label{sec:context-dimension-model}}
 
@@ -25,7 +37,7 @@ L'alternanza tra nodi \emph{dimensione} e \emph{concetto} fa sì che vengano crea
 
 Per ogni \emph{nodo dimensione} è possibile selezionare al massimo un nodo concetto tra i suoi figli oppure, se non possiede alcun nodo figlio, deve essere selezionato obbligatoriamente uno ed un solo parametro. L'utilizzo dei parametri aumenta il potere espressivo del modello, in quanto lo rende più semplice per l'utilizzo da parte del designer. Si è resa necessaria l'introduzione dei parametri in quanto non tutti i concetti espressi da una dimensione possono essere enumerati. Per esempio, la dimensione \virgolette{costo} può assumere infiniti valori ed è quindi più appropriato l'utilizzo di un parametro.
 
-Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = \textless N, E, r \textgreater $, un \emph{contesto} è definito dalla seguente grammatica:
+Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = \textless N, E, r \textgreater $, un \emph{contesto} è definito dalla seguente grammatica con assioma \emph{context}:
 
 \begin{equation*}
 	C =
