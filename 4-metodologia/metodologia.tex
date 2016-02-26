@@ -284,34 +284,38 @@ I dati sono sintetizzati nella Tabella \ref{table:sintesi_architetturei}.
 \begin{table}[h]
 	\caption{Sintesi architetture}
 	\label{table:sintesi_architetturei}
-	\begin{tabularx}{\textwidth}{ | l | C | C |}
-		\hline
-		\textbf{Architettura} & \textbf{PROs} & \textbf{CONs} \\
-		\hline
-		\emph{Client Centric} & 
+	\begin{tabularx}{\textwidth}{lXX}
+		\toprule
+		\thead{Architettura} & \thead{PROs} & \thead{CONs} \\
+		\midrule
+		\\ \emph{Client Centric} & 
+		\vspace{-6.8mm}
 		\begin{itemize}
-			\item{} Poco carico computazionale sul server
-			\item{} Utilizzo migliore dei dati dai servizi di supporto
+			\item Poco carico computazionale sul server
+			\item Utilizzo migliore dei dati dai servizi di supporto
 		\end{itemize} &
+		\vspace{-6.8mm}
 		\begin{itemize}
-			\item{} No caching tra diversi utenti e "consumo" API keys
-			\item{} Consumo di batteria e dati
-			\item{} No sincronizzazione dei descrittori dei servizi
+			\item No caching tra diversi utenti e "consumo" API keys
+			\item Consumo di batteria e dati
+			\item No sincronizzazione dei descrittori dei servizi
 		\end{itemize} \\
 		\hline
-		\emph{Server Centric} &
+		\\ \emph{Server Centric} &
+		\vspace{-6.8mm}
 		\begin{itemize}
-			\item{} Caching dei risultati tra diversi utenti
-			\item{} No limiti computazionali e energetici
-			\item{} Migliore gestione dei descrittori
-			\item{} Unico endpoint per tutte le richieste dai client
+			\item Caching dei risultati tra diversi utenti
+			\item No limiti computazionali e energetici
+			\item Migliore gestione dei descrittori
+			\item Unico endpoint per tutte le richieste dai client
 		\end{itemize} &
+		\vspace{-6.8mm}
 		\begin{itemize}
-			\item{} Unico collo di bottiglia nel sistema
-			\item{} Dati inutilizzati dai servizi di supporto
+			\item Unico collo di bottiglia nel sistema
+			\item Dati inutilizzati dai servizi di supporto
 		\end{itemize}
 		\\
-		\hline
+		\bottomrule
 	\end{tabularx}
 \end{table}
 
