@@ -220,8 +220,8 @@ Nel Blocco \ref{lst:esempio-query-graphql} viene riportato un semplice esempio d
 \emph{GraphQL} fornisce inoltre un'altra funzionalità estremamente utile: le \emph{connessioni}. Una \emph{connessione} permette ad un oggetto di definire i legami che ha con altri oggetti, anche di tipo diverso dal suo. In questo modo è possibile richiedere direttamente le informazioni riguardo altri oggetti tramite un'unica query; questa caratteristica non è presente nei sistemi REST e permette di ottenere un netto miglioramento delle performance. Inoltre, GraphQL mette a disposizione per ogni connessione la \emph{paginazione} dei risultati, ossia la possibilità di richiedere un determinato numero di elementi ad ogni richiesta. Ad ogni oggetto viene automaticamente associato un \emph{token} che lo identifica univocamente: in questo modo è possibile chiedere ulteriori elementi in una seconda query, specificando il \emph{token} dell'oggetto di partenza.
 
 \begin{center}
-	\hspace*{-1.3cm}
-	\begin{minipage}[t]{0.62\textwidth}
+	\hspace*{-1.5cm}
+	\begin{minipage}[t]{0.63\textwidth}
 		\begin{lstlisting}[caption=Esempio di connessione GraphQL, label=lst:esempio-connessione-graphql]
 {
 	!user! (@id@: ~4802170~) {
@@ -244,7 +244,7 @@ Nel Blocco \ref{lst:esempio-query-graphql} viene riportato un semplice esempio d
 }
 		\end{lstlisting}
 	\end{minipage}%
-	\begin{minipage}[t]{0.62\textwidth}
+	\begin{minipage}[t]{0.63\textwidth}
 		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-connessione-graphql,style=json]
 {
 	"user": {
