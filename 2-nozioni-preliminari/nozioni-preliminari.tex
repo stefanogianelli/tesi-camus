@@ -103,12 +103,20 @@ L'esempio in Figura \ref{fig:potholes} mostra un simpatico esempio di mashup che
 Con lo sviluppo dei social network e delle piattaforme di condivisione di contenuti multimediali, hanno assunto grande importanza i mashup perché è stato possibile creare nuove applicazioni utilizzando i metadati associati ai contenuti, arricchendo di informazioni il contenuto originale.
 La diffusione dei mashup è presente anche in domini più critici, soprattutto per la facilità di creazione e la possibilità di essere utilizzati anche da utenti non esperti in ambito IT, di cui un esempio possono essere gli \emph{enterprise mashups} \textcolor{red}{reference su nuovo capitolo con classificazione} \cite{Jhingran:2006:EIM:1182635.1164128}.
 La crescita esponenziale della quantità di informazioni presente nel web, con i Big Data e il moltiplicarsi dei Web Service, ha portato i mashup ad elemento fondamentale nella creazione delle applicazioni, per la possibilità di filtrare i dati necessari all'utente finale e quindi rendere la visione di una parte significativa delle informazioni provenienti da più servizi.
-\textcolor{red}{Aggiungere classificazione dei mashups}
-Tra le diverse tipologie di mashups elencate in \cite{picozziTesiDottorato}, per quanto riguarda il progetto CAMUS, ci si soffermerà principalmente sui \emph{mobile mashups}.
-\textcolor{red}{aggiungere sezione con classificazione o lasciare reference?}
+
+%Tra le diverse tipologie di mashups elencate in \cite{picozziTesiDottorato}, per quanto riguarda il progetto CAMUS, ci si soffermerà principalmente sui \emph{mobile mashups}.
+
 
 \subsection{Classificazione dei mashup\label{sec:mashup-classification}}
-\textcolor{red}{da completare}
+I mashup si possono distinguere in diverse tipologie, a prescindere dalla piattaforma sulla quale sono utilizzati.
+In questo caso, la classificazione è basata soprattutto al modo in cui vengono integrate le diverse risorse che compongono i mashup. A partire da questo si ottengono tre macro famiglie:
+\begin{enumerate}
+	\item \textbf{Consumer Mashups} Sono i mashup che combinano elementi visuali e dati da diverse fonti. Un ottimo esempio può essere considerato Housing Maps citato in \ref{sec:mashup}, dove vengono integrati i dati provenienti da Craigslist e mostrati sulla mappa creata usando le API di Google Maps
+	\item \textbf{Data Mashups} Sono mashup che combinano più risorse di dati in una singola. Esistono molti esempi di questa tipologia e sono relativi a diverse applicazioni.
+	Nell'ambito di viaggi, un esempio può essere considerato Kayak \footnote{Kayak : \url{http://www.kayak.com}}, che è un sito di ricerca per viaggi che ottiene dati da oltre 100 siti diversi. Inoltre non vende direttamente i contenuti ai fornitori, ma si propone come un portale attraverso il quale i clienti possono essere dirottati verso le agenzie viaggi per servire le loro necessità.
+	Un altro ambito completamente distinto può essere considerato il caso di Facile.it \footnote{Facile.it : \url{http://www.facile.it}}, che permette di confrontare i dati provenienti da diverse offerte per quanto riguarda una grande quantità di dati (es.: assicurazioni, mutui, linee telefoniche, ecc.) permettendo di visualizzarli in unico portale e valutare la proposta migliore per le esigenze dell'utente
+	\item \textbf{Business Mashups} I business mashups sono utili per quanto riguarda l'integrazione di servizi business e dati, permettendo di sviluppare più facilmente servizi integrati e, di conseguenza, semplificare l'utilizzo all'utente attraverso interfacce web. Si differiscono dai \emph{consumer mashups} a livello di integrazione con i sistemi business, perché sono necessarie funzionalità aggiuntive, riguardanti sicurezza, controllo di accesso, governance e complessità degli editor utilizzati. Un'altra differenza è data dall'utilizzo crescente di business mashups nei modelli software as a service (Saas), dove un produttore sviluppa e gestisce un'applicazione web che mette a disposizione dei propri clienti via internet, come servizio cloud.
+\end{enumerate}
 
 \subsection{Mobile Mashup\label{sec:mobile-mashup}}
 
@@ -126,29 +134,35 @@ In CAMUS è stato adottato l'esempio in \cite{Cappiello:2015:UAE:2788341.2735632}
 Generalmente un mashup si compone di due differenti partecipanti, spesso separati fisicamente:
 \begin{enumerate}
 	\item \textbf{Content Providers} Quest i sono i fornitori dei contenuti che verranno utilizzati nell'applicazione di mashup, spesso dei più disparati generi e tipi e controllati da differenti tipi.
-	Le vie più popolari per mostrare contenuto sono:
+	Le risorse dalle quali è possibile ottenere contenuti sono:
 	\begin{itemize}
 		\item \textbf{API} fornite da alcuni provider di contenuti (es. Google, Facebook, Twitter, Amazon)\\
 		Una API permette al creazione permette di creare un mashup basato sul web fornendo un mezzo per avere accesso ad una applicazione o a un contenuto (es.: Google Maps), solo per un software compatibile.
 		Le API possono essere di due tipi:
 		\begin{enumerate}
 			\item \emph{Proprietarie} dove è richiesta la stipulazione di un contratto di licenza che comprende spesso il pagamento di una quota per poter usufruire del servizio
-			\item \emph{Free} che non richiedono il pagamento di nessuna quota, soltanto, talvolta, è limitato il numero di chiamate che l'applicazione finale può fare verso il provider.
+			\item \emph{Free} che non richiedono il pagamento di nessuna quota, soltanto, talvolta, è limitato il numero di chiamate che l'applicazione finale può fare verso il provider
 		\end{enumerate} 
-		\item \textbf{Information Feed} Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio possono essere i news feed in formato RSS che sono utilizzati dalle agenzie di stampa come Reuters o Ansa per inviare le notizie alle altre testate giornalistiche. 
+		\item \textbf{Information Feed} Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio possono essere i news feed in formato RSS che sono utilizzati dalle agenzie di stampa come Reuters o Ansa per inviare le notizie alle altre testate giornalistiche.
 		
 		\item \textbf{Documenti XML/JSON} I dati XML e JSON sono due standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping}, e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, ad ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
 		
 	\end{itemize} 
 	\item \textbf{Sito Mashup}
-	Il sito del mashup indica dove l'applicazione viene caricata. Questa è generalmente essere generata utilizzando codice di tipo client-side, cioè che viene eseguito sul client, (es.: JavaScript), con tecnologie di caricamento dei dati dinamiche come Ajax, che permette di evitare di ricaricare l'intera pagina se una parte di essa subisce delle modifiche. Non è tuttavia escluso l'utilizzo di codice server-side.
+	Il sito del mashup indica dove l'applicazione viene caricata. Questa è generalmente essere generata utilizzando codice di tipo client-side, cioè che viene eseguito sul client, (es.: JavaScript), con tecnologie di caricamento dei dati dinamiche come Ajax, che permette di evitare di ricaricare l'intera pagina se una parte di essa subisce delle modifiche. Non è tuttavia escluso l'utilizzo di codice server-side
 \end{enumerate}
 
-\textcolor{red}{definizione operazioni merge e union}
+Le informazioni grezze ottenute direttamente dai servizi esterni non è detto che siano già pronte per essere visualizzate all'utente finale. Esse necessitano di elaborazioni per poter migliorare e integrare i diversi dati ricevuti. Come esposto in \cite{caio2011tesi} queste operazioni possono essere fatte mediante template visuali, i quali mostrano una rappresentazione dei dati come saranno mostrati nell'applicazione finale. Nel caso di applicazioni sui contenuti si hanno generalmente due schermate: una mostra tutti i risultati provenienti dai diversi servizi, l'altra invece mostra i dettagli dell'elemento selezionato. Le operazioni sui dati da svolgere sono due:
+\begin{enumerate}
+	\item \textbf{Union} L'operazione di union mostra tutti gli elementi che provengono dai diversi servizi, cercando di trovare le similitudini e quindi aggregare le risposte che si riferiscono allo stesso elemento
+	\item \textbf{Merge} L'operazione di merge permette di mostrare tutti i dettagli dell'istanza selezionata. In questo modo i dati provenienti da più servizi sono mostrati nella stessa schermata. Questa operazione è definita durante la composizione del mashup, quando vengono associati i termini al servizio corrispondente.
+\end{enumerate}
 
-
-
-
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{2-nozioni-preliminari/Immagini/merge-union.png}
+	\caption{Esempio merge e union}\label{fig:merge-union}
+\end{figure}
 
 \section{Web Services\label{sec:web-services}}
 
