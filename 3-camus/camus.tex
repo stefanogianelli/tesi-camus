@@ -2,29 +2,46 @@ In questo capitolo ...
 
 \section{Panoramica del progetto}
 
-\textcolor{red}{Introduzione al progetto\\
-	Spiegare le due anime, senza dire il perchè\\
-	Dare un'idea di come sono strutturati i vari ambienti (server, web app e app mobile)}
+CAMUS è l'acronimo di Context-Aware Mobile mashUpS e, come si può intuire dal nome, il principale obiettivo del progetto è quello di proporre un framework per la realizzazione di mashup mobile che sfruttano il contesto nel quale si trova l'utente. Vengono dunque sfruttati due ambiti di ricerca differenti, cioè la gestione del \emph{contesto} e i \emph{mashup}, in quanto l'unione delle loro potenzialità può aiutare a fornire un'esperienza utente migliore. Infatti la quantità di servizi e dati disponibili online rende difficoltoso il processo di selezione delle informazioni che realmente sono rilevanti per colui/e che deve usufruirne. Questo problema è proprio il punto in cui CAMUS vuole proporsi come soluzione; utilizza il \emph{contesto} per raccogliere informazioni sul profilo e gli interessi dell'utente e sull'ambiente nel quale si trova, al fine di selezionare i servizi più idonei alla situazione e filtrare le informazioni che sono di maggior interesse. Inoltre sfrutta la dinamicità di presentazione che caratterizza i mashup per adattare il modo nel quale queste informazioni vengono mostrate e la flessibilità di integrare dati aggiuntivi provenienti da diverse fonti.
+
+In particolare, viene applicato il concetto dei mashup al mondo mobile: il risultato finale consiste in un'app per smartphone o tablet che adatta il proprio aspetto in base a delle regole di visualizzazione. Questa caratteristica permette di ottenere un'estrema flessibilità, in quanto non è necessario rilasciare nuove app ogni volta che si vuole effettuare un cambio di aspetto. Fornisce inoltre la libertà di variare spesso l'interfaccia grafica in modo che si adatti a diverse situazioni di utilizzo.
+
+CAMUS prevede l'integrazione di alcune \emph{web app}, ognuna delle quali deve permettere la realizzazione intuitiva della rappresentazione del contesto e dell'interfaccia grafica assunta dall'app. Le web app principali sono due: \emph{i)} la prima coinvolge la realizzazione del \emph{contesto}, che viene rappresentato tramite un modello che si presta molto bene alla visualizzazione grafica; \emph{ii)} la seconda riguarda la composizione degli elementi che formano l'interfaccia grafica della mobile app.
+
+Gli altri componenti principali del framework sono il \emph{server} e la \emph{mobile app}. Il \emph{server} è il cuore del sistema e orchestra la comunicazione tra gli altri componenti. Il suo compito primario è quello di fornire le informazioni idonee all'app mobile, a partire dal contesto che quest'ultima gli invia. La \emph{mobile app} infine contiene il motore di rendering che interpreta le regole definite sul come mostrare i componenti e li disegna in moda da essere fruibili dall'utente.
 
 \section{Obiettivi del progetto\label{sec:obiettivi-progetto}}
 
-\textcolor{red}{Descrivere gli obiettivi del progetto\\
-	Creazione di app in modo semplice e visuale\\
-	sfruttamento del contesto per migliorare le ricerche\\
-	strumenti del contesto molto semplici per agevolare la modifica}
+L'obiettivo principale del progetto CAMUS è definire la metodologia con la quale è possibile creare app sfruttando i mashup ed il contesto, al fine di mostrare all'utente le informazioni che sono più pertinenti alla situazione nella quale si trova.
 
-\section{Perchè integrare contesto e mashup?}
+Per la creazione del framework sono state rispettate le seguenti linee guida:
+
+\begin{itemize}
+	\item \textbf{Creazione visuale} Questo punto è relativo alla modalità di realizzazione delle app. Si vuole ideare un sistema che permetta la composizione dell'interfaccia grafica interamente in modo visuale, senza la necessità di scrivere linee di codice
+	\item \textbf{Contestualità} Si vuole sfruttare il contesto dell'utente per comprendere quali siano le sue esigenze e mostrargli così le informazioni che sono più pertinenti alla situazione. In questo modo è possibile utilizzare anche diverse fonti per acquisire dati più precisi e variegati, che poi verranno filtrati adeguatamente in modo da selezionare unicamente le informazioni più rilevanti e nascondere quelle che porterebbero solamente ad una maggior confusione
+	\item \textbf{Semplicità} Ogni operazione deve essere facile, in modo che anche persone non pratiche di informatica possano creare delle app CAMUS. Qualsiasi attività di creazione e modifica viene dunque effettuata tramite un'interfaccia grafica, in modo che l'utente venga guidato nello svolgere i compiti. Inoltre sono stati scelti dei modelli concettuali semplici, in modo che siano intuitivi a chiunque ma che allo stesso tempo siano abbastanza potenti per creare schemi di una certa complessità
+	\item \textbf{Automazione} Si vuole far ripetere all'utente il minor numero di azioni; in quest'ottica vengono sfruttati i sensori disponibili sui dispositivi per acquisire in maniera automatica alcuni dati, sgravando l'utente da questo compito
+	\item \textbf{Uniformità??} Il framework non prevede l'interfacciamento con un database per il recupero delle informazioni, bensì si è scelto di acquisire tutti i dati necessari tramite \emph{servizi}. Questa soluzione rende più flessibile l'accesso ai dati, in quanto viene fornita un'interfaccia comune per servizi sia interni, cioè gestiti direttamente dal creatore dell'app, sia esterni, cioè mantenuti da terzi. Inoltre apre la strada per l'utilizzo dei servizi di supporto, che forniscono dati complementari in modo da arricchire il dataset finale
+\end{itemize}
+
+\section{Integrazione del contesto con i mashup}
 
 \textcolor{red}{"Limiti" delle due aree\\
 	dire come mai sono complementari, come possono essere unite e i vantaggi che porta\\
 	specificare la divisione tra gestione dati, che viene demandata soprattutto al contesto, e gestione interfacce, che viene data ai mashup\\
 	dire anche perchè si è tolta la parte di gestione dati dai mashup}
 
-\section{Come mai vengono utilizzati i servizi?}
+\section{Utilizzo dei servizi}
 
-\textcolor{red}{Spiegare l'utilità dei servizi come disaccoppiamento da un DB specifico\\
-	I servizi possono essere sia interni che esterni\\
-	accennare ai servizi di supporto}
+Uno dei punti chiave del framework, seguendo la filosofia dei mashup, è di non essere limitati ad una singola fonte per l'acquisizione dei dati, bensì si vuole essere in grado di recuperare le informazioni da diverse sorgenti. In questo modo è possibile ottenere diversi vantaggi, come l'acquisizione di una maggiore quantità di risultati, ottenere informazioni più complete, ecc. Presenta però anche degli svantaggi: avere molti dati a disposizione può essere dispersivo ed esiste il rischio di ottenere entità duplicate. Per fornire un'elevata flessibilità il framework prevede il disaccoppiamento della logica di accesso ai dati: per l'acquisizione le informazioni viene fornita un'unica interfaccia, rappresentata dai \emph{servizi}. Questo metodo permette di avere una descrizione unica sul come recuperare i dati, indipendentemente dal fornitore che li mette a disposizione. L'utilizzo dei servizi porta i seguenti vantaggi:
+
+\begin{itemize}
+	\item \textbf{Varietà}	L'utilizzo di un'interfaccia generica per l'accesso ai dati favorisce l'acquisizione di informazioni da fonti diverse. In questo modo è possibile ottenere dei dataset più ampi
+	\item \textbf{Integrabilità} Ogni servizio restituisce i dati secondo una propria rappresentazione. Avere un unico metodo di accesso ai dati permette anche di descrivere come queste informazioni vengono trattate una volta ricevute. Questo passaggio permette di uniformare le rappresentazioni fornite in ingresso tale per cui vengano trasformate in un'altra rappresentazione che sia utile per il trattamento e l'elaborazione di questi dati
+	\item \textbf{Completezza} Acquisendo informazioni da diverse fonti è possibile ottenere degli elementi duplicati. Questa caratteristica potrebbe sembrare un difetto mentre in realtà fornisce una risorsa molto importante: la possibilità di ottenere degli elementi più completi. Diverse fonti possono essere utilizzate per acquisire informazioni di entità diversa, in modo da generare un elemento descritto in maniera più precisa e che colga maggiori aspetti
+\end{itemize}
+
+Questa scelta permette inoltre di dividere l'acquisizione dei dati in due passaggi: \emph{i)} acquisizione delle informazioni principali; \emph{ii)} acquisizione di dati che vanno ad arricchire le informazioni principali. L'astrazione dei servizi come metodo per ottenere i dati permette di utilizzare lo stesso formalismo per entrambe le attività.
 
 \section{Caso di studio del turismo\label{sec:caso-studio-turismo}}
 
