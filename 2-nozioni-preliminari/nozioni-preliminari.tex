@@ -84,7 +84,7 @@ Questa strategia ha il vantaggio di generare delle viste molto precise rispetto 
 
 La strategia \emph{value-based mapping} permette di superare i limiti evidenziati per la strategia precedente. Questa strategia prevede che il designer definisca le viste parziali relative ad un particolare elemento del contesto, indipendentemente dagli altri. Quindi, una volta selezionato un contesto, un algoritmo si occuperà di combinare assieme le varie viste parziali definite dai singoli elementi per formare la vista globale adatta allo specifico contesto. La Figura \ref{fig:value-based-mapping} mostra come il contesto dell'esempio precedente viene mappato tramite questa strategia. Le linee tratteggiate mostrano le viste parziali che vengono associate ai vari elementi del contesto, mentre nel riquadro in basso viene mostrata la vista globale generata dalla combinazione delle viste parziali. L'algoritmo di composizione delle view parziali è basato sull'utilizzo di diverse policy e operatori di composizione, tra i quali i più utilizzati sono \emph{double union}, \emph{double intersection} e \emph{double difference} \cite{DBLP:conf/er/BolchiniQR07}.
 
-\section{I Mashup\label{sec:mashup}}
+\section{Mashup\label{sec:mashup}}
 
 In questa sezione vengono introdotti i \emph{Mashup}, la seconda anima del sistema CAMUS, e il loro ruolo nell'applicazione finale.
 La parola \emph{Mashup}, che significa letteralmente miscuglio o combinazione, è un termine che può essere adottato in diversi ambiti.
@@ -108,7 +108,6 @@ La crescita esponenziale della quantità di informazioni presente nel web, con i 
 
 %Tra le diverse tipologie di mashups elencate in \cite{picozziTesiDottorato}, per quanto riguarda il progetto CAMUS, ci si soffermerà principalmente sui \emph{mobile mashups}.
 
-
 \subsection{Classificazione dei mashup\label{sec:mashup-classification}}
 I mashup possono essere distinti in diverse tipologie, a prescindere dalla piattaforma sulla quale vengono utilizzati.
 In questo caso, la classificazione è basata soprattutto alla metodologia con la quale vengono integrate le diverse risorse che compongono i mashup. Vengono definite tre macro famiglie:
@@ -121,8 +120,6 @@ In questo caso, la classificazione è basata soprattutto alla metodologia con la 
 \end{enumerate}
 
 \subsection{Mobile Mashup\label{sec:mobile-mashup}}
-
-
 
 In questi ultimi anni si è avuto un incremento esponenziale del numero di dispositivi mobili, al punto che il loro numero ha superato quello dei personal computer \cite{10.1109/ICSC.2008.100}. Come spiegato nel Global Internet Report di Internet Society\footnote{Global Internet Report 2015: \url{http://www.internetsociety.org/globalinternetreport/assets/download/IS_web.pdf}}, lo sviluppo di nuove applicazioni e sistemi operativi di facile utilizzo, oltre all'incremento della velocità delle reti mobili (3G e 4G), ha portato a una diffusione capillare dei dispositivi mobili, oltre alla possibilità di integrare nuovi aspetti finora non utilizzabili facilmente tramite i pc. Un chiaro esempio è dato dalla possibilità di poter sfruttare la posizione corrente del dispositivo, oppure gli altoparlanti o l'accelerometro.
 Questa maggiore integrazione con le esigenze dell'utente ha dato una spinta nella ricerca di come i mashup possano trarre vantaggio da queste nuove opportunità.
@@ -144,15 +141,14 @@ Generalmente un mashup si compone di due differenti partecipanti, spesso separat
 			\item \emph{Free} che non richiedono il pagamento di nessuna quota, soltanto, talvolta, è limitato il numero di chiamate che l'applicazione finale può fare verso il provider
 		\end{enumerate} 
 		\item \textbf{Information Feed} Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio possono essere i news feed in formato RSS che sono utilizzati dalle agenzie di stampa come Reuters\footnote{Reuters: \url{http://it.reuters.com/}} o Ansa\footnote{Ansa: \url{http://www.ansa.it/}} per inviare le notizie alle altre testate giornalistiche
-		
 		\item \textbf{Documenti XML/JSON} I formati XML e JSON sono due standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping}, e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, ad ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
-		
 	\end{itemize} 
 	\item \textbf{Sito Mashup}
 	Il sito del mashup indica dove l'applicazione viene caricata. Questa viene spesso generata utilizzando codice di tipo client-side, cioè che viene eseguito sul client, (es.: JavaScript), con tecnologie di caricamento dei dati dinamiche come Ajax, che permette di evitare di ricaricare l'intera pagina se una parte di essa subisce delle modifiche. Non è tuttavia escluso l'utilizzo di codice server-side
 \end{enumerate}
 
 Le informazioni grezze ottenute direttamente dai servizi esterni non è detto che siano già pronte per essere visualizzate all'utente finale. Esse necessitano di trasformazioni per poter migliorare e integrare i diversi dati ricevuti. Come esposto in \cite{caio2011tesi} queste operazioni possono essere fatte mediante template visuali, i quali mostrano una rappresentazione dei dati come saranno mostrati nell'applicazione finale. Nel caso di applicazioni sui contenuti si hanno generalmente due schermate: una mostra tutti i risultati provenienti dai diversi servizi, l'altra invece mostra i dettagli dell'elemento selezionato. Le operazioni sui dati da svolgere sono due:
+
 \begin{enumerate}
 	\item \textbf{Union} L'operazione di union mostra tutti gli elementi che provengono dai diversi servizi, specificando soltanto una piccola parte dei dati complessivi ritornati, cercando di trovare le similitudini e quindi aggregare le risposte che si riferiscono allo stesso elemento
 	\item \textbf{Merge} L'operazione di merge permette di mostrare tutti i dettagli dell'istanza selezionata. In questo modo i dati provenienti da più servizi vengono mostrati nella stessa schermata. Questa operazione è definita durante la composizione del mashup, quando vengono associati i campi al servizio corrispondente
@@ -342,28 +338,28 @@ In questa sezione vengono presentati ...
 
 \subsection*{Swagger}
 
-Per descrizione servizi
+Per descrizione servizi (STEFANO)
 
 \subsection*{Appery.io}
 
-Per visual composition
+Per visual composition (STEFANO)
 
 \subsection*{Kimono}
 
-Per integrazione servizi
+Per integrazione servizi (STEFANO)
 
 \subsection*{Peudom}
 
-Per composizione mashup
+Per composizione mashup  (VALERIO)
 
 \subsection*{AdAPT}
 
-Controllare ...
+Controllare ... (STEFANO)
 
 \subsection*{appmkr}
 
-Creazione mobile app via web
+Creazione mobile app via web (VALERIO)
 
 \subsection*{Snappii}
 
-Creazione mobile app via web
+Creazione mobile app via web (VALERIO)
