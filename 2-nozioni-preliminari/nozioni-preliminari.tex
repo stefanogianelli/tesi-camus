@@ -336,15 +336,51 @@ Nel Blocco \ref{lst:esempio-connessione-graphql} viene mostrata una query più co
 
 \section{Stato dell'arte\label{sec:stato-arte}}
 
+\textcolor{red}{work in progress}
+
 In questa sezione vengono presentati ...
 
 \subsection*{Swagger}
 
 Per descrizione servizi (STEFANO)
 
+Swagger \footnote{Swagger: \url{http://swagger.io}} è uno dei servizi più potenti per la definizione di interfacce REST per i servizi.
+Lo scopo di Swagger è di definire un'interfaccia standard e indipendente dal linguaggio a diverse REST API per permettere sia umani che macchine di scoprire e capire le risorse di un servizio senza accedere ai suoi parametri tecnici, come codice sorgente, documentazione o ispezionando il traffico di rete. Una volta definiti i servizi via Swagger, un consumatore può interagire con il servizio remoto con una minima parte di logica implementativa.
+Swagger è quindi, tecnicamente parlando, una specificazione formale supportata da un grande ecosistema di strumenti aggiuntivi, comprendendo interfacce utente front-end, librerie di codice a basso livello e soluzioni commerciali per gestire le API.
+Per poter descrivere la propria API con swagger ci sono diversi approcci disponibili:
+\begin{itemize}
+	\item \textbf{Top-down} Si può usare un approccio di tipo top-down quando si vuole usare lo \emph{Swagger Editor} \textcolor{red}{(Immagine o reference)} per creare la definizione del servizio e successivamente generare l'applicazione server con lo strumento \emph{Swagger Codegen}
+	\item \textbf{Bottom-up} Nel caso in cui si ha una API REST già esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso di utilizzo di uno dei framework supportati (es.: JAX-RS, node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
+\end{itemize}
+
+Nel caso in cui si sia utilizzatori di API e si vuole integrare una API che già possiede una definizione Swagger, si può utilizzare la versione online della \emph{Swagger UI} per esplorarla e successivamente lo \emph{Swagger Codegen} per generare la libreria client desiderata.
+
+\textcolor{red}{migliorare con esempi}
 \subsection*{Appery.io}
 
 Per visual composition (VALERIO)
+
+Appery.io è un sito web che ha due funzionalità principali: la costruzione di applicazioni mobile in maniera rapida e l'offerta di un servizio di Mobile Backend as a service (MBaaS).
+Con il servizio di App Builder, è possibile creare applicazioni per dispositivi mobili che possono girare sui sistemi operativi più diffusi come iOS, Android e Windows Phone, a partire da un unica implementazione logica.
+\upe possibile creare applicazioni di due tipi: 
+\begin{enumerate}
+	\item \textbf{Hybrid Apps} Creare applicazioni ibride che utilizzano API comuni e che girano in modo consistente su iOS, Android e Windows Phone, con il supporto integrato per framework diffusi come Apache Cordova (precedentemente conosciuto come PhoneGap), Ionic e jQuery Mobile. In questo modo è possibile fornire all'applicazione le potenzialità delle applicazioni completamente native, senza avere la complessità di imparare diversi linguaggi nativi. Inoltre è possibile integrare diversi plug-in di terze parti per questi framework
+	\item \textbf{Responsive Web Apps}
+	Con il supporto a Bootstrap, il framework UI per le interfacce di tipo responsive, è possibile creare applicazioni web che sono utilizzabili su tutti i tipi di dispositivi e dimensioni dello schermo
+\end{enumerate}
+
+Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} per permettere di creare rapidamente e in modo intuitivo nuove applicazioni, semplicemente usando \emph{drag and drop}. \upe possibile utilizzare template preinstallati oppure crearne uno nuovo e i dati provenienti dai servizi possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente.
+\begin{itemize}
+	
+	\item \textbf{Sviluppo}
+	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice. Possono essere già presenti oppure creati da zero. Il tipo di struttura dati utilizzato, invece, è di tipo model-based, in particolare si è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta è di tipo visuale, con la Storage API, che permette di gestire le variabili.
+	\item \textbf{Deployment} Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione nelle diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code, quindi è sufficiente inviare questo codice per far scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione, come sorgenti HTML5/CSS oppure come progetti per le IDE di sviluppo native come Android Studio, xCode o Visual Studio
+	\item \textbf{Testing} \upe considerato anche l'aspetto del testing, sia per quanto riguarda HTML5 che le app native.
+	Nel primo caso è possibile eseguire testing istantaneamente sul browser o direttamente sul telefono, mentre nel secondo caso è supportato anche l'offline testing, vale a dire che è possibile capire se l'applicazione può essere eseguita su un dispositivo senza installarla direttamente su di esso.
+	\item \textbf{Administration} La parte amministrativa è la parte di Mobile Backend as a Service, perchè permette di gestire tutta la parte di logica e storage sul cloud. Per quanto riguarda questo aspetto è presente in Appery.io una console di controllo, con la quale è possibile inviare notifiche push, controllare i certificati e le API key necessarie alla app, condividere lo sviluppo con altri utenti, gestire i ruoli del team di sviluppo e controllare i rilasci delle versioni dell'applicazione.
+\end{itemize}
+ 
+
 
 \subsection*{Kimono}
 
