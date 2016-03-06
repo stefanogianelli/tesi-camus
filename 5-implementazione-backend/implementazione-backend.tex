@@ -1,55 +1,62 @@
+In questo capitolo ...
+
 \section{Architettura e tecnologie utilizzate}
 
-abc
-
-\section{Flusso di una richiesta}
-
-abc
-
-\section{Endpoint GraphQL}
-
-\textcolor{red}{Descrivere vantaggi e problematiche}
+\textcolor{red}{Mostrare diagramma dell'architettura e dei compiti dei singoli componenti\\
+	Spiegare il perchè delle scelte architetturali\\
+	Dire quali tecnologie sono state sfruttate per la realizzazione del backend}
 
 \section{Descrittore dei servizi}
 
-abc
+\textcolor{red}{Analizzare il formato del descrittore dei servizi}
 
 \section{Schema del database}
 
-abc
-
-\section{Caching dei risultati}
-
-abc
+\textcolor{red}{fare uno schema (ER?) del database}
 
 \section{Componenti}
 
-abc
+\textcolor{red}{mettere in risalto l'elevata modularità del sistema e la totale mancanza dello stato da gestire}
 
 \subsection{Context Manager}
 
-abc
+\textcolor{red}{spiegare quali compiti svolge il context manager}
 
-\subsection{Primary Service Selection\label{sec:primary-service-selection}}
+\subsection{Primary Service Selection}
 
-abc
+\textcolor{red}{spiegare quale compito svolge il pss, riferimento alla formula usata nel capitolo delle metodologie}
 
 \subsection{Query Handler}
 
-abc
+\textcolor{red}{spiegare come funziona il query handler ed interazione coi bridge}
 
 \subsection{Bridge}
 
-abc
+\textcolor{red}{spiegare perchè si è adottata la soluzione di un bridge generico}
 
 \subsubsection*{REST Bridge}
 
-abc
+\textcolor{red}{descrivere come funziona il bridge per i servizi REST}
 
 \subsection{Response Aggregator}
 
-abc
+\textcolor{red}{spiegare come funziona il response aggregator, riferendosi all'algoritmo descritto nel capitolo delle metodologie}
 
 \subsection{Support Service Selection}
 
-abc
+\textcolor{red}{spiegare come funziona la selezione dei servizi di supporto, riferendosi al capitolo delle metodologie}
+
+\section{Endpoint GraphQL}
+
+\textcolor{red}{Mostrare quali endpoint sono stati realizzati\\
+	Accennare alcuni dettagli sul come sono stati realizzati gli schemi GraphQL\\
+	Descrivere vantaggi e problematiche}
+
+\section{Flusso di una richiesta}
+
+\textcolor{red}{mostrare come viene elaborata una richiesta proveniente dalla mobile app\\
+	mettere bene in risalto i vari passaggi}
+
+\section{Caching dei risultati}
+
+\textcolor{red}{Spiegare dove viene sfruttata la cache (per le risposte dei servizi e per mantenere informazioni sulla sessione)}
