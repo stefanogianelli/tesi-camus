@@ -342,8 +342,6 @@ In questa sezione vengono presentati ...
 
 \subsection*{Swagger}
 
-Per descrizione servizi (STEFANO)
-
 Swagger \footnote{Swagger: \url{http://swagger.io}} è uno dei servizi più potenti per la definizione di interfacce REST per i servizi.
 Lo scopo di Swagger è di definire un'interfaccia standard e indipendente dal linguaggio a diverse REST API per permettere sia umani che macchine di scoprire e capire le risorse di un servizio senza accedere ai suoi parametri tecnici, come codice sorgente, documentazione o ispezionando il traffico di rete. Una volta definiti i servizi via Swagger, un consumatore può interagire con il servizio remoto con una minima parte di logica implementativa.
 Swagger è quindi, tecnicamente parlando, una specificazione formale supportata da un grande ecosistema di strumenti aggiuntivi, comprendendo interfacce utente front-end, librerie di codice a basso livello e soluzioni commerciali per gestire le API.
@@ -357,8 +355,6 @@ Nel caso in cui si sia utilizzatori di API e si vuole integrare una API che già 
 
 \textcolor{red}{migliorare con esempi}
 \subsection*{Appery.io}
-
-Per visual composition (VALERIO)
 
 Appery.io è un sito web che ha due funzionalità principali: la costruzione di applicazioni mobile in maniera rapida e l'offerta di un servizio di Mobile Backend as a service (MBaaS).
 Con il servizio di App Builder, è possibile creare applicazioni per dispositivi mobili che possono girare sui sistemi operativi più diffusi come iOS, Android e Windows Phone, a partire da un unica implementazione logica.
@@ -388,8 +384,17 @@ Per integrazione servizi (STEFANO)
 
 \subsection*{Peudom}
 
-Per composizione mashup  (VALERIO)
-
+\textcolor{red}{Aggiungere citazioni ed eventualmente esempi}
+PEUDOM è un progetto di ricerca sui mashup nato all'interno del dipartimento di Ingegneria Informatica del Politecnico di Milano. Si tratta di una piattaforma per la creazione di mashup, consentendo all'utente finale di sviluppare la propria applicazione su misura. La piattaforma guida l'utente nella scelta dei componenti e nelle definizioni delle relazioni, consentendo alcune operazioni e negandone altre.
+L'elemento peculiare di questa piattaforma è l'utilizzo di paradigmi di composizione visuale per definire la l'integrazione dei componenti a livello di presentazione. Questi paradigmi agiscono direttamente sull'interfaccia utente del mashup, in una sorta di programmazione live nella quale i risultati della composizione sono visibili non appena definiti.
+Esistono due tipologie di componenti: 
+\begin{enumerate}
+	\item \textbf{Wrapped UI Components}
+	Questi sono i widget già predisposti da sviluppatori esperti, che manualmente programmano i wrappers per l'accesso ai servizi Web e alle API
+	\item \textbf{VI Components}
+	VI Components significa Visual Integration based Components e si tratta di componenti creati direttamente dall'utente, manipolando il result set, estraendo uno o più data components utilizzando i diversi templates a disposizione. 
+\end{enumerate}
+Alla fine del processo di definizione dei componenti, questi vengono sincronizzati tra di loro attraverso regole di accoppiamento, che ne determinano il comportamento nel mashup finale.
 
 
 \subsection*{AdAPT}
