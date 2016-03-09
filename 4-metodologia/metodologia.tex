@@ -108,15 +108,15 @@ Resta da definire il metodo col quale a runtime questi servizi vengono seleziona
 
 Si ricorda che un \emph{contesto} è formato dalla congiunzione tra uno o più elementi del contesto, che a loro volta sono formati dalla \emph{dimensione} di riferimento e dal \emph{valore} o \emph{parametri} che essa assume. In Figura \ref{fig:esempio-contesto} viene mostrato un esempio di contesto in cui si vogliono cercare i ristoranti con cucina a base di pesce nei dintorni di Lambrate.
 
-\begin{center}
+\begin{figure}[h]
 	\begin{align*}
 		C =\ &InterestTopic : Restaurant\ \land \\
 		&RestaurantType : FishCuisine\ \land \\
 		&Transport : PublicTransport\ \land \\
 		&Location\ (Latitude : ``45.478897"",\ Longitude : ``9.2342429")
 	\end{align*}
-	\captionof{figure}{Esempio di contesto\label{fig:esempio-contesto}}
-\end{center}
+	\caption{Esempio di contesto\label{fig:esempio-contesto}}
+\end{figure}
 
 Come già evidenziato nella Sezione \ref{sec:associazione-servizi-cdt}, le associazioni vengono effettuate seguendo due approcci differenti in base alla tipologia dell'operazione, \emph{primaria} oppure di \emph{supporto}. Il motivo principale risiede nel fatto che queste due tipologie di operazione hanno scopi differenti e necessitano dunque di due approcci di selezione appositi. Di seguito vengono analizzati entrambi i metodi utilizzati in CAMUS, concentrandosi su di una tipologia di operazione alla volta.
 
