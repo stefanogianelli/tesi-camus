@@ -1,14 +1,16 @@
-language:
-- ruby
-before_install:
-- '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || openssl aes-256-cbc -K $encrypted_3d69c5542c5a_key -iv $encrypted_3d69c5542c5a_iv
-  -in .dropbox_uploader.enc -out ~/.dropbox_uploader -d'
-- sudo add-apt-repository ppa:texlive-backports/ppa -y
-- sudo apt-get update -qq
-- sudo apt-get install -y texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-science texlive-lang-italian
+language: ruby
+install:
+- curl -Lo /tmp/texlive.tar.gz https://github.com/yihui/ubuntu-bin/releases/download/latest/texlive.tar.gz
+- tar xzf /tmp/texlive.tar.gz -C ~
+- export PATH=/$HOME/texlive/bin/x86_64-linux:$PATH
+- tlmgr update --self
+- tlmgr install algorithmicx esint
+- sudo apt-get install -y texlive-lang-italian
 - curl "https://raw.githubusercontent.com/andreafabrizi/Dropbox-Uploader/master/dropbox_uploader.sh"
   -o dropbox_uploader.sh
 - chmod +x dropbox_uploader.sh
+- '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || openssl aes-256-cbc -K $encrypted_3d69c5542c5a_key -iv $encrypted_3d69c5542c5a_iv
+  -in .dropbox_uploader.enc -out ~/.dropbox_uploader -d'
 script:
 - mkdir _build
 - pdflatex -output-directory _build tesi.tex
@@ -16,4 +18,5 @@ script:
 - bibtex _build/tesi
 - pdflatex -output-directory _build tesi.tex
 - pdflatex -output-directory _build tesi.tex
+after_success:
 - ./dropbox_uploader.sh upload _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf

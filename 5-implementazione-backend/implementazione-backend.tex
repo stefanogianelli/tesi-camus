@@ -6,6 +6,8 @@ In questo capitolo ...
 	Spiegare il perchè delle scelte architetturali\\
 	Dire quali tecnologie sono state sfruttate per la realizzazione del backend}
 
+In questa sezione verranno analizzate le tecnologie utilizzate per sviluppare il backend di CAMUS e l'architettura adottata. La logica del sistema è sviluppata a partire da Node.js\footnote{Node.js: \url{https://nodejs.org/en/}}, un framework per lo sviluppo di applicazioni web basato sul linguaggio Javascript\footnote{Javascript Documentation: \url{https://developer.mozilla.org/en/docs/Web/JavaScript}}.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/camus-architecture.png}
@@ -94,7 +96,7 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 
 \section{Schema del database}
 
-\textcolor{red}{fare uno schema (ER?) del database}
+\textcolor{red}{fare uno schema ER + schema logico (class diagram) del database}
 
 \section{Componenti}
 
@@ -104,7 +106,7 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 
 \textcolor{red}{spiegare quali compiti svolge il context manager}
 
-\subsection{Primary Service Selection}
+\subsection{Primary Service Selection\label{sec:primary-service-selection}}
 
 \textcolor{red}{spiegare quale compito svolge il pss, riferimento alla formula usata nel capitolo delle metodologie}
 
@@ -112,7 +114,7 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 
 \textcolor{red}{spiegare come funziona il query handler ed interazione coi bridge}
 
-\subsection{Bridge}
+\subsection{Bridge\label{sec:bridge}}
 
 \textcolor{red}{spiegare perchè si è adottata la soluzione di un bridge generico}
 
