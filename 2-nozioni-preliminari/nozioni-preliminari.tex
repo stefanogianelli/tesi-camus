@@ -378,9 +378,19 @@ Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Develop
  
 
 
-\subsection*{Kimono}
+\subsection*{Karma}
 
-Per integrazione servizi (STEFANO)
+Karma \footnote{Karma : \url{http://usc-isi-i2.github.io/karma/}} è uno strumento di integrazione dati sviluppato dalla University of Southern California, che permette agli utenti di creare rapidamente e facilmente nuovi dati da diverse fonti, come per esempio database, web API e documenti di diversa natura (XML, JSON, KML, ecc.). Gli utenti possono integrare le informazioni modellandolo usando un ontologia di loro scelta, modificata mediante un'interfaccia grafica che permette una maggiore semplicità d'uso. 
+Dopo questa operazione è possibile interagire con il sistema per aggiustare il modello generato in modo automatico ed è possibile trasformare i dati per normalizzarli. Una volta che il modello è completo gli utenti possono pubblicare i nuovi dati come RDF o salvarli su un database.
+Oltre a queste funzionalità altre innovazioni di Karma sono le seguenti: 
+\begin{itemize}
+		\item \textbf{Ease of use} L'utente, utilizzando tecniche di programmazione per esempi ed algoritmi  di ottimizzazione (Steiner tree), aggiusta il modello generato in modo automatico utilizzando un interfaccia grafica e non vede mai la complessità delle regole di mapping usate
+		\item \textbf{Semantic Models} Karma permette agli utenti di combinare diverse ontologie per permettere loro di mappare i loro dati a vocabolari standard
+		\item \textbf{Scalable Processing} Anche la scalabilità è un elemento importante in Karma; infatti gli utenti lavorano con un sottoinsieme dei loro dati, permettendo di creare un'interfaccia utente dove essi definiscono il modello di integrazione dei dati. Dopo questo il sistema usa questi modelli in modalità batch per integrare una quantità maggiore di dati
+		\item \textbf{Data Transformation} \upe offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
+\end{itemize}
+
+\textcolor{red}{Aggiungere esempi di Karma ed immagini}
 
 \subsection*{Peudom}
 
@@ -396,8 +406,30 @@ Esistono due tipologie di componenti:
 \end{enumerate}
 Alla fine del processo di definizione dei componenti, questi vengono sincronizzati tra di loro attraverso regole di accoppiamento, che ne determinano il comportamento nel mashup finale.
 
+\textcolor{red}{Aggiungere esempi di Peudom e immagini}
 
-\subsection*{AdAPT}
+\subsection*{ADaPT}
 
-Controllare ... (STEFANO)
+ADaPT \cite{6816749_ADaPT} (Automatic Data Personalization and Tailoring) è un progetto sviluppato all'interno del Politecnico di Milano, che propone un framework per personalizzare l'accesso ai dati a partire dal contesto degli utenti. 
+
+Dopo una fase di conoscenza delle abitudini dell'utente, mentre si trova in diversi contesti, l'applicazione è in grado di fornire le informazioni corrette quando il medesimo contesto si ripresenta.
+L'architettura presentata è formata da due componenti: il client e il server.
+Il client è implementato in Android e utilizza il database interno SQLite e le connessioni con il server mediante TCP. Questo permette di utilizzare l'applicazione anche in condizioni di assenza di rete, perché i dati rilevanti sono salvati anche nel database SQLite. La visualizzazione dei dati utilizzata è di tipo \emph{master-detail}, dove nella schermata principale è presentata la lista degli argomenti. Quando uno di essi è selezionato l'utente può esplorare i dati o cercare un elemento specifico con un filtro di ricerca per poi visualizzare i dati ricevuti nella pagina dei risultati. Una volta ottenuti questi l'utente può visualizzare i dettagli dell'elemento desiderato in una nuova pagina. 
+\textcolor{red}{esempio film adapt}
+
+
+
+\subsection*{CADD}
+
+CADD è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il CDT usato anche in CAMUS.  Una volta stabilito il modello di contesto, sono determinati tutti i contesti e il designer è guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso espressioni XQuery usate per potare i dati XML da inviare ai dispositivi mobili.
+Il Context-ADDICT Server supporta la potatura dei dati on-line e l'invio dei dati risultanti all'applicazione mobile. 
+\textcolor{red}{(immagine CADD tool architecture)}
+I componenti di CADD spiegati in \textcolor{red}{(immagine cadd)} sono i seguenti:
+\begin{itemize}
+	\item \textbf{Context Space Designer Assistant} Il designer è guidato nella modifica del CDT usando una procedura guidata 
+	\item \textbf{Valid Contexts Generation}
+	Una volta terminata la fase di design, viene invocato questo componente, il quale genera automaticamente tutti i contesti validi, come combinazione dei valori dimensione.
+	\item \textbf{Data Tailoring Assistant}
+	Il designer associa ogni contesto con la porzione corrispondente di dati disponibili. Questa associazione è svolta utilizzando uno schema globale di tipo ER. Basandosi sull'interazione con una rappresentazione grafica dello schema, il tool è in grado di generare una o più espressioni XQuery in modo da costruire le view corrispondenti ai dati.
+\end{itemize}
 
