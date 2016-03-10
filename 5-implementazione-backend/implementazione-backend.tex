@@ -6,7 +6,15 @@ In questo capitolo ...
 	Spiegare il perchè delle scelte architetturali\\
 	Dire quali tecnologie sono state sfruttate per la realizzazione del backend}
 
-In questa sezione verranno analizzate le tecnologie utilizzate per sviluppare il backend di CAMUS e l'architettura adottata. La logica del sistema è sviluppata a partire da Node.js\footnote{Node.js: \url{https://nodejs.org/en/}}, un framework per lo sviluppo di applicazioni web basato sul linguaggio Javascript\footnote{Javascript Documentation: \url{https://developer.mozilla.org/en/docs/Web/JavaScript}}.
+In questa sezione verranno analizzate le tecnologie utilizzate per sviluppare il backend di CAMUS e, in seguito, l'architettura adottata.
+
+La logica del sistema è sviluppata a partire da Node.js\footnote{Node.js: \url{https://nodejs.org/en/}}, un framework per lo sviluppo di applicazioni web basato sul linguaggio Javascript\footnote{Javascript Documentation: \url{https://developer.mozilla.org/en/docs/Web/JavaScript}}. Alla base viene utilizzato il motore Javascript V8 di Google. Node.js permette la creazione di web server tramite l'ausilio di diversi \emph{moduli} che gestiscono le funzionalità di base, come il file system, le operazioni di rete, la crittografia, ecc. \upe compatibile con i sistemi operativi più diffusi e possono essere utilizzati tutti i linguaggi che riescono ad essere compilati in Javascript, come CoffeScript o TypeScript. Per certi versi, Node.js può essere considerato molto simile a PHP come ambito di utilizzo, la principale differenza è che le funzioni in Node.js non sono bloccanti, quindi è possibile eseguire attività in parallelo e utilizzare callback o promise per segnalare il completamento, sia in caso positivo che negativo, dei comandi. Questa scelta di utilizzare un'architettura di tipo \emph{event-driver} permette la realizzazione di web server estremamente scalabili senza coinvolgere l'utilizzo dei thread. Node.js infatti lavora solo su un singolo core, tranne ne caso in cui vengano avviate più istanze separate in parallelo, ed il parallelismo gestito tramite eventi permette di simulare un sistema multithread, riducendo però in maniera significativa la complessità di sviluppo.
+
+Come database è stato scelto di utilizzare MongoDB\footnote{MongoDB: \url{https://www.mongodb.org/}}. MongoDB è un database che fa parte della categoria NoSQL, in quanto abbandona lo schema relazionale classico basato su tabelle in favore di uno basato sui documenti. Ogni documento ha una struttura simile ad un file JSON, in MongoDB in particolare viene nominato BSON, e possiede uno schema dinamico, a differenza dei database relazioni che hanno uno schema ben definito. Questa caratteristica permette di sviluppare in maniera più semplice e rapida le applicazioni e di integrare facilmente alcune tipologie di dato. La struttura a documento prevede però una ristrutturazione generale dello schema di un database. Per esempio, per chi è abituato ad un database relazione, deve essere consapevole che in MongoDB non esiste l'operatore di JOIN, bensì viene fornita la possibilità di salvare dei sotto-documenti all'interno di un documento. Per esempio, se si vuole memorizzare un libro che ha più autori, è possibile salvare l'elenco degli autori, insieme ad eventuali altri suoi dati, all'interno del documento contenente le informazioni del libro\footnote{Questo è solo un esempio indicativo, non è una soluzione ottima in quanto un autore può pubblicare più di un libro e utilizzando questo schema si otterrebbe una duplicazione delle informazioni}. Un'altra caratteristica di MongoDB è la flessibilità nel comporre le query, che possono essere specificate sui campi, su un range di valori o tramite un'espressione regolare. Sono sempre ammesse anche proiezioni dei campi che si vogliono visualizzare nei risultati. Sempre per interrogare i dati si possono utilizzare funzioni \emph{MapReduce} e di \emph{aggregazione}. In particolare quest'ultimo permette di ottenere un risultato simile all'operatore GROUP BY dei database SQL, ma fornisce anche la flessibilità di concatenare più operazioni per formare una \emph{pipeline}. Mette a disposizione anche il comando \$lookup per effettuare una unione tra documenti diversi. MongoDB permette di definire degli \emph{indici} sui campi che vengono utilizzati di frequente nelle query per velocizzarle. Una caratteristica che rende MongoDB estremamente scalabile è la possibilità di eseguire multiple istanze su macchine diverse, permettendo al sistema di scalare orizzontalmente. Sarà compito di MongoDB gestire le chiamate e selezionare il nodo dove effettuare la richiesta, tramite un sistema di load-balancing. Tutto questo viene agevolato dalla struttura del file system utilizzato da MongoDB, chiamato \emph{Grid File System}, che gestisce la divisione dei documenti in diversi \virgolette{pezzi}. Oltre al load-balancing per migliorare le prestazioni è possibile anche utilizzare altre macchine come \emph{repliche}, in modo da garantire la sicurezza dei dati nel caso di guasti.
+
+Il fatto che MongoDB memorizzi i file in un formato dalla struttura molto simile ad un JSON agevola l'integrazione con Node.js, che a sua volta utilizza oggetti semplicemente mappabili in formato JSON. Come specificato precedentemente, MongoDB non possiede una struttura definiti a priori. Per garantire comunque una consistenza dei dati salvati nel database, si è scelto di forzare l'utilizzo di uno schema tramite un Object Relational Mapping (ORM)\footnote{Object Relational Mapping: \url{https://it.wikipedia.org/wiki/Object-relational_mapping}}. Un ORM fornisce un livello di astrazione superiore ad un driver nativo e permette la definizione di come gli oggetti vengono mappati nel database e viceversa, definendo quindi uno schema del database. In particolare, per il progetto CAMUS è stato utilizzato un ORM specifico per Node.js di nome mongoose\footnote{MongooseJS: \url{http://mongoosejs.com/}}.
+
+Oltre ad un database che garantisse la persistenza dei dati più importanti, si è resa necessaria l'adozione di un altro database per effettuare  caching delle risposte ricevute dai servizi e per mantenere alcune informazioni relative alle sessioni degli utenti per un determinato intervallo di tempo. La scelta in questo caso è ricaduta su Redis\footnote{Redis: \url{http://redis.io/}}. Redis fornisce un database interamente memorizzato in memoria, quindi estremamente rapido nell'evadere le richieste, ed è basato su un sistema chiave-valore. Queste caratteristiche, insieme al fatto che quanto viene salvato un dato è possibile impostare un intervallo di tempo scaduto il quale l'elemento viene eliminato, lo ha reso il candidato perfetto per svolgere questo compito. Per interfacciare Node.js con l'istanza di Redis in esecuzione viene utilizzato il modulo ioredis\footnote{ioredis: \url{https://github.com/luin/ioredis}}.
 
 \begin{figure}[h]
 	\centering
@@ -14,9 +22,23 @@ In questa sezione verranno analizzate le tecnologie utilizzate per sviluppare il
 	\caption{Architettura del backend}\label{fig:architettura-backend}
 \end{figure}
 
-\section{Descrittore dei servizi}
+Ora che sono state definite le tecnologie utilizzate, viene presentata l'architettura di CAMUS, che può essere osservata nello schema in Figura \ref{fig:architettura-backend}. Come si può notare è stata privilegiata la modularità dei vari componenti che formano il sistema, in modo che ognuno sia circoscritto ad uno specifico compito. Inoltre, tutti i componenti mostrati sono \emph{stateless}, cioè non mantengono informazioni sullo stato di una sessione. Questa scelta architetturale permette di poter avviare diverse istanze del backend di CAMUS in modo che le richieste degli utenti possano essere evase da un'istanza piuttosto che un'altra.
 
-\textcolor{red}{Analizzare il formato del descrittore dei servizi}
+Il componente che sta alla base di tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti ed organizzare le chiamate secondo il flusso della richiesta, che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta-server}.
+
+Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile app e lo trasforma in una versione \virgolette{decorata}, eseguendo una unione tra le informazioni ricevute dal client e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
+
+Il compito del \emph{Primary Service Selection} è di andare a recuperare le associazioni tra l'albero di contesto e le operazioni dei servizi primari. \upe inoltre suo compito gestire le associazioni personalizzate, come quella relativa la ricerca tramite \emph{località}. In seguito assegna un \emph{punteggio} ad ogni operazione trovata ed emette le prime N operazioni con valutazione più elevata.
+
+Un compito simile viene svolto dal \emph{Support Service Selection} per le operazioni di supporto. Sebbene lo scopo del componente sia lo stesso, l'algoritmo di selezione è differente: in questo caso le associazioni vengono considerate più come \emph{vincoli}, ed un'operazione, per essere selezionata, deve rispettare tutti i vincoli associati.
+
+Il \emph{Query Handler} ha il compito di gestire le chiamate verso i servizi. Prende in input la lista di operazioni scelte dal \emph{Primary Service Selection} e ne acquisice i \emph{descrittori}, contenenti le informazioni per poterli interrogare. Di seguito organizza le chiamate ai servizi attraverso l'uso di \emph{bridge} specifici, che sono scelti in base al \emph{protocollo} di comunicazione adottato dal servizio. Una volta ricevute le risposte, si occupa di interfacciarsi con il \emph{Response Parser} per trasformarle nella rappresentazione interna tramite l'utilizzo dei \emph{termini semantici} come nome dei campi.
+
+Infine, il \emph{Response Aggregator} ha il compito di analizzare gli elementi ricevuti al fine di rimuovere i duplicati.
+
+In questa sezione si è voluta dare una visione d'insieme sui compiti che spettano ai vari componenti. Un'analisi più approfondita delle attività di ognuno di essi verrà svolta nella Sezione \ref{sec:componenti-backend}.
+
+\section{Descrittore dei servizi}
 
 In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella Sezione \ref{sec:utilizzo-servizi}. Affinché il sistema possa effettuare le richieste, è necessario che sia presente una formato per descrivere le caratteristiche di ogni servizio (es.: l'indirizzo verso il quale effettuare la richiesta, i parametri da inserire, ecc.). Per questo motivo è stato introdotto l'utilizzo di un \emph{descrittore dei servizi}, che sia in grado di descrivere tutte le possibili configurazioni che i servizi possono richiedere. I \emph{descrittori} non sono altro che file JSON che specificano le impostazioni di ogni servizio. Di seguito verranno analizzati nel dettaglio tutti i campi che compongono il descrittore. Visto che il descrittore contiene una moltitudine di informazioni che riguardano diversi aspetti di un servizio, viene diviso in sotto-oggetti in modo da semplificarne la comprensione e lettura.
 
@@ -98,11 +120,11 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 
 \textcolor{red}{fare uno schema ER + schema logico (class diagram) del database}
 
-\section{Componenti}
+\section{Componenti\label{sec:componenti-backend}}
 
 \textcolor{red}{mettere in risalto l'elevata modularità del sistema e la totale mancanza dello stato da gestire}
 
-\subsection{Context Manager}
+\subsection{Context Manager\label{sec:context-manager}}
 
 \textcolor{red}{spiegare quali compiti svolge il context manager}
 
@@ -136,7 +158,7 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 	Accennare alcuni dettagli sul come sono stati realizzati gli schemi GraphQL\\
 	Descrivere vantaggi e problematiche}
 
-\section{Flusso di una richiesta}
+\section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
 \textcolor{red}{mostrare come viene elaborata una richiesta proveniente dalla mobile app\\
 	mettere bene in risalto i vari passaggi}
@@ -150,3 +172,8 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 \section{Caching dei risultati}
 
 \textcolor{red}{Spiegare dove viene sfruttata la cache (per le risposte dei servizi e per mantenere informazioni sulla sessione)}
+
+\section{File di configurazione}
+
+\textcolor{red}{Spiegare campi del file di configurazione e variabili d'ambiente\\
+	Nomi dei file per i vari ambienti (sviluppo, produzione)}
