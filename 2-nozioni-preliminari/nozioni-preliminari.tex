@@ -351,6 +351,12 @@ Per poter descrivere la propria API con swagger ci sono diversi approcci disponi
 	\item \textbf{Bottom-up} Nel caso in cui si ha una API REST già esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso di utilizzo di uno dei framework supportati (es.: JAX-RS, node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
 \end{itemize}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/swagger.png}
+	\caption{Esempio Swagger Editor}\label{fig:swagger}
+\end{figure}
+
 Nel caso in cui si sia utilizzatori di API e si vuole integrare una API che già possiede una definizione Swagger, si può utilizzare la versione online della \emph{Swagger UI} per esplorarla e successivamente lo \emph{Swagger Codegen} per generare la libreria client desiderata.
 
 \textcolor{red}{migliorare con esempi}
@@ -366,10 +372,15 @@ Con il servizio di App Builder, è possibile creare applicazioni per dispositivi 
 \end{enumerate}
 
 Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} per permettere di creare rapidamente e in modo intuitivo nuove applicazioni, semplicemente usando \emph{drag and drop}. \upe possibile utilizzare template preinstallati oppure crearne uno nuovo e i dati provenienti dai servizi possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/appery-visual-composition.png}
+	\caption{Composizione visuale in Appery.io}\label{fig:appery-visual-composition}
+\end{figure}
 \begin{itemize}
 	
 	\item \textbf{Sviluppo}
-	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice. Possono essere già presenti oppure creati da zero. Il tipo di struttura dati utilizzato, invece, è di tipo model-based, in particolare si è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta è di tipo visuale, con la Storage API, che permette di gestire le variabili.
+	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice, come nell'immagine in \ref{fig:appery-visual-composition} Possono essere già presenti oppure creati da zero. Il tipo di struttura dati utilizzato, invece, è di tipo model-based, in particolare si è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta è di tipo visuale, con la Storage API, che permette di gestire le variabili.
 	\item \textbf{Deployment} Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione nelle diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code, quindi è sufficiente inviare questo codice per far scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione, come sorgenti HTML5/CSS oppure come progetti per le IDE di sviluppo native come Android Studio, xCode o Visual Studio
 	\item \textbf{Testing} \upe considerato anche l'aspetto del testing, sia per quanto riguarda HTML5 che le app native.
 	Nel primo caso è possibile eseguire testing istantaneamente sul browser o direttamente sul telefono, mentre nel secondo caso è supportato anche l'offline testing, vale a dire che è possibile capire se l'applicazione può essere eseguita su un dispositivo senza installarla direttamente su di esso.
@@ -390,7 +401,15 @@ Oltre a queste funzionalità altre innovazioni di Karma sono le seguenti:
 		\item \textbf{Data Transformation} \upe offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
 \end{itemize}
 
-\textcolor{red}{Aggiungere esempi di Karma ed immagini}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/karma-europeana.jpg}
+	\caption{Karma Service Integration}\label{fig:karma-europeana}
+\end{figure}
+
+
+Karma è stato applicato con dati di diversa natura, spaziando dai musei ai dati di tipo bioinformatico. 
+Nel caso dei dati di reperti dei musei, utilizzando questo tool si sono convertiti oltre 40000 reperti appartenenti alle collezioni dei musei seguendo l'Europeana Data Model, un modello di classificazione per le collezioni artistiche. A partire dai dati provenienti da diverse tabelle di un Database SQL Server è stato possibile creare un nuovo dataset omogeneo secondo un nuovo modello dati. 
 
 \subsection*{Peudom}
 
