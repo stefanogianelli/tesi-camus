@@ -1,10 +1,42 @@
 \section{Overview su cross platform mobile}
+Al momento di scegliere come implementare l'applicazione mobile per CAMUS sono state considerate due opzioni: la creazione di un'applicazione nativa inizialmente solo per Android, per poi estendere la compatibilità su iOS, oppure l'utilizzo di strumenti cross platform, funzionanti su più di un sistema operativo mobile.
+Questa esigenza è nata dal fatto che il mercato delle app mobile sta crescendo in maniera esponenziale e le competenze richieste agli sviluppatori sono molto variegate per sviluppare applicazioni native.
+Per esempio per quanto riguarda lo sviluppo iOS è necessario conoscere come linguaggi di programmazioni Objective-C e Swift, per Android ci si basa principalmente su Java e per Windows Phone è necessario utilizzare C-sharp \textcolor{red}{(Non mi prende il cancelletto)}, senza dimenticare altri sistemi operativi meno diffusi o emergenti (Tizen, Ubuntu Touch, ecc.).
+Gli strumenti di sviluppo \textbf{cross-platform} solitamente si basano sul principio di \virgolette{write once run everywhere}, cioè il codice viene scritto una volta sola per creare applicazioni per diverse piattaforme, permettendo quindi di limitare le competenze richieste ai programmatori. 
+\upe possibile identificare due famiglie di strumenti per la programmazione multi piattaforma:
+\begin{enumerate}
+	\item \textbf{Rendering tramite componenti nativi} In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
+	\textcolor{red}{allungare + esempi}
+	\item \textbf{Rendering tramite WebView} In questa famiglia il rendering dell'applicazione è svolto in una pagina web, che viene caricata delle volte in un container composto da componenti nativi.
+	In questo caso è possibile programmare l'applicazione come se fosse una pagina web, implementandolo allo stesso modo di un sito web per browser.
+	Purtroppo questo nel \virgolette{look and feel} dell'applicazione non è sempre un vantaggio, perché, nonostante le possibilità di scelta grafiche e di comportamento siano molteplici, le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa.
+\end{enumerate}
 
-abc
+ 
+
 
 \section{Tecnologie utilizzate}
+Per la creazione di CAMUS si è scelto di utilizzare anche lato backend degli strumenti che siano implementabili in maniera semplice e dove la suddivisione in moduli singoli riutilizzabili assuma un ruolo di primo piano. Per questo motivo si è scelto di utilizzare degli strumenti tecnologici che sono all'avanguardia nello svolgere questo compito, come React e la sua derivazione per la programmazione mobile React Native. Successivamente è introdotta la parte logica dell'applicazione con il funzionamento architetturale dell'aggiornamento dati, con il paradigma Flux.
 
-abc
+\subsection{React}
+
+React nasce come libreria open-source rilasciata nel 2013 da Facebook, che permette di ottimizzare le visualizzazioni delle pagine HTML, utilizzando componentine racchiudono altri specificati come HTML tag personalizzati.
+Essa proviene da XHP, che è un framework HTML per il linguaggio PHP, ed è stata prima utilizzata nel newsfeed di Facebook nel 2011 e più tardi in Instagram.com.
+Le principali funzionalità in React sono le seguenti:
+\begin{itemize}
+	\item \textbf{One-way data flow} Le proprietà, un set di valori immutabili, sono passati al componente figlio all'interno del suo tag HTML.Il componente figlio non può modificare direttamente nessuna proprietà che gli è stata passata, ma può passare funzioni che possono modificare il valore. \textcolor{red}{(introdurre esempio)}
+	\item \textbf{Virtual DOM}
+	React crea una propria struttura dati in memoria, che calcola le differenze risultanti e aggiorna il DOM HTML risultante nella pagina in modo efficiente. In questo modo il programmatore può scrivere codice come se l'intera pagina è ricaricata ogni volta, mentre è la libreria React a stabilire quali siano i componenti che vadano sostituiti e quali no. 
+	\item \textbf{JSX}
+	I componenti React sono solitamente scritti in JSX, un'estensione JavaScript che permette di quotare facilmente HTML e utilizzarne la sintassi per i tag per renderizzare i sottocomponenti
+\end{itemize}
+
+\subsection{React Native}
+React Native è una libreria open-source rilasciata nel 2015 sempre da Facebook, proponendosi come estensione del framework React per quanto riguarda le applicazioni mobile.
+Le principali differenze con React sono dovute alla difficoltà maggiore di sviluppare un framework per le applicazioni mobile. 
+Quando si sviluppa sul web, semplicemente si salvano i file modificati e si ricarica la pagina, cosa che non è possibile fare con le applicazioni mobile, perché è necessaria una nuova compilazione per vedere i cambiamenti apportati.
+Con React Native è possibile migliorare l'esperienza d'uso sulle piattaforme mobile rispetto al web. Come primo aspetto si può accedere ai componenti specifici dell'interfaccia utente, come le mappe, i picker e gli switch, anche se tuttavia possono essere reimplementati e modificati.
+
 
 \section{Struttura dei file di mashup}
 
