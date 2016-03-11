@@ -2,10 +2,6 @@ In questo capitolo ...
 
 \section{Architettura e tecnologie utilizzate}
 
-\textcolor{red}{Mostrare diagramma dell'architettura e dei compiti dei singoli componenti\\
-	Spiegare il perchè delle scelte architetturali\\
-	Dire quali tecnologie sono state sfruttate per la realizzazione del backend}
-
 In questa sezione verranno analizzate le tecnologie utilizzate per sviluppare il backend di CAMUS e, in seguito, l'architettura adottata.
 
 La logica del sistema è sviluppata a partire da Node.js\footnote{Node.js: \url{https://nodejs.org/en/}}, un framework per lo sviluppo di applicazioni web basato sul linguaggio Javascript\footnote{Javascript Documentation: \url{https://developer.mozilla.org/en/docs/Web/JavaScript}}. Alla base viene utilizzato il motore Javascript V8 di Google. Node.js permette la creazione di web server tramite l'ausilio di diversi \emph{moduli} che gestiscono le funzionalità di base, come il file system, le operazioni di rete, la crittografia, ecc. \upe compatibile con i sistemi operativi più diffusi e possono essere utilizzati tutti i linguaggi che riescono ad essere compilati in Javascript, come CoffeScript o TypeScript. Per certi versi, Node.js può essere considerato molto simile a PHP come ambito di utilizzo, la principale differenza è che le funzioni in Node.js non sono bloccanti, quindi è possibile eseguire attività in parallelo e utilizzare callback o promise per segnalare il completamento, sia in caso positivo che negativo, dei comandi. Questa scelta di utilizzare un'architettura di tipo \emph{event-driver} permette la realizzazione di web server estremamente scalabili senza coinvolgere l'utilizzo dei thread. Node.js infatti lavora solo su un singolo core, tranne ne caso in cui vengano avviate più istanze separate in parallelo, ed il parallelismo gestito tramite eventi permette di simulare un sistema multithread, riducendo però in maniera significativa la complessità di sviluppo.
@@ -119,6 +115,18 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 \section{Schema del database}
 
 \textcolor{red}{fare uno schema ER + schema logico (class diagram) del database}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_er_db.png}
+	\caption{Diagramma ER del database}\label{fig:schema-er-db}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_classi_mongo.png}
+	\caption{Schema logico del database}\label{fig:schema-logico-db}
+\end{figure}
 
 \section{Componenti\label{sec:componenti-backend}}
 
