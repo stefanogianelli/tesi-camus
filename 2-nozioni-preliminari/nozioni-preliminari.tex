@@ -341,12 +341,12 @@ In questa sezione vengono presentati alcuni strumenti già esistenti per quanto r
 \subsection*{Swagger}
 
 Swagger \footnote{Swagger: \url{http://swagger.io}} è uno dei servizi più famosi per la definizione di interfacce REST per i servizi.
-Lo scopo di Swagger è di definire un'interfaccia standard e indipendente dal linguaggio per diverse REST API per permettere sia umani che macchine di scoprire e capire le risorse di un servizio senza accedere ai suoi parametri tecnici (es.: codice sorgente, documentazione o ispezione del traffico di rete). Una volta definiti i servizi via Swagger, un consumatore può interagire con il servizio remoto con una minima parte di logica implementativa.
-Swagger è quindi, tecnicamente parlando, una specificazione formale supportata da un grande ecosistema di strumenti aggiuntivi, comprendendo interfacce utente front-end, librerie di codice a basso livello e soluzioni commerciali per gestire le API.
-Per poter descrivere la propria API con swagger ci sono diversi approcci disponibili:
+Lo scopo di Swagger è di definire un'interfaccia standard e indipendente dal linguaggio utilizzato per le diverse API al fine di permettere la scoperta e la comprensione delle risorse di un servizio, senza accedere ai suoi parametri tecnici (es.: codice sorgente, documentazione o ispezione del traffico di rete). Una volta definiti i servizi via Swagger, un consumatore può interagire con il servizio remoto implementando una minima parte di logica.
+Swagger è quindi, tecnicamente parlando, una specifica formale supportata da un grande ecosistema di strumenti aggiuntivi, che comprende interfacce utente frontend, librerie di codice a basso livello e soluzioni commerciali per gestire le API.
+Per poter descrivere la propria API con Swagger ci sono diversi approcci disponibili:
 \begin{itemize}
-	\item \textbf{Top-down} L'approccio top-down considera per prima la definizione del servizio che si vuole avere come output e successivamente generare l'applicazione. Per la prima operazione lo strumento fornito è lo \emph{Swagger Editor} \ref{fig:swagger} e permette la creazione della definizione del servizio, mentre per la seconda operazione lo strumento utilizzato è lo \emph{Swagger Codegen}
-	\item \textbf{Bottom-up} Nel caso in cui si ha una API REST già esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso di utilizzo di uno dei framework supportati (es.: JAX-RS, node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
+	\item \textbf{Top-down} L'approccio top-down considera per prima la definizione del servizio che si vuole avere come output e successivamente genera l'applicazione. Per la prima operazione lo strumento fornito è lo \emph{Swagger Editor} (Figura \ref{fig:swagger}), che permette la definizione del nuovo servizio, mentre per la seconda operazione lo strumento utilizzato è \emph{Swagger Codegen}
+	\item \textbf{Bottom-up} Nel caso in cui si ha una già API REST esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso si utilizzi uno dei framework supportati (es.: JAX-RS, Node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
 \end{itemize}
 
 \begin{figure}[h]
@@ -355,7 +355,7 @@ Per poter descrivere la propria API con swagger ci sono diversi approcci disponi
 	\caption{Esempio Swagger Editor}\label{fig:swagger}
 \end{figure}
 
-Nel caso in cui si sia utilizzatori di API e si vuole integrare una API che già possiede una definizione Swagger, si può utilizzare la versione online della \emph{Swagger UI} per esplorarla e successivamente lo \emph{Swagger Codegen} per generare la libreria client desiderata.
+Nel caso in cui si utilizzi una API e se ne voglia integrare un'altra che già possiede una definizione Swagger, si può utilizzare la versione online della \emph{Swagger UI} per esplorarla e successivamente lo \emph{Swagger Codegen} per generare la libreria client desiderata.
 
 \begin{figure}[h]
 	\centering
@@ -370,40 +370,41 @@ Appery.io è uno strumento basato sul cloud che offre la possibilità di velocizza
 Con il servizio di App Builder, è possibile creare applicazioni per dispositivi mobili che possono girare sui sistemi operativi più diffusi come iOS, Android e Windows Phone, a partire da un unica implementazione logica.
 \upe possibile creare applicazioni di due tipi: 
 \begin{enumerate}
-	\item \textbf{Hybrid Apps} Creare applicazioni ibride che utilizzano API comuni e indipendenti dal sistema operativo e che girano in modo consistente su iOS, Android e Windows Phone, con il supporto integrato per framework diffusi come Apache Cordova (precedentemente conosciuto come PhoneGap), Ionic e jQuery Mobile. In questo modo è possibile fornire all'applicazione le potenzialità delle applicazioni completamente native, senza avere la complessità di imparare diversi linguaggi nativi. Inoltre si possono integrare diversi plug-in di terze parti per questi framework
+	\item \textbf{Hybrid Apps} Creare applicazioni ibride che utilizzano API comuni e indipendenti dal sistema operativo, che girano in modo consistente su iOS, Android e Windows Phone, integrando il supporto per i framework più diffusi come Apache Cordova (precedentemente conosciuto come PhoneGap), Ionic e jQuery Mobile. In questo modo è possibile fornire all'applicazione le potenzialità delle applicazioni completamente native, senza la necessità di imparare diversi linguaggi nativi. Si possono sfruttare inoltre tutti i plug-in disponibili per i vari framework, per implementare funzionalità più avanzate rispetto a quelle fornite dal framework stesso
 	\item \textbf{Responsive Web Apps}
-	Con il supporto a Bootstrap, il framework UI per le interfacce di tipo responsive, è possibile creare applicazioni web che sono utilizzabili su tutti i tipi di dispositivi e dimensioni dello schermo
+	Con il supporto a Bootstrap, il framework UI per le interfacce di tipo responsive, è possibile creare applicazioni web che adattano la modalità con la quale vengono visualizzate in base al tipo di dispositivo e alla dimensione dello schermo
 \end{enumerate}
 
-Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} per permettere di creare rapidamente e in modo intuitivo nuove applicazioni, semplicemente usando \emph{drag and drop}. \upe possibile utilizzare template preinstallati oppure crearne uno nuovo e i dati provenienti dai servizi possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente.
+Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} in modo da permettere la creazione rapida ed intuitiva di nuove applicazioni nuove applicazioni, semplicemente usando \emph{drag \& drop}. \upe possibile sfruttare diversi template messi a disposizione da Appery.io per avere una base di partenza per alcune applicazioni comuni, altrimenti, se is vuole ottenere maggiore flessibilità si può creare uno schema da zero. Viene anche fornita la possibilità di acquisire dati da servizi esterni, che possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente. Le principali fasi che coinvolgono la realizzazione di un'applicazione sono:
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/appery-visual-composition.png}
 	\caption{Composizione visuale in Appery.io}\label{fig:appery-visual-composition}
 \end{figure}
+
 \begin{itemize}
 	
 	\item \textbf{Development}
-	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice, come nell'immagine in \ref{fig:appery-visual-composition} Possono essere già presenti oppure creati da zero. Il tipo di struttura dati utilizzato, invece, è di tipo model-based, in particolare si è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta per l'interazione dell'utente è di tipo visuale, con la Storage API, che permette di gestire le variabili in modo semplice
-	\item \textbf{Deployment} Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione nelle diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code, quindi è sufficiente inviare questo codice per far scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione, come sorgenti HTML5/CSS oppure come progetti per le IDE di sviluppo native come Android Studio, xCode o Visual Studio
-	\item \textbf{Testing} \upe considerato anche l'aspetto del testing, sia per quanto riguarda HTML5 che le app native.
-	Nel primo caso è possibile eseguire testing istantaneamente sul browser o direttamente sul telefono, mentre nel secondo caso è supportato anche l'offline testing, vale a dire che è possibile capire se l'applicazione può essere eseguita su un dispositivo senza installarla direttamente su di esso.
-	\item \textbf{Administration} La parte amministrativa è la parte che si riferisce Mobile Backend as a Service e permette di gestire tutta la parte di logica e storage sul cloud. Per quanto riguarda questo aspetto è presente in Appery.io una console di controllo, con la quale è possibile inviare notifiche push, controllare i certificati e le API key necessarie alla app, condividere lo sviluppo con altri utenti, gestire i ruoli del team di sviluppo e controllare i rilasci delle versioni dell'applicazione.
+	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice, come in Figura \ref{fig:appery-visual-composition}. Possono essere già presenti oppure creati ex-novo. Il tipo di struttura dati utilizzato, invece, è di tipo \emph{model-based}, in particolare si è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta per l'interazione dell'utente è di tipo visuale, tramite la \emph{Storage API}, che permette di gestire le variabili in modo semplice
+	\item \textbf{Deployment} Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione per le diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code. \upe è sufficiente inviare questo codice per permettere di scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione come sorgenti HTML5/CSS oppure come progetti per gli IDE di sviluppo native come Android Studio, XCode o Visual Studio
+	\item \textbf{Testing} \upe considerato anche l'aspetto del testing, sia per quanto riguarda HTML5 sia per  le app native.
+	Nel primo caso è possibile eseguire testing istantaneamente nel browser o direttamente sul telefono, mentre nel secondo caso è supportato anche l'offline testing, cioè è possibile fare test di unità e di integrazione senza installare l'app sul dispositivo
+	\item \textbf{Administration} La parte amministrativa è la parte che si riferisce al Mobile Backend as a Service (MBaaS) e permette di gestire tutta la parte di logica e storage sul cloud. Per quanto riguarda questo aspetto è presente in Appery.io una console di controllo, con la quale è possibile inviare notifiche push, controllare i certificati e le API key necessarie all'app, condividere lo sviluppo con altri utenti, gestire i ruoli del team di sviluppo e controllare i rilasci delle versioni dell'applicazione
 \end{itemize}
  
 
 
 \subsection*{Karma}
 
-Karma \footnote{Karma : \url{http://usc-isi-i2.github.io/karma/}} è uno strumento di integrazione dati sviluppato dalla University of Southern California, che permette agli utenti di creare rapidamente e facilmente nuovi dati da diverse fonti, come database, web API e documenti di diversa natura (XML, JSON, KML, ecc.). Gli utenti possono integrare le informazioni modellandolo usando un ontologia di loro scelta, modificata mediante un'interfaccia grafica che permette una maggiore semplicità d'uso. 
-Dopo questa operazione è possibile interagire con il sistema per aggiustare il modello generato in modo automatico ed è possibile trasformare i dati per normalizzarli. Una volta che il modello è completo gli utenti possono pubblicare i nuovi dati come RDF o salvarli su un database.
-Oltre a queste funzionalità altre innovazioni di Karma sono le seguenti: 
+Karma\footnote{Karma : \url{http://usc-isi-i2.github.io/karma/}} è uno strumento di integrazione dati sviluppato dalla University of Southern California, che permette agli utenti di creare rapidamente e facilmente una nuova rappresentazione dei dati  da diverse fonti, come database, web API e documenti di diversa natura (XML, JSON, KML, ecc.). Gli utenti possono integrare le informazioni modellandole tramite un'ontologia di loro scelta Questa attività viene svolta interamente tramite un'interfaccia grafica, in modo da semplificare il processo. 
+Dopo questa operazione è possibile interagire con il sistema per correggere il modello generato in modo automatico ed è possibile trasformare i dati per normalizzarli. Una volta che il modello è completo, gli utenti possono pubblicare i nuovi dati come RDF o salvarli su un database.
+Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti: 
 \begin{itemize}
-		\item \textbf{Ease of use} L'utente, utilizzando tecniche di programmazione per esempi ed algoritmi  di ottimizzazione (Steiner tree), aggiusta il modello generato in modo automatico utilizzando un interfaccia grafica e non vede mai la complessità delle regole di mapping usate
+		\item \textbf{Ease of use} L'utente, utilizzando tecniche di programmazione per esempi ed algoritmi  di ottimizzazione (es.: Steiner tree), perfeziona il modello generato in modo automatico utilizzando un interfaccia grafica e non vede mai la complessità delle regole di mapping usate
 		\item \textbf{Semantic Models} Karma permette agli utenti di combinare diverse ontologie per permettere loro di mappare i loro dati a vocabolari standard
-		\item \textbf{Scalable Processing} Anche la scalabilità è un elemento importante in Karma; infatti gli utenti lavorano con un sottoinsieme dei loro dati, permettendo di creare un'interfaccia utente dove essi definiscono il modello di integrazione dei dati. Dopo questo il sistema usa questi modelli in modalità batch per integrare una quantità maggiore di dati
-		\item \textbf{Data Transformation} \upe offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
+		\item \textbf{Scalable Processing} Anche la scalabilità è un elemento importante in Karma; infatti gli utenti lavorano con un sottoinsieme dei loro dati, permettendo di creare un'interfaccia utente dove essi definiscono il modello di integrazione dei dati. Dopo questo passaggio, il sistema usa questi modelli in modalità batch per integrare una quantità maggiore di dati
+		\item \textbf{Data Transformation} Viene offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
 \end{itemize}
 
 \begin{figure}[h]
@@ -414,18 +415,18 @@ Oltre a queste funzionalità altre innovazioni di Karma sono le seguenti:
 
 
 Karma è stato applicato con dati di diversa natura, spaziando dai musei ai dati di tipo bioinformatico. 
-Nel caso dei dati di reperti dei musei, utilizzando questo tool si sono convertiti oltre 40000 reperti appartenenti alle collezioni dei musei seguendo l'Europeana Data Model, un modello di classificazione per le collezioni artistiche. A partire dai dati provenienti da diverse tabelle di un Database SQL Server è stato possibile creare un nuovo dataset omogeneo secondo un nuovo modello dati. 
+Nel caso dei dati di reperti dei musei, utilizzando questo tool si sono convertiti oltre 40000 reperti appartenenti alle collezioni dei musei seguendo l'\emph{Europeana Data Model}\footnote{Europeana Data Model: \url{http://pro.europeana.eu/page/edm-documentation}}, un modello di classificazione per le collezioni artistiche. A partire dai dati provenienti da diverse tabelle di un database SQL Server è stato possibile creare un nuovo dataset omogeneo secondo un nuovo modello dati. 
 
 \subsection*{Peudom}
 
-PEUDOM è un progetto di ricerca sui mashup nato all'interno del dipartimento di Ingegneria Informatica del Politecnico di Milano. Si tratta di una piattaforma per la creazione di mashup, consentendo all'utente finale di sviluppare la propria applicazione su misura. La piattaforma guida l'utente nella scelta dei componenti e nelle definizioni delle relazioni, consentendo alcune operazioni e negandone altre.
-L'elemento peculiare di questa piattaforma è l'utilizzo di paradigmi di composizione visuale per definire la l'integrazione dei componenti a livello di presentazione. Questi paradigmi agiscono direttamente sull'interfaccia utente del mashup, in una sorta di programmazione live nella quale i risultati della composizione sono visibili non appena definiti.
+PEUDOM \textcolor{red}{REFERENCE} è un progetto di ricerca sui mashup nato all'interno del dipartimento di Ingegneria Informatica del Politecnico di Milano \textcolor{red}{SITO PEUDOM}. Si tratta di una piattaforma per la creazione di mashup interamente visuale che consente all'utente finale di sviluppare la propria applicazione su misura. La piattaforma guida l'utente nella scelta dei componenti e nelle definizioni delle relazioni, permettendo alcune operazioni e negandone altre seguendo determinate regole di compatibilità definite a priori.
+L'elemento peculiare di questa piattaforma è l'utilizzo di paradigmi di composizione visuale per definire la l'integrazione dei componenti a livello di presentazione. Questi paradigmi agiscono direttamente sull'interfaccia utente del mashup, in una sorta di programmazione in tempo reale nella quale i risultati della composizione sono visibili appena definiti.
 Esistono due tipologie di componenti: 
 \begin{enumerate}
 	\item \textbf{Wrapped UI Components}
-	Questi sono i widget già predisposti da sviluppatori esperti, che manualmente programmano i wrappers per l'accesso ai servizi Web e alle API
+	Questi sono i widget già predisposti da sviluppatori esperti, che specificano la logica dei i wrapper per l'accesso ai servizi Web e alle API
 	\item \textbf{VI Components}
-	VI Components significa Visual Integration based Components e si tratta di componenti creati direttamente dall'utente, manipolando il result set, estraendo uno o più data components utilizzando i diversi templates a disposizione. 
+	VI Components significa \emph{Visual Integration based Component}s e si tratta di componenti creati direttamente dall'utente, manipolando il result set, estraendo uno o più \emph{data component} utilizzando i diversi template a disposizione
 \end{enumerate}
 Alla fine del processo di definizione dei componenti, questi vengono sincronizzati tra di loro attraverso regole di accoppiamento, che ne determinano il comportamento nel mashup finale.
 
@@ -435,34 +436,34 @@ Alla fine del processo di definizione dei componenti, questi vengono sincronizza
 	\caption{Peudom}\label{fig:peudom}
 \end{figure}
 
-Nell'esempio in Figura \ref{fig:peudom} è illustrato un esempio con la Dashboard del mashup, dove è possibile creare i mashup con i diversi dati per rendere i dati nella stessa pagina. In questo caso si considerano dati di film ed è stato selezionato il film di Star Wars parte IV. Associato al film su IMDb è stato scelto di mostrare altri dati correlati al film provenienti da Wikipedia, Flickr e YouTube.
+Nell'esempio in Figura \ref{fig:peudom} viene illustrata una \emph{Dashboard} dove è possibile creare i mashup specificando le fonti dalle quali acquisirli in modo da mostrarli nella stessa pagina. In questo caso si considerano dati di film ed è stato selezionato il film di \emph{Star Wars Parte IV}. Associato al film su IMDb è stato scelto di mostrare altri dati correlati al film provenienti da Wikipedia, Flickr e YouTube.
 
 \subsection*{ADaPT}
 
-ADaPT \cite{6816749_ADaPT} (Automatic Data Personalization and Tailoring) è un progetto sviluppato all'interno del Politecnico di Milano, che propone un framework per personalizzare l'accesso ai dati a partire dal contesto degli utenti. 
+ADaPT \cite{6816749_ADaPT} (Automatic Data Personalization and Tailoring) è un progetto sviluppato all'interno del Politecnico di Milano, che propone un framework per personalizzare l'accesso ai dati a partire dal contesto nel quale si trova l'utente. 
 
-Dopo una fase di conoscenza delle abitudini dell'utente, mentre si trova in diversi contesti, l'applicazione è in grado di fornire le informazioni corrette quando il medesimo contesto si ripresenta.
+Dopo una fase di apprendimento delle abitudini dell'utente, l'applicazione è in grado di fornire le informazioni corrette quando si ripresenta lo stesso.
 L'architettura presentata è formata da due componenti: il client e il server.
-Il client è implementato in Android e utilizza il database interno SQLite e le connessioni con il server mediante TCP. Questo permette di utilizzare l'applicazione anche in condizioni di assenza di rete, perché i dati rilevanti sono salvati anche nel database SQLite. La visualizzazione dei dati utilizzata è di tipo \emph{master-detail}, dove nella schermata principale è presentata la lista degli argomenti. Quando uno di essi è selezionato l'utente può esplorare i dati o cercare un elemento specifico con un filtro di ricerca per poi visualizzare i dati ricevuti nella pagina dei risultati. Una volta ottenuti questi l'utente può visualizzare i dettagli dell'elemento desiderato in una nuova pagina. 
+Il client è implementato in Android e utilizza il database interno SQLite e le connessioni con il server mediante TCP. Questo permette di utilizzare l'applicazione anche in condizioni di assenza di rete, perché i dati rilevanti vengono salvati anche nel database locale. La visualizzazione dei dati utilizzata è di tipo \emph{master-detail}, dove nella schermata principale è presentata la lista degli argomenti. Quando uno di essi è selezionato l'utente può esplorare i dati o cercare un elemento specifico con un filtro di ricerca per poi visualizzare i dati ricevuti nella pagina dei risultati. Una volta ottenuti, l'utente può visualizzare i dettagli dell'elemento desiderato in una nuova pagina. 
 
 
 
 \subsection*{CADD}
 
-CADD è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il CDT usato anche in CAMUS.  Una volta stabilito il modello di contesto, sono determinati tutti i contesti e il designer è guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso espressioni XQuery usate per potare i dati XML da inviare ai dispositivi mobili.
-Il Context-ADDICT Server supporta la potatura dei dati on-line e l'invio dei dati risultanti all'applicazione mobile. 
+CADD \textcolor{red}{reference}è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il Context Dimension Tree (CDT), usato anche in CAMUS.  Una volta stabilito il modello di contesto, vengono creati i contesti dal designer, il quale viene guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso tramite espressioni XQuery\footnote{XQuery: \url{https://www.w3.org/TR/xquery/}} usate per potare i dati XML da inviare ai dispositivi mobili.
+Il Context-ADDICT Server supporta la selezione dei dati online e l'invio dei risultati all'applicazione mobile. 
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/cadd.png}
 	\caption{CADD}\label{fig:cadd}
 \end{figure}
-I componenti di CADD spiegati in \ref{fig:cadd} sono i seguenti:
+I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i seguenti:  
 \begin{itemize}
-	\item \textbf{Context Space Designer Assistant} Il designer è guidato nella modifica del CDT usando una procedura guidata. In questo modo può aggiungere, modificare ed eliminare i nodi dell'albero di contesto in modo semplice
+	\item \textbf{Context Space Designer Assistant} Il designer viene supportato nella modifica del CDT usando una procedura guidata. In questo modo può aggiungere, modificare ed eliminare i nodi dell'albero di contesto in modo semplice
 	\item \textbf{Valid Contexts Generation}
 	Una volta terminata la fase di design, viene invocato questo componente, il quale genera automaticamente tutti i contesti validi, come combinazione dei valori dimensione
 	\item \textbf{Data Tailoring Assistant}
-	Il designer associa ogni contesto con la porzione corrispondente di dati disponibili. Questa associazione è svolta utilizzando uno schema globale di tipo ER. Basandosi sull'interazione con una rappresentazione grafica dello schema, il tool è in grado di generare una o più espressioni XQuery in modo da costruire le view corrispondenti ai dati.
+	Il designer associa ogni contesto con la porzione corrispondente di dati disponibili. Questa associazione è svolta utilizzando uno schema globale di tipo ER. Basandosi sull'interazione con una rappresentazione grafica dello schema, il tool è in grado di generare una o più espressioni XQuery in modo da costruire le view corrispondenti ai dati
 \end{itemize}
 
