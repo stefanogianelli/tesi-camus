@@ -50,6 +50,17 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 	\item \textbf{Operazioni} L'elenco delle operazioni esposte dal servizio. Per un approfondimento riguardo questo oggetto fare riferimento alla Sezione \ref{sec:descrittore-operazioni}
 \end{itemize}
 
+Esempio di oggetto principale:
+
+\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+	{
+		"name": "GooglePlaces",
+		"protocol": "query",
+		"basePath": "https://maps.googleapis.com/maps/api/place",
+		"operations": [ ... ]
+	}
+\end{lstlisting}
+
 \subsection{Operazioni\label{sec:descrittore-operazioni}}
 
 Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazione viene descritta come di seguito:
@@ -66,6 +77,19 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 	\item \textbf{Pagination} Serve a raccogliere gli attributi necessari per gestire la paginazione specifica di ogni servizio. Sono supportati meccanismi di paginazioni basati sul \emph{numero di pagina} o su \emph{token}. Questo oggetto viene analizzato nel dettaglio nella Sezione \ref{sec:descrittore-paginazione}
 \end{itemize}
 
+Esempio di operazione:
+
+\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+	{
+		"name": "nearBySearch",
+		"type": "primary",
+		"path": "/nearbysearch/json",
+		"parameters": [ ... ],
+		"responseMapping": { ... },
+		"pagination": { ... }
+	}
+\end{lstlisting}
+
 \subsection{Parametri\label{sec:descrittore-parametri}}
 
 In quest'oggetto vengono definiti i parametri di input di un operazione. I parametri generalmente sono composti da un campo che ne definisce il \emph{nome} e dal rispettivo valore. In alcuni casi però vengono accettati più di un valore. Il descrittore deve dunque essere in grado di gestire questa situazione. Un ulteriore compito affidato a questo oggetto è quello di acquisire il valore di un determinato parametro dal \emph{contesto}. Viene inoltre fornito un semplice sistema di traduzione dei dati acquisiti dal contesto, per permettere le trasformazioni verso un valore idoneo per l'operazione corrente. Infine, soprattutto per le operazioni di \emph{supporto}, viene permessa un'associazione del parametro verso uno o più \emph{termini semantici}, per permettere all'app mobile di conoscere l'attributo dove andare a recuperare il valore concreto a run-time. Nello specifico, l'oggetto è così composto:
@@ -81,6 +105,21 @@ In quest'oggetto vengono definiti i parametri di input di un operazione. I param
 	\item \textbf{Mapping Term} Definisce uno o più termini semantici da associare al parametro. Questi termini vengono utilizzati a run-time per andare ad acquisire il valore del parametro dalle risposte ricevute dai servizi primari
 	\item \textbf{Translate} Questo oggetto viene utilizzato quando è necessario effettuare un modifica del/i valore/i acquisiti dall'albero di contesto. \upe formato dai campi \virgolette{from} e \virgolette{to}, che specificano rispettivamente il valore di \emph{origine} e quello \emph{tradotto}. Vengono definite tante traduzioni quanti sono i valori che può assumere il rispettivo nodo del CDT
 \end{itemize}
+
+Esempio di parametro:
+
+\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+	{
+		"name": "Location",
+		"required": true,
+		"default": "-33.8670522,151.1957362",
+		"collectionFormat": "csv",
+		"mappingCdt": [
+			"CityCoord.Latitude",
+			"CityCoord.Longitude"
+		]
+	}
+\end{lstlisting}
 
 \subsection{Header\label{sec:descrittore-header}}
 
@@ -101,6 +140,42 @@ In quest'oggetto sono definite le regole con le quali vengono trasformate le ris
 	\item \textbf{Functions} Viene permesso l'utilizzo di funzioni specifiche per trasformare i valori. Questa funzione riceve in ingresso il parametro \virgolette{value}, che rappresenta il valore corrente del campo, e deve restituire il nuovo valore che verrà sostituito a quello originale. Oltre alla funzione specifica, è necessario definire anche l'\emph{attributo} sul quale eseguire questa trasformazione. L'attributo equivale al \emph{termine semantico} definito nel punto precedente
 \end{itemize}
 
+Esempio di formato di risposta:
+
+\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+	{
+		"list": "results",
+		"items": [
+			{
+				"termName": "title2,
+				"path": "name"
+			},
+			{
+				"termName": "address",
+				"path": "vicinity"
+			},
+			{
+				"termName": "latitude",
+				"path": "geometry.location.lat"
+			},
+			{
+				"termName": "longitude",
+				"path": "geometry.location.lng"
+			}
+		],
+		"functions": [
+			{
+				"onAttribute": "latitude",
+				"run": "return String(value)"
+			},
+			{
+				"onAttribute": "longitude",
+				"run": "return String(value)"
+			}
+		]
+	}
+\end{lstlisting}
+
 \subsection{Paginazione\label{sec:descrittore-paginazione}}
 
 In quest'oggetto vengono gli attributi necessari per gestire la paginazione delle risposte. In particolare il sistema è in grado di gestire due tecniche di paginazione, quella basata sul \emph{numero di pagina} e quella che utilizza dei \emph{token} per richiamare le pagine. L'oggetto è composto dai seguenti campi:
@@ -111,6 +186,18 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 	\item \textbf{Token Attribute} Serve per definire dove andare a leggere nella risposta il token relativo alla pagina successiva
 	\item \textbf{Page Count Attribute} Definisce l'attributo che fornisce l'informazione del numero di pagine totale che possono essere richieste
 \end{itemize}
+
+Esempio di paginazione:
+
+\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+	{
+		"pagination": {
+			"attributeName": "pagetoken",
+			"type": "token",
+			"tokenAttribute": "next_page_token"
+		}
+	}
+\end{lstlisting}
 
 \section{Schema del database}
 
