@@ -1,6 +1,6 @@
 In questo capitolo ...
 
-\section{Architettura e tecnologie utilizzate}
+\section{Architettura e tecnologie utilizzate\label{sec:architettura-backend}}
 
 In questa sezione verranno analizzate le tecnologie utilizzate per sviluppare il backend di CAMUS e, in seguito, l'architettura adottata.
 
@@ -203,7 +203,24 @@ In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato 
 
 \section{Componenti\label{sec:componenti-backend}}
 
-\textcolor{red}{mettere in risalto l'elevata modularità del sistema e la totale mancanza dello stato da gestire}
+Come già evidenziato nella Sezione \ref{sec:architettura-backend}, l'architettura del backend è composta da diversi \emph{componenti}. Questa soluzione è stata preferita per via dell'elevata flessibilità che garantisce. Ogni componente è specializzato in un compito preciso e il concatenamento di più componenti fornisce il risultato desiderato. Per svolgere le principali attività vengono dunque create delle \emph{pipeline}, dove l'output di un componente corrisponde all'input del successivo.
+
+Altra caratteristica importante è l'assenza di informazioni sullo stato in ogni componente. Una richiesta nasce nel momento in cui l'utente conferma l'attività e muore una volta che viene evasa. La ragione principale di questa scelta risiede nel fatto che sarebbe oneroso lato backend gestire tutte le informazioni della moltitudine di utenti che sono connessi al sistema. Inoltre, mantenere uno stato limiterebbe la scalabilità del sistema, in quanto se un utente inizia la sessione su di un determinato server dovrà continuare sempre su quello, rendendo complicato il bilanciamento dei carichi tra le diverse macchine.
+
+A questo punto è necessaria una importante precisazione: per la gestione della paginazione è necessario l'utilizzo di alcune informazioni sullo stato. Questa affermazione può sembrare un controsenso rispetto a ciò che è stato esposto nel paragrafo precedente. \upe dunque essenziale definire in modo dettagliato cosa si intende per \emph{stato}. La principale differenza consiste nel \emph{dove} vengono salvate le informazioni. Nel paragrafo precedente, ogni volta che si menzionava il concetto di \emph{stato}, si intendeva tutte le informazioni relative l'utente salvate all'\emph{interno} dei componenti, sotto forma di variabile. Questa soluzione, come già affermato anche in precedenza, risulta in un collo di bottiglia non indifferente, in quanto tutte le richieste che nascono in una determinata macchina dovranno essere gestite unicamente da essa. Si è adottata quindi una soluzione differente: i \emph{componenti} non mantengono al loro interno alcuna informazioni riguardo lo stato che a loro volta verranno memorizzate e rese disponibili da un servizio esterno. Questa soluzione permette a tutti i componenti che ne hanno esigenza di andare a recuperare le informazioni sullo stato, senza però limitare la scalabilità del sistema. Questo servizio può a sua volta offrire dei sistemi di \emph{clustering} per aumentare le perfomance in situazioni di carico elevato.
+
+In CAMUS questa attività viene svolta da Redis, che è stato selezionato per l'elevata rapidità nell'evadere le richieste e nella possibilità di associare un tempo di vita alle informazioni che vengono memorizzate. Viene ipotizzato che dopo un determinato periodo di tempo se l'utente non effettua più interazione sulla sessione, essa può ritenersi estinta e i suoi dati eliminati.
+
+In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle classi di tutti i componenti che formano il backend del sistema.
+
+\begin{figure}[h]
+	\hspace*{-1.9cm}
+	\centering
+	\includegraphics[width=1.4\textwidth]{5-implementazione-backend/Immagini/diagramma_classi_backend.png}
+	\caption{Diagramma delle classi del backend}\label{fig:class-diagram-backend}
+\end{figure}
+
+Nelle seguenti sezioni verranno analizzate nel dettaglio le attività svolte dai singoli componenti.
 
 \subsection{Context Manager\label{sec:context-manager}}
 
