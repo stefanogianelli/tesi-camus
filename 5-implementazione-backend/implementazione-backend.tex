@@ -346,17 +346,15 @@ Nelle seguenti sezioni verranno analizzate nel dettaglio le attività svolte dai 
 \section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
 \textcolor{red}{mostrare come viene elaborata una richiesta proveniente dalla mobile app\\
-	mettere bene in risalto i vari passaggi}
+	mostrare diagramma di flusso delle scelte se andare a recuperare il dato in cache o fare un nuova richiesta, e se in cache se è necessario reinterrogare il servizio\\
+	mostare flusso di una nuova richiesta\\
+	mostrare flusso di una richiesta che richiede dati dai servizi e li aggiunge a quelli già presenti in cache}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/camus_server_flow.png}
 	\caption{Flusso di una richiesta}\label{fig:flusso-richiesta}
 \end{figure}
-
-\section{Caching dei risultati}
-
-\textcolor{red}{Spiegare dove viene sfruttata la cache (per le risposte dei servizi e per mantenere informazioni sulla sessione)}
 
 \section{File di configurazione}
 
