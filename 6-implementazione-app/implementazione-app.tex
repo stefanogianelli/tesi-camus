@@ -45,20 +45,27 @@ Lo sviluppo con React Native si basa sull'utilizzo di un server locale in \emph{
 
 \subsection{Flux}
 
-Flux è il pattern architetturale per gestire il flusso dei dati all'interno dell'applicazione. \upe complementare alla gestione delle view di React, in cui i componenti sfruttano un flusso di dati unidirezionale. 
+Flux è il pattern architetturale per gestire il flusso dei dati all'interno dell'applicazione. \upe complementare alla gestione delle view di React, in cui i componenti sfruttano un flusso di dati unidirezionale, come espresso in Figura \ref{fig:flux}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/flux.png}
+	\caption{Flusso dati unidirezionale Flux}\label{fig:flux}
+\end{figure}
 Si tratta fondamentalmente di una modifica del pattern MVC (Model View Controller), al quale vengono introdotte alcune migliorie.
-Le applicazioni Flux hanno quattro parti principali: 
+Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologie di componenti principali: 
 \begin{enumerate}
 	\item \textbf{Dispatcher}
 	Il \emph{Dispatcher} è l'hub centrale che controlla tutto il flusso dei dati dell'applicazione. \upe essenzialmente un registro di callback alle \emph{Store} e possiede un meccanismo semplice per distribuire le \emph{Action} verso le \emph{Store}. Man mano che l'applicazione cresce di dimensioni, il \emph{Dispatcher} assume un'importanza sempre maggiore, perché può essere sfruttato per gestire le dipendenze tra le \emph{Store} invocando le callback registrate in un ordine specifico, talvolta anche attendendo la conclusione dell'aggiornamento delle altre \emph{Store} 
 	\item \textbf{Store}
 	Le \emph{Store} contengono lo stato dell'applicazione e la logica, e il loro ruolo è molto simile al modello nel pattern MVC, ma in Flux hanno il compito di modellare lo stato per un particolare dominio all'interno dell'applicazione
 	\item \textbf{View}
-	\item \textbf{Action}
+	L'implementazione delle view proposta da React si sposa perfettamente con quella necessaria per Flux. Si tratta di un misto tra la view e il controller in MVC, perché permette al codice di ricevere i dati dalle store e passare questi dati direttamente ai discendenti per creare ogni singola sezione della pagina. Quando riceve un evento dalle \emph{store}, richiede i nuovi dati attraverso i \emph{getter} delle \emph{store}, per poi aggiornare il proprio stato interno e renderizzarlo a cascata utilizzando tutti i sottocomponenti.
+	\item \textbf{Action} Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi penserà a come inviare i dati alle \emph{store}.
 \end{enumerate} 
 \section{Struttura dei file di mashup}
 
-Il file di Mashup 
+
 
 \section{Rendering delle view}
 
