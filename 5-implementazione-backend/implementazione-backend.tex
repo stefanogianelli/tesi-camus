@@ -12,7 +12,7 @@ Il fatto che MongoDB memorizzi i file in un formato dalla struttura molto simile
 
 Oltre ad un database che garantisse la persistenza dei dati più importanti, si è resa necessaria l'adozione di un altro database per effettuare  caching delle risposte ricevute dai servizi e per mantenere alcune informazioni relative alle sessioni degli utenti per un determinato intervallo di tempo. La scelta in questo caso è ricaduta su Redis\footnote{Redis: \url{http://redis.io/}}. Redis fornisce un database interamente memorizzato in memoria, quindi estremamente rapido nell'evadere le richieste, ed è basato su un sistema chiave-valore. Queste caratteristiche, insieme al fatto che quanto viene salvato un dato è possibile impostare un intervallo di tempo scaduto il quale l'elemento viene eliminato, lo ha reso il candidato perfetto per svolgere questo compito. Per interfacciare Node.js con l'istanza di Redis in esecuzione viene utilizzato il modulo ioredis\footnote{ioredis: \url{https://github.com/luin/ioredis}}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/camus-architecture.png}
 	\caption{Architettura del backend}\label{fig:architettura-backend}
@@ -53,12 +53,12 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 Esempio di oggetto principale:
 
 \begin{lstlisting}[backgroundcolor = \color{lightgray}]
-	{
-		"name": "GooglePlaces",
-		"protocol": "query",
-		"basePath": "https://maps.googleapis.com/maps/api/place",
-		"operations": [ ... ]
-	}
+  {
+	  "name": "GooglePlaces",
+	  "protocol": "query",
+	  "basePath": "https://maps.googleapis.com/maps/api/place",
+	  "operations": [ ... ]
+  }
 \end{lstlisting}
 
 \subsection{Operazioni\label{sec:descrittore-operazioni}}
@@ -205,7 +205,7 @@ La base di dati viene utilizzata principalmente per garantire la persistenza di 
 
 Queste entità permettono al sistema di svolgere le attività principali. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_er_db.png}
 	\caption{Diagramma ER del database}\label{fig:schema-er-db}
@@ -282,7 +282,7 @@ Una volta definito il modello ER è necessario passare alla realizzazione dello \
 
 In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS. Le linee tratteggiate indicano le referenze tra i vari documenti.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_logico_db.png}
 	\caption{Schema logico del database}\label{fig:schema-logico-db}
@@ -300,7 +300,7 @@ In CAMUS questa attività viene svolta da Redis, che è stato selezionato per l'el
 
 In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle classi di tutti i componenti che formano il backend del sistema.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\hspace*{-1.9cm}
 	\centering
 	\includegraphics[width=1.4\textwidth]{5-implementazione-backend/Immagini/diagramma_classi_backend.png}
@@ -350,19 +350,19 @@ Nelle seguenti sezioni verranno analizzate nel dettaglio le attività svolte dai 
 	mostare flusso di una nuova richiesta\\
 	mostrare flusso di una richiesta che richiede dati dai servizi e li aggiunge a quelli già presenti in cache}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.43\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_decoratedCdt.png}
 	\caption{Flusso di creazione del CDT decorato\label{fig:flusso-decorated-cdt}}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_servizi_primari.png}
 	\caption{Flusso di richiesta dei risultati primari\label{fig:flusso-servizi-primari}}
 \end{figure}
 	
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.3\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_servizi_supporto.png}
 	\caption{Flusso di richiesta dei risultati di supporto\label{fig:flusso-servizi-supporto}}

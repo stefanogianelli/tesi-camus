@@ -19,9 +19,9 @@ Nella seguente sezione verrà presentato nel dettaglio il \emph{Context Dimension
 
 \subsection{Context Dimension Model\label{sec:context-dimension-model}}
 
-In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Nel \emph{Context Dimension Model} il contesto viene rappresentato come un albero $\mathcal{T} = \textless N, E, r \textgreater $, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i possibili valori che possono assumere le dimensioni e dall'insieme dei collegamenti tra i nodi \emph{E}. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
+In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Nel \emph{Context Dimension Model} il contesto viene rappresentato come un albero $\mathcal{T} = {<}N, E, r{>} $, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r} e un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i possibili valori che possono assumere le dimensioni e dall'insieme dei collegamenti tra i nodi \emph{E}. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/esempio_cdt.png}
 	\caption{Context Dimension Tree}\label{fig:context-dimension-tree}
@@ -37,16 +37,16 @@ L'alternanza tra nodi \emph{dimensione} e \emph{concetto} fa sì che vengano crea
 
 Per ogni \emph{nodo dimensione} è possibile selezionare al massimo un nodo concetto tra i suoi figli oppure, se non possiede alcun nodo figlio, deve essere selezionato obbligatoriamente uno ed un solo parametro. L'utilizzo dei \emph{parametri} aumenta il potere espressivo del modello, in quanto lo rende più semplice per l'utilizzo da parte del designer. Si è resa necessaria l'introduzione dei parametri in quanto non tutti i concetti espressi da una dimensione possono essere enumerati. Per esempio, la dimensione \virgolette{costo} può assumere infiniti valori ed è quindi più appropriato l'utilizzo di un parametro che sia variabile.
 
-Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = \textless N, E, r \textgreater $, un \emph{contesto} è definito dalla seguente grammatica con assioma \emph{context}:
+Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = {<}N, E, r{>} $, un \emph{contesto} è definito dalla seguente grammatica con assioma \emph{context}:
 
 \begin{equation*}
 	C =
 	\begin{cases}
-		\textless context \textgreater \leftarrow \textless context\_element \textgreater\ |\ \textless context\_element \textgreater \land \textless context \textgreater\\
-		\textless context\_element \textgreater \leftarrow dim\_name: \textless value\_item \textgreater\ |\ dim\_name\ (\textless parameter \textgreater)\\
-		\textless value\_item \textgreater \leftarrow value\ |\ value\ (\textless parameters \textgreater)\\
-		\textless parameters \textgreater \leftarrow \textless parameters \textgreater \land \textless parameter \textgreater\ |\ \textless parameter \textgreater\\
-		\textless parameter \textgreater \leftarrow param\_name: param\_value
+		{<}context{>} \leftarrow {<}context\_element{>}\ |\ {<}context\_element{>} \land {<}context{>}\\
+		{<}context\_element{>} \leftarrow dim\_name: {<}value\_item{>}\ |\ dim\_name\ ({<}parameter{>})\\
+		{<}value\_item{>} \leftarrow value\ |\ value\ ({<}parameters{>})\\
+		{<}parameters{>} \leftarrow {<}parameters{>} \land {<}parameter{>}\ |\ {<}parameter{>}\\
+		{<}parameter{>} \leftarrow param\_name: param\_value
 	\end{cases}
 \end{equation*}
 
@@ -66,7 +66,7 @@ che rappresenta il contesto in cui il cliente Bill è interessato nel ricevere in
 
 Infine, dopo aver discusso del modello e di come vengono rappresentati i vari contesti, resta da definire come è possibile acquisire i dati che sono pertinenti ad un determinato contesto. Come evidenziato in \cite{DBLP:journals/cacm/BolchiniCOQRST09}, esistono due strategie principali per definire le associazioni tra i contesti e la porzione di dati rilevanti per i vari contesti, chiamate \emph{configuration-based mapping} e \emph{value-based mapping}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/configuration-based-mapping.png}
 	\caption{Configuration-based mapping}\label{fig:configuration-based-mapping}
@@ -76,7 +76,7 @@ La strategia \emph{configuration-based mapping} prevede che il designer definisc
 
 Questa strategia ha il vantaggio di generare delle viste molto precise rispetto al contesto che vogliono rappresentare, ma ha l'enorme svantaggio che deve essere ripetuta per ognuno dei possibili contesti che, com'è facilmente intuibile, possono essere in quantità molto elevata. Inoltre, se in futuro dovesse essere aggiunta un'ulteriore dimensione, sarebbe necessario modificare le varie associazioni per includere la nuova dimensione.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/value-based-mapping.png}
 	\caption{Value-based mapping}\label{fig:value-based-mapping}
@@ -94,7 +94,7 @@ Inizialmente la composizione era limitata all'utilizzo per la realizzazione rapi
 
 Molto diffuse in questa prima fase sono state le applicazioni che offrivano integrazione con mappe geografiche, come \emph{HousingMaps} \footnote{Housing Maps: \url{http://www.housingmaps.com}}, che combinava le informazioni tra Google Maps, per quanto riguarda ovviamente le mappe, e Craiglist, un portale che ospita annunci di diversa tipologia (es.: lavoro, incontri, ecc.).
 %Altri esempi sono le mappe interattive che è possibile creare a partire da Google Maps o servizi simili; in questi casi viene arricchita la mappa con altre informazioni, ad esempio traffico, dati demografici o altri dati. 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/potholes_service.jpg}
 	\caption{Potholes Service}\label{fig:potholes}
@@ -154,7 +154,7 @@ Le informazioni grezze ottenute direttamente dai servizi esterni non è detto che
 	\item \textbf{Merge} L'operazione di merge permette di mostrare tutti i dettagli dell'istanza selezionata. In questo modo i dati provenienti da più servizi vengono mostrati nella stessa schermata. Questa operazione è definita durante la composizione del mashup, quando vengono associati i campi al servizio corrispondente
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.5\textwidth]{2-nozioni-preliminari/Immagini/merge-union.png}
 	\caption{Esempio merge e union}\label{fig:merge-union}
@@ -217,7 +217,7 @@ Applicando i principi REST alle API dei servizi web si ottengono quelle che veng
 
 Solitamente ad una URI può essere associata una funzione diversa in base al verbo con la quale viene chiamata, come si può notare nell'esempio in Tabella \ref{table:esempio-rest-api}.
 
-\begin{table}[h]
+\begin{table}[ht]
 	\caption{Esempio RESTful API}
 	\label{table:esempio-rest-api}
 	\noindent\makebox[\textwidth]{%
@@ -349,7 +349,7 @@ Per poter descrivere la propria API con Swagger ci sono diversi approcci disponi
 	\item \textbf{Bottom-up} Nel caso in cui si ha una già API REST esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso si utilizzi uno dei framework supportati (es.: JAX-RS, Node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/swagger.png}
 	\caption{Esempio Swagger Editor}\label{fig:swagger}
@@ -357,7 +357,7 @@ Per poter descrivere la propria API con Swagger ci sono diversi approcci disponi
 
 Nel caso in cui si utilizzi una API e se ne voglia integrare un'altra che già possiede una definizione Swagger, si può utilizzare la versione online della \emph{Swagger UI} per esplorarla e successivamente lo \emph{Swagger Codegen} per generare la libreria client desiderata.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/swagger-petstore.png}
 	\caption{Esempio API risultante Swagger}\label{fig:swagger-petstore}
@@ -377,7 +377,7 @@ Con il servizio di App Builder, è possibile creare applicazioni per dispositivi 
 
 Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} in modo da permettere la creazione rapida ed intuitiva di nuove applicazioni nuove applicazioni, semplicemente usando \emph{drag \& drop}. \upe possibile sfruttare diversi template messi a disposizione da Appery.io per avere una base di partenza per alcune applicazioni comuni, altrimenti, se is vuole ottenere maggiore flessibilità si può creare uno schema da zero. Viene anche fornita la possibilità di acquisire dati da servizi esterni, che possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente. Le principali fasi che coinvolgono la realizzazione di un'applicazione sono:
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/appery-visual-composition.png}
 	\caption{Composizione visuale in Appery.io}\label{fig:appery-visual-composition}
@@ -407,7 +407,7 @@ Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti:
 		\item \textbf{Data Transformation} Viene offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/karma-europeana.jpg}
 	\caption{Karma Service Integration}\label{fig:karma-europeana}
@@ -430,7 +430,7 @@ Esistono due tipologie di componenti:
 \end{enumerate}
 Alla fine del processo di definizione dei componenti, questi vengono sincronizzati tra di loro attraverso regole di accoppiamento, che ne determinano il comportamento nel mashup finale.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/peudom.jpg}
 	\caption{Peudom}\label{fig:peudom}
@@ -453,7 +453,7 @@ Il client è implementato in Android e utilizza il database interno SQLite e le c
 CADD \textcolor{red}{reference}è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il Context Dimension Tree (CDT), usato anche in CAMUS.  Una volta stabilito il modello di contesto, vengono creati i contesti dal designer, il quale viene guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso tramite espressioni XQuery\footnote{XQuery: \url{https://www.w3.org/TR/xquery/}} usate per potare i dati XML da inviare ai dispositivi mobili.
 Il Context-ADDICT Server supporta la selezione dei dati online e l'invio dei risultati all'applicazione mobile. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/cadd.png}
 	\caption{CADD}\label{fig:cadd}

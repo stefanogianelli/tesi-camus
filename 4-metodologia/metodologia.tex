@@ -77,7 +77,7 @@ Al fine di far rispettare questa classificazione è stato introdotto il vincolo c
 
 Per le \emph{operazioni di supporto} non è sempre necessario definire le associazioni con i nodi del CDT. Alcuni operazioni di supporto possono essere richiamate in modo statico quando non necessitano del contesto per essere scelte (es.: i servizi generici come Wikipedia\footnote{Wikipedia: \url{https://en.wikipedia.org/wiki/Main_Page}} o Flickr\footnote{Flickr: \url{https://www.flickr.com/}}). Per altre operazioni, come per esempio quelle relative ai mezzi di trasporto, è invece necessario basarsi sul contesto per selezionare la più idonea alla situazione. Per esempio, se un utente specifica che non dispone di un'auto e che si trova a Milano, allora il sistema proporrà i mezzi di trasporto pubblici presenti nella città, insieme all'elenco di altre tipologie di trasporto come i taxi o il car sharing. In questo caso è dunque necessario, come nel caso delle operazioni primarie, definire le associazioni delle operazioni con i nodi del CDT. Il processo di associazione è dunque simile a quello delle operazioni primarie, con la differenza che non bisogna specificare la priorità dei servizi.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/associazioni-cdt.png}
 	\caption{Associazione dei servizi al CDT}\label{fig:associazione-servizi-cdt}
@@ -108,7 +108,7 @@ Resta da definire il metodo col quale a runtime questi servizi vengono seleziona
 
 Si ricorda che un \emph{contesto} è formato dalla congiunzione tra uno o più elementi del contesto, che a loro volta sono formati dalla \emph{dimensione} di riferimento e dal \emph{valore} o \emph{parametri} che essa assume. In Figura \ref{fig:esempio-contesto} viene mostrato un esempio di contesto in cui si vogliono cercare i ristoranti con cucina a base di pesce nei dintorni di Lambrate.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{align*}
 		C =\ &InterestTopic : Restaurant\ \land \\
 		&RestaurantType : FishCuisine\ \land \\
@@ -124,7 +124,7 @@ Come già evidenziato nella Sezione \ref{sec:associazione-servizi-cdt}, le associ
 
 Come esposto nella Sezione \ref{sec:associazione-servizi-cdt}, ogni operazione viene associata ad uno o più nodi dell'albero di contesto e ad ognuna di queste associazioni viene assegnato un valore che rappresenta la \emph{priorità} che l'operazione assume all'interno del nodo. Il primo passo per la selezione delle operazioni è l'assegnazione di un \emph{punteggio} ad ogni operazione che ha una o più corrispondenze all'interno dell'albero di contesto. 
 
-Un contesto può essere visto come un elenco di coppie $ \textless dimensione, valore \textgreater $, che rappresentano i nodi selezionati dall'utente. La selezione dei servizi che hanno validità nelle singole coppie avviene tramite una ricerca \emph{chiave-valore}, dove la \emph{chiave} è l'etichetta della dimensione mentre il \emph{valore} è il valore specifico assunto dalla dimensione, tra le associazioni definite nell'albero di contesto. Questa ricerca fornisce come risultato un elenco delle operazioni che sono adatte all'utilizzo nello specifico contesto, assieme al relativo valore di priorità, per ogni associazione trovata. \upe necessario introdurre un ulteriore parametro che influisce nella formula per l'assegnamento del \emph{punteggio} alle operazioni: il \emph{peso} dei nodi. Come definito nella Sezione \ref{sec:modello-contesto}, vengono introdotte due nuove tipologie di nodo: \emph{filtro} e \emph{ranking}. Il \emph{peso} di un nodo viene assegnato in base alla \emph{tipologia} del nodo, rispettando il vincolo:
+Un contesto può essere visto come un elenco di coppie $ {<}dimensione, valore{>} $, che rappresentano i nodi selezionati dall'utente. La selezione dei servizi che hanno validità nelle singole coppie avviene tramite una ricerca \emph{chiave-valore}, dove la \emph{chiave} è l'etichetta della dimensione mentre il \emph{valore} è il valore specifico assunto dalla dimensione, tra le associazioni definite nell'albero di contesto. Questa ricerca fornisce come risultato un elenco delle operazioni che sono adatte all'utilizzo nello specifico contesto, assieme al relativo valore di priorità, per ogni associazione trovata. \upe necessario introdurre un ulteriore parametro che influisce nella formula per l'assegnamento del \emph{punteggio} alle operazioni: il \emph{peso} dei nodi. Come definito nella Sezione \ref{sec:modello-contesto}, vengono introdotte due nuove tipologie di nodo: \emph{filtro} e \emph{ranking}. Il \emph{peso} di un nodo viene assegnato in base alla \emph{tipologia} del nodo, rispettando il vincolo:
 
 \begin{equation*}
 	w_{FILTRO} < w_{RANKING} \quad \forall\ n \in CDT
@@ -138,7 +138,7 @@ In pratica, ad ogni nodo \emph{filtro} deve essere assegnato un peso strettament
 
 dove \emph{SA(o)} rappresenta l'insieme delle associazioni trovate per l'operazione \emph{o}, $ w_i $ e $ p_i $ rappresentano rispettivamente il \emph{peso} e il valore di \emph{priorità} dell \emph{i}-esimo nodo. Una volta calcolati i \emph{punteggi}, l'elenco delle operazioni viene riordinato in modo \emph{decrescente} e vengono selezionati le top-N operazioni. In Figura \ref{fig:esempio-punteggio-primari} viene definito un contesto di esempio con le associazioni delle operazioni primarie ai vari nodi dell'albero.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/esempio-punteggio-primari.pdf}
 	\caption{Esempio di assegnazione del punteggio per le operazioni primarie}\label{fig:esempio-punteggio-primari}
@@ -165,7 +165,7 @@ A differenza delle operazioni primarie, per quelle di supporto non viene definit
 
 Quest'ultima restrizione relativa alla selezione delle sole operazioni con il massimo numero di vincoli rispettati deriva dal fatto che un maggior numero di vincoli corrisponde ad una maggiore attinenza dell'operazione al contesto. In Figura \ref{fig:esempio-selezione-supporto} viene mostrato un contesto di esempio con le associazioni delle operazioni di supporto ai vari nodi dell'albero.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.5\textwidth]{4-metodologia/Immagini/esempio-selezione-supporto.pdf}
 	\caption{Esempio di selezione delle operazioni di supporto}\label{fig:esempio-selezione-supporto}
@@ -175,7 +175,7 @@ I nodi attivi sono evidenziati in grigio ed equivalgono al contesto $ C = Tipolo
 
 Un'ultima considerazione, che è valida per entrambi i casi precedentemente descritti, riguarda la selezione di un nodo contesto che ha dei figli.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.4\textwidth]{4-metodologia/Immagini/esempio-gerarchia.pdf}
 	\caption{Esempio gerarchia}\label{fig:esempio-gerarchia}
@@ -245,7 +245,7 @@ Una volta che i \emph{bucket} sono stati creati, è necessario effettuare una com
 
 \section{Mashup Design\label{sec:mashup-design}}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/visual-mapping-nuovo.png}
 	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
@@ -314,7 +314,7 @@ Il caso \emph{Server centric} permette di ottenere dei miglioramenti ai problemi
 Uno degli svantaggi principali di questa architettura è di avere un unico collo di bottiglia per tutto il sistema, che sarebbe ovviamente il server. Si dovrà dimensionare correttamente le capacità computazionali del sistema per permettere l'evasione rapida delle richieste anche in situazioni di elevato carico, cioè quando diversi utenti effettuano nello stesso istante un vasto numero di richieste. Inoltre si presenta un problema che riguarda l'interrogazione dei servizi di supporto: questo compito dovrebbe essere ripetuto dal server per ogni elemento appartenente alla risposta che deve essere inviata al client. Molte richieste potrebbero essere invece evitate, in quanto le informazioni messe a disposizione dai servizi di supporto hanno validità nella pagina di dettaglio di ogni elemento: non è detto che l'utente selezioni tutti gli elementi di un risposta ma generalmente ne visualizza una porzione ristretta \cite{van2009using}. Nel lavoro precedente \cite{rizzo2015progettazione} si era scelto di utilizzare un'architettura di tipo ibrido, dove però il carico di complessità era collocato principalmente nell'applicazione mobile.
 I dati sono sintetizzati nella Tabella \ref{table:sintesi_architetturei}.
 
-\begin{table}[h]
+\begin{table}[ht]
 	\caption{Sintesi architetture}
 	\label{table:sintesi_architetturei}
 	\begin{tabularx}{\textwidth}{lXX}
@@ -354,7 +354,7 @@ I dati sono sintetizzati nella Tabella \ref{table:sintesi_architetturei}.
 
 Per CAMUS, è stato scelto sempre un sistema di tipo ibrido, ma spostando l'elaborazione del contesto, l'esecuzione delle richieste verso i servizi esterni e l'integrazione dei dati lato server, come si può osservare in Figura \ref{fig:architettura-sistema}. All'applicazione mobile vengono invece delegati i compiti di rendering dell'interfaccia grafica tramite gli schemi di mashup e l'interrogazione dei servizi di supporto per acquisire le informazioni utili ad arricchire i dati forniti dal server. Questa tecnica ha il vantaggio di ottimizzare il numero di richieste che vengono effettuate verso i servizi di supporto, limitandone il numero a quelle strettamente necessarie, che corrispondo al numero di elementi che l'utente decide di visualizzare nel dettaglio.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{4-metodologia/Immagini/architettura-generale.png}
 	\caption{Architettura del sistema}\label{fig:architettura-sistema}
