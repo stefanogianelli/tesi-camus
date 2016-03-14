@@ -120,7 +120,7 @@ Si ricorda che un \emph{contesto} è formato dalla congiunzione tra uno o più ele
 
 Come già evidenziato nella Sezione \ref{sec:associazione-servizi-cdt}, le associazioni vengono effettuate seguendo due approcci differenti in base alla tipologia dell'operazione, \emph{primaria} oppure di \emph{supporto}. Il motivo principale risiede nel fatto che queste tipologie di operazione hanno scopi differenti e necessitano dunque di due approcci di selezione appositi. Di seguito vengono analizzati entrambi i metodi utilizzati in CAMUS, concentrandosi su di una tipologia di operazione alla volta.
 
-\subsection*{Operazioni primarie\label{(sec:selezione-op-primarie)}}
+\subsection*{Operazioni primarie}
 
 Come esposto nella Sezione \ref{sec:associazione-servizi-cdt}, ogni operazione viene associata ad uno o più nodi dell'albero di contesto e ad ognuna di queste associazioni viene assegnato un valore che rappresenta la \emph{priorità} che l'operazione assume all'interno del nodo. Il primo passo per la selezione delle operazioni è l'assegnazione di un \emph{punteggio} ad ogni operazione che ha una o più corrispondenze all'interno dell'albero di contesto. 
 
@@ -132,7 +132,7 @@ Un contesto può essere visto come un elenco di coppie $ {<}dimensione, valore{>}
 
 In pratica, ad ogni nodo \emph{filtro} deve essere assegnato un peso strettamente minore rispetto ad un nodo \emph{ranking}. Il punteggio \emph{R} di ogni operazione \emph{o} viene calcolato tramite la funzione:
 
-\begin{equation}
+\begin{equation}\label{eq:primary-service-formula}
 	R_o = \sum_{i \in SA(o)}{\frac{w_i}{p_i}}
 \end{equation}
 
@@ -154,7 +154,7 @@ I nodi \emph{Interest Topic} e \emph{Momento Giornata} sono di tipo \emph{filtro
 
 Riordinando la lista si ottiene $ \{ Zomato, TripAdvisor, Yelp \} $ e scegliendo i top-2 risultati si ottiene la selezione finale $ \{ Zomato, TripAdvisor \} $.
 
-\subsection*{Operazioni di supporto\label{sec:selezione-op-supporto}}
+\subsection*{Operazioni di supporto}
 
 A differenza delle operazioni primarie, per quelle di supporto non viene definito un valore di \emph{priorità}. Quindi la precedente funzione per il calcolo del punteggio non è più applicabile. \upe stata inoltre considerata un'ulteriore problematica per la quale la precedente funzione non è più utilizzabile. Per esempio, si consideri un servizio di supporto che fornisce indicazioni sui mezzi di trasporto pubblici. Molti di questi servizi hanno validità locale, infatti ogni città ha il proprio gestore per il servizio di trasporto pubblico (es. ATM\footnote{ATM: \url{www.atm.it}} per Milano e ATAC\footnote{ATAC: \url{www.atac.it}} per Roma). Quindi, nella fase di calcolo del punteggio, anche questi servizi verrebbero considerati e in alcune situazioni erroneamente selezionati come risultato finale. Si è optato per un metodo di selezione più rigido rispetto al caso delle operazioni primarie. La prima fase di ricerca tramite \emph{chiave-valore} resta sempre valida e fornisce l'elenco delle operazioni che hanno almeno un'associazione soddisfatta. Di questa lista viene successivamente effettuato il \emph{conteggio} del numero di associazioni totali per ogni operazione. Viene inoltre mantenuto per ogni operazione un valore che indica il numero totale di associazioni con l'albero del contesto. Vengono selezionate solamente le operazioni che rispettano le seguenti regole:
 
