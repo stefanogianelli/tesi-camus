@@ -1,4 +1,4 @@
-\section{Overview su cross platform mobile}
+\section{Panoramica su cross platform mobile}
 Al momento di scegliere come implementare l'applicazione mobile per CAMUS sono state considerate due opzioni: la creazione di un'applicazione nativa inizialmente solo per Android, per poi estendere la compatibilità su iOS, oppure l'utilizzo di strumenti cross platform, funzionanti su più di un sistema operativo mobile.
 Questa esigenza è nata dal fatto che il mercato delle app mobile sta crescendo in maniera esponenziale e le competenze richieste agli sviluppatori sono molto variegate per sviluppare applicazioni native.
 Per esempio per quanto riguarda lo sviluppo iOS è necessario conoscere come linguaggi di programmazioni Objective-C e Swift, per Android ci si basa principalmente su Java e per Windows Phone è necessario utilizzare C-sharp \textcolor{red}{(Non mi prende il cancelletto)}, senza dimenticare altri sistemi operativi meno diffusi o emergenti (Tizen, Ubuntu Touch, ecc.).
@@ -43,9 +43,9 @@ Lo sviluppo con React Native si basa sull'utilizzo di un server locale in \emph{
 
 \textcolor{red}{Da Completare meglio}
 
-\subsection{Flux}
+\subsection{Flux}\label{sec:flux}
 
-Flux è il pattern architetturale per gestire il flusso dei dati all'interno dell'applicazione. \upe complementare alla gestione delle view di React, in cui i componenti sfruttano un flusso di dati unidirezionale, come espresso in Figura \ref{fig:flux}.
+Flux\footnote{Flux: \url{https://facebook.github.io/flux/}} è un pattern architetturale creato sempre da Facebook per gestire il flusso dei dati all'interno dell'applicazione. \upe complementare alla gestione delle view di React, in cui i componenti sfruttano un flusso di dati unidirezionale, come espresso in Figura \ref{fig:flux}.
 
 \begin{figure}[ht]
 	\centering
@@ -61,9 +61,130 @@ Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologi
 	Le \emph{Store} contengono lo stato dell'applicazione e la logica, e il loro ruolo è molto simile al modello nel pattern MVC, ma in Flux hanno il compito di modellare lo stato per un particolare dominio all'interno dell'applicazione
 	\item \textbf{View}
 	L'implementazione delle view proposta da React si sposa perfettamente con quella necessaria per Flux. Si tratta di un misto tra la view e il controller in MVC, perché permette al codice di ricevere i dati dalle store e passare questi dati direttamente ai discendenti per creare ogni singola sezione della pagina. Quando riceve un evento dalle \emph{store}, richiede i nuovi dati attraverso i \emph{getter} delle \emph{store}, per poi aggiornare il proprio stato interno e renderizzarlo a cascata utilizzando tutti i sottocomponenti.
-	\item \textbf{Action} Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi penserà a come inviare i dati alle \emph{store}.
+	\item \textbf{Action} Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}.
 \end{enumerate} 
+
+Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'architettura funzionale simile, presenta alcune semplificazioni:
+	\begin{itemize}
+		\item Non è necessario implementare direttamente il \emph{dispatcher}, il quale viene fornito dalla libreria. È necessario fornire soltanto le \emph{actions}  e le \emph{stores}.
+		\item Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{dispatcher} di Alt.
+		\item Nelle \emph{store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le action corrispondenti. 
+	\end{itemize}
+\textcolor{red}{Sistemare questa parte}
+\section {Architettura dell'applicazione}
+
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_architecture.pdf}
+	\caption{Architetture generale dell'app CAMUS}\label{fig:app-architecture}
+\end{figure}
+
+La figura \ref{fig:app-architecture} rappresenta l'architettura dell'applicazione CAMUS. Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un router. Si è scelto di sfruttare due router diversi, uno per gestire il login e un altro per la navigazione all'interno dell'applicazione. Il router per il login controlla solamente se l'utente è loggato e ha la funzione di non permettere l'accesso alle pagine che necessitano di autenticazione. Come routes possiede \emph{Login Page} e il secondo router, che racchiude la navigazione effettiva dell'utente autenticato.
+Questo annidamento possiede le seguenti pagine:
+\begin{itemize}
+	\item \textbf{Main Page} È la pagina principale dell'applicazione e permette all'utente di mostrare tutti le \emph{Interest Topic} associati a lui nel suo CDT. La scelta di quella desiderata permette di accedere alla \emph{Context Selection Page}
+	\item \textbf{Context Dimension Page} In questa pagina è chiesto il contesto all'utente mediante un' interfaccia che si adatta alle scelte da lui già eseguite per guidarlo nella definizione del contesto da inviare come richiesta al server. Una volta terminata la scelta viene costruita la query e inviata all'endpoint GraphQL del server CAMUS. 
+	\item \textbf{Results Page} Si tratta della pagina che deve mostrare l'intero dataset proveniente dal server e gestisce la paginazione dei risultati, a seconda della posizione del cursore dell'utente nella ListView. 
+	\item \textbf{Details Page} In questa pagina vengono visualizzati i dettagli dell'oggetto selezionato e sono gestiti i collegamenti con le applicazioni esterne, per mezzo della libreria di \emph{Linking} di React Native o moduli personalizzati
+\end{itemize}
+
+Tutte queste pagine interagiscono con altri componenti, che gestiscono le operazioni di interfacciamento con i sensori e con la rete.
+
+\begin{itemize}
+	\item \textbf{View Builder} Si tratta del componente che costruisce le view dinamiche partendo dal file di mashup. 
+	\item \textbf{Connection Manager} In questo componente vengono gestite tutte le connessioni con l'endpoint GraphQL. Permette di gestire la fase di login e di scambio di dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per le successive, chiedendo una nuova pagina, come spiegato nella sezione \ref{sec:paginazione-app}
+\end{itemize}
+
+\subsection{Actions e Stores}
+Per quanto riguarda il modulo Alt.js, come spiegato nella Sezione \ref{sec:flux}, è stato necessario progettare in modo intelligente actions e stores, per permettere di memorizzare lo stato dell'applicazione.
+Per ogni interazione sui dati dell'applicazione che necessitano di rimanere persistenti, viene invocata una action dal componente e dalla view che si propaga prima nelle store, e successivamente aggiorna nuovamente la view.
+Si è scelto di suddividere le actions per tipologia di operazione e dato trattata:
+\begin{itemize}
+	\item  \textbf{User Store} Nella \emph{User Store} sono memorizzati tutti i dati relativi all'utente. In particolare viene memorizzato l'Id dell'utente nel database del server e l'Id del CDT a lui associato, che serviranno per poter effettuare le query GraphQL per ottenere i dati
+	\item \textbf{Context Store} Nel \emph{Context Store} vengono gestiti i dati che riguardano i dati di contesto, come le coordinate geografiche e le scelte delle tipologie di trasporto pubblico, in modo da essere riutilizzate. Per quanto riguarda le richieste di dati, una volta che il contesto viene composto per effettuare la prima query, questo payload viene salvato qui e poi riutilizzato nelle query dei risultati successivi
+	\item \textbf{View Store} In questa store sono memorizzati tutti i dati relativi alle view. Qui viene salvato lo schema di mashup e l'\emph{Interest Topic} corrente
+	\item \textbf{Data Store} Si tratta della store più complessa perchè deve gestire in modo dinamico diverse tipologie di dato. Quando viene ricevuto il CDT vengono scanditi gli \emph{interest topic} creato un oggetto nel campo \emph{results} che è composto da un array di tanti oggetti definiti da due campi:
+	\begin{enumerate}
+		\item \textbf{Results} Rappresenta i risultati ricevuti per quell'\emph{interest topic} dal server, con i risultati provenienti dai servizi primari e i collegamenti per i servizi di supporto
+		\item \textbf{Topic} Rappresenta l'\emph{Interest topic} associato ai risultati ricevuti dal server
+	\end{enumerate}
+	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. 
+	
+	\textcolor{red}{Aggiungere esempio di store con due interest topic}
+\end{itemize}
+
 \section{Struttura dei file di mashup}
+
+Per poter permettere una dinamicità nell'applicazione si è scelto di utilizzare uno schema di mashup molto semplice e allo stesso tempo sufficientemente potente. Si è scelto di utilizzare uno schema di tipo JSON in modo da essere facilmente sfruttato all'interno del motore JavaScript di React Native. 
+Nel caso di CAMUS l'oggetto che è presente nelle view considera due tipologie di view diverse: la \emph{list} e la \emph{details}. Nella tipologia \emph{list} sono definite le view che definiscono il singolo item della ListView e generalmente si compone di una quantità non eccessiva di componenti
+Nella tipologia \emph{details} sono disponibili tutti i dettagli dell'item selezionato e sono definiti tutti i termini necessari a identificare l'elemento per l'utente.
+Considerando l'esempio dei ristoranti, per la lista sono associati i termini che servono per identificare l'oggetto, come il nome e l'indirizzo. Se poi l'utente vuole vedere la mappa dove si trova e visualizzare gli estremi per contattare il ristorante per prenotare, deve aprire la pagina dei dettagli, dove prendendo i termini dal file di mashup, sono visualizzati tutti i dettagli necessari per l'utente. Inoltre è specificata la tipologia dell'elemento da visualizzare, in modo da permettere all'app di utilizzare le librerie di collegamento con le applicazioni specifiche del sistema operativo mobile.
+
+Nell'esempio sottostante è espresso un frammento del file JSON di mashup della pagina di dettaglio:
+\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+	{	
+		details: 
+			[ 
+				{ 
+					topics:	
+						[ 
+							'Cinema',
+							'Hotel', 
+							'Theater', 
+							'Museum', 
+							'Event' 
+						],
+					contents: 
+						[ 
+							{ 
+								type: 'text', 
+								contents: 'title' 
+							},
+							{ 
+								type: 'text', 
+								contents: 'address'
+							},
+							{ 
+								type: 'map', 
+								contents: [ 'latitude', 'longitude' ] 
+							},
+							{ 
+								type: 'phoneNumber', 
+								contents: 'telephone' 
+							},
+							{ 
+								type: 'website', 
+								contents: 'website' 
+							},
+							{ 
+								type: 'email',
+								contents: 'email' 
+							},
+							{ 
+								type: 'support', 
+								contents: 'support' 
+							},
+							{ 
+								type: 'text', 
+								contents: 'meta' 
+							}
+						] 
+					}
+				]	
+		}
+	
+\end{lstlisting}
+
+Di seguito invece sono elencate le diverse tipologie di dato che compongono l'oggetto che rappresenta i file di \emph{mashup}:
+\begin{itemize}
+	\item \textbf{Type} Il termine \emph{type} indica il tipo dell'elemento da visualizzare nella view. È associato ad un componente React Native, che verrà richiamato quando verrà costruita l'interfaccia grafica
+	\item \textbf{Topic} Si tratta di un array di stringhe e questo elemento indica tutte le aree di interesse che sono associate allo schema in questione. Si è scelto di utilizzare una struttura basata su tag, cioè quando l'applicazione deve accedere alla struttura del mashup viene scelto lo schema nel quale è taggato in questo campo il valore dell'\emph{Interest Topic} attualmente selezionata dall'utente
+	\item \textbf{Contents} Indicano tutti i contenuti di tipo dato o figli di un altro elemento \emph{content}. Se nell'oggetto padre è indicato un oggetto \emph{type}, gli elementi in \emph{contents} rappresentano i termini da richiedere nella query GraphQL per ricevere i dati dal server. In caso contrario questo campo indica che in \emph{contents} è presente un nuovo livello di annidamento. Ci possono essere tanti annidamenti, fino a quando non si arriva ad avere un oggetto che possiede il campo \emph{type}
+	\item \textbf{Style} Nel caso in cui a livello di design del mashup si voglia definire uno stile personalizzato diverso da quelli di default, in questo campo si può definire un oggetto di tipo Flexbox, interpretabile da React Native, che viene applicato all'elemento corrente. 
+\end{itemize}
+
 
 
 
@@ -73,17 +194,22 @@ abc
 
 \section{Flusso di esecuzione}
 
+In questa sezione si vuole affrontare il flusso dei dati all'interno dell'applicazione, partendo dal login da parte dell'utente, fino alla selezione di un elemento dalla lista dei risultati.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_dataflow.pdf}
+	\caption{Flusso dei dati dell'app Flux}\label{fig:app-dataflow}
+\end{figure}
+
+La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \textcolor{red}{aggiungere reference} \section{Utilizzo dei dati}
+
 abc
 
-\section{Utilizzo dei dati}
+\subsection{Costruzione query GraphQL}\label{sec:costruzione-query-graphql}
 
 abc
 
-\subsection{Costruzione query GraphQL}
-
-abc
-
-\subsection{Gestione paginazione}
+\subsection{Gestione paginazione}\label{sec:paginazione-app}
 
 abc
 
