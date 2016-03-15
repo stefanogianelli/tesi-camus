@@ -50,7 +50,7 @@ Questo oggetto rappresenta la radice di un albero di contesto. \upe composto dai
 
 Viene inoltre definito un \emph{CDT Globale}, che viene utilizzato come base per la creazione di quelli specifici per ogni utente. Questo albero ha la particolarità che non viene associato a nessun utente.
 
-\subsection{Nodo\label{sec:nodo-cdt}}
+\subsection{Nodi\label{sec:nodo-cdt}}
 
 Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresentati solamente i nodi di tipo \emph{dimensione}, mentre per i nodi \emph{contesto} e \emph{parametro} vengono rappresentati in altri oggetti. Ogni nodo possiede i seguenti attributi:
 
@@ -64,7 +64,7 @@ Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresen
 
 Esempio di nodo:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
 	{
 		"name": "InterestTopic",
 		"for": "filter",
@@ -79,7 +79,7 @@ Esempio di nodo:
 	}
 \end{lstlisting}
 
-\subsection{Parametro\label{sec:parametro-cdt}}
+\subsection{Parametri\label{sec:parametro-cdt}}
 
 Definisce i parametri che sono associati ad un nodo dimensione. Corrisponde ai nodi di tipo \emph{parametro} del modello del CDT. \upe composto dai seguenti campi:
 
@@ -92,7 +92,7 @@ Definisce i parametri che sono associati ad un nodo dimensione. Corrisponde ai n
 
 Esempio di parametro:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
 	{
 		"name": "Location",
 		"for": "ranking|parameter",
@@ -130,7 +130,7 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 
 Esempio di oggetto principale:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
   {
 	  "name": "GooglePlaces",
 	  "protocol": "query",
@@ -157,7 +157,7 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 
 Esempio di operazione:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
 	{
 		"name": "nearBySearch",
 		"type": "primary",
@@ -186,7 +186,7 @@ In quest'oggetto vengono definiti i parametri di input di un operazione. I param
 
 Esempio di parametro:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
 	{
 		"name": "Location",
 		"required": true,
@@ -220,7 +220,7 @@ In quest'oggetto sono definite le regole con le quali vengono trasformate le ris
 
 Esempio di formato di risposta:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
 	{
 		"list": "results",
 		"items": [
@@ -267,7 +267,7 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 
 Esempio di paginazione:
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray}]
+\begin{lstlisting}[style=blocco-esempi]
 	{
 		"pagination": {
 			"attributeName": "pagetoken",
