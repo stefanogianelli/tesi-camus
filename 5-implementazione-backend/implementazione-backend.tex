@@ -509,6 +509,162 @@ Se l'equazione è rispettata vengono semplicemente restituiti i dati presenti in 
 	Accennare alcuni dettagli sul come sono stati realizzati gli schemi GraphQL\\
 	Descrivere vantaggi e problematiche}
 
+Introduzione ... \textcolor{red}{completare}
+
+Per interfacciarsi con le web app e l'app mobile, sono stati realizzati diversi endpoint, che verranno descritti nel dettaglio nelle seguenti sottosezioni.
+
+\subsection{Execute Query\label{sec:execute-query-endpoint}}
+
+\upe l'endpoint principale, riceve in ingresso il contesto dell'utente e restituisce le informazioni recuperate, divise in \emph{primarie} e di \emph{supporto}. L'oggetto accettato in ingresso è composto dai seguenti campi:
+
+\begin{itemize}
+	\item \textbf{User Id} Rappresenta l'identificativo dell'utente che esegue la query
+	\item \textbf{Id Cdt} \upe l'identificativo dell'albero di contesto che si desidera utilizzare
+	\item \textbf{Context} Contiene le informazioni di contesto, ossia i nodi che sono attivi. Ogni oggetto è composto dai seguenti attributi:
+	\begin{itemize}
+		\item \textbf{Dimension} Rappresenta il nome del nodo dimensione
+		\item \textbf{Value} Contiene il valore selezionato dall'utente per la dimensione
+		\item \textbf{Parameters} Elenca i parametri associati alla dimensioni. Ogni parametro è strutturato come di seguito:
+		\begin{itemize}
+			\item \textbf{Name} Il nome del parametro
+			\item \textbf{Value} Il valore definito dall'utente
+			\item \textbf{Fields} Contiene l'elenco dei campi associati al parametro. Ogni campo viene descritto dal proprio \virgolette{nome} e dal \virgolette{valore} che assume
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{Support} Contiene l'elenco delle categoria di servizi di supporto che si vogliono ricevere
+\end{itemize}
+
+Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Helper} viene creato il \emph{CDT Decorato}. Una volta creato, verrà utilizzato come base per l'acquisizione delle informazioni e la composizione dei servizi di supporto. Viene definito il seguente oggetto come risposta:
+
+\begin{itemize}
+	\item \textbf{Connection Id} Identificativo univoco della sessione. Viene utilizzato per segnalare a chi effettua la query se la risposta fa parte di una sessione precedente o si tratta di una nuova
+	\item \textbf{Primary Connection} Mette a disposizione l'elenco dei risultati. La particolarità è che si tratta di una \emph{connessione}, che è una tipologia specifica di GraphQL che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A GraphQL viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal client. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} first, dove viene specificato il numero di elementi che si desidera ricevere; \emph{ii)} after, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, GraphQL restituisce i primi N risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrato gli N elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da GraphQL per ogni elemento della risposta. Per permettere al client di conoscere lo stato della paginazione, oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} hasNextPage, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} endCursor, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al client di gestire il numero di elementi da ricevere. Ogni oggetto che compone la risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
+	\item \textbf{Support Connection} Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come il caso dei risultati primari viene utilizzata una \emph{connessione} di GraphQL. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
+\end{itemize}
+
+Di seguito viene mostrato un esempio di richiesta:
+
+\begin{lstlisting}
+~query Restaurant~ {
+	!executeQuery! (
+		@userId@: ~"USER_ID"~,
+		@idCdt@: ~"CDT_ID"~,
+		@context@: [
+			{
+				@dimension@: ~"InterestTopic"~,
+				@value@: ~"Restaurant"~
+			},
+			{
+				@dimension@: ~"Location"~,
+				@parameters@: [
+					{
+						@name@: ~"CityCoord"~,
+						@fields@: [
+							{
+								@name@: ~"Latitude"~,
+								@value@: ~"45.4788807"~
+							},
+							{
+								@name@: ~"Longitude"~,
+								@value@: ~"9.2321363"~
+							}
+						]
+					}
+				]
+			},
+			{
+				@dimension@: ~"Transport"~,
+				@value@: ~"PublicTransport"~
+			}
+		],
+		@support@: [~"Transport"~]
+	)
+	{
+		!primaryResults! (@first@: ~9~) {
+			!data! {
+				!title!
+				!address!
+				!latitude!
+				!longitude!
+				!meta! {
+					!name!
+					!rank!
+				}
+			}
+		}
+		!supportResults! {
+			!data! {
+				!category!
+				!service!
+				!url!
+			}
+		}
+	}
+}
+\end{lstlisting}
+
+\subsection{Login\label{sec:login-endpoint}}
+
+Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo SHA1\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono ad un utente vengono restituiti il suo \emph{identificativo}, utile per le query successive, un \emph{token}, utilizzato per mantenere aperta la sessione, ed il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'app con le informazioni personali.
+
+Di seguito viene mostrato un esempio di richiesta di login:
+
+\begin{lstlisting}
+{
+	!login! (
+		@mail@: ~"MAIL_ADDRESS"~,
+		@password@: ~"ENCRYPTED_PASSWORD"~
+	)
+	{
+		!id!
+		!name!
+		!surname!
+		!token!
+	}
+}
+\end{lstlisting}
+
+\subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
+
+Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'app mobile può recuperare le versioni più aggiornate degli schemi relativi all'utente. Come input vengono richiesti l'identificativo dell'\emph{utente} e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, restituisce i dati richiesti. Il formato della risposta viene composto come segue:
+
+\begin{itemize}
+	\item \textbf{Cdt} Rappresenta la radice dell'albero di contesto. Un CDT viene definito dai seguenti attributi:
+	\begin{itemize}
+		\item \textbf{Id Cdt} L'identificativo dell'albero di contesto
+		\item \textbf{Context} Contiene le informazioni sul contesto, ossia i nodi che compongono l'albero. Ciascun nodo viene definito come segue:
+		\begin{itemize}
+			\item \textbf{Name} Il nome del nodo dimensione
+			\item \textbf{Values} L'elenco dei possibili valori che può assumere il nodo
+			\item \textbf{Parameters} Lista dei parametri associati al nodo. Ogni parametro è composto dai seguenti campi:
+			\begin{itemize}
+				\item \textbf{Name} Il nome dell'attributo
+				\item \textbf{Type} La tipologia di dato
+				\item \textbf{Enum} Elenco dei possibili valori che il parametro può assumere
+				\item \textbf{Fields} Elenco di campi che specializzano il parametro. La struttura di un campo è molto simile a quella del parametro, infatti contiene gli attributi \virgolette{Name}, che definisce il nome del campo, e \virgolette{Type}, che ne specifica la tipologia
+			\end{itemize}
+			\item \textbf{Parents} Elenco di tutti i parenti del nodo corrente
+		\end{itemize}
+		\item \textbf{Default Values} Elenco dei valori che non vengono mostrati nell'albero di contesto perché precedentemente selezionati. Questo oggetto è composto dagli attributi \virgolette{Dimension}, che rappresenta il nome del nodo dimensione, e \virgolette{Value}, che è il valore associato al nodo
+	\end{itemize}
+	\item \textbf{Mashup} Rappresenta lo schema dei mashup. Fornisce all'app mobile le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di mashup è composto dai seguenti campi:
+	\begin{itemize}
+		\item \textbf{List} Questo oggetto fornisce le regole per rappresentare la lista dei risultati, ossia la schermata di \emph{merge} o \emph{master}. In questa pagina viene mostrato l'elenco dei dati recuperati descritti da un insieme ridotto di attributi. Per specificare quali dati devono essere mostrati e come, vengono utilizzati i seguenti attributi:
+		\begin{itemize}
+			\item \textbf{Topics} Elenco degli \emph{Interest Topic} per i quali lo schema corrente è valido
+			\item \textbf{Contents} Definisce i componenti che devono essere utilizzati, il loro stile e dove recuperare i dati da essere mostrati. Ogni oggetto viene definito dai seguenti attributi:
+			\begin{itemize}
+				\item \textbf{Type} Specifica la tipologia di componente da utilizzare (es.: \emph{text} per informazioni testuali, \emph{map} per mostrare una mappa, \emph{website} per creare un collegamento verso una pagina web, ecc.)
+				\item \textbf{Style} Permette di definire uno stile diverso da quello predefinito al componente. Se è presente lo stile originale viene completamente ignorato
+				\item \textbf{Contents} Definisce quali sono i \emph{termini semantici} dai quali è possibile recuperare le informazioni. Viene inoltre data la possibilità di inserire dei sottocomponenti, dello stesso tipo definito nell'attributo \virgolette{Type}, per formare un componente aggregato
+			\end{itemize}
+		\end{itemize}	
+		\item \textbf{Details} Questo oggetto definisce la composizione della schermata di dettaglio di un singolo elemento. Questa pagina viene richiamata una volta che l'utente seleziona un elemento per controllarne le informazioni specifiche. Viene definito dagli stessi attributi della sezione \virgolette{List}			
+	\end{itemize}
+\end{itemize}
+
+\textcolor{red}{Aggiungere esempio}
+
 \section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
 \textcolor{red}{mostrare come viene elaborata una richiesta proveniente dalla mobile app\\

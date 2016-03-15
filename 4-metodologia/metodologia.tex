@@ -79,11 +79,17 @@ Per le \emph{operazioni di supporto} non è sempre necessario definire le associa
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{4-metodologia/Immagini/associazioni-cdt.png}
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/associazioni-cdt.pdf}
 	\caption{Associazione dei servizi al CDT}\label{fig:associazione-servizi-cdt}
 \end{figure}
 
-In Figura \ref{fig:associazione-servizi-cdt} viene mostrato un esempio di associazione. Viene rappresentato un contesto nel quale è possibile richiedere informazioni su \emph{ristoranti}, \emph{cinema}, \emph{teatri} e \emph{musei}.
+In Figura \ref{fig:associazione-servizi-cdt} viene mostrato un esempio di associazione. Viene rappresentato un contesto nel quale è possibile richiedere informazioni su \emph{ristoranti}, \emph{cinema}, \emph{teatri} e \emph{musei}. Sotto ad ogni \emph{Interest Topic} vengono evidenziate, nei blocchi tratteggiati, le operazioni che sono associate allo specifico nodo. Si può notare che ad ogni operazione viene assegnato un numero, che corrisponde alla \emph{priorità} che ha nella categoria.
+
+Per i \emph{ristoranti} viene data anche la possibilità di scegliere la tipologia di cucina che si preferisce. A questi valori non vengono effettuate associazioni: infatti queste selezioni verranno utilizzate come parametro per i servizi.
+
+Un'altra dimensione importante è la \emph{Località}, che definisce il punto nel quale si trova l'utente. Per rappresentare un posto vengono utilizzate le sue coordinate, che sono memorizzate nel parametro \emph{CityCoord}, il quale a sua volta viene specializzato nei campi \emph{Latitudine} e \emph{Longitudine}. In questo caso l'associazione dei servizi avviene definendo le coordinante del centro della città desiderata. Per semplificare l'immagine, è stato utilizzato il valore \virgolette{Milan}, per associare l'operazioni di ricerca dei teatri per Milano. In realtà andrebbero utilizzate le coordinate del centro città, che sono $ (45.46427, 9.18951) $.
+
+Infine, con le dimensioni \emph{Trasporto} e \emph{Tipologia Trasporto} vengono definite le associazioni con le operazioni di supporto. La principale differenza con il caso delle operazioni primarie è che non viene definito nessun valore di priorità.
 
 \section{CDT su misura per gli utenti\label{sec:cdt-su-misura}}
 
