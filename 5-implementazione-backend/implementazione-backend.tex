@@ -62,9 +62,11 @@ Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresen
 	\item \textbf{Parents} Contiene l'elenco di tutti i nodi dimensione dai quali discende il nodo corrente. Viene utilizzato per effettuare l'unione delle sottodimensioni di un nodo
 \end{itemize}
 
-Esempio di nodo:
+Nel Listato \ref{lst:esempio-nodo-cdt} viene mostrato un esempio di nodo.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di nodo del CDT,
+								label=lst:esempio-nodo-cdt]
 	{
 		"name": "InterestTopic",
 		"for": "filter",
@@ -90,9 +92,11 @@ Definisce i parametri che sono associati ad un nodo dimensione. Corrisponde ai n
 	\item \textbf{Fields} Questo elenco permette di definire dei campi che vanno ulteriormente a specificare il parametro. Un esempio viene dato dal parametro \virgolette{Località}, che può essere specializzato nei campi \virgolette{Latitudine} e \virgolette{Longitudine}
 \end{itemize}
 
-Esempio di parametro:
+Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di parametro.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di parametro associato ad un nodo,
+								label=lst:esempio-parametro-cdt]
 	{
 		"name": "Location",
 		"for": "ranking|parameter",
@@ -128,9 +132,11 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 	\item \textbf{Operazioni} L'elenco delle operazioni esposte dal servizio. Per un approfondimento riguardo questo oggetto fare riferimento alla Sezione \ref{sec:descrittore-operazioni}
 \end{itemize}
 
-Esempio di oggetto principale:
+Nel Listato \ref{lst:esempio-descrittore-servizio} viene mostrato un esempio di oggetto principale del servizio.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di servizio,
+								label=lst:esempio-descrittore-servizio]
   {
 	  "name": "GooglePlaces",
 	  "protocol": "query",
@@ -155,9 +161,11 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 	\item \textbf{Pagination} Serve a raccogliere gli attributi necessari per gestire la paginazione specifica di ogni servizio. Sono supportati meccanismi di paginazioni basati sul \emph{numero di pagina} o su \emph{token}. Questo oggetto viene analizzato nel dettaglio nella Sezione \ref{sec:descrittore-paginazione}
 \end{itemize}
 
-Esempio di operazione:
+Nel Listato \ref{lst:esempio-descrittore-operazione} viene mostrato un esempio di operazione.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di operazione,
+								label=lst:esempio-descrittore-operazione]
 	{
 		"name": "nearBySearch",
 		"type": "primary",
@@ -184,9 +192,11 @@ In quest'oggetto vengono definiti i parametri di input di un operazione. I param
 	\item \textbf{Translate} Questo oggetto viene utilizzato quando è necessario effettuare un modifica del/i valore/i acquisiti dall'albero di contesto. \upe formato dai campi \virgolette{from} e \virgolette{to}, che specificano rispettivamente il valore di \emph{origine} e quello \emph{tradotto}. Vengono definite tante traduzioni quanti sono i valori che può assumere il rispettivo nodo del CDT
 \end{itemize}
 
-Esempio di parametro:
+Nel Listato \ref{lst:esempio-descrittore-parametro} viene mostrato un esempio di parametro.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di parametro,
+								label=lst:esempio-descrittore-parametro]
 	{
 		"name": "Location",
 		"required": true,
@@ -218,9 +228,11 @@ In quest'oggetto sono definite le regole con le quali vengono trasformate le ris
 	\item \textbf{Functions} Viene permesso l'utilizzo di funzioni specifiche per trasformare i valori. Questa funzione riceve in ingresso il parametro \virgolette{value}, che rappresenta il valore corrente del campo, e deve restituire il nuovo valore che verrà sostituito a quello originale. Oltre alla funzione specifica, è necessario definire anche l'\emph{attributo} sul quale eseguire questa trasformazione. L'attributo equivale al \emph{termine semantico} definito nel punto precedente
 \end{itemize}
 
-Esempio di formato di risposta:
+Nel Listato \ref{lst:esempio-formato-risposta} viene mostrato un esempio di formato di risposta.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di formato di risposta,
+								label=lst:esempio-formato-risposta]
 	{
 		"list": "results",
 		"items": [
@@ -265,9 +277,11 @@ In quest'oggetto vengono gli attributi necessari per gestire la paginazione dell
 	\item \textbf{Page Count Attribute} Definisce l'attributo che fornisce l'informazione del numero di pagine totale che possono essere richieste
 \end{itemize}
 
-Esempio di paginazione:
+Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio di descrittore della paginazione.
 
-\begin{lstlisting}[style=blocco-esempi]
+\begin{lstlisting}[style=blocco-esempi,
+								caption=Esempio di descrittore della paginazione,
+								label=lst:esempio-descrittore-paginazione]
 	{
 		"pagination": {
 			"attributeName": "pagetoken",
@@ -542,9 +556,10 @@ Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Help
 	\item \textbf{Support Connection} Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come il caso dei risultati primari viene utilizzata una \emph{connessione} di GraphQL. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
 \end{itemize}
 
-Di seguito viene mostrato un esempio di richiesta:
+Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio di richiesta per effettuare la ricerca di dati sia \emph{primari} sia di \emph{supporto}.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=Esempio richiesta executeQuery,
+								label=lst:esempio-richiesta-execute-query]
 ~query Restaurant~ {
 	!executeQuery! (
 		@userId@: ~"USER_ID"~,
@@ -607,9 +622,10 @@ Di seguito viene mostrato un esempio di richiesta:
 
 Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo SHA1\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono ad un utente vengono restituiti il suo \emph{identificativo}, utile per le query successive, un \emph{token}, utilizzato per mantenere aperta la sessione, ed il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'app con le informazioni personali.
 
-Di seguito viene mostrato un esempio di richiesta di login:
+Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richiesta per effettuare l'autenticazione dell'utente.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=Esempio richiesta login,
+								label=lst:esempio-richiesta-login]
 {
 	!login! (
 		@mail@: ~"MAIL_ADDRESS"~,
@@ -663,7 +679,58 @@ Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono
 	\end{itemize}
 \end{itemize}
 
-\textcolor{red}{Aggiungere esempio}
+Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di richiesta per ricevere i dati personali dell'utente.
+
+\begin{lstlisting}[caption=Esempio richiesta getPersonalData,
+								label=lst:esempio-get-personal-data]
+{
+	!getPersonalData! (
+		@id@: ~"USER_IDENTIFIER"~,
+		@token@: ~"SESSION_TOKEN"~
+	)
+	{
+		!cdt! {
+			!idCdt!
+			!context! {
+				!name!
+				!values!
+				!parameters! {
+					!name!
+					!type!
+					!enum!
+					!fields! {
+						!name!
+						!type!
+					}
+				}
+				!parents!
+			}
+			!defaultValues! {
+				!dimension!
+				!value!
+			}
+		}
+		!mashup! {
+			!list! {
+				!topics!
+				!contents! {
+					!type!
+					!style!
+					!contents!
+				}
+			}
+			!details! {
+				!topics!
+				!contents! {
+					!type!
+					!style!
+					!contents!
+				}
+			}
+		}
+	}
+}
+\end{lstlisting}
 
 \section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
