@@ -38,7 +38,7 @@ In questa sezione si è voluta dare una visione d'insieme sui compiti che spettan
 
 Nella Sezione \ref{sec:context-dimension-model} è stato esposto il modello del \emph{Context Dimension Tree}. In questa sezione viene invece definito come l'albero di contesto viene descritto nel sistema. Sono state effettuate alcune semplificazioni per agevolare la memorizzazione ed il recupero delle informazioni. Nelle seguenti sottosezioni vengono analizzati nel dettaglio i singoli oggetti che formano un albero di contesto.
 
-\subsection{Radice}
+\subsection{Radice\label{sec:radice-cdt}}
 
 Questo oggetto rappresenta la radice di un albero di contesto. \upe composto dai seguenti parametri:
 
@@ -120,7 +120,7 @@ Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di paramet
 
 In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella Sezione \ref{sec:utilizzo-servizi}. Affinché il sistema possa effettuare le richieste, è necessario che sia presente una formato per descrivere le caratteristiche di ogni servizio (es.: l'indirizzo verso il quale effettuare la richiesta, i parametri da inserire, ecc.). Per questo motivo è stato introdotto l'utilizzo di un \emph{descrittore dei servizi}, che sia in grado di descrivere tutte le possibili configurazioni che i servizi possono richiedere. I \emph{descrittori} non sono altro che file JSON che specificano le impostazioni di ogni servizio. Di seguito verranno analizzati nel dettaglio tutti i campi che compongono il descrittore. Visto che il descrittore contiene una moltitudine di informazioni che riguardano diversi aspetti di un servizio, viene diviso in sotto-oggetti in modo da semplificarne la comprensione e lettura.
 
-\subsection{Oggetto principale}
+\subsection{Oggetto principale\label{sec:oggetto-principale-servizi}}
 
 \upe il punto di partenza per la descrizione di un servizio. Comprende i seguenti campi:
 
@@ -291,7 +291,7 @@ Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio 
 	}
 \end{lstlisting}
 
-\section{Schema del database}
+\section{Schema del database\label{sec:schema-database}}
 
 La base di dati viene utilizzata principalmente per garantire la persistenza di tre elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto e \emph{iii)} le associazioni tra operazioni e nodi del CDT.
 
@@ -401,7 +401,7 @@ In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle clas
 
 Nelle seguenti sezioni verranno analizzate nel dettaglio le attività svolte dai singoli componenti.
 
-\subsection{Provider}
+\subsection{Provider\label{sec:provider}}
 
 Il \emph{Provider} rappresenta il punto di accesso ai database. Segue il pattern \emph{singleton}, che prevede una singola istanza della classe in comune per tutti i componenti. Le varie classi che necessitano di accedere al database possono recuperare l'istanza corrente tramite il metodo statico \emph{getInstance()}. Durante l'inizializzazione si occupa di creare le connessioni verso MongoDB e Redis. Implementa tutti i metodi necessari per recuperare le informazioni dal database e centralizza le query tutte in un singolo punto, in modo che gli altri componenti del sistema non debbano preoccuparsi di comporre le clausole. Inoltre, visto che diversi metodi vengono utilizzati da più componenti, si evitano duplicazioni di codice, che provoca una riduzione della manutenibilità del sistema in quanto una modifica ad un metodo dovrebbe essere ripetuta più volte.
 
@@ -448,7 +448,7 @@ Una volta acquisite le associazioni attive, viene calcolato il \emph{punteggio} 
 
 Completata questa fase, l'elenco delle operazioni viene riordinato in modo decrescente in base al \emph{punteggio} calcolato e vengono selezionate solamente le Top-N operazioni col punteggio più elevato. 
 
-\subsection{Query Handler}
+\subsection{Query Handler\label{sec:query-handler}}
 
 Il \emph{Query Handler} è il componente che orchestra le chiamate verso i servizi primari, riceve le risposte e le trasforma nel formato interno. Riceve come input gli identificativi dei servizi e ne acquisisce i descrittori completi dal database.
 
@@ -474,7 +474,7 @@ Se il servizio prevede l'utilizza della paginazione, viene analizzata la rispost
 
 Infine, viene restituito in uscita la risposta del servizio insieme alle eventuali informazioni riguardo la paginazione, che in particolare sono due: \emph{i)} hasNextPage, che indica se è presente un'altra pagina; \emph{ii)} nextPage, che specifica il numero di pagina o token da utilizzare per richiamare la nuova pagina.
 
-\subsection{Response Aggregator}
+\subsection{Response Aggregator\label{sec:response-aggregator}}
 
 Il \emph{Response Aggregator} entra in gioco una volta che sono stati interrogati tutti i servizi. Riceve in input l'elenco dei risultati già trasformati. Il suo compito è di effettuare diverse attività per pulire i dati o aggiungere ulteriori informazioni. Al momento, nel prototipo viene eseguita unicamente la \emph{ricerca dei duplicati}. Questa attività scorre l'intera lista dei risultati e cerca gli oggetti che sono simili tra loro, cioè che rappresentano la medesima entità reale. Ogni qualvolta che due o più oggetti vengono identificati come duplicati, viene avviata un'attività per unirli in un unico oggetto. Questo oggetto conterrà l'unione delle informazioni che ognuno degli elementi mette a disposizione. In questo modo è possibile creare un entità più ricca rispetto a quelle originali. Nel caso in cui ci sia sovrapposizione, ossia quando due o più entità forniscono lo stesso attributo, viene mantenuto il valore restituito dal servizio col punteggio più alto, che si ipotizza sia quello che mette a disposizione i migliori dati per la situazione corrente. Per un'analisi più approfondita dell'algoritmo di ricerca dei duplicati si fa riferimento all'Algoritmo \ref{alg:algoritmo-rimozione-duplicati}.
 
@@ -482,7 +482,7 @@ Un'ulteriore attività, che non è ancora stata implementata, riguarda l'assegname
 
 Una volta terminate le attività sui dati, viene restituita la nuova lista dei risultati.
 
-\subsection{Support Service Selection}
+\subsection{Support Service Selection\label{sec:support-service-selection}}
 
 Il \emph{Support Service Selection} è il componente dedicato alla selezione delle operazioni di supporto o intent. Riceve in ingresso il \emph{CDT Decorato} che, oltre a contenere le selezioni fatte dall'utente, elenca anche le categorie di servizi che si desidera ricevere. Le categorie servono per raggruppare più servizi che svolgono una funzione simile assieme. In base alle associazioni definite verrà poi selezionato il servizio più idoneo per la situazione corrente. L'attività di selezione che viene descritta è ripetuta integralmente per ognuna delle categorie, in quanto si vuole ottenere almeno un riscontro per tutte le categorie elencate. Come nel caso delle operazioni primarie, si inizia con la ricerca delle operazioni associate ai nodi attivi del CDT. In questo caso non viene più fatta la divisione tra nodi di tipo \emph{filter} e nodi di tipo \emph{ranking} bensì vengono unite queste due categorie. Invece viene mantenuta la logica di ricerca delle associazioni che richiedono dei metodi specifici. Come già descritto nella Sezione \ref{sec:selezione-operazioni}, per le operazioni di supporto le associazioni vengono intese più come \emph{vincoli}. A questo scopo vengono contestualmente recuperati il numero di vincoli associati alle operazioni per le quali è stata trovata almeno un'associazione. Questo passaggio è essenziale, in quanto si vogliono effettivamente selezionare solamente le operazioni che hanno un numero di vincoli uguale o maggiore di quello preimpostato. Il caso in cui i conteggi siano pari è intuitivo, mentre richiede una spiegazione il fatto che esistano situazioni nelle quali il conteggio sia maggiore rispetto al numero di vincoli. Si prenda come esempio un servizio dei trasporti che espone una operazione. Questa operazione necessita di un parametro che specifica se si preferisce spostarsi col \emph{bus} o con la \emph{metro}. Questo valore viene dunque recuperato dall'albero di contesto, in base alla selezione effettuata dall'utente. Visto che si tratta di una sola operazione, ma è valida per più situazioni, verrà associata a due diversi nodi dell'albero. Il conteggio dei vincoli dovrà invece rimanere pari a uno, come se si fosse effettuata una singola associazione. Infatti non è possibile inserire come valore due, perché altrimenti l'operazione non verrebbe mai selezionata, in quanto risulterebbe una sola associazione.
 
@@ -490,7 +490,7 @@ Una volta che sono state selezionate le operazioni che rispettano il numero di v
 
 L'ultimo passaggio riguarda la composizione degli indirizzi delle operazioni selezionate. In seguito l'elenco creato viene restituito in uscita, in modo che sia utilizzabile dall'app mobile.
 
-\subsection{Session Helper}
+\subsection{Session Helper\label{sec:session-helper}}
 
 Il \emph{Sessione Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e l'app mobile richiede ulteriori dati. Si occupa di gestire il salvataggio in cache della sessione ed eventualmente, quando il primo result set sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
 
@@ -517,11 +517,7 @@ Dove:
 
 Se l'equazione è rispettata vengono semplicemente restituiti i dati presenti in cache, altrimenti il \emph{Session Helper} si occupa di recuperare dalla cache le informazioni sui servizi prescelti nella richiesta originale e sulle pagine da richiedere ed effettua le richieste ai servizi, sfruttando in particolari il \emph{Query Handler} ed il \emph{Response Aggregator}.
 
-\section{Endpoint GraphQL}
-
-\textcolor{red}{Mostrare quali endpoint sono stati realizzati\\
-	Accennare alcuni dettagli sul come sono stati realizzati gli schemi GraphQL\\
-	Descrivere vantaggi e problematiche}
+\section{Endpoint GraphQL\label{sec:endpoint-graphql}}
 
 Introduzione ... \textcolor{red}{completare}
 
@@ -734,10 +730,29 @@ Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di ric
 
 \section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
-\textcolor{red}{mostrare come viene elaborata una richiesta proveniente dalla mobile app\\
-	mostrare diagramma di flusso delle scelte se andare a recuperare il dato in cache o fare un nuova richiesta, e se in cache se è necessario reinterrogare il servizio\\
-	mostare flusso di una nuova richiesta\\
-	mostrare flusso di una richiesta che richiede dati dai servizi e li aggiunge a quelli già presenti in cache}
+In questa sezione viene analizzato il flusso di esecuzione principale del sistema, quello che riguarda le richieste proveniente dalla mobile app. Le prime attività che svolge sono il login dell'utente, tramite l'endpoint \emph{login} (Sezione \ref{sec:login-endpoint}), e l'acquisizione dei dati personali dell'utente, tramite l'endpoint \emph{getPersonalData} (Sezione \ref{sec:get-personal-data-endpoint}).
+
+L'attività più importante riguarda invece l'endpoint \emph{executeQuery} (Sezione \ref{sec:execute-query-endpoint}), che è dedicato all'invio delle informazioni trovate in base al contesto dell'utente. In Figura \ref{fig:flusso-nuova-richiesta} vengono mostrati i componenti coinvolti in questa fase e l'ordine col quale sono eseguiti.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/flusso_richiesta.png}
+	\caption{Flusso di una nuova richiesta\label{fig:flusso-nuova-richiesta}}
+\end{figure}
+
+L'attività viene divisa in tre fasi:
+
+\begin{enumerate}
+	\item \textbf{Creazione CDT decorato} \upe la prima fase che viene eseguita. Una volta ricevuto il \emph{contesto} dal client, questo viene analizzato e trasformato nella versione \emph{decorata}
+	\item \textbf{Acquisizione dati primari} Questa fase avviene dopo la creazione del CDT decorato. Si occupa di selezionare le operazioni attinenti al contesto, interrogare i servizi, integrare le risposte ed inviare i dati finali al client
+	\item \textbf{Composizione servizi di supporto} Questa fase avviene dopo la creazione del CDT ed in parallelo all'acquisizione dei dati primari. A partire dal contesto si occupa di selezionare i servizi di supporto richiesti dal client e ne compone le query
+\end{enumerate}
+
+Nelle successive sezioni verranno analizzate nel dettaglio ognuna delle precedenti fasi.
+
+\subsection*{Creazione del CDT decorato}
+
+\upe la prima attività che viene eseguita, della quale si occupa il \emph{Context Manager}. In Figura \ref{fig:flusso-decorated-cdt} viene mostrato il diagramma di flusso delle attività svolte. Riceve in ingresso il \emph{contesto} che è stato composto dall'utente e lo trasforma nella relativa versione \emph{decorata}. Se il contesto è già stato ricevuto in una precedente richiesta, viene recuperata dalla cache la versione decorata che è già stata elaborata, altrimenti viene avviato il processo di trasformazione. Al fine di identificare univocamente ogni contesto, per poterlo memorizzare e recuperare in cache, viene generato un \emph{hash} sull'oggetto ricevuto. In questo modo è possibile anche condividere un contesto tra più utenti diversi.
 
 \begin{figure}[ht]
 	\centering
@@ -745,11 +760,27 @@ Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di ric
 	\caption{Flusso di creazione del CDT decorato\label{fig:flusso-decorated-cdt}}
 \end{figure}
 
+\subsection*{Acquisizione dei dati primari}
+
+Questa fase viene eseguita una volta terminata la creazione del \emph{CDT decorato}. In Figura \ref{fig:flusso-servizi-primari} viene mostrato il diagramma di flusso che mostra come viene gestita una richiesta.
+
+La prima attività che viene svolta riguarda il controllo, come nel passaggio precedente, se la richiesta era già stata gestita in passato. Se si tratta di una nuova richiesta, l'attività viene svolta dai componenti che fanno parte del blocco \virgolette{Primary Service} nella Figura \ref{fig:flusso-nuova-richiesta}. Il primo componente che viene eseguito è il \emph{Primary Service Selection}, che si occupa di selezionare le operazioni che sono più idonee al contesto fornito dall'utente. Prodotto l'elenco entra in gioco il \emph{Query Handler}, che ha un duplice compito. Il primo, con l'ausilio di uno o più \emph{Bridge}, è l'invocazione dei servizi prescelti e l'acquisizione delle relative risposte. Una volta ricevute le risposte provvede a trasformarle nel formato interno, tramite le funzioni messe a disposizione dal \emph{Response Parser}. Tutte le risposte ricevute vengono infine unite a formare un'unica lista e restituite per essere ulteriormente elaborate dal \emph{Response Aggregator}, che effettua un'attività di rimozione dei duplicati. L'elenco dei risultati identificato verrà dunque salvato per un periodo di tempo in cache in modo da poter essere riutilizzabile per richieste future.
+
+La seconda eventualità si verifica quando la risposta è presente in cache. Questo caso ha una gestione un po' più complessa rispetto al precedente perché viene considerata anche la paginazione dei risultati. La prima verifica riguarda la disponibilità di informazioni da restituire al client. Se la quantità di dati contenuti in cache è sufficiente ad evadere la richiesta viene subito restituita la porzione di informazioni richiesta. Altrimenti viene effettuata una nuova richiesta verso i servizi che hanno ulteriori dati da mostrare. La regola di ricaricamento dei dati è la stessa descritta nella Sezione \ref{sec:session-helper}. Qualsiasi casistica termina sempre con l'aggiornamento dello stato nella cache, in quanto vengono sia salvati l'elenco dei risultati sia il numero di elementi che il client ha già richiesto. Il processo termina una volta che tutti i servizi non ha più dati da mostrare. In quel caso il client verrà informato del fatto che non sono più disponibili ulteriori pagine.
+
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_servizi_primari.png}
 	\caption{Flusso di richiesta dei risultati primari\label{fig:flusso-servizi-primari}}
 \end{figure}
+
+\subsection*{Acquisizione dei servizi di supporto}
+
+Questa attività incomincia una volta creato il \emph{CDT decorato} ed opera in parallelo all'acquisizione dei servizi di supporto. Coinvolge unicamente il componente \emph{Support Service Selection}, che si occupa di selezionare i servizi di supporto o gli intent richiesti dal client. In ingresso viene fornita la \emph{categoria} dei servizi che si vuole selezionare in base al contesto fornito.
+
+Una volta selezionati incomincia la fase di composizione delle URL necessarie per interrogare il servizio o richiamare l'intent specifico.
+
+In Figura \ref{fig:flusso-servizi-supporto} viene mostrato il semplice flusso delle attività svolte dal \emph{Support Service Selection}.
 	
 \begin{figure}[ht]
 	\centering
@@ -757,7 +788,101 @@ Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di ric
 	\caption{Flusso di richiesta dei risultati di supporto\label{fig:flusso-servizi-supporto}}
 \end{figure}
 
-\section{File di configurazione}
+\section{File di configurazione\label{sec:file-configurazione}}
 
-\textcolor{red}{Spiegare campi del file di configurazione e variabili d'ambiente\\
-	Nomi dei file per i vari ambienti (sviluppo, produzione)}
+Per configurare agilmente determinati parametri del sistema, vengono sfruttate determinate \emph{variabili d'ambiente} e viene messa a disposizione una cartella dove aggiungere dei \emph{file di configurazione}. In caso di conflitto viene seguita la seguente scala di priorità:
+
+\begin{enumerate}
+	\item \textbf{Variabili d'ambiente} Vengono inizialmente considerate le variabili d'ambiente
+	\item \textbf{File di configurazione} Il valore viene acquisito dal file di configurazione
+	\item \textbf{Valore predefinito} Se nessuno dei due precedenti passi ha prodotto un valore ne viene utilizzato uno predefinito. Esistono casi dove un valore predefinito non è utilizzabile (es.: indirizzo del database), quindi se non viene specificato alcun valore l'applicazione lancerà un'eccezione
+\end{enumerate}
+
+Vengono messe a disposizione le seguenti variabili d'ambiente:
+
+\begin{itemize}
+	\item \textbf{NODE\_ENV} Per definire l'ambiente nel quale avviare l'applicazione (es.: production, development, ecc.)
+	\item \textbf{PORT} La porta che si vuole utilizzare per richiamare gli endpoint
+	\item \textbf{MONGOLAB\_URI} L'indirizzo di MongoDB. Può comprendere anche l'utente e la password di accesso al database
+	\item \textbf{REDIS\_URL} L'indirizzo di Redis. Può comprendere anche l'utente e la password di accesso al database
+\end{itemize}
+
+Nella cartella \virgolette{config} è possibile aggiungere dei file per configurare altri parametri. Possono essere creati più file di configurazione, che verranno caricati per i diversi ambienti nel quale può funzionare l'applicazione. Basta chiamare il file col nome dell'ambiente di destinazione (es.: production, development, qa, staging, ecc.). Viene fornita la configurazione \virgolette{default} che viene utilizzata quando non è presente nessun file relativo all'ambiente corrente. Di seguito vengono elencati i parametri accettati. Tra parentesi sono indicati i valori predefiniti di ciascun campo.
+
+\begin{itemize}
+	\item \textbf{server} Contiene la configurazione del server
+	\begin{itemize}
+		\item \textbf{port} (3001) Definisce la porta che si vuole utilizzare per richiamare l'endpoint
+	\end{itemize}
+	\item \textbf{database} Contiene la configurazione di MongoDB
+	\begin{itemize}
+		\item \textbf{address} Definisce l'indirizzo del database. Possono essere incluse le informazioni di autenticazioni
+	\end{itemize}
+	\item \textbf{redis} Definisce la configurazione di Redis
+	\begin{itemize}
+		\item \textbf{address} (localhost:6379) Specifica l'indirizzo del database in-memory. Possono essere incluse le informazioni di autenticazioni
+	\end{itemize}
+	\item \textbf{rest} Specifica la configurazione del bridge per i servizi REST
+	\begin{itemize}
+		\item \textbf{timeout} Definisce i periodi di tempo dopo i quali scatta il timeout
+		\begin{itemize}
+			\item \textbf{service} (3000) Valore di timeout dopo il quale una richiesta verso i servizi esterni scade. Il valore viene specificato in millisecondi (ms)
+			\item \textbf{cache} (1800) Specifica il tempo per il quale rimangono salvati in cache le risposte ricevute dai servizi. Il tempo viene espresso in secondi (s)
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{primaryService} Gestisce la configurazione del componente \emph{Primary Service Selection}
+	\begin{itemize}
+		\item \textbf{n} (3) Definisce quante operazioni selezionare
+		\item \textbf{weight} Specifica i pesi che vengono assegnati alle varie tipologie di nodo
+		\begin{itemize}
+			\item \textbf{filter} (1) Peso dei nodi di tipo \emph{filter}
+			\item \textbf{ranking} (4) Peso dei nodi di tipo \emph{ranking}
+		\end{itemize}
+	\end{itemize}
+	\item \textbf{similarity} Configurazione del componente di ricerca dei duplicati
+	\begin{itemize}
+		\item \textbf{threshold} (0.85) Definisce la percentuale minima di similarità tra due elementi affinché vengano considerati duplicati. Una valore maggiore indica un'elevata similarità tra gli elementi. Viene considerato come una percentuale (es.: 0.9 equivale al 90\% di similarità)
+	\end{itemize}
+	\item \textbf{paginationTTL} (1800) Definisce il tempo per il quale rimane memorizzato lo stato di una connessione in cache. Il tempo viene specificato in secondi (s)
+	\item \textbf{debug} (false) Indicatore booleano che abilita o disabilita il logging delle informazioni su console
+	\item \textbf{metrics} (false) Valore booleano che abilita o disabilita la raccolta delle informazioni sui tempi di esecuzione dei metodi principali e delle chiamate verso i database
+\end{itemize}
+
+Nessun campo è obbligatorio, ad eccezione dell'indirizzo di MongoDB, se non specificato tramite \emph{variabili d'ambiente}. In assenza degli altri campi verranno utilizzati i rispettivi valori di default.
+
+Nel Listato \ref{lst:file-configurazione-predefinito} viene mostrato il file di configurazione predefinito.
+
+\begin{lstlisting}[style=blocco-esempi,
+								caption=File di configurazione predefinito,
+								label=lst:file-configurazione-predefinito]
+{
+	"server": {
+		"port": 3001
+	},
+	"database": {
+		"address": "mongodb://localhost/camus"
+	},
+	"redis": {
+		"address": "localhost:6379"
+	},
+	"rest": {
+		"timeout": {
+			"service": 3000,
+			"cache": 1800
+		}
+	},
+	"primaryService": {
+		"n": 3,
+		"weight": {
+			"filter": 1,
+			"ranking": 4
+		}
+	},
+	"similarity": {
+		"threshold": 0.85
+	},
+	"paginationTTL": 1800,
+	"debug": true,
+	"metrics": true
+}
+\end{lstlisting}
