@@ -37,9 +37,10 @@ L'alternanza tra nodi \emph{dimensione} e \emph{concetto} fa sì che vengano crea
 
 Per ogni \emph{nodo dimensione} è possibile selezionare al massimo un nodo concetto tra i suoi figli oppure, se non possiede alcun nodo figlio, deve essere selezionato obbligatoriamente uno ed un solo parametro. L'utilizzo dei \emph{parametri} aumenta il potere espressivo del modello, in quanto lo rende più semplice per l'utilizzo da parte del designer. Si è resa necessaria l'introduzione dei parametri in quanto non tutti i concetti espressi da una dimensione possono essere enumerati. Per esempio, la dimensione \virgolette{costo} può assumere infiniti valori ed è quindi più appropriato l'utilizzo di un parametro che sia variabile.
 
-Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = {<}N, E, r{>} $, un \emph{contesto} è definito dalla seguente grammatica con assioma \emph{context}:
+Ora che è stato definito il modello è necessario spiegare come viene rappresentato uno specifico \emph{contesto}. Dato un \emph{Context Dimension Tree} $\mathcal{T} = {<}N, E, r{>} $, un \emph{contesto} è definito dalla grammatica in Figura \ref{fig:grammatica-cdt} con assioma \emph{context}.
 
-\begin{equation*}
+\begin{figure}[ht]
+	\begin{equation*}
 	C =
 	\begin{cases}
 		{<}context{>} \leftarrow {<}context\_element{>}\ |\ {<}context\_element{>} \land {<}context{>}\\
@@ -48,21 +49,24 @@ Ora che è stato definito il modello è necessario spiegare come viene rappresenta
 		{<}parameters{>} \leftarrow {<}parameters{>} \land {<}parameter{>}\ |\ {<}parameter{>}\\
 		{<}parameter{>} \leftarrow param\_name: param\_value
 	\end{cases}
-\end{equation*}
+	\end{equation*}
+	\caption{Grammatica del Context Dimension Tree}\label{fig:grammatica-cdt}
+\end{figure}
 
 Un \emph{contesto} è formato dalla congiunzione tra uno o più \emph{elementi del contesto}. Ogni elemento del contesto è formato dal nome della dimensione seguita da uno dei valori scelto tra i nodi che sono suoi figli diretti, oppure dal valore che assume l'unico parametro ad essa associato, nel caso in cui la dimensione è una foglia dell'albero. Ogni valore può essere a sua volta raffinato aggiungendo il/i parametro/i ad esso associati.
 
 Non è necessario selezionare per forza tutte le dimensioni presenti nell'albero: non selezionare alcun valore relativo ad una dimensione equivale ad essere indifferenti rispetto quella particolare situazione. Ogni dimensione che non viene selezionata non influirà nel processo di acquisizione dei dati contestuali.
 
-Un esempio di contesto è:
+\begin{figure}[ht]
+	\begin{align*}
+		C =\ &role : customer\ (\$cid : ``Bill")\ \land \\
+			&interest\_topic : orders\ \land \\
+			&interface : smartphone
+	\end{align*}
+	\caption{Esempio di contesto}\label{fig:esempio-contesto-base}
+\end{figure}
 
-\begin{align*}
-	C =\ &role : customer\ (\$cid : ``Bill")\ \land \\
-		&interest\_topic : orders\ \land \\
-		&interface : smartphone
-\end{align*}
-
-che rappresenta il contesto in cui il cliente Bill è interessato nel ricevere informazioni sui propri ordini sullo smartphone. Il contesto \emph{C} è quindi composto da tre elementi del contesto.
+In Figura \ref{fig:esempio-contesto-base} viene mostrato un esempio che rappresenta il contesto in cui il cliente Bill è interessato nel ricevere informazioni sui propri ordini sullo smartphone. Il contesto \emph{C} è quindi composto da tre elementi del contesto.
 
 Infine, dopo aver discusso del modello e di come vengono rappresentati i vari contesti, resta da definire come è possibile acquisire i dati che sono pertinenti ad un determinato contesto. Come evidenziato in \cite{DBLP:journals/cacm/BolchiniCOQRST09}, esistono due strategie principali per definire le associazioni tra i contesti e la porzione di dati rilevanti per i vari contesti, chiamate \emph{configuration-based mapping} e \emph{value-based mapping}.
 
