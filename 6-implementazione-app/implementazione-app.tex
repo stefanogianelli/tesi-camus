@@ -220,13 +220,14 @@ In questa sezione si vuole affrontare il flusso dei dati all'interno dell'applic
 	\caption{Flusso dei dati dell'app Flux}\label{fig:app-dataflow}
 \end{figure}
 Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati all'interno dell'applicazione e di seguito vengono esposti i passaggi principali:
+\textcolor{red}{Sistemare tutto}
 \begin{enumerate}
 	\item La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
 	\item L'applicazione riceve il CDT e i mashup dal server e quindi è pronta a caricare le view per l'utente finale
 	\item L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto, dove vengono mostrati i campi che devono essere compilati dall'utente
 	\item L'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
 	\item I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
-	\item Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento.
+	\item Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
 	\item I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
 	\item L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
 	\item L'applicazione carica la pagina con i dettagli, dove gli vengono passati i dati completi dell'elemento selezionato e visualizzati nella pagina
