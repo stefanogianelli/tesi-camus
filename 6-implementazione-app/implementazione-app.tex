@@ -1,12 +1,14 @@
 \section{Panoramica su cross platform mobile}\label{sec:panoramica-cross-platform-mobile}
 Al momento di scegliere come implementare l'applicazione mobile per CAMUS sono state considerate due opzioni: la creazione di un'applicazione nativa inizialmente solo per Android, per poi estendere la compatibilità su iOS, oppure l'utilizzo di strumenti cross platform, funzionanti su più di un sistema operativo mobile.
 Questa esigenza è nata dal fatto che il mercato delle app mobile sta crescendo in maniera esponenziale e le competenze richieste agli sviluppatori sono molto variegate per sviluppare applicazioni native.
-Per esempio per quanto riguarda lo sviluppo iOS è necessario conoscere come linguaggi di programmazioni Objective-C e Swift, per Android ci si basa principalmente su Java e per Windows Phone è necessario utilizzare C-sharp \textcolor{red}{(Non mi prende il cancelletto)}, senza dimenticare altri sistemi operativi meno diffusi o emergenti (Tizen, Ubuntu Touch, ecc.).
-Gli strumenti di sviluppo \textbf{cross-platform} solitamente si basano sul principio di \virgolette{write once run everywhere}, cioè il codice viene scritto una volta sola per creare applicazioni per diverse piattaforme, permettendo quindi di limitare le competenze richieste ai programmatori. 
+Per esempio per quanto riguarda lo sviluppo iOS è necessario conoscere come linguaggi di programmazioni Objective-C e Swift, per Android ci si basa principalmente su Java e per Windows Phone è necessario utilizzare C\#, senza dimenticare altri sistemi operativi meno diffusi o emergenti (Tizen, Ubuntu Touch, ecc.). La tipologia di strumenti che permettono di sviluppare un'applicazione scrivendo una sola volta il codice ed eseguirla su diversi sistemi operativi mobili è detta \emph{cross-platform}
+Gli strumenti di sviluppo \emph{cross-platform} solitamente si basano sul principio di \virgolette{write once run everywhere}, cioè il codice viene scritto una volta sola per creare applicazioni per diverse piattaforme, permettendo quindi di limitare le competenze richieste ai programmatori. 
 \upe possibile identificare due famiglie di strumenti per la programmazione multi piattaforma:
 \begin{enumerate}
 	\item \textbf{Rendering tramite componenti nativi} In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
-	\textcolor{red}{allungare + esempi}
+	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire un \virgolette{Look and Feel}
+	%cit Baresi 
+	migliore. Anche per quanto riguarda altri strumenti come React Native o Native Script che utilizzano JavaScript viene riproposto lo stesso principio compositivo.
 	\item \textbf{Rendering tramite WebView} In questa famiglia il rendering dell'applicazione è svolto in una pagina web, che viene caricata delle volte in un container composto da componenti nativi.
 	In questo caso è possibile programmare l'applicazione come se fosse una pagina web, implementandolo allo stesso modo di un sito web per browser.
 	Purtroppo questo nel \virgolette{look and feel} dell'applicazione non è sempre un vantaggio, perché, nonostante le possibilità di scelta grafiche e di comportamento siano molteplici, le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa.
@@ -21,11 +23,14 @@ React nasce come libreria open-source rilasciata nel 2013 da Facebook, che perme
 Essa proviene da XHP, che è un framework HTML per il linguaggio PHP, ed è stata prima utilizzata nel newsfeed di Facebook nel 2011 e più tardi in Instagram.com.
 Le principali funzionalità in React sono le seguenti:
 \begin{itemize}
-	\item \textbf{One-way data flow} Le proprietà, un set di valori immutabili, sono passati al componente figlio all'interno del suo tag HTML.Il componente figlio non può modificare direttamente nessuna proprietà che gli è stata passata, ma può passare funzioni che possono modificare il valore. \textcolor{red}{(introdurre esempio)}
+	\item \textbf{One-way data flow} Le proprietà, un set di valori immutabili, sono passati al componente figlio all'interno del suo tag HTML.Il componente figlio non può modificare direttamente nessuna proprietà che gli è stata passata, ma può passare funzioni che possono modificare il valore. 
+	L'unidirezionalità del flusso dati viene specificata nell'architettura Flow, che verrà spiegata nella Sezione \ref{sec:flux}
+	
 	\item \textbf{Virtual DOM}
-	React crea una propria struttura dati in memoria, che calcola le differenze risultanti e aggiorna il DOM HTML risultante nella pagina in modo efficiente. In questo modo il programmatore può scrivere codice come se l'intera pagina è ricaricata ogni volta, mentre è la libreria React a stabilire quali siano i componenti che vadano sostituiti e quali no. 
+	React crea una propria struttura dati in memoria, che calcola le differenze risultanti e aggiorna il DOM HTML risultante nella pagina in modo efficiente. In questo modo il programmatore può scrivere codice come se l'intera pagina è ricaricata ogni volta, mentre il motore React a stabilire quali siano i componenti che è necessario sostituire e quali no
+	 
 	\item \textbf{JSX}
-	I componenti React sono solitamente scritti in JSX, un'estensione JavaScript che permette di quotare facilmente HTML e utilizzarne la sintassi per i tag per renderizzare i sottocomponenti
+	I componenti React sono solitamente scritti in JSX, un linguaggio basato su JavaScript che introduce la tipizzazione delle variabili e un sistema di classi ben definito come in Java. Inoltre porta ottimizzazioni a livello di compilazione permettendo all'applicazione di essere più performante rispetto a normale codice JavaScript
 \end{itemize}
 
 \subsection{React Native}\label{sec:react-native}
@@ -95,10 +100,12 @@ Tutte queste pagine interagiscono con altri componenti, che gestiscono le operaz
 	\item \textbf{Connection Manager} In questo componente vengono gestite tutte le connessioni con l'endpoint GraphQL. Permette di gestire la fase di login e di scambio di dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per le successive, chiedendo una nuova pagina, come spiegato nella sezione \ref{sec:paginazione-app}
 \end{itemize}
 
-\subsection{Actions e Stores}\label{sec:action-store}
+\subsection{Actions}\label{sec:actions}
+
+\subsection{Stores}\label{sec:action-store}
 Per quanto riguarda il modulo Alt.js, come spiegato nella Sezione \ref{sec:flux}, è stato necessario progettare in modo intelligente actions e stores, per permettere di memorizzare lo stato dell'applicazione.
 Per ogni interazione sui dati dell'applicazione che necessitano di rimanere persistenti, viene invocata una action dal componente e dalla view che si propaga prima nelle store, e successivamente aggiorna nuovamente la view.
-Si è scelto di suddividere le actions per tipologia di operazione e dato trattata:
+Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato trattata:
 \begin{itemize}
 	\item  \textbf{User Store} Nella \emph{User Store} sono memorizzati tutti i dati relativi all'utente. In particolare viene memorizzato l'Id dell'utente nel database del server e l'Id del CDT a lui associato, che serviranno per poter effettuare le query GraphQL per ottenere i dati
 	\item \textbf{Context Store} Nel \emph{Context Store} vengono gestiti i dati che riguardano i dati di contesto, come le coordinate geografiche e le scelte delle tipologie di trasporto pubblico, in modo da essere riutilizzate. Per quanto riguarda le richieste di dati, una volta che il contesto viene composto per effettuare la prima query, questo payload viene salvato qui e poi riutilizzato nelle query dei risultati successivi
@@ -209,6 +216,8 @@ Sono presenti all'interno due tipologie di rendering:
 		\item \textbf{Support} Si tratta del componente che gestisce i servizi di supporto con i collegamenti alle applicazioni esterne, verrà spiegato nei dettagli nella Sezione \ref{sec:servizi-supporto-app}
 	\end{itemize}
 \end{enumerate}
+
+\subsection{Gestione degli stili}
 
 \section{Flusso di esecuzione}
 
