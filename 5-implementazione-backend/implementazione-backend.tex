@@ -1,4 +1,4 @@
-In questo capitolo ...
+In questo capitolo si entrerà nei dettagli che hanno portato alla realizzazione del backend del progetto CAMUS. Il capitolo inizia con la descrizione delle tecnologie che sono state utilizzate e l'analisi dello schema dell'architettura del sistema. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Descritti i componenti viene mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
 
 \section{Architettura e tecnologie utilizzate\label{sec:architettura-backend}}
 
@@ -438,7 +438,31 @@ In seguito inizia la fase di creazione del \emph{CDT decorato}. Questa rappresen
 
 Un'altra attività svolta durante la composizione del \emph{CDT decorato} è la ricerca dei nodi figlio. Come definito nella Sezione \ref{sec:associazione-servizi-cdt} le associazioni possono essere specificate sia nei nodi foglia sia in quelli intermedi. \upe importante quindi verificare se un nodo attivo possieda dei figli perché in tal caso anch'essi possono dare un contributo nelle successive fasi di selezione.
 
-\textcolor{red}{algoritmo di selezione dei nodi figlio}
+\begin{algorithm}
+	\caption{Algoritmo di ricerca dei nodi figlio}
+	\label{alg:algoritmo-ricerca-nodi-figlio}
+	\begin{algorithmic}
+		\Require
+			\Statex $cdt$ \Comment The decorated CDT
+			\Statex $nodes$ \Comment The list of active nodes
+		\Ensure
+			\Statex $childList$ \Comment List of child nodes found
+		\Statex
+		\State $nodeValues \gets nodes.map('value')$ \Comment Acquire list of values selected
+		\ForAll {$ item\; in\; cdt.context $}
+			\State $ intersection \gets intersect(item.parents, nodeValues) $
+			\If {$ !isEmpty(interesection) $}
+				\ForAll {$ value\; in\; item.values $}
+					\State $ childList.push(\{ $
+					\State\hspace{\algorithmicindent} $ name: item.name, $
+					\State\hspace{\algorithmicindent} $ value: value $
+					\State $ \}) $
+				\EndFor
+			\EndIf
+		\EndFor\\
+		\Return $ childList $
+	\end{algorithmic}
+\end{algorithm}
 
 \subsection{Primary Service Selection\label{sec:primary-service-selection}}
 
@@ -526,13 +550,63 @@ Dove:
 
 Se l'equazione è rispettata vengono semplicemente restituiti i dati presenti in cache, altrimenti il \emph{Session Helper} si occupa di recuperare dalla cache le informazioni sui servizi prescelti nella richiesta originale e sulle pagine da richiedere ed effettua le richieste ai servizi, sfruttando in particolare il \emph{Query Handler} ed il \emph{Response Aggregator}.
 
-\subsection{Execution Helper\label{sec:execution-helper}}
-
-\textcolor{red}{definire le pipeline di esecuzione}
-
 \subsection{Query Composer\label{sec:query-composer}}
 
-\textcolor{red}{parlare del query composer, da chi viene utilizzato e pseudocodice algoritmo}
+Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support-service-selection} è stato menzionato il processo di composizione delle query per interrogare i servizi. \upe stato lasciato volutamente generico in quanto è un'attività non svolta dai rispettivi componenti, bensì dal \emph{Query Composer}. Si è scelto di creare un componente ad-hoc in quanto le due attività hanno delle lievi differenze che però non giustificano l'utilizzo di due logiche differenti. Inoltre la composizione degli indirizzi per i servizi di supporto sfrutta alcune regole che sono implementate per i servizi primari. Da qui l'esigenza di avere un unico metodo che si occupa di analizzare il descrittore dei servizi per comprendere come comporre tra loro i parametri e fornire una query completa.
+
+\begin{algorithm}
+	\caption{Algoritmo di composizione degli indirizzi}
+	\label{alg:algoritmo-composizione-indirizzi}
+	\begin{algorithmic}
+		\Require
+			\Statex $ descriptor $ \Comment The service descriptor
+			\Statex $ decoratedCdt $ \Comment The decorated CDT
+			\Statex $ pageInfo $ \Comment Information about pagination  (optional)
+		\Ensure
+			\Statex $ fullAddress $ \Comment The composed service address
+		\Statex
+		\State $ querySymbols \gets configureQuerySymbols() $
+		\State $ baseAddress \gets descriptor.service.basePath + descriptor.path $
+		\State $ nodes \gets union(decoratedCdt.filterNodes, decoratedCdt.parameterNodes) $
+		\ForAll {$ param\; in\; descriptor.parameters $}
+			\If {$ isEmpty(param.mappingCDT)\; \&\&\; isEmpty(p.mappingTerm) $}
+				\If {$ isDefined(param.default) $}
+					\State $ value \gets  param.default  $
+				\Else
+					\If {$ param.required $}
+						\State $ Error('Mandatory\; parameter') $
+					\EndIf
+				\EndIf
+			\Else
+				\State $ separator \gets configureSeparator(descriptor) $
+				\If {$ param.mappingCdt $}
+					\State $ value \gets findValueInCdt() $
+				\Else
+					\State $ value \gets acquireTerm() $
+				\EndIf
+			\EndIf
+			\State $ parameters \gets param.name + querySymbols.assign + value  $
+		\EndFor
+		\If {$ pageInfo $}
+			\State $ fullAddress \gets baseAddress + querySymbols.start + parameters +$
+			\State\hspace{\algorithmicindent} $ querySymbols.separator + pageInfo $
+		\Else
+			\State $ fullAddress \gets baseAddress + querySymbols.start + parameters$
+		\EndIf\\
+		\Return $ fullAddress $
+	\end{algorithmic}
+\end{algorithm}
+
+Il primo passo riguarda la selezione dei simboli da utilizzare nella query. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o query. Viene subito composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio ed il \emph{path specifico} dell'operazione. Ora incomincia la vera attività, la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base all'attributo \emph{required}:
+
+\begin{enumerate}
+	\item \textbf{Parametro obbligatorio} In questo caso deve per forza essere associato un valore. Se non è presente nessuna associazione nè con il CDT nè con i termini semantici verrà utilizzato il valore predefinito. Se non è stato definito nemmeno un valore predefinito verrà lanciata un'eccezione, in quanto il servizio senza un parametro obbligatorio non è utilizzabile
+	\item \textbf{Parametro facoltativo} In questo caso viene cercato prima un valore nell'albero di contesto o tra i termini semantici e, se trovata una corrispondenza, il rispettivo valore viene acquisito ed il parametro entrerà a far parte della query
+\end{enumerate}
+
+Durante la ricerca dei valori nell'albero di contesto viene anche eseguita la traduzione del valore, se necessario. Se vengono trovate più di una corrispondenza, i valori sono concatenati assieme e divisi tramite il separatore definito nel descrittore. Una volta acquisiti i valori vengono composti assieme, tramite i vari simboli, a formare la seconda parte dell'indirizzo.
+
+Per terminare l'attività vengono messe assieme tutte le parti. All'indirizzo di base viene aggiunta la parte dei parametri appena composta ed anche l'attributo relativo alla paginazione, se richiesto.
 
 \section{Endpoint GraphQL\label{sec:endpoint-graphql}}
 
