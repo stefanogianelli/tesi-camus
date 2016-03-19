@@ -177,7 +177,7 @@ Il motivo principale che ha spinto verso questa scelta è da ricercare nella defi
 
 Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizzati per la creazione di servizi, tra cui SOAP, REST e GraphQL.
 
-\subsection{SOAP}
+\subsection{SOAP\label{sec:soap-introduzione}}
 
 \upe l'acronimo di \emph{Simple Object Access Protocol} e fornisce un framework per lo scambio di messaggi.  Utilizza come formato di risposta XML e nella maggior parte dei casi si appoggia al protocollo HTTP come livello di trasporto. Vengono scambiate delle \emph{buste}, che contengono le informazioni come interrogare il servizio e come sono rappresentate le risposte. L'architettura SOAP viene distinta per tre caratteristiche principali:
 
@@ -189,7 +189,7 @@ Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizzat
 
 In seguito, SOAP è stato utilizzato come base per altre tecnologie legate ai web services, come il \emph{Web Services Description Language} (WSDL), che è un'interfaccia di descrizione delle funzionalità fornite dal servizio, e l'\emph{Universal Description Discovery and Integration} (UDDI), che è un registro dove è possibile ricercare i servizi.
 
-\subsection{REST}
+\subsection{REST\label{sec:rest-introduzione}}
 
 \upe l'acronimo di \emph{REpresentational State Transfer} ed è uno stile architetturale che definisce determinati vincoli di comportamento per componenti, connettori e dati che compongono un sistema distribuito ipermediale. \emph{REST} è prima di tutto un paradigma: non vengono infatti menzionati nè i dettagli relativi all'implementazione dei componenti nè i protocolli da utilizzare proprio per concentrarsi sul ruolo dei componenti, sulle loro interazioni e come interpretare le informazioni. Il termine \emph{REpresentational State Transfer} è stato utilizzato per la prima volta nella tesi di dottorato di Roy Fielding \cite{fielding2000architectural}. \emph{REST} viene largamente utilizzato per descrivere i servizi web, in modo tale da non generare contraddizioni durante l'implementazione. I sistemi che rispettano i principi \emph{REST} vengono chiamati \emph{RESTful}. Nella maggior parte dei casi, i sistemi \emph{RESTful} comunicano attraverso i verbi standard del protocollo HTTP (GET, POST, PUT, DELETE, ecc.). Utilizza le \emph{web resources} come interfaccia per comunicare con i sistemi esterni, identificate tramite un \emph{Uniform Resource Identifier} (URI). L'applicazione delle linee guida definite dall'architettura permette di ottenere i seguenti vantaggi: performance, scalabilità, semplicità, manutenibilità, visibilità, portabilità ed affidabilità.
 
@@ -236,7 +236,7 @@ Solitamente ad una URI può essere associata una funzione diversa in base al verb
 	\end{tabularx}}
 \end{table}
 
-\subsection{GraphQL}
+\subsection{GraphQL\label{sec:graphql-introduzione}}
 
 \emph{GraphQL}\footnote{GraphQL: \url{http://graphql.org/}} è, come suggeriscono le ultime due lettere del nome, un \emph{query language}, creato come supporto alla realizzazione di applicazioni client, che mette a disposizione una sintassi intuitiva e flessibile ed un sistema che permette al client di specificare i requisiti e le interazioni sui dati \cite{website:graphql-specs}. Rispetto all'approccio REST, \emph{GraphQL} permette di effettuare richieste più efficienti dei dati ed evita la duplicazione della logica lato server che può verificarsi nel caso di endpoint personalizzati. Una delle principali differenze rispetto a REST riguarda la possibilità di lasciare al client la scelta dei dati da ricevere. Questa modifica nasce dall'idea che è il client a conoscere nel dettaglio quali dati servono per comporre la view e quindi gli viene delegata la responsabilità di richiedere solo quelli essenziali all'interno della query.
 
