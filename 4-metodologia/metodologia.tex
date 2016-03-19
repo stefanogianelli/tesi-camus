@@ -160,7 +160,7 @@ I nodi \emph{Interest Topic} e \emph{Momento Giornata} sono di tipo \emph{filtro
 
 Riordinando la lista si ottiene $ \{ Zomato, TripAdvisor, Yelp \} $ e scegliendo i top-2 risultati si ottiene la selezione finale $ \{ Zomato, TripAdvisor \} $.
 
-\subsection*{Operazioni di supporto}
+\subsection*{Operazioni di supporto}\label{sec:metodologia-supporto}
 
 A differenza delle operazioni primarie, per quelle di supporto non viene definito un valore di \emph{priorità}. Quindi la precedente funzione per il calcolo del punteggio non è più applicabile. \upe stata inoltre considerata un'ulteriore problematica per la quale la precedente funzione non è più utilizzabile. Per esempio, si consideri un servizio di supporto che fornisce indicazioni sui mezzi di trasporto pubblici. Molti di questi servizi hanno validità locale, infatti ogni città ha il proprio gestore per il servizio di trasporto pubblico (es. ATM\footnote{ATM: \url{www.atm.it}} per Milano e ATAC\footnote{ATAC: \url{www.atac.it}} per Roma). Quindi, nella fase di calcolo del punteggio, anche questi servizi verrebbero considerati e in alcune situazioni erroneamente selezionati come risultato finale. Si è optato per un metodo di selezione più rigido rispetto al caso delle operazioni primarie. La prima fase di ricerca tramite \emph{chiave-valore} resta sempre valida e fornisce l'elenco delle operazioni che hanno almeno un'associazione soddisfatta. Di questa lista viene successivamente effettuato il \emph{conteggio} del numero di associazioni totali per ogni operazione. Viene inoltre mantenuto per ogni operazione un valore che indica il numero totale di associazioni con l'albero del contesto. Vengono selezionate solamente le operazioni che rispettano le seguenti regole:
 
@@ -377,5 +377,3 @@ Di seguito vengono elencati i tre componenti principali del sistema CAMUS:
 	Una volta che l'utente finale ha effettuato l'accesso, vengono caricati gli schemi di mashup e l'albero di contesto specifico dell'utente. L'app si occuperà di renderizzare gli schemi ricevuti generando dinamicamente delle schermate che verranno utilizzate dall'utente per effettuare tutte le operazioni che desidera.
 	I risultati vengono mostrati seguendo il pattern \emph{master-detail} \cite{molina2002user}: in prima istanza viene generato un elenco (\emph{master}) dei risultati ottenuti, mostrando poche informazioni riguardo il singolo elemento; successivamente l'utente può selezionare uno o più elementi della lista per visualizzare i dettagli (\emph{detail}) dell'elemento. In questa fase entrano in gioco i servizi di supporto: una volta che l'utente decide di visualizzare i dettagli di un elemento, l'app si occupa, in base allo schema di mashup corrente, di interrogare i servizi di supporto necessari per arricchire le informazioni che ha precedentemente ricevuto.
 \end{enumerate}
-
-\textcolor{red}{Aggiungere sequence diagram di una richiesta in generale?}
