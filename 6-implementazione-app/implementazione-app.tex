@@ -9,7 +9,7 @@ Gli strumenti di sviluppo \emph{cross-platform} solitamente si basano sul princi
 
 \begin{enumerate}
 	\item \textbf{Rendering tramite componenti nativi} In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
-	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire una migliore esperienza d'uso per l'utente. Anche per quanto riguarda altri strumenti come React Native o Native Script che utilizzano JavaScript viene riproposto lo stesso principio compositivo.
+	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire una migliore esperienza d'uso per l'utente. Anche per quanto riguarda altri strumenti come React Native o Native Script\footnote{Native Script: \url{https://www.nativescript.org/}} che utilizzano JavaScript viene riproposto lo stesso principio compositivo.
 	\item \textbf{Rendering tramite WebView} In questo caso la costruzione della maggior parte dell'applicazione è svolta utilizzando una \emph{Web View}, cioè viene mostrata una pagina web all'interno di un contenitore nativo.
 	In questo caso è possibile programmare l'applicazione come se fosse una pagina web, implementandolo allo stesso modo di un sito web per browser. Nonostante si tratti di un'implementazione non molto legata alla logica nativa, è possibile in alcuni casi permettere un'interazione dell'applicazione con i sensori del dispositivo.
 	Questo modello offre un'infinità di possibilità implementative a livello grafico e una elevata capacità di adattamento a diversi dispositivi, tuttavia le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa.
@@ -40,9 +40,9 @@ Le principali differenze con React sono dovute alla difficoltà maggiore di svilu
 Quando si sviluppa sul web, semplicemente si salvano i file modificati e si ricarica la pagina, cosa che non è possibile fare con le applicazioni mobile, perché è necessaria una nuova compilazione per vedere i cambiamenti apportati.
 Per risolvere questo problema, in React Native ci si basa sull'utilizzo di un server locale in \emph{node.js} che permette il caricamento delle modifiche dell'applicazione sul dispositivo senza ricompilare l'applicazione. Questo server, il quale ha la funzione di packager, invia un bundle contente tutti i file JavaScript necessari per far funzionare l'applicazione. Questo funziona fino a quando le modifiche sono relative esclusivamente alla parte di codice JavaScript, mentre per quanto riguarda le modifiche a livello di codice nativo è sempre necessaria una nuova compilazione. Per esempio, quando è stato il momento di installare alcune librerie grafiche collegate ad elementi nativi è stato necessario apportare modifiche anche ai file di configurazione dei progetti Android e iOS, dato che diventavano necessari anche file aggiuntivi alla compilazione.
 
-\textcolor{red}{Aggiungere grafico e spiegazione architettura react native}
+\textcolor{red}{Aggiungere grafico e spiegazione architettura react native?}
 
-Con React Native è possibile migliorare l'esperienza d'uso sulle piattaforme mobile rispetto al web. Come primo aspetto si può accedere ai componenti specifici dell'interfaccia utente, come le mappe, i picker e gli switch, anche se tuttavia possono essere reimplementati e modificati.
+Con React Native è possibile migliorare l'esperienza d'uso sulle piattaforme mobile rispetto al web. Come primo aspetto si può accedere ai componenti specifici dell'interfaccia utente, come le mappe, i picker e gli switch, anche se tuttavia possono essere modificati nella loro implementazione.
 
 \subsection{Flux}\label{sec:flux}
 
@@ -67,12 +67,11 @@ Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologi
 
 Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'architettura funzionale simile, presenta alcune semplificazioni:
 	\begin{itemize}
-		\item Non è necessario implementare il \emph{Dispatcher}, componente che è già fornito dalla libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}.
-		\item Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di Alt.
+		\item Non è necessario implementare il \emph{Dispatcher}, componente che è già fornito dalla libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}
+		\item Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di Alt
 		\item Nelle \emph{Store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le \emph{Actions} corrispondenti
 		\item Il posizionamento delle operazioni preliminari al salvataggio dei dati è indifferente se sia nelle \emph{Actions} o nelle \emph{Stores} e può essere svolto prima o dopo l'operazione di dispatch di Alt, perché come spiegato nel punto precedente \emph{Actions} e \emph{Stores}
 	\end{itemize}
-\textcolor{red}{Sistemare questa parte}
 
 \section {Architettura dell'applicazione}\label{sec:architettura-applicazione}
 
@@ -86,10 +85,15 @@ La figura \ref{fig:app-architecture} rappresenta l'architettura dell'applicazion
 
 \subsection{Pagine dell'applicazione}
 Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un router. Si è scelto di sfruttare due router diversi, uno per gestire il login e un altro per la navigazione all'interno dell'applicazione. Il router per il login controlla solamente se l'utente è loggato e ha la funzione di non permettere l'accesso alle pagine che necessitano di autenticazione. Come routes possiede \emph{Login Page} e il secondo router, che racchiude la navigazione effettiva dell'utente autenticato.
-Come si può notare nella Figura \textcolor{red}{aggiungere figura schematizzazione navigazione}, i componenti sono i seguenti:
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/screen-schema.pdf}
+	\caption{Schema delle pagine}\label{fig:screen-schema}
+\end{figure}
+Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le seguenti:
 \begin{itemize}
 	\item \textbf{LoginPage} \upe la pagina dove l'utente inserisce le proprie credenziali per accedere al sistema CAMUS e ottenere i parametri per il corretto funzionamento dell'applicazione
-	\item \textbf{Logged Router} Si tratta del router che gestisce le pagine che l'utente può visualizzare solo se è autenticato e si compone di:
+	\item \textbf{Logged Area} Si tratta della parte dell'applicazione alla quale l'utente può accedere nel caso in cui sia autenticato e gestisce le pagine di composizione del contesto e di visualizzazione dati:
 	\begin{itemize}
 		\item \textbf{Main Page} È la pagina principale dell'applicazione e permette all'utente di mostrare tutti le \emph{Interest Topic} associati a lui nel suo CDT. La scelta di quella desiderata permette di accedere alla \emph{Context Selection Page}
 		\item \textbf{Context Dimension Page} In questa pagina è chiesto il contesto all'utente mediante un' interfaccia che si adatta alle scelte da lui già eseguite per guidarlo nella definizione del contesto da inviare come richiesta al server. Una volta terminata la scelta viene costruita la query e inviata all'endpoint GraphQL del server CAMUS. 
@@ -99,7 +103,7 @@ Come si può notare nella Figura \textcolor{red}{aggiungere figura schematizzazio
 \end{itemize}
 
 \subsection{Helpers}
-Le pagine spiegate nella sezione precedente si servono di 
+Le pagine spiegate nella sezione precedente si servono di alcuni componenti che sono in comune tra tutte le pagine dell'applicazione, che aiutano ad eseguire funzionalità in comune. Di seguito sono elencati i componenti che svolgono questo compito:
 
 \begin{itemize}
 	\item \textbf{View Builder} Si tratta del componente che costruisce le view dinamiche partendo dal file di mashup. 
@@ -111,9 +115,19 @@ Le pagine spiegate nella sezione precedente si servono di
 Le \emph{Actions} sono i metodi invocati dall'applicazione per modificare lo stato dell'applicazione. Nell'applicazione CAMUS sono utilizzate principalmente in due modi: 
 \begin{itemize}
 	\item \textbf{Data Fetching} Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione, CDT e mashup, o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
-	\textcolor{red}{aggiungere esempio}
-	\item \textbf{Application State}
+	Ad esempio quando si preme il bottone per effettuare una nuova richiesta basata sul contesto, viene invocata un'azione per mantenere lo stato coerente tra più componenti e permettere di mostrare quando ci si trova ancora in fase di caricamento uno Spinner, e una volta che i dati sono arrivati all'interno dell'applicazione mostrarli nella ListView
+	\item \textbf{Application State} Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con la interfaccia grafica. Ad esempio quando viene composto il contesto per effettuare la query per i risultati le diverse selezioni sono passate tramite le Action nelle Store
+\end{itemize}	
+
+Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti:
+\begin{itemize}
+	\item \textbf{User Actions} Sono le azioni che servono ad aggiornare i parametri relativi all'utente, come password, email, id del CDT e suo id nel database
+	\item \textbf{Context Actions} Sono le azioni che gestiscono la selezione del contesto, consentendo di modificare le scelte effettuate dall'utente
+	\item \textbf{View Actions} Sono le azioni relative alla gestione dei mashup, ma non dello stato della navigazione, per le quali è utilizzato un componente aggiuntivo sempre basato su Flux (React Native Router Flux)
+	\item \textbf{Data Actions} Trattano della gestione del CDT e dei risultati ottenuti dal server
 \end{itemize}
+
+\textcolor{red}{Ampliare meglio?}
 
 \subsection{Stores}\label{sec:action-store}
 Le \emph{stores} sono il modulo dove lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
@@ -128,7 +142,7 @@ Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato tr
 		\item \textbf{Results} Rappresenta i risultati ricevuti per quell'\emph{interest topic} dal server, con i risultati provenienti dai servizi primari e i collegamenti per i servizi di supporto
 		\item \textbf{Topic} Rappresenta l'\emph{Interest topic} associato ai risultati ricevuti dal server
 	\end{enumerate}
-	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics}
+	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics} è mostrato come viene rappresentato lo stato nel caso in cui l'utente abbia a disposizione due \emph{Interest Topic} e la suddivisione dei risultati per quanto riguarda le due tipologie, in questo caso \emph{Restaurants} ed \emph{Event}. Si noti che oltre ai risultati sono salvati anche i parametri con lo stato della paginazione, per lasciare la possibilità di riprendere la visione di nuovi risultati.
 	
 
 \end{itemize}
@@ -136,8 +150,6 @@ Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato tr
 \begin{lstlisting}[backgroundcolor = \color{lightgray},
 								caption = Esempio Data Store Mashup,
 								label = lst:store-two-topics]
-								
-								
 				results: 
 				   [ { topic: 'Restaurant',
 				       results: 
@@ -280,7 +292,7 @@ Di seguito invece sono elencate le diverse tipologie di dato che compongono l'og
 
 
 
-\section{Rendering delle view}\label{sec:view}
+\section{Rendering delle view}\label{sec:rendering-view}
 
 Si tratta della funzionalità più delicata da progettare all'interno dell'applicazione, perché non è così semplice pensare di generare in modo dinamico delle pagine con così tanta mutabilità a partire da un documento strutturato delle interfacce visuali dinamiche.
 Mentre in codice nativo questo problema può presentare delle difficoltà a livello implementativo, l'utilizzo da parte di React di un Virtual DOM simile al linguaggio HTML offre il vantaggio di poter generare molto rapidamente una traduzione dal file di mashup ad un modello interpretabile dal motore di rendering dell'app.
@@ -291,7 +303,7 @@ Nel caso del rendering della pagina di contesto non si ritiene necessario l'util
 	Per ogni oggetto facente parte del CDT viene eseguita un'associazione a componenti già esistenti della view e che non sono modificabili dall'esterno.
 	\begin{itemize}
 		\item \textbf{Interest Topic} Per quanto riguarda le \emph{Interest Topic} hanno bisogno di essere selezionate nella pagina iniziale appena dopo il login, e vengono caricate in una lista di bottoni con due elementi per riga, con un'icona rappresentativa. I bottoni e le icone sono predefinite nell'applicazione e necessitano soltanto di una associazione nome elemento dal campo \emph{Interest Topic} all'interno del CDT. Questa funzione molto semplice viene eseguita direttamente all'interno della pagina principale, senza la necessità di utilizzare il View Render
-		\item \textbf{Altri elementi} Gli altri elementi del contesto sono processati all'interno del componente View Builder. Con una funzione ricorsiva \textcolor{red}{(Aggiungere algoritmo?)} viene scandito l'intero CDT ricevuto dal server con i campi da modificare e in base ai contenuti viene costruito l'elemento della view, a seconda della tipologia. Ad esempio se per un campo è richiesto l'inserimento di un numero verrà mostrato un TextInput che permette il completamento solo con numeri, mentre se ho a disposizione una scelta tra più elementi verrà mostrata una lista selezionabile.
+		\item \textbf{Altri elementi} Gli altri elementi del contesto sono processati all'interno del componente View Builder. Con una funzione ricorsiva viene scandito l'intero CDT ricevuto dal server con i campi da modificare e in base ai contenuti viene costruito l'elemento della view, a seconda della tipologia. Ad esempio se per un campo è richiesto l'inserimento di un numero verrà mostrato un TextInput che permette il completamento solo con numeri, mentre se ho a disposizione una scelta tra più elementi verrà mostrata una lista selezionabile.
 		Assume una grande importanza anche la gestione delle esclusioni tra le operazioni. Se viene selezionato \virgolette{With Car}, non è corretto mostrare le possibili tipologie di trasporto pubblico, perché si conosce già a priori che l'utente non selezionerà mai nello stesso momento come mezzo di trasporto l'automobile e il bus. Per questo scopo all'interno della \emph{Context Store} vengono gestiti con una struttura dati ad Array i nodi che non devono essere mostrati e questa variabile viene aggiornata con le selezioni che sono state fatte nell'interfaccia utente all'interno della pagina di contesto
 	\end{itemize}
 	
@@ -307,6 +319,8 @@ Per quanto concerne i risultati ottenuti dalle query dal server GraphQL entrano 
 		\item \textbf{Phone} Questo componente gestisce il numero di telefono dell'elemento, con la possibilità di inviare un messaggio al numero o di effettuare una telefonata, sempre utilizzando le applicazioni predefinite del dispositivo mobile
 		\item \textbf{Support} Si tratta del componente che gestisce i servizi di supporto con i collegamenti alle applicazioni esterne, verrà spiegato nei dettagli nella Sezione \ref{sec:servizi-supporto-app}
 	\end{itemize}
+	
+	
 
 
 \subsection{Gestione degli stili}
@@ -351,7 +365,6 @@ Nel Listato \ref{lst:stylesheet} è mostrato un frammento del foglio di stile uti
 \section{Flusso di esecuzione}
 
 In questa sezione si vuole affrontare il flusso dei dati all'interno dell'applicazione, partendo dal login da parte dell'utente, fino alla selezione di un elemento dalla lista dei risultati.
-\textcolor{red}{tbc}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_dataflow.pdf}
@@ -360,9 +373,9 @@ In questa sezione si vuole affrontare il flusso dei dati all'interno dell'applic
 Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati all'interno dell'applicazione e di seguito vengono esposti i passaggi principali:
 \begin{enumerate}
 	\item La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
-	\item L'applicazione riceve il CDT e i mashup dal server e quindi è pronta a caricare le view per l'utente finale
+	\item Vengono ricevuti il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario a caricare l'interfaccia grafica. Nel frattempo il router mostra la pagina iniziale dell'applicazione
 	\item L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto, dove vengono mostrati i campi che devono essere compilati dall'utente
-	\item L'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
+	\item Dopo aver definito i parametri del contesto desiderati, l'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
 	\item I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
 	\item Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
 	\item I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
@@ -382,7 +395,8 @@ I dati necessari per la costruzione della query sono l'indirizzo email e la pass
 In caso di risposta affermativa da parte del server vengono restituiti all'utente il proprio id e un token, che viene generato per ogni nuovo login al server. Questo token e l'id sono salvati sempre nella \emph{User Store}, e successivamente inviati al server con la query \emph{getIdCdt()} per ottenere il CDT completo per poter costruire il contesto da mostrare all'utente e l'id del CDT che funge da token assieme all'id dell'utente per effettuare le query per ottenere i dati.
 Utilizzando un esempio pratico, dopo che l'utente Mario Rossi ha inserito le proprie credenziali di accesso, cioè indirizzo email e password, vengono restituiti questi dati (Listato \ref{lst:esempio-login-app}): 
 
-\begin{lstlisting}[caption = Esempio di risposta alla query di login,
+\begin{lstlisting}[backgroundcolor = \color{lightgray},
+							caption = Esempio di risposta alla query di login,
 							label = lst:esempio-login-app]
 			{
 			  "data": {
@@ -400,6 +414,7 @@ I dati all'interno dei campi \emph{id} e \emph{token} sono inviati al server per
 
 
 \begin{lstlisting}[caption = Esempio di risposta alla query di login,
+							backgroundcolor = \color{lightgray},
 							label = lst:esempio-getcdt-app]
 			{
 			  "data": {
@@ -472,16 +487,88 @@ Le query per gestire i dati necessitano di tutta una serie di operazioni prelimi
 \begin{itemize}
 	\item \textbf{UserId} Si tratta dell'id dell'utente nel database del server. Esso viene ricavato immediatamente alla prima query del processo di login ed è necessario per una questione di sicurezza, in combinazione con l'id del CDT
 	\item \textbf{IdCdt} Rappresenta l'id del CDT. Come spiegato nelle sezioni precedenti questo identificativo rappresenta un id personalizzato che viene associato al singolo utente
-	\item \textbf{Context} \upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come payload nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e come output una stringa. Per poter convertire anche gli oggetti che sono innestati ad un livello superiore viene utilizzata una ricorsione che richiama la prima funzione. \textcolor{red}{Illustrare con esempio}
+	\item \textbf{Context} \upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come payload nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e come output una stringa. Per poter convertire anche gli oggetti che sono innestati ad un livello superiore viene utilizzata una ricorsione che richiama la prima funzione
 	\item \textbf{Support} Rappresenta la tipologia di servizi di supporto che l'utente richiede per integrare al meglio i dati che gli necessitano, ad esempio nella demo di CAMUS si utilizzano i servizi di tipo \virgolette{Transport}
-	\item \textbf{PrimaryResults} Rappresentano i dati provenienti dai servizi invocati dal server per costruire il result set di risultati per l'utente. GraphQL, come già espresso in precedenza, permette di eseguire delle richieste di dati altamente personalizzate, permettendo di richiedere la minima quantità di dati indispensabile per l'utilizzo da parte dell'utente. Per poter svolgere questo si è scelto di utilizzare i termini semantici dei mashup in particolare della tipologia \emph{details}, perché si suppone che nel caso della lista si abbia un sottoinsieme di termini semantici. Come per quanto riguarda la funzione di costruzione della view espressa in \ref{sec:rendering-view}, anche in questo caso è necessario prendere i mashup associati all'\emph{Interest topic} e poi selezionare solamente i termini. A questo punto sono posizionati in una string di termini che verranno inviati al server
-	\textcolor{red}{esempio}
+	\item \textbf{PrimaryResults} Rappresentano i dati provenienti dai servizi invocati dal server per costruire l'insieme dei risultati per l'utente. GraphQL, come già espresso in precedenza, permette di eseguire delle richieste di dati altamente personalizzate, permettendo di richiedere la minima quantità di dati indispensabile per l'utilizzo da parte dell'utente. Per poter svolgere questo si è scelto di utilizzare i termini semantici dei mashup in particolare della tipologia \emph{details}, perché si suppone che nel caso della lista si abbia un sottoinsieme di termini semantici. Come per quanto riguarda la funzione di costruzione della view espressa nella Sezione \ref{sec:rendering-view}, anche in questo caso è necessario prendere i mashup associati all'\emph{Interest topic} e poi selezionare solamente i termini (Listato \ref{lst:esempio-data-mashup}). A questo punto sono posizionati in una string di termini che verranno inviati al server (Listato \ref{lst:esempio-primary-app})
 	\item \textbf{SupportResults} Lo stesso meccanismo utilizzato per i \emph{PrimaryResults} è riproposto anche per i risultati di supporto. Invece di recuperare i mashup dalle \emph{Store}, viene riproposta la stessa definizione per ogni query, perché i servizi di supporto sono definiti sempre nello stesso modo con i campi \emph{category}, \emph{service} e \emph{url}
 \end{itemize}
 
+\begin{center}
+	\hspace*{-1.5cm}
+	\begin{minipage}[t]{0.63\textwidth}
+		\begin{lstlisting}[caption=Mashup di partenza, label=lst:esempio-data-mashup]
+{	
+details: 
+[ 
+	{ 
+		topics:	
+			[ 
+				'Cinema',
+				'Hotel', 
+				'Theater', 
+				'Museum', 
+				'Event' 
+			],
+		contents: 
+			[ 
+				{ 
+					type: 'text', 
+					contents: 'title' 
+				},
+				{ 
+					type: 'text', 
+					contents: 'address'
+				},
+				{ 
+					type: 'map', 
+					contents: [ 'latitude', 'longitude' ] 
+				},
+				{ 
+					type: 'phoneNumber', 
+					contents: 'telephone' 
+				},
+				{ 
+					type: 'website', 
+					contents: 'website' 
+				},
+				{ 
+					type: 'email',
+					contents: 'email' 
+				},
+				{ 
+					type: 'support', 
+					contents: 'Transport' 
+				}
+			] 
+		}
+	]	
+}
+		\end{lstlisting}
+	\end{minipage}%
+	\begin{minipage}[t]{0.63\textwidth}
+		\begin{lstlisting}[caption=Definizione oggetto GraphQL per risultati primari, label=lst:esempio-primary-app,style=json]
+				!primaryResults! {
+					!data! {
+						!title!
+						!address!
+						!latitude!
+						!longitude!
+						!meta! {
+							!name!
+							!rank!
+						}
+					}
+				}
+		\end{lstlisting}
+	\end{minipage}	
+\end{center}
+
+
+
 Nel listato \ref{lst:esempio-risposta-data-app} è fornita la risposta per quanto riguarda la query per i ristoranti effettuata dall'applicazione, limitando i risultati ai primi 5 disponibili dal server. 
 
-\begin{lstlisting}[caption = Esempio di risposta alla query di per Ristoranti,
+\begin{lstlisting}[backgroundcolor = \color{lightgray},
+							caption = Esempio di risposta alla query di per Ristoranti,
 							label = lst:esempio-risposta-data-app]
 		{
 		  "data": {
@@ -599,7 +686,8 @@ In generale il funzionamento di queste tipologie di collegamenti è gestito dall'
 	\item \textbf{AppStoreLink} Rappresenta il link per aprire la pagina dell'App Store di Apple per scaricare l'applicazione
 \end{itemize}
 
-\begin{lstlisting}[caption = Esempio di risposta per i servizi di supporto,
+\begin{lstlisting}[backgroundcolor = \color{lightgray},
+							caption = Esempio di risposta per i servizi di supporto,
 							label = lst:esempio-support-app]
 				supportServices: {
 						category: "Transport",
