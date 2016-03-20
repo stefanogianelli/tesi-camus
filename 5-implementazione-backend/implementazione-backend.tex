@@ -373,6 +373,10 @@ Di seguito viene presentata una descrizione dettagliata delle entità che compong
 	\item \textbf{Operate} Questa entità permette la creazione di funzioni personalizzate per essere eseguite sui valori ricevuti dal servizio. \upe composta dai campi \virgolette{run}, dove viene scritto il codice (JavaScript) da essere eseguito, e \virgolette{onAttribute}, che specifica il termine coinvolto nella trasformazione. Per l'esecuzione della funzione si tenga presente che viene chiamata fornendo in ingresso il parametro \emph{value}, che corrisponde al valore corrente del campo
 	\item \textbf{Primary Service} In questa entità vengono definite le associazioni tra le operazioni primarie e il corrispondente albero del contesto. Viene rappresentata come un'entità debole, in quanto l'identificazione è possibile tramite l'identificativo del CDT e dell'operazione. Non è presente invece una relazione che colleghi quest'entità a quella dei nodi per due motivi in particolare: \emph{i)} per come è stato scelto di rappresentare un nodo non è possibile identificare univocamente una coppia dimensione-valore e \emph{ii)} per ragioni di performance è stato preferito un approccio che richiedesse il coinvolgimento di meno entità possibili. Quindi è stata effettuata una denormalizzazione a livello di modello tramite i campi \virgolette{dimension} e \virgolette{value} che definiscono lo specifico nodo. Viene inoltre permesso di associare un'operazione a delle coordinate geografiche, tramite la relazione \emph{hasOperation}
 	\item \textbf{Support Service} In questa entità vengono definite le associazioni tra le operazioni di supporto e il corrispondente albero di contesto. Come per le operazioni primarie, viene anch'essa rappresentata come un'entità debole, in quanto per l'identificazione vengono utilizzati l'identificativo del CDT, quello dell'operazione e la categoria del servizio. Viene seguita la stessa logica di associazione ai nodi utilizzata in precedenza per le operazioni primarie. L'unica variante riguarda l'attributo \virgolette{constraintCount} definito nella relazione \emph{hasOperation}. Come evidenziato nella Sezione \ref{sec:associazione-servizi-cdt}, le associazioni delle operazioni di supporto vengono considerate alla stregua di vincoli, in quanto devono essere tutte rispettate affinché un'operazione possa essere presa in considerazione. Questo attributo viene utilizzato proprio per questo scopo: permette di sapere quanti siano i vincoli definiti per l'operazione corrente e viene utilizzato dell'algoritmo di selezione
+	\item \textbf{Mashup} Rappresenta gli schemi dei mashup. Uno schema è composto da uno o più \emph{Item}, che definiscono le regole per la visualizzazione dei risultati. Uno schema può essere associato a diversi utenti, quando condividono un profilo simile. Uno schema può anche non essere associato ad alcun utente: in questo caso si parla si \emph{Mashup Globale}, cioè uno schema che è valido per qualsiasi utente
+	\item \textbf{Item} Definisce per quali \emph{topics} lo schema è valido. Le regole di visualizzazione si dividono in due aree: \emph{List}, per gestire l'elenco dei risultati, e \emph{Details}, che rappresenta la pagina di dettaglio di un elemento. Vengono entrambi rappresentati dall'entità \emph{Content}, che ne specifica i dettagli
+	\item \textbf{Content} Specifica le regole per visualizzare gli elementi all'interno della schermata specifica. Il campo \emph{type} definisce la tipologia del componente da utilizzare (es.: text, map, ecc.), \emph{style} permette di utilizzare uno stile personalizzato ed infine \emph{contents} che definisce i termini semantici dai quali acquisire le informazioni da mostrare
+	\item \textbf{Global Mashup} Questa entità viene utilizzata per acquisire lo schema di \emph{Mashup Globale} nel caso in cui ad un utente non è stato creato uno schema specifico
 \end{itemize}
 
 Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'implementazione. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento ed i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
@@ -404,7 +408,7 @@ In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle clas
 	\caption{Diagramma delle classi del backend}\label{fig:class-diagram-backend}
 \end{figure}
 
-Nelle seguenti sottosezioni verranno analizzate nel dettaglio le attività svolte dai singoli componenti.
+Nelle seguenti sottosezioni verranno analizzate nel dettaglio le attività svolte dai componenti principali del sistema.
 
 \subsection{Provider\label{sec:provider}}
 
@@ -781,7 +785,6 @@ Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di ric
 				!parameters! {
 					!name!
 					!type!
-					!enum!
 					!fields! {
 						!name!
 						!type!
