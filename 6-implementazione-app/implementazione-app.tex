@@ -38,9 +38,13 @@ Le principali funzionalità in React sono le seguenti:
 React Native\footnote{React Native: \url{https://facebook.github.io/react-native/}} è una libreria open-source rilasciata nel 2015 sempre da Facebook, proponendosi come implementazione del framework React per quanto riguarda le applicazioni mobile.
 Le principali differenze con React sono dovute alla difficoltà maggiore di sviluppare un framework per le applicazioni mobile. 
 Quando si sviluppa sul web, semplicemente si salvano i file modificati e si ricarica la pagina, cosa che non è possibile fare con le applicazioni mobile, perché è necessaria una nuova compilazione per vedere i cambiamenti apportati.
-Per risolvere questo problema, in React Native ci si basa sull'utilizzo di un server locale in \emph{node.js} che permette il caricamento delle modifiche dell'applicazione sul dispositivo senza ricompilare l'applicazione. Questo server, il quale ha la funzione di packager, invia un bundle contente tutti i file JavaScript necessari per far funzionare l'applicazione. Questo funziona fino a quando le modifiche sono relative esclusivamente alla parte di codice JavaScript, mentre per quanto riguarda le modifiche a livello di codice nativo è sempre necessaria una nuova compilazione. Per esempio, quando è stato il momento di installare alcune librerie grafiche collegate ad elementi nativi è stato necessario apportare modifiche anche ai file di configurazione dei progetti Android e iOS, dato che diventavano necessari anche file aggiuntivi alla compilazione.
+Per risolvere questo problema, in React Native ci si basa sull'utilizzo di un server locale in \emph{node.js} che permette il caricamento delle modifiche dell'applicazione sul dispositivo senza ricompilare l'applicazione (Figura \ref{fig:flusso-sviluppo-react-native}) Questo server, il quale ha la funzione di packager, invia un bundle contente tutti i file JavaScript necessari per far funzionare l'applicazione. Questo funziona fino a quando le modifiche sono relative esclusivamente alla parte di codice JavaScript, mentre per quanto riguarda le modifiche a livello di codice nativo è sempre necessaria una nuova compilazione. Per esempio, quando è stato il momento di installare alcune librerie grafiche collegate ad elementi nativi è stato necessario apportare modifiche anche ai file di configurazione dei progetti Android e iOS, dato che diventavano necessari anche file aggiuntivi alla compilazione.
 
-\textcolor{red}{Aggiungere grafico e spiegazione architettura react native?}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.3\textwidth]{6-implementazione-app/immagini/flusso-sviluppo-react-native.pdf}
+	\caption{Flusso di sviluppo React Native\label{fig:flusso-sviluppo-react-native}}
+\end{figure}
 
 Con React Native è possibile migliorare l'esperienza d'uso sulle piattaforme mobile rispetto al web. Come primo aspetto si può accedere ai componenti specifici dell'interfaccia utente, come le mappe, i picker e gli switch, anche se tuttavia possono essere modificati nella loro implementazione.
 
@@ -239,10 +243,7 @@ Nel Listato \ref{lst:mashup-schema} sottostante è espresso un frammento del file
 				{ 
 					topics:	
 						[ 
-							'Cinema',
-							'Hotel', 
-							'Theater', 
-							'Museum', 
+							'Restaurant',
 							'Event' 
 						],
 					contents: 
@@ -503,10 +504,7 @@ details:
 	{ 
 		topics:	
 			[ 
-				'Cinema',
-				'Hotel', 
-				'Theater', 
-				'Museum', 
+				'Restaurant',
 				'Event' 
 			],
 		contents: 
