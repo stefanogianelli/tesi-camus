@@ -42,7 +42,7 @@ Per risolvere questo problema, in React Native ci si basa sull'utilizzo di un se
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.3\textwidth]{6-implementazione-app/immagini/flusso-sviluppo-react-native.pdf}
+	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/flusso-sviluppo-react-native.pdf}
 	\caption{Flusso di sviluppo React Native\label{fig:flusso-sviluppo-react-native}}
 \end{figure}
 
@@ -126,9 +126,39 @@ Le \emph{Actions} sono i metodi invocati dall'applicazione per modificare lo sta
 Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti:
 \begin{itemize}
 	\item \textbf{User Actions} Sono le azioni che servono ad aggiornare i parametri relativi all'utente, come password, email, id del CDT e suo id nel database
+	\begin{itemize}
+		\item \textbf{Update Email} Metodo per aggiornare l'email dell'utente 
+		\item \textbf{Update Password} Metodo per aggiornare la password dell'utente
+		\item \textbf{Update Token} Metodo per tenere in memoria il Token della connessione col server per ottenere il CDT
+		\item \textbf{Update UserID} Metodo per memorizzare l'id dell'utente del server CAMUS
+	\end{itemize}
 	\item \textbf{Context Actions} Sono le azioni che gestiscono la selezione del contesto, consentendo di modificare le scelte effettuate dall'utente
+	\begin{itemize}
+		\item \textbf{Set Transport} Metodo per salvare la tipologia di trasporto da parte dell'utente
+		\item \textbf{Set Typology} Metodo per salvare la tipologia nel caso di trasporto non con mezzi propri
+		\item \textbf{Add Forbidden} Metodo per aggiungere un parametro in quelli da nascondere all'utente
+		\item \textbf{Remove Forbidden} Metodo per rimuovere il parametro selezionato dalla lista di quelli da nascondere all'utente
+		\item \textbf{Update Last Context} Metodo per salvare l'ultimo contesto inviato al server nella query per ottenere i risultati richiesti dall'utente, per poterlo riutilizzare nelle richieste per le pagine successive
+	\end{itemize}
+	\begin{itemize}
+		\item \textbf{Update Email} Metodo per aggiornare l'email dell'utente 
+		\item \textbf{Update Password} Metodo per aggiornare la password dell'utente
+		\item \textbf{Update Token} Metodo per tenere in memoria il Token della connessione col server per ottenere il CDT
+		\item \textbf{Update UserID} Metodo per memorizzare l'id dell'utente del server CAMUS
+	\end{itemize}
 	\item \textbf{View Actions} Sono le azioni relative alla gestione dei mashup, ma non dello stato della navigazione, per le quali è utilizzato un componente aggiuntivo sempre basato su Flux (React Native Router Flux)
+	\begin{itemize}
+		\item \textbf{Set Views} Metodo per salvare il file con le view provenienti dal server 
+		\item \textbf{Select Interest Topic} Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente
+	\end{itemize}
 	\item \textbf{Data Actions} Trattano della gestione del CDT e dei risultati ottenuti dal server
+	\begin{itemize}
+		\item \textbf{Update Results} Metodo per aggiornare i dati dei risultati provenienti dalla query basata sul contesto
+		\item \textbf{Results Failed} Metodo per inviare il messaggio di errore proveniente dalla richiesta
+		\item \textbf{Update Full CDT} Metodo per aggiornare il CDT associato all'utente
+		\item \textbf{Update Id CDT} Metodo per salvare soltanto l'ID del CDT
+		\item \textbf{Update UserID} Metodo per memorizzare l'id dell'utente del server CAMUS
+	\end{itemize}
 \end{itemize}
 
 \textcolor{red}{Ampliare meglio?}
@@ -148,7 +178,6 @@ Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato tr
 	\end{enumerate}
 	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics} è mostrato come viene rappresentato lo stato nel caso in cui l'utente abbia a disposizione due \emph{Interest Topic} e la suddivisione dei risultati per quanto riguarda le due tipologie, in questo caso \emph{Restaurants} ed \emph{Event}. Si noti che oltre ai risultati sono salvati anche i parametri con lo stato della paginazione, per lasciare la possibilità di riprendere la visione di nuovi risultati.
 	
-
 \end{itemize}
 
 \begin{lstlisting}[backgroundcolor = \color{lightgray},
@@ -291,14 +320,13 @@ Di seguito invece sono elencate le diverse tipologie di dato che compongono l'og
 	\item \textbf{Style} Nel caso in cui a livello di design del mashup si voglia definire uno stile personalizzato diverso da quelli di default, in questo campo si può definire un oggetto di tipo Flexbox, interpretabile da React Native, che viene applicato all'elemento corrente. 
 \end{itemize}
 
-
-
 \section{Rendering delle view}\label{sec:rendering-view}
 
 Si tratta della funzionalità più delicata da progettare all'interno dell'applicazione, perché non è così semplice pensare di generare in modo dinamico delle pagine con così tanta mutabilità a partire da un documento strutturato delle interfacce visuali dinamiche.
 Mentre in codice nativo questo problema può presentare delle difficoltà a livello implementativo, l'utilizzo da parte di React di un Virtual DOM simile al linguaggio HTML offre il vantaggio di poter generare molto rapidamente una traduzione dal file di mashup ad un modello interpretabile dal motore di rendering dell'app.
 Per questo motivo è stato creato un componente apposito, il View Render, che, dato un oggetto contenente il mashup, riesce a fare l'associazione dei contenuti semantici all'interno di questo, con i componenti presenti nell'applicazione, generando un nuovo oggetto strutturato pronto per essere tradotto in visualizzazione dall'oggetto padre della pagina.
 Sono presenti all'interno due tipologie di rendering: il rendering del contesto e il rendering dei risultati.
+
 \subsection{Contesto} 
 Nel caso del rendering della pagina di contesto non si ritiene necessario l'utilizzo di un mashup esterno, in quanto tutte le informazioni presenti all'interno del CDT sono sufficienti a definire in modo corretto la sua visualizzazione e la sua compilazione da parte dell'utente.
 	Per ogni oggetto facente parte del CDT viene eseguita un'associazione a componenti già esistenti della view e che non sono modificabili dall'esterno.
@@ -320,9 +348,6 @@ Per quanto concerne i risultati ottenuti dalle query dal server GraphQL entrano 
 		\item \textbf{Phone} Questo componente gestisce il numero di telefono dell'elemento, con la possibilità di inviare un messaggio al numero o di effettuare una telefonata, sempre utilizzando le applicazioni predefinite del dispositivo mobile
 		\item \textbf{Support} Si tratta del componente che gestisce i servizi di supporto con i collegamenti alle applicazioni esterne, verrà spiegato nei dettagli nella Sezione \ref{sec:servizi-supporto-app}
 	\end{itemize}
-	
-	
-
 
 \subsection{Gestione degli stili}
 
@@ -481,8 +506,6 @@ I dati all'interno dei campi \emph{id} e \emph{token} sono inviati al server per
 			}
 \end{lstlisting}
 
-
-
 \subsection{Data Query} \label{sec:data-query}
 Le query per gestire i dati necessitano di tutta una serie di operazioni preliminari, perché sono presenti diversi parametri da ricavare per poter formare una richiesta GraphQL per CAMUS. Oltre alla definizione spiegata nella Sezione \ref{sec:endpoint-graphql}, di seguito è spiegata la modalità di costruzione dei parametri che sono necessari alla costruzione della query utilizzando il metodo \emph{client.query()} di \emph{Lokka}:
 \begin{itemize}
@@ -560,8 +583,6 @@ details:
 		\end{lstlisting}
 	\end{minipage}	
 \end{center}
-
-
 
 Nel listato \ref{lst:esempio-risposta-data-app} è fornita la risposta per quanto riguarda la query per i ristoranti effettuata dall'applicazione, limitando i risultati ai primi 5 disponibili dal server. 
 
@@ -646,8 +667,6 @@ Nel listato \ref{lst:esempio-risposta-data-app} è fornita la risposta per quanto
 		  }
 		}
 \end{lstlisting}
-
-
 
 \subsection{Gestione paginazione}\label{sec:paginazione-app}
 
