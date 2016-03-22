@@ -1,4 +1,5 @@
-In questo capitolo si parlerà dell'implementazione dell'applicazione mobile CAMUS, partendo dalle tecnologie utilizzate, passando per la loro integrazione all'interno dell'applicazione e concludendo con la gestione dei dati.
+L'applicazione mobile CAMUS si pone come l'altro elemento fondamentale assieme al server dell'architettura. Ha lo scopo di fornire all'utente finale l'interfaccia per accedere al sistema e semplificare l'utilizzo e l'accesso ai dati. Nel capitolo verrà inizialmente fatta una rapida panoramica per quanto riguarda il cross-platform a livello mobile, in modo da introdurre meglio le tecnologie che sono state utilizzate per implementare l'applicazione. Poi è presente una spiegazione generale delle tecnologie che sono state impiegate nell'applicazione, come React Native e Flux. Successivamente si parlerà di come è stata realizzata l'architettura interna dell'applicazione, partendo dallo schema per definire le pagine e arrivando alla logica di aggiornamento dei dati, seguendo il principio del flusso dati unidirezionale. In seguito verrà definita la struttura del file di mashup proveniente dal server e che è indispensabile per la creazione delle schermate, per poi trattare nello specifico i metodi che occorrono per costruire queste schermate.
+Successivamente si tratterà di spiegare il flusso dati all'interno dell'applicazione e poi di come vengono trattate le richieste dati verso il server, con l'utilizzo di GraphQL, per definire le richieste per quanto riguarda il login e di risultati contestuali per l'utente. In conclusione verrà trattato l'argomento riguardante i servizi di supporto.
 
 \section{Panoramica su cross platform mobile}\label{sec:panoramica-cross-platform-mobile}
 Al momento di scegliere come implementare l'applicazione mobile per CAMUS sono state considerate due opzioni: la creazione di un'applicazione nativa inizialmente solo per Android, per poi estendere la compatibilità su iOS, oppure l'utilizzo di strumenti cross platform, funzionanti su più di un sistema operativo mobile.
@@ -161,7 +162,6 @@ Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti
 	\end{itemize}
 \end{itemize}
 
-\textcolor{red}{Ampliare meglio?}
 
 \subsection{Stores}\label{sec:action-store}
 Le \emph{stores} sono il modulo dove lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
