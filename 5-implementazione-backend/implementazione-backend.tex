@@ -72,22 +72,9 @@ Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresen
 
 Nel Listato \ref{lst:esempio-nodo-cdt} viene mostrato un esempio di nodo.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di nodo del CDT,
-								label=lst:esempio-nodo-cdt]
-	{
-		"name": "InterestTopic",
-		"for": "filter",
-		"values": [
-			"Restaurant",
-			"Cinema",
-			"Theater",
-			"Hotel",
-			"Museum",
-			"Event"
-		]
-	}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di nodo del CDT,
+	label=lst:esempio-nodo-cdt]{5-implementazione-backend/Codice/esempio_nodo_cdt.json}
 
 \subsection{Parametri\label{sec:parametro-cdt}}
 
@@ -101,27 +88,9 @@ Questo oggetto definisce i parametri che sono associati ad un nodo dimensione. C
 
 Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di parametro.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di parametro associato ad un nodo,
-								label=lst:esempio-parametro-cdt]
-	{
-		"name": "Location",
-		"for": "ranking|parameter",
-		"parameters": [
-			{
-				"name": "CityCoord",
-				"fields": [
-					{
-						"name": "Latitude"
-					},
-					{
-						"name": "Longitude"
-					}
-				]
-			}
-		]
-	}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di parametro associato ad un nodo,
+	label=lst:esempio-parametro-cdt]{5-implementazione-backend/Codice/esempio_parametro_cdt.json}
 
 \section{Descrittore dei servizi\label{sec:descrittore-servizi}}
 
@@ -141,16 +110,9 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 
 Nel Listato \ref{lst:esempio-descrittore-servizio} viene mostrato un esempio di oggetto principale del servizio.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di servizio,
-								label=lst:esempio-descrittore-servizio]
-  {
-	  "name": "GooglePlaces",
-	  "protocol": "query",
-	  "basePath": "https://maps.googleapis.com/maps/api/place",
-	  "operations": [ ... ]
-  }
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di servizio,
+	label=lst:esempio-descrittore-servizio]{5-implementazione-backend/Codice/esempio_descrittore_servizio.json}
 
 \subsection{Operazioni\label{sec:descrittore-operazioni}}
 
@@ -172,18 +134,9 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 
 Nel Listato \ref{lst:esempio-descrittore-operazione} viene mostrato un esempio di operazione.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di operazione,
-								label=lst:esempio-descrittore-operazione]
-	{
-		"name": "nearBySearch",
-		"type": "primary",
-		"path": "/nearbysearch/json",
-		"parameters": [ ... ],
-		"responseMapping": { ... },
-		"pagination": { ... }
-	}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di operazione,
+	label=lst:esempio-descrittore-operazione]{5-implementazione-backend/Codice/esempio_descrittore_operazione.json}
 
 \subsection{Parametri\label{sec:descrittore-parametri}}
 
@@ -203,20 +156,9 @@ In quest'oggetto vengono definiti i parametri in ingresso di un'operazione. I pa
 
 Nel Listato \ref{lst:esempio-descrittore-parametro} viene mostrato un esempio di parametro.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di parametro,
-								label=lst:esempio-descrittore-parametro]
-	{
-		"name": "Location",
-		"required": true,
-		"default": "-33.8670522,151.1957362",
-		"collectionFormat": "csv",
-		"mappingCdt": [
-			"CityCoord.Latitude",
-			"CityCoord.Longitude"
-		]
-	}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di parametro,
+	label=lst:esempio-descrittore-parametro]{5-implementazione-backend/Codice/esempio_descrittore_parametro.json}
 
 \subsection{Formato della risposta\label{sec:descrittore-risposta}}
 
@@ -230,41 +172,9 @@ In quest'oggetto sono definite le regole con le quali vengono trasformate le ris
 
 Nel Listato \ref{lst:esempio-formato-risposta} viene mostrato un esempio di formato di risposta.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di formato di risposta,
-								label=lst:esempio-formato-risposta]
-	{
-		"list": "results",
-		"items": [
-			{
-				"termName": "title2,
-				"path": "name"
-			},
-			{
-				"termName": "address",
-				"path": "vicinity"
-			},
-			{
-				"termName": "latitude",
-				"path": "geometry.location.lat"
-			},
-			{
-				"termName": "longitude",
-				"path": "geometry.location.lng"
-			}
-		],
-		"functions": [
-			{
-				"onAttribute": "latitude",
-				"run": "return String(value)"
-			},
-			{
-				"onAttribute": "longitude",
-				"run": "return String(value)"
-			}
-		]
-	}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di formato di risposta,
+	label=lst:esempio-formato-risposta]{5-implementazione-backend/Codice/esempio_formato_risposta.json}
 
 \subsection{Paginazione\label{sec:descrittore-paginazione}}
 
@@ -279,17 +189,9 @@ In quest'oggetto vengono descritti gli attributi necessari per gestire la pagina
 
 Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio di descrittore della paginazione.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=Esempio di descrittore della paginazione,
-								label=lst:esempio-descrittore-paginazione]
-	{
-		"pagination": {
-			"attributeName": "pagetoken",
-			"type": "token",
-			"tokenAttribute": "next_page_token"
-		}
-	}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=Esempio di descrittore della paginazione,
+	label=lst:esempio-descrittore-paginazione]{5-implementazione-backend/Codice/esempio_descrittore_paginazione.json}
 
 \section{Schema del database\label{sec:schema-database}}
 
@@ -572,70 +474,8 @@ Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Help
 
 Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio di richiesta per effettuare la ricerca di dati sia \emph{primari} sia di \emph{supporto}.
 
-\begin{lstlisting}[caption=Esempio richiesta executeQuery,
-								label=lst:esempio-richiesta-execute-query]
-~query Restaurant~ {
-	!executeQuery! (
-		@userId@: ~"USER_ID"~,
-		@idCdt@: ~"CDT_ID"~,
-		@context@: [
-			{
-				@dimension@: ~"InterestTopic"~,
-				@value@: ~"Restaurant"~
-			},
-			{
-				@dimension@: ~"Location"~,
-				@parameters@: [
-					{
-						@name@: ~"CityCoord"~,
-						@fields@: [
-							{
-								@name@: ~"Latitude"~,
-								@value@: ~"45.4788807"~
-							},
-							{
-								@name@: ~"Longitude"~,
-								@value@: ~"9.2321363"~
-							}
-						]
-					}
-				]
-			},
-			{
-				@dimension@: ~"Transport"~,
-				@value@: ~"PublicTransport"~
-			},
-			{
-				@dimension#: ~"OS"~,
-				@value@: ~"iOS"~
-			}
-		],
-		@support@: [~"Transport"~]
-	)
-	{
-		!primaryResults! (@first@: ~9~) {
-			!data! {
-				!title!
-				!address!
-				!latitude!
-				!longitude!
-				!meta! {
-					!name!
-					!rank!
-				}
-			}
-		}
-		!supportResults! {
-			!data! {
-				!category!
-				!service!
-				!url!
-				!storeLink!
-			}
-		}
-	}
-}
-\end{lstlisting}
+\lstinputlisting[caption=Esempio richiesta executeQuery,
+	label=lst:esempio-richiesta-execute-query]{5-implementazione-backend/Codice/esempio_richiesta_execute_query.graphql}
 
 \subsection{Login\label{sec:login-endpoint}}
 
@@ -643,20 +483,8 @@ Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso 
 
 Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richiesta per effettuare l'autenticazione dell'utente.
 
-\begin{lstlisting}[caption=Esempio richiesta login,
-								label=lst:esempio-richiesta-login]
-{
-	!login! (
-		@mail@: ~"MAIL_ADDRESS"~,
-		@password@: ~"ENCRYPTED_PASSWORD"~
-	)
-	{
-		!name!
-		!surname!
-		!token!
-	}
-}
-\end{lstlisting}
+\lstinputlisting[caption=Esempio richiesta login,
+	label=lst:esempio-richiesta-login]{5-implementazione-backend/Codice/esempio_richiesta_login.graphql}
 
 \subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
 
@@ -698,55 +526,8 @@ Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono
 
 Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di richiesta per ricevere i dati personali dell'utente.
 
-\begin{lstlisting}[caption=Esempio richiesta getPersonalData,
-								label=lst:esempio-get-personal-data]
-{
-	!getPersonalData! (
-		@mail@: ~"USER_MAIL_ADDRESS"~,
-		@token@: ~"SESSION_TOKEN"~
-	)
-	{
-		!cdt! {
-			!idCdt!
-			!context! {
-				!name!
-				!values!
-				!parameters! {
-					!name!
-					!type!
-					!fields! {
-						!name!
-						!type!
-					}
-				}
-				!parents!
-			}
-			!defaultValues! {
-				!dimension!
-				!value!
-			}
-		}
-		!mashup! {
-			!list! {
-				!topics!
-				!contents! {
-					!type!
-					!style!
-					!contents!
-				}
-			}
-			!details! {
-				!topics!
-				!contents! {
-					!type!
-					!style!
-					!contents!
-				}
-			}
-		}
-	}
-}
-\end{lstlisting}
+\lstinputlisting[caption=Esempio richiesta getPersonalData,
+	label=lst:esempio-get-personal-data]{5-implementazione-backend/Codice/esempio_get_personal_data.graphql}
 
 \section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
@@ -872,37 +653,6 @@ Nessun campo è obbligatorio, ad eccezione dell'indirizzo di MongoDB, se non spe
 
 Nel Listato \ref{lst:file-configurazione-predefinito} viene mostrato il file di configurazione predefinito.
 
-\begin{lstlisting}[style=blocco-esempi,
-								caption=File di configurazione predefinito,
-								label=lst:file-configurazione-predefinito]
-{
-	"server": {
-		"port": 3001
-	},
-	"database": {
-		"address": "mongodb://localhost/camus"
-	},
-	"redis": {
-		"address": "localhost:6379"
-	},
-	"rest": {
-		"timeout": {
-			"service": 3000,
-			"cache": 1800
-		}
-	},
-	"primaryService": {
-		"n": 3,
-		"weight": {
-			"filter": 1,
-			"ranking": 4
-		}
-	},
-	"similarity": {
-		"threshold": 0.85
-	},
-	"paginationTTL": 1800,
-	"debug": true,
-	"metrics": true
-}
-\end{lstlisting}
+\lstinputlisting[style=blocco-esempi,
+	caption=File di configurazione predefinito,
+	label=lst:file-configurazione-predefinito]{5-implementazione-backend/Codice/file_configurazione_predefinito.json}

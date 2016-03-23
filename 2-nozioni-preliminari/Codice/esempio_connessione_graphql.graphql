@@ -1,0 +1,19 @@
+{
+	!user! (@id@: ~4802170~) {
+		!id!
+		!name!
+		!isViewerFriend!
+		!profilePicture! (@size@: ~50~) {
+			!uri!
+			!width!
+			!height!
+		}
+		!friendConnection!(@first@: ~2~) {
+			!totalCount!
+			!friends!: {
+				!id!
+				!name!
+			}
+		}
+	}
+}

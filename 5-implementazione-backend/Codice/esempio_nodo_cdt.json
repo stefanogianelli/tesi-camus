@@ -1,0 +1,12 @@
+	{
+		"name": "InterestTopic",
+		"for": "filter",
+		"values": [
+			"Restaurant",
+			"Cinema",
+			"Theater",
+			"Hotel",
+			"Museum",
+			"Event"
+		]
+	}

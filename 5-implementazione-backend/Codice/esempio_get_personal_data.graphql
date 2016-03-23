@@ -1,0 +1,46 @@
+{
+	!getPersonalData! (
+		@mail@: ~"USER_MAIL_ADDRESS"~,
+		@token@: ~"SESSION_TOKEN"~
+	)
+	{
+		!cdt! {
+			!idCdt!
+			!context! {
+				!name!
+				!values!
+				!parameters! {
+					!name!
+					!type!
+					!fields! {
+						!name!
+						!type!
+					}
+				}
+				!parents!
+			}
+			!defaultValues! {
+				!dimension!
+				!value!
+			}
+		}
+		!mashup! {
+			!list! {
+				!topics!
+				!contents! {
+					!type!
+					!style!
+					!contents!
+				}
+			}
+			!details! {
+				!topics!
+				!contents! {
+					!type!
+					!style!
+					!contents!
+				}
+			}
+		}
+	}
+}

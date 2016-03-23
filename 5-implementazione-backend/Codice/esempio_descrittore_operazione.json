@@ -1,0 +1,8 @@
+	{
+		"name": "nearBySearch",
+		"type": "primary",
+		"path": "/nearbysearch/json",
+		"parameters": [ ... ],
+		"responseMapping": { ... },
+		"pagination": { ... }
+	}

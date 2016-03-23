@@ -1,0 +1,7 @@
+	{
+		"pagination": {
+			"attributeName": "pagetoken",
+			"type": "token",
+			"tokenAttribute": "next_page_token"
+		}
+	}

@@ -252,25 +252,13 @@ Alla base di \emph{GraphQL} ci sono i seguenti principi:
 
 \begin{center}
 	\begin{minipage}[t]{0.5\textwidth}
-		\begin{lstlisting}[caption=Esempio di query GraphQL, label=lst:esempio-query-graphql]
-{
-	!user!(@id@: ~2~) {
-		!name!
-		!surname!
-	}
-}
-		\end{lstlisting}
+		\lstinputlisting[caption=Esempio di query GraphQL,
+			label=lst:esempio-query-graphql]{2-nozioni-preliminari/Codice/esempio_query_graphql.graphql}
 	\end{minipage}%
 	\hspace{5mm}%
 	\begin{minipage}[t]{0.4\textwidth}
-		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-graphql, style=json]
-{
-	"user": {
-		"name": "Mario",
-		"surname": "Rossi"
-	}
-}
-		\end{lstlisting}
+		\lstinputlisting[caption=Esempio di risposta,
+			label=lst:esempio-risposta-graphql, style=json]{2-nozioni-preliminari/Codice/esempio_risposta_graphql.json}
 	\end{minipage}	
 \end{center}
 
@@ -281,62 +269,16 @@ Nel Listato \ref{lst:esempio-query-graphql} viene riportato un semplice esempio 
 \begin{center}
 	\hspace*{-1.5cm}
 	\begin{minipage}[t]{0.63\textwidth}
-		\begin{lstlisting}[caption=Esempio di connessione GraphQL, label=lst:esempio-connessione-graphql]
-{
-	!user! (@id@: ~4802170~) {
-		!id!
-		!name!
-		!isViewerFriend!
-		!profilePicture! (@size@: ~50~) {
-			!uri!
-			!width!
-			!height!
-		}
-		!friendConnection!(@first@: ~2~) {
-			!totalCount!
-			!friends!: {
-				!id!
-				!name!
-			}
-		}
-	}
-}
-		\end{lstlisting}
+		\lstinputlisting[caption=Esempio di connessione GraphQL,
+			label=lst:esempio-connessione-graphql]{2-nozioni-preliminari/Codice/esempio_connessione_graphql.graphql}
 	\end{minipage}%
 	\begin{minipage}[t]{0.63\textwidth}
-		\begin{lstlisting}[caption=Esempio di risposta, label=lst:esempio-risposta-connessione-graphql,style=json]
-{
-	"user": {
-		"id": 4802170,
-		"name": "Lee Byron",
-		"isViewerFriend": true,
-		"profilePicture": {
-			"uri": "cdn://pic/4802170/50",
-			"width": 50,
-			"height": 50
-		},
-		"friendConnection": {
-			"totalCount": 13,
-			"friends": [
-				{
-					"id": 305249,
-					"name": "Stephen Schwink"
-				},
-				{
-					"id": 3108935,
-					"name": "Nathaniel Roman"
-				}
-			]
-		}
-	}
-}
-		\end{lstlisting}
+		\lstinputlisting[caption=Esempio di risposta,
+			label=lst:esempio-risposta-connessione-graphql,style=json]{2-nozioni-preliminari/Codice/esempio_risposta_connessione_graphql.json}
 	\end{minipage}	
 \end{center}
 
 Nel Listato \ref{lst:esempio-connessione-graphql} viene mostrata una query più complessa della precedente. La \emph{connessione} viene definita da \virgolette{friendConnection}, che viene utilizzata per recuperare gli amici dell'utente corrente. Si vuole far notare che gli oggetti che vengono restituiti nel campo \virgolette{friends} sono dello stesso tipo dell'utente richiesto in origine: questo vuol dire che è possibile produrre infiniti livelli gerarchici. Se, all'interno di un utente amico, si specifica di nuovo la connessione \virgolette{friendConnection}, verranno restituiti anche gli amici di quello specifico utente. Altro punto interessante, come citato in precedenza, delle \emph{connessioni} riguarda la possibilità di richiedere solo un sottoinsieme dei risultati: nell'esempio vengono richiesti solamente i primi due amici dell'utente. Come si può notare nel Listato \ref{lst:esempio-risposta-connessione-graphql}, vengono restituiti solamente i primi due amici, nonostante il campo \virgolette{totalCount} indichi che l'utente ha in totale 13 amici. Tramite ulteriori query possono essere richiesti gli altri amici dell'utente.
-
-\textcolor{red}{Aggiungere parte sulle mutations?}
 
 \section{Stato dell'arte\label{sec:stato-arte}}
 
@@ -388,7 +330,6 @@ Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Develop
 \end{figure}
 
 \begin{itemize}
-	
 	\item \textbf{Development}
 	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice, come in Figura \ref{fig:appery-visual-composition}. Possono essere già presenti oppure creati ex-novo. Il tipo di struttura dati utilizzato, invece, è di tipo \emph{model-based}, in particolare si è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta per l'interazione dell'utente è di tipo visuale, tramite la \emph{Storage API}, che permette di gestire le variabili in modo semplice
 	\item \textbf{Deployment} Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione per le diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code. \upe è sufficiente inviare questo codice per permettere di scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione come sorgenti HTML5/CSS oppure come progetti per gli IDE di sviluppo native come Android Studio, XCode o Visual Studio
@@ -396,8 +337,6 @@ Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Develop
 	Nel primo caso è possibile eseguire testing istantaneamente nel browser o direttamente sul telefono, mentre nel secondo caso è supportato anche l'offline testing, cioè è possibile fare test di unità e di integrazione senza installare l'app sul dispositivo
 	\item \textbf{Administration} La parte amministrativa è la parte che si riferisce al Mobile Backend as a Service (MBaaS) e permette di gestire tutta la parte di logica e storage sul cloud. Per quanto riguarda questo aspetto è presente in Appery.io una console di controllo, con la quale è possibile inviare notifiche push, controllare i certificati e le API key necessarie all'app, condividere lo sviluppo con altri utenti, gestire i ruoli del team di sviluppo e controllare i rilasci delle versioni dell'applicazione
 \end{itemize}
- 
-
 
 \subsection*{Karma}
 
@@ -416,7 +355,6 @@ Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti:
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/karma-europeana.jpg}
 	\caption{Karma Service Integration}\label{fig:karma-europeana}
 \end{figure}
-
 
 Karma è stato applicato con dati di diversa natura, spaziando dai musei ai dati di tipo bioinformatico. 
 Nel caso dei dati di reperti dei musei, utilizzando questo tool si sono convertiti oltre 40000 reperti appartenenti alle collezioni dei musei seguendo l'\emph{Europeana Data Model}\footnote{Europeana Data Model: \url{http://pro.europeana.eu/page/edm-documentation}}, un modello di classificazione per le collezioni artistiche. A partire dai dati provenienti da diverse tabelle di un database SQL Server è stato possibile creare un nuovo dataset omogeneo secondo un nuovo modello dati. 
@@ -450,8 +388,6 @@ Dopo una fase di apprendimento delle abitudini dell'utente, l'applicazione è in
 L'architettura presentata è formata da due componenti: il client e il server.
 Il client è implementato in Android e utilizza il database interno SQLite e le connessioni con il server mediante TCP. Questo permette di utilizzare l'applicazione anche in condizioni di assenza di rete, perché i dati rilevanti vengono salvati anche nel database locale. La visualizzazione dei dati utilizzata è di tipo \emph{master-detail}, dove nella schermata principale è presentata la lista degli argomenti. Quando uno di essi è selezionato l'utente può esplorare i dati o cercare un elemento specifico con un filtro di ricerca per poi visualizzare i dati ricevuti nella pagina dei risultati. Una volta ottenuti, l'utente può visualizzare i dettagli dell'elemento desiderato in una nuova pagina. 
 
-
-
 \subsection*{CADD}
 
 CADD \textcolor{red}{reference}è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il Context Dimension Tree (CDT), usato anche in CAMUS.  Una volta stabilito il modello di contesto, vengono creati i contesti dal designer, il quale viene guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso tramite espressioni XQuery\footnote{XQuery: \url{https://www.w3.org/TR/xquery/}} usate per potare i dati XML da inviare ai dispositivi mobili.
@@ -470,4 +406,3 @@ I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i 
 	\item \textbf{Data Tailoring Assistant}
 	Il designer associa ogni contesto con la porzione corrispondente di dati disponibili. Questa associazione è svolta utilizzando uno schema globale di tipo ER. Basandosi sull'interazione con una rappresentazione grafica dello schema, il tool è in grado di generare una o più espressioni XQuery in modo da costruire le view corrispondenti ai dati
 \end{itemize}
-

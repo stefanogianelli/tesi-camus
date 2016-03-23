@@ -1,0 +1,11 @@
+{
+	!login! (
+		@mail@: ~"MAIL_ADDRESS"~,
+		@password@: ~"ENCRYPTED_PASSWORD"~
+	)
+	{
+		!name!
+		!surname!
+		!token!
+	}
+}

@@ -1,0 +1,10 @@
+	{
+		"name": "Location",
+		"required": true,
+		"default": "-33.8670522,151.1957362",
+		"collectionFormat": "csv",
+		"mappingCdt": [
+			"CityCoord.Latitude",
+			"CityCoord.Longitude"
+		]
+	}
