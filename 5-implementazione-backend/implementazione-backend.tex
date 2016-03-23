@@ -709,7 +709,7 @@ Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio 
 
 \subsection{Login\label{sec:login-endpoint}}
 
-Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo SHA1\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono ad un utente vengono restituiti il suo \emph{identificativo}, utile per le query successive, un \emph{token}, utilizzato per mantenere aperta la sessione, ed il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'app con le informazioni personali.
+Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo SHA1\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono ad un utente vengono restituiti un \emph{token}, utilizzato per mantenere aperta la sessione, ed il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'app con le informazioni personali.
 
 Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richiesta per effettuare l'autenticazione dell'utente.
 
@@ -721,7 +721,6 @@ Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richi
 		@password@: ~"ENCRYPTED_PASSWORD"~
 	)
 	{
-		!id!
 		!name!
 		!surname!
 		!token!
@@ -731,7 +730,7 @@ Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richi
 
 \subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
 
-Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} ed i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'app mobile può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'identificativo dell'\emph{utente} e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
+Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} ed i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'app mobile può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
 
 \begin{itemize}
 	\item \textbf{Cdt} Rappresenta la radice dell'albero di contesto. Un CDT viene definito dai seguenti attributi:
@@ -773,7 +772,7 @@ Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di ric
 								label=lst:esempio-get-personal-data]
 {
 	!getPersonalData! (
-		@id@: ~"USER_IDENTIFIER"~,
+		@mail@: ~"USER_MAIL_ADDRESS"~,
 		@token@: ~"SESSION_TOKEN"~
 	)
 	{
