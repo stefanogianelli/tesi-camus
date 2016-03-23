@@ -169,6 +169,8 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 	\item \textbf{Type} Rappresenta la tipologia dell'operazione. Un'operazione può essere \emph{primaria} o di \emph{supporto}. Questa distinzione viene utilizzata principalmente per permettere la catalogazione delle operazioni da mostrare nelle web app
 	\item \textbf{Description} La descrizione dell'attività svolta dall'operazione
 	\item \textbf{Path} Il percorso specifico per richiamare l'operazione. Questo valore viene aggiunto al \emph{Base Path} del servizio. Deve essere sempre preceduto da una slash (\virgolette{/})
+	\item \textbf{Protocol} Permette di ridefinire esclusivamente per l'operazione corrente il protocollo utilizzato. \upe utile nei casi in cui un'operazione, per una qualsiasi ragione, utilizza un paradigma di composizione della query diverso da quello specificato dal servizio. Per esempio, viene utilizzato per mappare gli intent su diversi sistemi operativi, che hanno diverse regole di composizione. Oltre alle tipologie definite per i \emph{servizi} supporta anche il protocollo \virgolette{android}
+	\item \textbf{Store Link} Utilizzato esclusivamente per i servizi di supporto, permette di definire il link nello store di riferimento per scaricare l'app necessaria a utilizzare l'intent associato
 	\item \textbf{Bridge Name} Questo campo è opzionale, definisce il nome del bridge con la logica necessaria per invocare il servizio. \upe obbligatorio il suo utilizzo quando per il servizio viene utilizzato il protocollo \emph{custom}
 	\item \textbf{Parameters} Definisce l'elenco dei parametri accettati in ingresso dall'operazione. Per ulteriori dettagli su questo oggetto si fa riferimento alla Sezione \ref{sec:descrittore-parametri}
 	\item \textbf{Headers} Permette di specificare gli attributi da aggiungere all'header della richiesta. Vengono utilizzati i campi \virgolette{name} per specificare il nome dell'attributo e \virgolette{value} per specificarne il valore
@@ -314,59 +316,16 @@ Di seguito viene presentata una descrizione dettagliata delle entità che compon
 \begin{itemize}
 	\item \textbf{User} \upe l'entità che rappresenta un utente. Ogni utente viene descritto dal nome, cognome, indirizzo email, password e da un token che viene utilizzato per identificare la sessione. Un utente può possedere nessuno o più CDT
 	\item \textbf{Cdt} Rappresenta la radice di un albero di contesto. Un albero di contesto può essere posseduto da zero o più utenti. Il \emph{CDT Globale} è l'unico caso nel quale non vengono associati utenti, perché è universale e quindi valido per chiunque. In tutti gli altri casi si tratta di \emph{CDT su misura}, che devono quindi essere associati ad almeno un utente. Viene lasciata la possibilità di associazione con più utenti nel caso il loro profilo sia molto simile
-	\item \textbf{Node} Rappresenta un nodo \emph{dimensione} del CDT e viene descritto dai seguenti attributi:
-	\begin{itemize}
-		\item \emph{Name} Il nome del nodo
-		\item \emph{For} Descrive la tipologia del nodo, che verrà utilizzata per assegnare un peso utile nella fase di \emph{selezione delle operazioni} e per attribuire un valore ai parametri nella fase di \emph{invocazione dei servizi}. I valori ammessi sono \emph{filter}, \emph{parameter}, \emph{ranking}, \emph{filter}|\emph{parameter} o \emph{ranking}|\emph{parameter}. Se viene definito il tipo \emph{parameter} possono essere assegnati al nodo diverse entità di tipo \virgolette{Node Parameter}, per specificarne le caratteristiche
-		\item \emph{Parents} Contiene l'elenco di tutti i nodi dai quali discende il nodo corrente
-		\item \emph{Values} Elenca i valori ammessi dal nodo dimensione corrente. Corrispondono ai nodi di tipo \emph{contesto} nel modello del CDT
-	\end{itemize}
-	\item \textbf{Node Parameter} Questa entità rappresenta un parametro associato ad un nodo del CDT. Viene caratterizzato dai seguenti campi:
-	\begin{itemize}
-		\item \emph{Name} Definisce il nome del parametro
-		\item \emph{Type} Il/I formato/i del dato che vengono accettati
-	\end{itemize}
-	Ad un parametro possono essere associati diversi \virgolette{campi}, nel caso in cui un parametro sia definito da diversi sottoattributi. Per esempio, il parametro \emph{Località} può essere specializzato nei campi \emph{Latitudine} e \emph{Longitudine}
+	\item \textbf{Node} Rappresenta un nodo \emph{dimensione} del CDT
+	\item \textbf{Node Parameter} Questa entità rappresenta un parametro associato ad un nodo del CDT. Ad un parametro possono essere associati diversi \virgolette{campi}, nel caso in cui un parametro sia definito da diversi sottoattributi. Per esempio, il parametro \emph{Località} può essere specializzato nei campi \emph{Latitudine} e \emph{Longitudine}
 	\item \textbf{Field} \upe l'entità che rappresenta un campo di un parametro. \upe composto dal \virgolette{nome} che assume ed il \virgolette{tipo}, che descrive il formato del campo
 	\item \textbf{Default Value} Questa entità elenca le coppie dimensione-valore che sono preimpostate, in quanto non subiscono variazioni per l'utente ed è inutile che gli vengano continuamente riproposte. Vengono salvati solamente il nome della \virgolette{dimensione} ed il relativo \virgolette{valore}
 	\item \textbf{GlobalCdt} Entità che mantiene il riferimento al \emph{CDT Globale}, che viene utilizzato come base per la costruzione di tutti gli alberi di contesto del sistema
-	\item \textbf{Service} Entità che rappresenta un servizio, definito dai seguenti campi:
-	\begin{itemize}
-		\item \emph{Name} Il nome del servizio
-		\item \emph{Description} Una descrizione delle operazioni che vengono svolte dal servizio
-		\item \emph{Base Path} Definisce l'indirizzo base al quale è possibile contattare il servizio. Viene utilizzato insieme ai \emph{path} specifici di ogni operazione per formare l'indirizzo completo
-		\item \emph{Protocol} Specifica la tipologia di servizio e può assumere i valori \emph{rest}, \emph{query} o \emph{custom}. Per i primi due casi esiste un'implementazione fornita assieme al sistema mentre per l'ultimo caso è necessario specificare quale bridge specifico viene utilizzato per invocare il servizio
-	\end{itemize}
-	Un servizio deve esporre almeno un'\emph{operazione} per poter essere utilizzato
-	\item \textbf{Operation} Un'operazione rappresenta l'elemento essenziale affinché un servizio possa essere invocato. Possiede i seguenti attributi:
-	\begin{itemize}
-		\item \emph{Name} Il nome dell'operazione. Questo campo viene utilizzato principalmente per avere un riferimento intuitivo delle varie operazioni che vengono esposte da ogni servizio e può essere scelto a proprio piacimento
-		\item \emph{Description} Descrizione dell'attività che viene svolta dall'operazione
-		\item \emph{Path} Definisce il percorso specifico verso il quale richiamare l'operazione. Questo campo viene concatenato assieme al \emph{basePath} definito dal servizio per formare l'indirizzo completo
-		\item \emph{Type} Specifica se l'operazione è di tipo \emph{primario} o di \emph{supporto}. Questa distinzione è più di carattere categorico che funzionale, in quanto non ci sono particolari variazioni tra le due tipologie di operazione. Viene utilizzato dallo strumento di \emph{Visual Mapping} per elencare nello spazio più appropriato le varie operazioni
-		\item \emph{Bridge Name} Questo campo definisce il nome dell'implementazione specifica del bridge da utilizzare per invocare il servizio. \upe necessario solamente nel caso in cui il servizio utilizzi un protocollo \emph{custom}
-	\end{itemize}
-	Ogni operazione ha una serie di informazioni di contorno che possono essere associate. Deve obbligatoriamente definire un'entità per descrivere il formato della \emph{risposta} che riceve e può esporre gli attributi necessari per gestire la \emph{paginazione} dei risultati. Possono essere associati più campi relativi ai valori da aggiungere all'\emph{header} della chiamata quando necessari. Affinché un'operazione sia utilizzabile, è necessario definire almeno un \emph{parametro} per assegnare i valori che il servizio utilizzerà per comporre la risposta
-	\item \textbf{Parameter} Questa entità specifica come sono formati gli attributi che compongono un parametro. In particolare viene descritta dai seguenti campi:
-	\begin{itemize}
-		\item \emph{Name} Il nome del parametro
-		\item \emph{Type} Il formato del valore associato al parametro
-		\item \emph{Description} La descrizione della semantica del parametro
-		\item \emph{Required} Valore booleano che specifica se il parametro è obbligatorio o meno per l'operazione associata. Di default assume valore \emph{false}
-		\item \emph{Default} Specifica un valore predefinito, che viene utilizzato in particolare nella fase di \emph{Visual Mapping} per mostrare una risposta di esempio
-		\item \emph{Collection Format} Viene utilizzato solamente nel caso in cui ci siano più valori associati e definisce il separatore da usare per dividere i valori. I separatori riconosciuti sono \emph{csv} (comma separated values), \emph{ssv} (space separated values), \emph{tsv} (tab separated values) e \emph{pipes}.
-		\item \emph{Mapping Term} Viene utilizzato per associare il parametro ad uno dei \emph{termini semantici} conosciuti dal sistema. Viene utilizzato per la composizione della query per i servizi di supporto ed accetta la definizione di più termini
-		\item \emph{Mapping Cdt} Specifica da quale nodo dell'\emph{albero di contesto} è possibile recuperare il valore da associare al parametro. Possono essere aggiunti più nodi verso i quali andare a cercare i valori
-	\end{itemize}
-	In alcuni casi può essere anche definita una \emph{traduzione} per permettere di trasformare il valore definito dal contesto in uno più idoneo per il servizio
+	\item \textbf{Service} Entità che rappresenta un servizio, definito dai seguenti campi. Un servizio deve esporre almeno un'\emph{operazione} per poter essere utilizzato
+	\item \textbf{Operation} Un'operazione rappresenta l'elemento essenziale affinché un servizio possa essere invocato. Ogni operazione ha una serie di informazioni di contorno che possono essere associate. Deve obbligatoriamente definire un'entità per descrivere il formato della \emph{risposta} che riceve e può esporre gli attributi necessari per gestire la \emph{paginazione} dei risultati. Possono essere associati più campi relativi ai valori da aggiungere all'\emph{header} della chiamata quando necessari. Affinché un'operazione sia utilizzabile, è necessario definire almeno un \emph{parametro} per assegnare i valori che il servizio utilizzerà per comporre la risposta
+	\item \textbf{Parameter} Questa entità specifica come sono formati gli attributi che compongono un parametro. In alcuni casi può essere anche definita una \emph{traduzione} per permettere di trasformare il valore definito dal contesto in uno più idoneo per il servizio
 	\item \textbf{Translate} Questa entità definisce come effettuare una traduzione da un valore, generalmente recuperato dall'albero di contesto, verso un altro riconosciuto dal servizio. Viene semplicemente descritta dai campi \virgolette{from} e \virgolette{to}, che rappresentano rispettivamente il valore originale e la sua traduzione finale
-	\item \textbf{Pagination} Specifica quali sono gli attributi della risposta usati per gestire la paginazione dei risultati. In particolare, sono necessarie le seguenti informazioni:
-	\begin{itemize}
-		\item \emph{Attribute Name} Definisce il nome del parametro utilizzato dall'operazione per richiamare la pagina successiva. Deve corrispondere al nome fornito dal gestore del servizio
-		\item \emph{Type} Specifica il tipo di paginazione utilizzata dal servizio. Il sistema supporta due tipologie: \emph{i)} number, dove viene utilizzato un numero per identificare ogni pagina; \emph{ii)} token, dove vengono generati diversi token per richiamare le diverse pagine
-		\item \emph{Page Count Attribute} Indica il nome del campo della risposta che contiene il numero totale di pagine che sono disponibili per la query corrente. Viene utilizzato unicamente nel caso sia stato scelto come tipo \emph{number}. Serve al sistema per sapere fino a quando è possibile incrementare il numero di pagina per recuperare nuove informazioni
-		\item \emph{Token Attribute} Indica il nome del campo della risposta che contiene il token alla pagina successiva. Viene utilizzato unicamente nel caso sia stato scelto come tipo \emph{token}. Il token recuperato viene utilizzato nella query successiva per richiedere la nuova pagina con altre informazioni. A differenza del caso precedente non è possibile sapere a priori quante siano le pagine in totale. Semplicemente, quando il servizio non fornisce più token significa che non sono più disponibili ulteriori pagine
-	\end{itemize}
+	\item \textbf{Pagination} Specifica quali sono gli attributi della risposta usati per gestire la paginazione dei risultati
 	\item \textbf{Header} Questa entità definisce gli attributi che devono essere aggiunti all'header di un richiesta. \upe formato dal \virgolette{nome} del campo ed il \virgolette{valore} da associargli
 	\item \textbf{Response} \upe l'entità che descrive il formato della risposta ricevuta e definisce come mappare gli attributi che la compongono con i termini semantici. Viene utilizzato il campo \virgolette{list} per specificare il percorso all'interno della risposta dove è possibile andare a recuperare l'elenco dei risultati. Se non specificato viene presa la radice dell'oggetto ricevuto. Inoltre vengono definite diverse associazioni con l'entità \emph{Item}, che definisce come mappare ogni singolo elemento della risposta ai rispettivi termini semantici. In aggiunta è possibile definire delle funzioni che vengono eseguite in seguito alla fase di trasformazione, per permettere la personalizzazione dei valori ricevuti
 	\item \textbf{Item} Permette di definire la regola con la quale convertire un campo della risposta nel relativo termine semantico. \upe composto dal campo \virgolette{path}, che specifica il percorso del campo, e \virgolette{termName}, che definisce il termine da associargli
@@ -679,6 +638,10 @@ Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio 
 			{
 				@dimension@: ~"Transport"~,
 				@value@: ~"PublicTransport"~
+			},
+			{
+				@dimension#: ~"OS"~,
+				@value@: ~"iOS"~
 			}
 		],
 		@support@: [~"Transport"~]
@@ -701,6 +664,7 @@ Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio 
 				!category!
 				!service!
 				!url!
+				!storeLink!
 			}
 		}
 	}
