@@ -9,7 +9,7 @@ In questo capitolo vengono illustrati tutti i test che sono stati svolti per val
 
 
 
-Per effettuare i test di workload abbiamo scelto di utilizzare un sistema con coda  M/G/1 \cite{sundarapandian2009probability}. Infatti il nostro sistema si può descrivere con le seguenti caratteristiche:
+Per effettuare i test di workload abbiamo scelto di utilizzare un sistema con coda  M/G/1 \cite{sundarapandian2009probability}. Infatti il nostro sistema si puÃ² descrivere con le seguenti caratteristiche:
 
 \begin{itemize}
 	\item M/*/*: %a service node where request arrival follows a \emph{markoviano}
@@ -48,14 +48,14 @@ Di seguito sono riportati le caratteristiche tecniche della macchina di test
 
 \section{Tempo di risposta per richieste multiple}
 
-\textcolor{red}{Spiegare metodologia di test (+ riferimenti distribuzioni e perchè è stata scelta)\\
+\textcolor{red}{Spiegare metodologia di test (+ riferimenti distribuzioni e perchÃ¨ Ã¨ stata scelta)\\
 	mostrare 1 core e 1 GB RAM che diventa instabile come predetto prima\\
-	spiegare perchè è stato fatto test di scaling e miglioramenti ottenuti e perchè (redis e node sono single threaded)}
+	spiegare perchÃ¨ Ã¨ stato fatto test di scaling e miglioramenti ottenuti e perchÃ¨ (redis e node sono single threaded)}
 
 \section{Tempo di risposta con condizioni di rete diverse}
 
-Oltre ai test sul carico del server sono stati effettuate delle valutazioni per quanto riguarda le diverse condizioni di utilizzo dell'applicazione mobile. Avendo scelto come caso di studio quello del turismo è sorto spontaneo chiedersi in che modo l'applicazione reagisse in movimento e in diverse condizioni di rete. Per esempio se l'utente si trova a casa propria sotto rete WiFi la velocità di caricamento dei risultati sarà diversa da quella misurata mentre si trova in alta montagna, dove la copertura di rete è spesso minima. Per valutare se comunque i tempi di attesa fossero stati accettabili si è scelto di utilizzare il simulatore iOS e uno strumento aggiuntivo che introduce un ritardo nel caricamento dei dati a seconda delle diverse condizioni di rete specificate. A partire da questo si sono scelte le tre condizioni di rete più significative: WiFi, 3G ed Edge.
-All'interno dell'applicazione è stato utilizzato un metodo di test che effettua un numero significativo di richieste verso il server. Il test è stato effettuato utilizzando 50 richieste una successiva alle altre, in modo da non peggiorare il tempo di risposta caricando eccessivamente il server. La query utilizzata è quella di tipo ristoranti, continuamente ripetute. \\
+Oltre ai test sul carico del server sono stati effettuate delle valutazioni per quanto riguarda le diverse condizioni di utilizzo dell'applicazione mobile. Avendo scelto come caso di studio quello del turismo Ã¨ sorto spontaneo chiedersi in che modo l'applicazione reagisse in movimento e in diverse condizioni di rete. Per esempio se l'utente si trova a casa propria sotto rete WiFi la velocitÃ  di caricamento dei risultati sarÃ  diversa da quella misurata mentre si trova in alta montagna, dove la copertura di rete Ã¨ spesso minima. Per valutare se comunque i tempi di attesa fossero stati accettabili si Ã¨ scelto di utilizzare il simulatore iOS e uno strumento aggiuntivo che introduce un ritardo nel caricamento dei dati a seconda delle diverse condizioni di rete specificate. A partire da questo si sono scelte le tre condizioni di rete piÃ¹ significative: WiFi, 3G ed Edge.
+All'interno dell'applicazione Ã¨ stato utilizzato un metodo di test che effettua un numero significativo di richieste verso il server. Il test Ã¨ stato effettuato utilizzando 50 richieste una successiva alle altre, in modo da non peggiorare il tempo di risposta caricando eccessivamente il server. La query utilizzata Ã¨ quella di tipo ristoranti, continuamente ripetute. \\
 Nella tabella seguente sono mostrati i parametri delle condizioni di simulazione, dove l'Adsl indica la connessione internet utilizzata dal computer e gli altri parametri sono quelli utilizzati nello strumento di modifica delle condizioni di rete:
 \begin{center}
 	\begin{tabular}{ l l l l l  l l}
@@ -67,7 +67,7 @@ Nella tabella seguente sono mostrati i parametri delle condizioni di simulazione
 	\end{tabular}
 \end{center}
 
-Nella Figura \ref{fig:network-time-analysis} sono mostrati i risultati medi per ogni condizione di rete. Come ci si poteva aspettare i tempi di risposta più bassi sono dati dalla connessione WiFi, seguiti dal 3G e successivamente dalla Edge. La differenza tra WiFi e 3G è molto meno marcata, soprattutto perché per provare il tempo risposta è stata utilizzata una connessione a monte non molto performante, mentre per quanto riguarda la connessione Edge c'è molta più differenza, come del resto era prevedibile dalle condizioni di simulazione. In qualunque caso, con l'utilizzo della paginazione con un caricamento scaglionato dei dati e le dimensioni ridotte dei dati, anche i tempi di risposta in condizioni sfavorevoli non sono così alti, consentendo all'utente in qualsiasi caso una soddisfacente esperienza d'uso.
+Nella Figura \ref{fig:network-time-analysis} sono mostrati i risultati medi per ogni condizione di rete. Come ci si poteva aspettare i tempi di risposta piÃ¹ bassi sono dati dalla connessione WiFi, seguiti dal 3G e successivamente dalla Edge. La differenza tra WiFi e 3G Ã¨ molto meno marcata, soprattutto perchÃ© per provare il tempo risposta Ã¨ stata utilizzata una connessione a monte non molto performante, mentre per quanto riguarda la connessione Edge c'Ã¨ molta piÃ¹ differenza, come del resto era prevedibile dalle condizioni di simulazione. In qualunque caso, con l'utilizzo della paginazione con un caricamento scaglionato dei dati e le dimensioni ridotte dei dati, anche i tempi di risposta in condizioni sfavorevoli non sono cosÃ¬ alti, consentendo all'utente in qualsiasi caso una soddisfacente esperienza d'uso.
 
 \begin{figure}[ht]
 	\centering

@@ -13,10 +13,10 @@ install:
   -in .dropbox_uploader.enc -out ~/.dropbox_uploader -d'
 script:
 - mkdir _build
-- pdflatex -output-directory _build tesi.tex
+- xelatex -output-directory _build tesi.tex
 - cp bibliografia.bib _build
 - bibtex _build/tesi
-- pdflatex -output-directory _build tesi.tex
-- pdflatex -output-directory _build tesi.tex
+- xelatex -output-directory _build tesi.tex
+- xelatex -output-directory _build tesi.tex
 after_success:
 - ./dropbox_uploader.sh upload _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf
