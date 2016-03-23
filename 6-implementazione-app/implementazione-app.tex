@@ -255,7 +255,7 @@ Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato t
 
 \end{lstlisting}
 
-\section{Struttura dei file di mashup}
+\section{Struttura dello schema di mashup}
 
 Per poter permettere una dinamicità nell'applicazione si è scelto di utilizzare uno schema di mashup molto semplice e allo stesso tempo sufficientemente potente. Si è scelto di utilizzare uno schema di tipo JSON in modo da essere facilmente sfruttato all'interno del motore JavaScript di React Native. 
 Nel caso di CAMUS l'oggetto che è presente nelle view considera due tipologie di view diverse: la \emph{list} e la \emph{details}. Nella tipologia \emph{list} sono definite le view che definiscono il singolo item della ListView e generalmente si compone di una quantità non eccessiva di componenti
@@ -409,8 +409,7 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 	\item L'applicazione carica la pagina con i dettagli, dove gli vengono passati i dati completi dell'elemento selezionato e visualizzati nella pagina
 \end{enumerate}
 
-
-\section{Utilizzo GraphQL}\label{sec:utilizzo-dati-app}
+\section{Query GraphQL}\label{sec:utilizzo-dati-app}
 
 I dati nell'intero sistema CAMUS assumono un ruolo fondamentale. In questa sezione si vuole affrontare la gestione dei dati all'interno dell'applicazione, partendo dagli algoritmi per costruire le query GraphQL, per poi parlare dell'utilizzo dei dati all'interno dell'applicazione, con la gestione della paginazione dei risultati.
 Tutto lo scambio di dati tra l'applicazione e il server viene svolto utilizzando query GraphQL, come spiegato nella Sezione \ref{sec:graphql-introduzione}. Per implementare il modulo di gestione delle connessioni si è scelto di utilizzare \emph{Lokka} \footnote{Github Lokka: \url{https://github.com/kadirahq/lokka}}, un client di GraphQL che permette di gestire le query come se fossero normali \emph{fetch()} di JavaScript e lasciare una configurazione più libera e adattabile alle esigenze del sistema. Questo permette di sfruttare in modo molto aderente alle specifiche il paradigma Flux, salvando la maggior parte del contenuto della risposta nella \emph{Data Store}, con le modalità esposte nella Sezione \ref{sec:action-store} e rendendolo quindi disponibile per tutti i singoli componenti dell'applicazione. Di seguito sono spiegate le due tipologie principali di query gestite con GraphQL, che sono le query di login e le query per accedere ai dati.

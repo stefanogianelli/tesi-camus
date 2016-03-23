@@ -1,8 +1,36 @@
-In questo capitolo si entrerà nei dettagli che hanno portato alla realizzazione del backend del progetto CAMUS. Il capitolo inizia con la descrizione delle tecnologie che sono state utilizzate e l'analisi dello schema dell'architettura del sistema. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Descritti i componenti viene mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
+In questo capitolo si entrerà nei dettagli che hanno portato alla realizzazione del backend del progetto CAMUS. Il capitolo inizia con l'analisi dello schema dell'architettura del sistema e la descrizione delle tecnologie che sono state utilizzate. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Descritti i componenti viene mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
 
 \section{Architettura e tecnologie utilizzate\label{sec:architettura-backend}}
 
-Questa sezione è dedicata alla descrizione delle tecnologie che sono state utilizzate per la realizzazione del backend e delle motivazioni che hanno portato alla loro scelta. In seguito verrà esposto com'è stata strutturata l'architettura del sistema e le sue peculiarità.
+In questa sezione si vuole analizzare nel dettaglio l'architettura messa a punto per il backend di CAMUS, specificando le motivazioni che hanno portato alla sua realizzazione, e la descrizione delle tecnologie che hanno assistito nello sviluppo della soluzione.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/camus-architecture.png}
+	\caption{Architettura del backend}\label{fig:architettura-backend}
+\end{figure}
+
+L'architettura di CAMUS viene descritta schematicamente in Figura \ref{fig:architettura-backend}. Come si può notare è stata privilegiata la modularità dei vari componenti che formano il sistema, in modo che ognuno sia circoscritto ad uno specifico compito. Inoltre tutti i componenti mostrati sono \emph{stateless}, cioè non mantengono informazioni sullo stato di una sessione. Questa scelta architetturale permette di poter avviare diverse istanze del backend di CAMUS in modo che le richieste degli utenti possano essere evase da un'istanza piuttosto che un'altra. Questa scelta permette di selezionare quale nodo sia il miglior candidato per gestire una richiesta in coda in base a diverse politiche che non riguardano lo stato della sessione (es.: disponibilità del nodo, basso carico sul sistema, ecc.).
+
+Il componente che coordina tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti e organizzare le chiamate secondo il flusso della richiesta ()che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta-server}).
+
+Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile app e lo trasforma in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal client e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
+
+Il compito del \emph{Primary Service Selection} è di andare a recuperare le associazioni tra l'albero di contesto e le operazioni dei servizi primari. \upe inoltre suo compito gestire le associazioni personalizzate, come quella relativa alla ricerca tramite \emph{località}. In seguito assegna un \emph{punteggio} ad ogni operazione identificata ed emette in uscita le prime N operazioni con valutazione più elevata.
+
+Un compito simile viene svolto dal \emph{Support Service Selection} per le operazioni di supporto. Sebbene lo scopo del componente sia lo stesso, l'algoritmo di selezione è differente: in questo caso le associazioni vengono considerate più come \emph{vincoli}, ed un'operazione, per essere selezionata, deve rispettare tutti i vincoli ad essa associati.
+
+Il \emph{Query Handler} ha il compito di gestire le chiamate verso i servizi. Acquisisce la lista di operazioni scelte dal \emph{Primary Service Selection} e ne recupera i \emph{descrittori}, contenenti le informazioni per poterli interrogare. Di seguito organizza le chiamate ai servizi attraverso l'uso di \emph{bridge} specifici, che sono scelti in base al \emph{protocollo} di comunicazione adottato dal servizio. Una volta ricevute le risposte, si occupa di interfacciarsi con il \emph{Response Parser} per trasformarle nella rappresentazione interna, che sfrutta dei \emph{termini semantici} come nome dei campi.
+
+Infine il \emph{Response Aggregator} ha il compito di analizzare gli elementi ricevuti al fine di rimuovere i duplicati.
+
+La gestione di una richiesta che è seguito di una o più effettuate nel passato viene demandata al \emph{Session Helper}. Questo componente si occupa di analizzare lo stato della richiesta e, se necessario, effettua nuove richieste verso i servizi per acquisire ulteriori informazioni.
+
+Per quanto riguarda l'esposizione dei metodi che possono essere richiamati dal client si è deciso di non utilizzare un approccio basato sull'esposizione di endpoint REST bensì di sperimentare GraphQL.
+
+In questa sezione si è voluta dare una visione d'insieme sui compiti che spettano ai vari componenti. Un'analisi più approfondita delle attività di ognuno di essi verrà svolta nella Sezione \ref{sec:componenti-backend}.
+
+Ora che è stata presentata l'architettura si procede con la descrizione delle tecnologie che hanno permesso la realizzazione del backend.
 
 La logica del sistema è stata realizzata a partire da Node.js\footnote{Node.js: \url{https://nodejs.org/en/}}, un framework per lo sviluppo di applicazioni web basato sul linguaggio Javascript\footnote{Javascript Documentation: \url{https://developer.mozilla.org/en/docs/Web/JavaScript}}. Node.js è basato sul motore Javascript V8 di Google, realizzato con l'obiettivo principale di garantire ottime performance di esecuzione. Il framework permette la creazione di web server tramite l'ausilio di diversi \emph{moduli} che gestiscono le funzionalità di base, come il file system, le operazioni di rete, la crittografia, ecc. \upe compatibile con i sistemi operativi più diffusi e possono essere utilizzati tutti i linguaggi che una volta compilati producono codice Javascript, come CoffeScript o TypeScript. Per certi versi Node.js può essere considerato molto simile a PHP come ambito di utilizzo, la principale differenza è che le funzioni in Node.js non sono bloccanti, quindi è possibile eseguire attività in parallelo e utilizzare callback o promise per gestire il flusso di esecuzione, sia in caso positivo che negativo. Questa scelta di utilizzare un'architettura di tipo \emph{event-driven} permette la realizzazione di web server estremamente scalabili senza coinvolgere l'utilizzo dei thread. Node.js infatti lavora solo su un singolo core, tranne ne caso in cui vengano avviate più istanze separate. Il parallelismo gestito tramite eventi permette di simulare un sistema multithread, riducendo però in maniera significativa la complessità di sviluppo.
 
@@ -12,43 +40,7 @@ Il fatto che MongoDB memorizzi i file in un formato dalla struttura molto simile
 
 Oltre ad un database che garantisse la persistenza dei dati più importanti, si è resa necessaria l'adozione di un altro database per effettuare  caching delle risposte ricevute dai servizi e per mantenere memorizzate informazioni relative alle sessioni degli utenti. La scelta in questo caso è ricaduta su Redis\footnote{Redis: \url{http://redis.io/}}. Redis fornisce un database interamente memorizzato in memoria, quindi estremamente rapido nell'evadere le richieste, basato su di una struttura di tipo \emph{chiave-valore}. Queste caratteristiche, insieme al fatto che quanto viene salvato un dato è possibile impostare un intervallo di tempo scaduto il quale l'elemento viene eliminato, lo ha reso il candidato perfetto per svolgere questo compito. Per interfacciare Node.js con l'istanza di Redis in esecuzione viene utilizzato il modulo ioredis\footnote{ioredis: \url{https://github.com/luin/ioredis}}.
 
-Infine, per gestire le funzionalità del server viene utilizzato il web framework ExpressJS\footnote{ExpressJS: \url{http://expressjs.com/}}.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/camus-architecture.png}
-	\caption{Architettura del backend}\label{fig:architettura-backend}
-\end{figure}
-
-Ora che sono state definite le tecnologie utilizzate viene presentata l'architettura di CAMUS, che può essere osservata nello schema in Figura \ref{fig:architettura-backend}. Come si può notare è stata privilegiata la modularità dei vari componenti che formano il sistema, in modo che ognuno sia circoscritto ad uno specifico compito. Inoltre tutti i componenti mostrati sono \emph{stateless}, cioè non mantengono informazioni sullo stato di una sessione. Questa scelta architetturale permette di poter avviare diverse istanze del backend di CAMUS in modo che le richieste degli utenti possano essere evase da un'istanza piuttosto che un'altra. Questa scelta permette di selezionare quale nodo sia il miglior candidato per gestire una richiesta in coda in base a diverse politiche che non riguardano lo stato della sessione (es.: disponibilità del nodo, basso carico sul sistema, ecc.).
-
-Il componente che coordina tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti ed organizzare le chiamate secondo il flusso della richiesta, che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta-server}.
-
-Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile app e lo trasforma in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal client e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
-
-Il compito del \emph{Primary Service Selection} è di andare a recuperare le associazioni tra l'albero di contesto e le operazioni dei servizi primari. \upe inoltre suo compito gestire le associazioni personalizzate, come quella relativa la ricerca tramite \emph{località}. In seguito assegna un \emph{punteggio} ad ogni operazione identificata ed emette in uscita le prime N operazioni con valutazione più elevata.
-
-Un compito simile viene svolto dal \emph{Support Service Selection} per le operazioni di supporto. Sebbene lo scopo del componente sia lo stesso, l'algoritmo di selezione è differente: in questo caso le associazioni vengono considerate più come \emph{vincoli}, ed un'operazione, per essere selezionata, deve rispettare tutti i vincoli ad essa associati.
-
-Il \emph{Query Handler} ha il compito di gestire le chiamate verso i servizi. Acquisisce la lista di operazioni scelte dal \emph{Primary Service Selection} e ne recupera i \emph{descrittori}, contenenti le informazioni per poterli interrogare. Di seguito organizza le chiamate ai servizi attraverso l'uso di \emph{bridge} specifici, che sono scelti in base al \emph{protocollo} di comunicazione adottato dal servizio. Una volta ricevute le risposte si occupa di interfacciarsi con il \emph{Response Parser} per trasformarle nella rappresentazione interna, che sfrutta dei \emph{termini semantici} come nome dei campi.
-
-Infine il \emph{Response Aggregator} ha il compito di analizzare gli elementi ricevuti al fine di rimuovere i duplicati.
-
-La gestione di una richiesta che è seguito di una o più effettuate nel passato viene demandata al \emph{Session Helper}. Questo componente si occupa di analizzare lo stato della richiesta e se necessario effettua nuove richieste verso i servizi per acquisire ulteriori informazioni.
-
-Per quanto riguarda l'esposizione dei metodi che possono essere richiamati dal client si è deciso di non utilizzare un approccio basato sull'esposizione di endpoint REST bensì di sperimentare GraphQL, un linguaggio per effettuare interrogazioni creato da Facebook.
-
-GraphQL permette di creare degli \emph{schemi} che definiscono le funzionalità che sono esposte dal sistema e specificano quali dati e in che formato verranno utilizzati sia in ingresso sia in uscita. L'utilizzo di schemi permette di effettuare validazione delle scelte effettuate dal client ed il grosso vantaggio è che sarà GraphQL ad occuparsene, sgravando lo sviluppatore del servizio di questo compito.
-
-Questo discorso viene sempre applicato ai dati in ingresso, in quanto è obbligatorio svolgere una validazione dei dati per ragioni di sicurezza\footnote{\virgolette{Never trust the client}: \url{https://en.wikipedia.org/wiki/Defensive_programming}} ma, come si è notato nel punto precedente, si è parlato anche di informazioni in uscita. Questa è un'altra particolarità di GraphQL, che non è presente negli approcci di tipo REST. Il formato delle risposte non viene deciso dal server bensì è il client a richiedere solamente i dati che gli servono. Questa idea nasce dal fatto che è il client l'utilizzatore finale del servizio ed è la parte del sistema che meglio conosce quali dati gli servono. GraphQL permette di definire schemi anche per le risposte, in modo che i client possano avere una descrizione formale di quali dati possono ricevere.
-
-Per richiamare un endpoint GraphQL viene utilizzato un indirizzo unico esposto da GraphQL. Sarà poi lo schema definito in precedenza a gestire le successive fasi dell'interazione, specificano quale attività specifica si desidera utilizzare.
-
-Assieme alla specifica del linguaggio sono state rilasciate le implementazioni specifiche per la creazione degli schemi in Javascript\footnote{GraphQL-js: \url{https://github.com/graphql/graphql-js}} ed il plug-in per ExpressJS\footnote{Express-GraphQL: \url{https://github.com/graphql/express-graphql}}.
-
-Ulteriori dettagli su GraphQL sono stati mostrati nella Sezione \ref{sec:graphql-introduzione}. 
-
-In questa sezione si è voluta dare una visione d'insieme sui compiti che spettano ai vari componenti. Un'analisi più approfondita delle attività di ognuno di essi verrà svolta nella Sezione \ref{sec:componenti-backend}.
+Infine, per gestire le funzionalità del server viene utilizzato il web framework ExpressJS\footnote{ExpressJS: \url{http://expressjs.com/}}. Ad esso viene collegato l'endpoint GraphQL. Assieme alla specifica del linguaggio sono state rilasciate le implementazioni specifiche per la creazione degli schemi in Javascript\footnote{GraphQL-js: \url{https://github.com/graphql/graphql-js}} ed il plug-in per ExpressJS\footnote{Express-GraphQL: \url{https://github.com/graphql/express-graphql}}.
 
 \section{Descrittore dell'albero di contesto\label{sec:descrittore-albero-contesto}}
 
@@ -399,33 +391,7 @@ In seguito inizia la fase di creazione del \emph{CDT decorato}. Questa rappresen
 
 \upe da tenere in considerazione, come precedentemente fatto notare nella Sezione \ref{sec:descrittore-albero-contesto}, che alcuni nodi possono appartenere a più categorie nello stesso tempo. Questa eventualità capita spesso per i nodi che vengono utilizzati sia per filtrare i servizi sia come parametro nella fase di composizione delle query.
 
-Un'altra attività svolta durante la composizione del \emph{CDT decorato} è la ricerca dei nodi figlio. Come definito nella Sezione \ref{sec:associazione-servizi-cdt} le associazioni possono essere specificate sia nei nodi foglia sia in quelli intermedi. \upe importante quindi verificare se un nodo attivo possieda dei figli perché in tal caso anch'essi possono dare un contributo nelle successive fasi di selezione.
-
-\begin{algorithm}
-	\caption{Algoritmo di ricerca dei nodi figlio}
-	\label{alg:algoritmo-ricerca-nodi-figlio}
-	\begin{algorithmic}
-		\Require
-			\Statex $cdt$ \Comment The decorated CDT
-			\Statex $nodes$ \Comment The list of active nodes
-		\Ensure
-			\Statex $childList$ \Comment List of child nodes found
-		\Statex
-		\State $nodeValues \gets nodes.map('value')$ \Comment Acquire list of values selected
-		\ForAll {$ item\; in\; cdt.context $}
-			\State $ intersection \gets intersect(item.parents, nodeValues) $
-			\If {$ !isEmpty(interesection) $}
-				\ForAll {$ value\; in\; item.values $}
-					\State $ childList.push(\{ $
-					\State\hspace{\algorithmicindent} $ name: item.name, $
-					\State\hspace{\algorithmicindent} $ value: value $
-					\State $ \}) $
-				\EndFor
-			\EndIf
-		\EndFor\\
-		\Return $ childList $
-	\end{algorithmic}
-\end{algorithm}
+Un'altra attività svolta durante la composizione del \emph{CDT decorato} è la ricerca dei nodi figlio. Come definito nella Sezione \ref{sec:associazione-servizi-cdt} le associazioni possono essere specificate sia nei nodi foglia sia in quelli intermedi. \upe importante quindi verificare se un nodo attivo possieda dei figli perché in tal caso anch'essi possono dare un contributo nelle successive fasi di selezione. L'agoritmo per la selezione dei nodi figlio segue la logica esposta nella Sezione \ref{sec:selezione-operazioni}.
 
 \subsection{Primary Service Selection\label{sec:primary-service-selection}}
 
