@@ -1,4 +1,3 @@
-
 In questo capitolo vengono esposti i concetti alla base del progetto CAMUS. In questo modo viene fornito al lettore un quadro generale delle tematiche che verranno affrontate nei successivi capitoli. Il capitolo inizia con l'introduzione del concetto di \emph{context awareness}, che è la prima delle due anime del progetto, seguita dalla presentazione del modello del contesto che viene utilizzato in CAMUS, il \emph{Context Dimension Tree}. Successivamente viene presentato il secondo pilastro del progetto, i \emph{mashup}, ed in particolar modo la tipologia di nostro interesse, i \emph{mobile mashup}. Di seguito verranno analizzate le varie tipologie di \emph{servizi} che il web mette a disposizione. La loro posizione non deve trarre in inganno: i servizi sono egualmente importanti in quanto permettono all'intero sistema di funzionare: infatti forniscono le informazioni che vengono presentate all'utente; senza servizi l'intero progetto non sarebbe altro che un'impalcatura fine a se stessa. Infine viene effettuato un confronto con i principali competitor di CAMUS, cioè tutti i lavori esistenti che affrontano le medesime tematiche.
 
 \section{Context-Awareness\label{sec:context-awareness}}
@@ -269,12 +268,18 @@ Nel Listato \ref{lst:esempio-query-graphql} viene riportato un semplice esempio 
 \begin{center}
 	\hspace*{-1.5cm}
 	\begin{minipage}[t]{0.63\textwidth}
-		\lstinputlisting[caption=Esempio di connessione GraphQL,
-			label=lst:esempio-connessione-graphql]{2-nozioni-preliminari/Codice/esempio_connessione_graphql.graphql}
+		\begin{listing}[H]
+			\inputminted{text}{2-nozioni-preliminari/Codice/esempio_connessione_graphql.graphql}
+			\caption{Esempio di connessione GraphQL}
+			\label{lst:esempio-connessione-graphql}
+		\end{listing}
 	\end{minipage}%
 	\begin{minipage}[t]{0.63\textwidth}
-		\lstinputlisting[caption=Esempio di risposta,
-			label=lst:esempio-risposta-connessione-graphql,style=json]{2-nozioni-preliminari/Codice/esempio_risposta_connessione_graphql.json}
+		\begin{listing}[H]
+			\inputminted{json}{2-nozioni-preliminari/Codice/esempio_risposta_connessione_graphql.json}
+			\caption{Esempio di risposta}
+			\label{lst:esempio-risposta-connessione-graphql}
+		\end{listing}
 	\end{minipage}	
 \end{center}
 
