@@ -13,11 +13,9 @@ install:
 - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || openssl aes-256-cbc -K $encrypted_3d69c5542c5a_key -iv $encrypted_3d69c5542c5a_iv
   -in .dropbox_uploader.enc -out ~/.dropbox_uploader -d'
 script:
-- mkdir _build
-- xelatex -synctex=1 -shell-escape -interaction=nonstopmode -output-directory _build tesi.tex
-- cp bibliografia.bib _build
+- xelatex -synctex=1 -shell-escape -interaction=nonstopmode tesi.tex
 - bibtex _build/tesi
-- xelatex -synctex=1 -shell-escape -interaction=nonstopmode -output-directory _build tesi.tex
-- xelatex -synctex=1 -shell-escape -interaction=nonstopmode -output-directory _build tesi.tex
+- xelatex -synctex=1 -shell-escape -interaction=nonstopmode tesi.tex
+- xelatex -synctex=1 -shell-escape -interaction=nonstopmode tesi.tex
 after_success:
-- ./dropbox_uploader.sh upload _build/tesi.pdf ${FOLDER}/${FILENAME}.pdf
+- ./dropbox_uploader.sh upload tesi.pdf ${FOLDER}/${FILENAME}.pdf
