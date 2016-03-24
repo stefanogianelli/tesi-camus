@@ -3,10 +3,7 @@
 \usepackage{lmodern}
 \usepackage{fontspec}
 \usepackage[a4paper]{geometry}
-\geometry{verbose,tmargin=3cm,bmargin=3.5cm,lmargin=4cm,rmargin=3cm}
-\setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{3}
-\usepackage{color} 
+\usepackage{color}
 \usepackage[italian]{babel}
 \usepackage{float}
 \usepackage{booktabs}
@@ -16,25 +13,6 @@
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{esint}
-\onehalfspacing
-\usepackage[unicode=true,pdfusetitle,
- bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
- breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
- {hyperref}
- \hypersetup{pdftitle={CAMUS},
- 	pdfauthor={Cassani Valerio, Gianelli Stefano}}
-
-\makeatletter
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-\floatstyle{ruled}
-\newfloat{algorithm}{tbp}{loa}[chapter]
-\providecommand{\algorithmname}{Algoritmo}
-\floatname{algorithm}{\protect\algorithmname}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-% pacchetti aggiuntivi
 \usepackage{tabularx}
 \usepackage{setspace}
 \usepackage{amsthm}
@@ -47,10 +25,35 @@
 \usepackage{cite}
 \usepackage[normalem]{ulem}
 \usepackage[table]{xcolor}
-\usepackage{booktabs}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{minted}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+
+%spacing
+\onehalfspacing
+
+%geometry
+\geometry{verbose,tmargin=3cm,bmargin=3.5cm,lmargin=4cm,rmargin=3cm}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+%pdf properties
+\hypersetup{pdftitle={CAMUS}, pdfauthor={Cassani Valerio, Gianelli Stefano}}
+
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}[chapter]
+\providecommand{\algorithmname}{Algoritmo}
+\floatname{algorithm}{\protect\algorithmname}
 
 % sistema il numero pagina nelle prime pagine dei capitoli
 \fancypagestyle{plain}{
@@ -71,15 +74,12 @@
 
 \@ifundefined{showcaptionsetup}{}{%
  \PassOptionsToPackage{caption=false}{subfig}}
-\usepackage{subfig}
-\makeatother
 
-\usepackage{listings}
-%\addto\captionsenglish{\renewcommand{\algorithmname}{Algorithm}}
-%\addto\captionsenglish{\renewcommand{\lstlistingname}{Listing}}
-\addto\captionsitalian{\renewcommand{\algorithmname}{Algoritmo}}
-\addto\captionsitalian{\renewcommand{\lstlistingname}{Listato}}
-\renewcommand{\lstlistingname}{Listato}
+% definizione dei nomi
+\renewcommand{\ALG@name}{Algoritmo}
+\renewcommand\lstlistingname{Listato}
+\renewcommand\listingscaption{Listato}
+\renewcommand{\listoflistingscaption}{Elenco dei Listati}
 
 %definizione colori per sintassi graphql
 \definecolor{graphBlue}{rgb}{0.12,0.38,0.63}
@@ -102,8 +102,6 @@
 
 % switch used as state variable
 \newif\ifcolonfoundonthisline
-
-\makeatletter
 
 % listings styles
 \lstdefinestyle{blocco-esempi}
@@ -139,14 +137,12 @@
 	\fi
 	\fi
 	%override by keyword style if a keyword is detected!
-	\lsthk@DetectKeywords% 
+	\lsthk@DetectKeywords%
 }
 
 % reset the switch at the end of line
 \lst@AddToHook{EOL}%
 {\global\colonfoundonthislinefalse}
-
-\makeatother
 %END json definition
 
 %colonna centrata per tabularx
@@ -159,6 +155,7 @@
 \newcommand{\upe}{\`E }
 \newcommand{\Csh}{C\includegraphics{hash-symbol}}
 
+\makeatother
 
 \begin{document}
 \frontmatter
@@ -190,7 +187,7 @@
 \listoftables
 \listof{algorithm}{Elenco degli algoritmi}
 \renewcommand\lstlistlistingname{Elenco dei listati}
-\lstlistoflistings
+\listoflistings
 \cleardoublepage{}\mainmatter
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
