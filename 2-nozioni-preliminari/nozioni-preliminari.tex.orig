@@ -4,7 +4,11 @@ In questo capitolo vengono esposti i concetti alla base del progetto CAMUS. In q
 
 Il concetto di \emph{contesto} viene citato in diverse aree di ricerca, come la filosofia, la psicologia e l'informatica. Il \emph{contesto} gioca spesso un ruolo importante nel definire un comportamento o l'interpretazione dell'ambiente; dei cambiamenti nel contesto possono cambiare la percezione del momento che si sta vivendo. La parola \virgolette{contesto} deriva dalle parole latine \emph{con} e \emph{texere}, che significa tessere intrecciate, intrecciare. Viene definito come \virgolette{il complesso delle circostanze e delle situazioni nelle quali un fatto o un fenomeno si verificano}\footnote{Dizionario Garzanti: \url{http://www.garzantilinguistica.it/ricerca/?q=contesto}}.
 
-In informatica il concetto di \emph{contesto} è riferito all'idea che i computer possano avere una percezione dell'ambiente e che riescano dunque a modificare il loro comportamento in base alla situazione. I dispositivi devono dunque acquisire informazioni relative all'ambiente in cui operano e tramite determinate regole, che possono essere sia staticamente fissate che dinamicamente dedotte tramite algoritmi di intelligenza artificiale, devono reagire di conseguenza, utilizzando la strategia più idonea alla situazione corrente. Il termine \emph{context awareness} è stato introdotto per la prima volta in ambito informatico a opera di Schilit \cite{schilit1994context}\cite{schilit1994disseminating}.
+<<<<<<< HEAD
+In informatica il concetto di \emph{contesto} è riferito all'idea che i computer possano avere una percezione dell'ambiente e che riescano dunque a modificare il loro comportamento in base alla situazione. I dispositivi devono dunque acquisire informazioni relative l'ambiente in cui operano e tramite determinate regole, che possono essere sia staticamente fissate che dinamicamente dedotte tramite algoritmi di intelligenza artificiale, riescano a reagire di conseguenza, utilizzando la strategia più idonea alla situazione corrente. Il termine \emph{context awareness} è stato introdotto per la prima volta in ambito informatico a opera di Schilit \cite{schilit1994context}\cite{schilit1994disseminating}.
+=======
+In informatica il concetto di \emph{contesto} è riferito all'idea che i computer possano avere una percezione dell'ambiente e che riescano dunque a modificare il loro comportamento in base alla situazione. I dispositivi devono dunque acquisire informazioni relative all'ambiente in cui operano e tramite determinate regole, che possono essere sia staticamente fissate che dinamicamente dedotte tramite algoritmi di intelligenza artificiale, devono reagire di conseguenza, utilizzando la strategia più idonea alla situazione corrente. Il termine \emph{context awareness} è stato introdotto per la prima volta in ambito informatico ad opera di Schilit \cite{schilit1994context}\cite{schilit1994disseminating}.
+>>>>>>> 59eb8e2d8f367291b971b6b9284c548f061d6d30
 
 Agli albori il \emph{contesto} veniva inteso solamente come la posizione nella quale si trova l'utente, come discusso da Dey in \cite{dey2001understanding}; negli ultimi anni invece si è iniziato a pensare al \emph{contesto} non solo come uno stato, bensì come un processo più vasto che coinvolge diversi aspetti relativi all'utente. Sono stati dunque ideati modelli di \emph{contesto} sofisticati e generali, in modo che possano adattarsi a diverse situazioni d'utilizzo \cite{DBLP:journals/sigmod/BolchiniCQST07} \cite{baldauf2007survey}.
 
@@ -14,11 +18,11 @@ Si prenda come esempio un dispositivo mobile fornito ai visitatori di un museo d
 
 I sistemi \emph{context aware} riguardano l'\emph{acquisizione} del contesto (per esempio tramite l'utilizzo di determinati sensori), l'\emph{astrazione} e il \emph{riconoscimento} del contesto (per esempio associare un determinato stimolo al contesto) e il \emph{comportamento} adatto alla situazione riconosciuta (per esempio l'esecuzione di un'azione innescata dal contesto) \cite{schmidt2003ubiquitous}. L'utilizzo del \emph{contesto} permette la realizzazione di interfacce grafiche innovative e viene spesso utilizzato nella \emph{computazione ubiqua} e nei \emph{dispositivi indossabili}.
 
-Nella seguente sezione verrà presentato nel dettaglio il \emph{Context Dimension Tree}, un modello di contesto che sfrutta una struttura ad albero per descrivere la situazione nel quale si trova l'utente. Tra la moltitudine di alternative esistenti viene presentato questo modello in particolare perchè è quello che verrà utilizzato nel progetto CAMUS, quindi la comprensione della sua rappresentazione e delle potenzialità saranno utili per i successivi capitoli.
+Nella seguente sezione verrà presentato nel dettaglio il \emph{Context Dimension Tree Model}, un modello di contesto che sfrutta una struttura ad albero per descrivere la situazione nel quale si trova l'utente. Tra la moltitudine di alternative esistenti viene presentato questo modello in particolare perchè è quello che verrà utilizzato nel progetto CAMUS, quindi la comprensione della sua rappresentazione e delle potenzialità saranno utili per i successivi capitoli.
 
-\subsection{Context Dimension Tree\label{sec:context-dimension-model}}
+\subsection{Context Dimension Tree Model\label{sec:context-dimension-model}}
 
-In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Nel \emph{Context Dimension Tree} il contesto viene rappresentato come un albero $\mathcal{T} = {<}N, E, r{>} $, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r}, un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i possibili valori che possono assumere le dimensioni, e dall'insieme dei collegamenti tra i nodi \emph{E}. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
+In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree} \cite{DBLP:journals/is/BolchiniQT13}, in quanto è il modello di rappresentazione del contesto che è stato selezionato per l'utilizzo nel progetto CAMUS. Nel \emph{Context Dimension Tree Model} il contesto viene rappresentato come un albero $\mathcal{T} = {<}N, E, r{>} $, che descrive i possibili contesti nei quali ci si può trovare in una data situazione. \`E formato da una radice \emph{r}, un insieme di nodi \emph{N}, che vengono partizionati nei sottoinsiemi dei \emph{nodi dimensione} $N_D$, colorati di nero, e nei \emph{nodi concetto} $N_C$, colorati di bianco, che rappresentano i possibili valori che possono assumere le dimensioni, e dall'insieme dei collegamenti tra i nodi \emph{E}. La radice \emph{r} è un \emph{nodo concetto}, in quanto rappresenta il contesto più generale possibile, che corrisponde dunque all'intero dataset.
 
 \begin{figure}[ht]
 	\centering
@@ -91,7 +95,7 @@ La strategia \emph{value-based mapping} permette di superare i limiti evidenziat
 
 In questa sezione vengono introdotti i \emph{Mashup}, la seconda anima del sistema CAMUS, e il loro ruolo nell'applicazione finale.
 La parola \emph{Mashup}, che significa letteralmente miscuglio o combinazione, è un termine che può essere adottato in diversi ambiti.
-Per esempio, in campo musicale, indicano due o più brani le cui tracce audio vengono tagliate e sovrapposte creando un nuovo brano. Un altro esempio è l'ambito dei contenuti video, dove due o più filmati sono montati in sequenza per ottenere un video dal significato diverso da quelli originali.
+Ad esempio, in campo musicale, indicano due o più brani le cui tracce audio vengono tagliate e sovrapposte creando un nuovo brano. Un altro esempio è l'ambito dei contenuti video, dove due o più filmati sono montati in sequenza per ottenere un video dal significato diverso da quelli originali.
 In informatica questo termine assume un significato simile, perché i mashup sono applicazioni che utilizzano contenuti e funzioni provenienti da due o più sorgenti\cite{DBLP:books/sp/DanielM14}.
 Inizialmente la composizione era limitata all'utilizzo per la realizzazione rapida di siti web con contenuti di elevata dinamicità, vista la possibilità di integrare varie informazioni in modo molto intuitivo.
 
@@ -138,14 +142,23 @@ Generalmente le piattaforme di sviluppo dei mashup prevedono due differenti part
 	Le risorse dalle quali è possibile ottenere contenuti sono:
 	\begin{itemize}
 		\item \textbf{API} fornite da alcuni provider di contenuti (es. Google, Facebook, Twitter, Amazon)\\
-		Una API permette di creare un mashup basato sul web fornendo un punto di accesso a una funzionalità o a un contenuto (es.: Google Maps).
+<<<<<<< HEAD
+		Una API permette al creazione permette di creare un mashup basato sul web fornendo un mezzo per avere accesso a una applicazione o a un contenuto (es.: Google Maps), solo per un software compatibile.
+=======
+		Una API permette di creare un mashup basato sul web fornendo un punto di accesso ad una funzionalità o a un contenuto (es.: Google Maps).
+>>>>>>> 59eb8e2d8f367291b971b6b9284c548f061d6d30
 		Le API possono essere di due tipi:
 		\begin{enumerate}
 			\item \emph{Proprietarie} Richiedono la stipulazione di un contratto di licenza che comprende spesso il pagamento di una quota per poter usufruire del servizio
 			\item \emph{Free} Non richiedono il pagamento di nessuna licenza; tuttavia, in alcuni casi, possono esserci limitazioni nel numero di chiamate che l'applicazione finale può fare verso il provider
 		\end{enumerate} 
+<<<<<<< HEAD
+		\item \textbf{Information Feed} Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio possono essere i news feed in formato RSS che sono utilizzati dalle agenzie di stampa come Reuters\footnote{Reuters: \url{http://it.reuters.com/}} o Ansa\footnote{Ansa: \url{http://www.ansa.it/}} per inviare le notizie alle altre testate giornalistiche
+		\item \textbf{Documenti XML/JSON} I formati XML e JSON sono due standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping}, e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, a ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
+=======
 		\item \textbf{Information Feed} Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio sono i news feed in formato RSS utilizzati dalle agenzie di stampa come Reuters\footnote{Reuters: \url{http://it.reuters.com/}} o Ansa\footnote{Ansa: \url{http://www.ansa.it/}} per inviare le notizie alle altre testate giornalistiche
-		\item \textbf{Documenti HTML, XML/JSON} I formati HTML, XML e JSON sono standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping} e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, a ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
+		\item \textbf{Documenti HTML, XML/JSON} I formati HTML, XML e JSON sono standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping} e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, ad ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
+>>>>>>> 59eb8e2d8f367291b971b6b9284c548f061d6d30
 	\end{itemize} 
 	\item \textbf{Web Mashup}
 	Il Web Mashup è l'applicazione finale resa disponibile online. Questa viene spesso generata utilizzando codice di tipo client-side, cioè eseguito sul client, (es.: JavaScript), con tecnologie di caricamento dei dati dinamiche come Ajax, che permette di evitare di ricaricare l'intera pagina se una parte di essa subisce delle modifiche. Non è tuttavia escluso l'utilizzo di codice server-side
@@ -205,7 +218,7 @@ I vincoli definiti dall'architettura sono:
 		\item \textbf{Identificazione delle risorse} Le singole risorse vengono identificate nella richiesta tramite, per esempio, un \emph{URI}. Le risorse sono concettualmente separate dalle rappresentazioni che vengono inviate al client. Per esempio, un server può inviare dati acquisiti dal database sotto forma di file HTML, XML o JSON, che sono diversi dalla rappresentazione interna del server
 		\item \textbf{Manipolazione delle risorse tramite le rappresentazioni} Ogni rappresentazione di una risorsa che viene inviata al client deve contenere tutte le informazioni che permettano la modifica o l'eliminazione della risorsa
 		\item \textbf{Messaggi autoesplicativi} Ogni messaggio deve contenere informazioni su come trattare l'informazioni che porta con sè, tramite per esempio i \emph{media type}
-		\item \textbf{Sfruttamento dell'hypermedia (HATEOAS)} I client possono effettuare delle azioni che vengono dinamicamente messe a disposizione dal server tramite hypermedia (es.: link). A eccezione dello stato iniziale, il client conosce le attività che possono essere eseguite a partire da una data rappresentazione solamente tra quelle che espone
+		\item \textbf{Sfruttamento dell'hypermedia (HATEOAS)} I client possono effettuare delle azioni che vengono dinamicamente messe a disposizione dal server tramite hypermedia (es.: link). Ad eccezione dello stato iniziale, il client conosce le attività che possono essere eseguite a partire da una data rappresentazione solamente tra quelle che espone
 	\end{enumerate}
 \end{itemize}
 
@@ -238,7 +251,11 @@ Solitamente a una URI può essere associata una funzione diversa in base al verb
 
 \subsection{GraphQL\label{sec:graphql-introduzione}}
 
+<<<<<<< HEAD
 \emph{GraphQL}\footnote{GraphQL: \url{http://graphql.org/}} è, come suggeriscono le ultime due lettere del nome, un \emph{query language}, creato come supporto alla realizzazione di applicazioni client, che mette a disposizione una sintassi intuitiva e flessibile e un sistema che permette al client di specificare i requisiti e le interazioni sui dati \cite{website:graphql-specs}. Rispetto all'approccio REST, \emph{GraphQL} permette di effettuare richieste più efficienti dei dati ed evita la duplicazione della logica lato server che può verificarsi nel caso di endpoint personalizzati. Una delle principali differenze rispetto a REST riguarda la possibilità di lasciare al client la scelta dei dati da ricevere. Questa modifica nasce dall'idea che è il client a conoscere nel dettaglio quali dati servono per comporre la view e quindi gli viene delegata la responsabilità di richiedere solo quelli essenziali all'interno della query.
+=======
+\emph{GraphQL}\footnote{GraphQL: \url{http://graphql.org/}} è, come suggeriscono le ultime due lettere del nome, un \emph{query language} creato come supporto alla realizzazione di applicazioni client, che mette a disposizione una sintassi intuitiva e flessibile ed un sistema che permette al client di specificare i requisiti e le interazioni sui dati \cite{website:graphql-specs}. Rispetto all'approccio REST, \emph{GraphQL} permette di effettuare richieste più efficienti dei dati ed evita la duplicazione della logica lato server che può verificarsi nel caso di endpoint personalizzati. Una delle principali differenze rispetto a REST riguarda la possibilità di lasciare al client la scelta dei dati da ricevere. Questa modifica nasce dall'idea che è il client a conoscere nel dettaglio quali dati servono per comporre la view e quindi gli viene delegata la responsabilità di richiedere solo quelli essenziali all'interno della query.
+>>>>>>> 59eb8e2d8f367291b971b6b9284c548f061d6d30
 
 Alla base di \emph{GraphQL} ci sono i seguenti principi:
 
@@ -264,7 +281,7 @@ Alla base di \emph{GraphQL} ci sono i seguenti principi:
 
 Nel Listato \ref{lst:esempio-query-graphql} viene riportato un semplice esempio di query scritta tramite \emph{GraphQL}. Con questa query si vogliono acquisire i dati relativi all'utente con identificativo 2, e in particolare si è interessati a ricevere il suo \emph{nome} e \emph{cognome}. Nel Listato \ref{lst:esempio-risposta-graphql} viene invece mostrato un esempio di risposta che viene ricevuta dalla server.
 
-\emph{GraphQL} fornisce inoltre un'altra funzionalità estremamente utile: le \emph{connessioni}. Una \emph{connessione} permette a un oggetto di definire i legami che ha con altri oggetti, anche di tipo diverso dal proprio. In questo modo è possibile richiedere direttamente le informazioni riguardo altri oggetti tramite un'unica query; questa caratteristica non è presente nei sistemi REST e permette di ottenere un netto miglioramento delle performance. Infatti nei sistemi REST, per richiedere le rappresentazioni correlate sono necessarie \emph{n} query, dove \emph{n} è il numero di risorse da richiedere. Con GraphQL invece è sufficiente una sola richiesta, nella quale viene specificato che si è interessati anche alle altre risorse. Inoltre, GraphQL mette a disposizione per ogni connessione la \emph{paginazione} dei risultati, ossia la possibilità di richiedere un determinato numero di elementi a ogni richiesta. A ogni oggetto viene automaticamente associato un \emph{token} che lo identifica univocamente: in questo modo è possibile chiedere ulteriori elementi in una seconda query, specificando il \emph{token} dell'oggetto dal quale si desidera partire.
+\emph{GraphQL} fornisce inoltre un'altra funzionalità estremamente utile: le \emph{connessioni}. Una \emph{connessione} permette a un oggetto di definire i legami che ha con altri oggetti, anche di tipo diverso dal proprio. In questo modo è possibile richiedere direttamente le informazioni riguardo altri oggetti tramite un'unica query; questa caratteristica non è presente nei sistemi REST e permette di ottenere un netto miglioramento delle performance. Infatti nei sistemi REST, per richiedere le rappresentazioni correlate sono necessarie \emph{n} query, dove \emph{n} è il numero di risorse da richiedere. Con GraphQL invece è sufficiente una sola richiesta, nella quale viene specificato che si è interessati anche alle altre risorse. Inoltre, GraphQL mette a disposizione per ogni connessione la \emph{paginazione} dei risultati, ossia la possibilità di richiedere un determinato numero di elementi a ogni richiesta. Ad ogni oggetto viene automaticamente associato un \emph{token} che lo identifica univocamente: in questo modo è possibile chiedere ulteriori elementi in una seconda query, specificando il \emph{token} dell'oggetto dal quale si desidera partire.
 
 \begin{center}
 	\hspace*{-1.5cm}
@@ -327,7 +344,11 @@ Con il servizio di App Builder, è possibile creare applicazioni per dispositivi
 	Con il supporto a Bootstrap, il framework UI per le interfacce di tipo responsive, è possibile creare applicazioni web che adattano la modalità con la quale vengono visualizzate in base al tipo di dispositivo e alla dimensione dello schermo
 \end{enumerate}
 
-Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} in modo da permettere la creazione rapida e intuitiva di nuove applicazioni, semplicemente usando \emph{drag \& drop}. \upe possibile sfruttare diversi template messi a disposizione da Appery.io per avere una base di partenza per alcune applicazioni comuni. Altrimenti, se si vuole ottenere maggiore flessibilità si può creare uno schema da zero. Viene anche fornita la possibilità di acquisire dati da servizi esterni, che possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente. Le principali fasi che coinvolgono la realizzazione di un'applicazione sono:
+<<<<<<< HEAD
+Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} in modo da permettere la creazione rapida e intuitiva di nuove applicazioni nuove applicazioni, semplicemente usando \emph{drag \& drop}. \upe possibile sfruttare diversi template messi a disposizione da Appery.io per avere una base di partenza per alcune applicazioni comuni, altrimenti, se is vuole ottenere maggiore flessibilità si può creare uno schema da zero. Viene anche fornita la possibilità di acquisire dati da servizi esterni, che possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente. Le principali fasi che coinvolgono la realizzazione di un'applicazione sono:
+=======
+Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Development} in modo da permettere la creazione rapida ed intuitiva di nuove applicazioni, semplicemente usando \emph{drag \& drop}. \upe possibile sfruttare diversi template messi a disposizione da Appery.io per avere una base di partenza per alcune applicazioni comuni. Altrimenti, se si vuole ottenere maggiore flessibilità si può creare uno schema da zero. Viene anche fornita la possibilità di acquisire dati da servizi esterni, che possono essere associati utilizzando l'editor di Visual Data Mapping, anche scrivendo frammenti di codice personalizzati per garantire la massima adattabilità alle esigenze dell'utente. Le principali fasi che coinvolgono la realizzazione di un'applicazione sono:
+>>>>>>> 59eb8e2d8f367291b971b6b9284c548f061d6d30
 
 \begin{figure}[ht]
 	\centering
@@ -350,7 +371,11 @@ Karma\footnote{Karma : \url{http://usc-isi-i2.github.io/karma/}} è uno strument
 Dopo questa operazione è possibile interagire con il sistema per correggere il modello generato in modo automatico ed è possibile trasformare i dati per normalizzarli. Una volta che il modello è completo, gli utenti possono pubblicare i nuovi dati come RDF o salvarli su un database.
 Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti: 
 \begin{itemize}
+<<<<<<< HEAD
+		\item \textbf{Ease of use} L'utente, utilizzando tecniche di programmazione per esempi e algoritmi  di ottimizzazione (es.: Steiner tree), perfeziona il modello generato in modo automatico utilizzando un interfaccia grafica e non vede mai la complessità delle regole di mapping usate
+=======
 		\item \textbf{Ease of use} L'utente, utilizzando tecniche di programmazione per esempi e algoritmi  di ottimizzazione (es.: Steiner tree), perfeziona il modello generato in modo automatico utilizzando un interfaccia grafica che maschera la complessità delle regole di mapping usate
+>>>>>>> 59eb8e2d8f367291b971b6b9284c548f061d6d30
 		\item \textbf{Semantic Models} Karma permette agli utenti di combinare diverse ontologie per permettere loro di mappare i loro dati a vocabolari standard
 		\item \textbf{Scalable Processing} Anche la scalabilità è un elemento importante in Karma; infatti gli utenti lavorano con un sottoinsieme dei loro dati, permettendo di creare un'interfaccia utente dove essi definiscono il modello di integrazione dei dati. Dopo questo passaggio, il sistema usa questi modelli in modalità batch per integrare una quantità maggiore di dati
 		\item \textbf{Data Transformation} Viene offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
@@ -413,80 +438,3 @@ I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i 
 	\item \textbf{Data Tailoring Assistant}
 	Il designer associa ogni contesto con la porzione corrispondente di dati disponibili. Questa associazione è svolta utilizzando uno schema globale di tipo ER. Basandosi sull'interazione con una rappresentazione grafica dello schema, il tool è in grado di generare una o più espressioni XQuery in modo da costruire le view corrispondenti ai dati
 \end{itemize}
-
-\section{Panoramica su cross platform mobile e tecnologie utilizzate}\label{sec:panoramica-cross-platform-mobile}
-Al momento di scegliere come implementare l'applicazione mobile per CAMUS sono state considerate due opzioni: la creazione di un'applicazione nativa inizialmente solo per Android, per poi estendere la compatibilità su iOS, oppure l'utilizzo di strumenti cross platform, funzionanti su più di un sistema operativo mobile.
-Questa esigenza è nata dal fatto che il mercato delle app mobile sta crescendo in maniera esponenziale e le competenze richieste agli sviluppatori sono molto variegate per sviluppare applicazioni native.
-Per esempio per quanto riguarda lo sviluppo iOS è necessario conoscere come linguaggi di programmazioni Objective-C e Swift, per Android ci si basa principalmente su Java e per Windows Phone è necessario utilizzare C\#, senza dimenticare altri sistemi operativi meno diffusi o emergenti (Tizen, Ubuntu Touch, ecc.). La tipologia di strumenti che permettono di sviluppare un'applicazione scrivendo una sola volta il codice ed eseguirla su diversi sistemi operativi mobili è detta \emph{cross-platform}
-Gli strumenti di sviluppo \emph{cross-platform} solitamente si basano sul principio di \virgolette{write once run everywhere}, cioè il codice viene scritto una volta sola per creare applicazioni per diverse piattaforme, permettendo quindi di limitare le competenze richieste ai programmatori. 
-\upe possibile identificare due famiglie di strumenti per la programmazione multi piattaforma:
-
-\begin{enumerate}
-	\item \textbf{Rendering tramite componenti nativi} In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
-	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire una migliore esperienza d'uso per l'utente. Anche per quanto riguarda altri strumenti come React Native o Native Script\footnote{Native Script: \url{https://www.nativescript.org/}} che utilizzano JavaScript viene riproposto lo stesso principio compositivo.
-	\item \textbf{Rendering tramite WebView} In questo caso la costruzione della maggior parte dell'applicazione è svolta utilizzando una \emph{Web View}, cioè viene mostrata una pagina web all'interno di un contenitore nativo.
-	In questo caso è possibile programmare l'applicazione come se fosse una pagina web, implementandolo allo stesso modo di un sito web per browser. Nonostante si tratti di un'implementazione non molto legata alla logica nativa, è possibile in alcuni casi permettere un'interazione dell'applicazione con i sensori del dispositivo.
-	Questo modello offre un'infinità di possibilità implementative a livello grafico e una elevata capacità di adattamento a diversi dispositivi, tuttavia le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa.
-\end{enumerate}
-
-Per la creazione di CAMUS si è scelto di utilizzare anche lato \emph{frontend} degli strumenti che siano implementabili in maniera semplice e dove la suddivisione in moduli singoli riutilizzabili assuma un ruolo di primo piano. Per questo motivo si è scelto di utilizzare degli strumenti tecnologici che sono all'avanguardia nello svolgere questo compito, come React e la sua derivazione per la programmazione mobile React Native. Successivamente è introdotta la parte logica dell'applicazione con il funzionamento architetturale dell'aggiornamento dati, con il paradigma Flux.
-
-\subsection{React}\label{sec:react}
-
-React\footnote{React:\url{https://facebook.github.io/react/}} nasce come libreria open-source rilasciata nel 2013 da Facebook, che permette di ottimizzare le visualizzazioni delle pagine HTML, utilizzando componentine racchiudono altri specificati come HTML tag personalizzati.
-Essa proviene da XHP\footnote{XHP: \url{http://facebook.github.io/xhp-lib/}}, che è un framework HTML per il linguaggio PHP creato sempre in Facebook per gestire tutta la logica del social network. L'impiego di \emph{React} è stato inizialmente nel newsfeed di \emph Facebook nel 2011 e più tardi nel sito web di Instagram.
-Le principali funzionalità in React sono le seguenti:
-\begin{itemize}
-	\item \textbf{Virtual DOM}
-	React crea una propria struttura dati in memoria, che calcola le differenze risultanti e aggiorna il DOM HTML risultante nella pagina in modo efficiente. In questo modo il programmatore può scrivere codice come se l'intera pagina è ricaricata ogni volta, mentre il motore React a stabilire quali siano i componenti che è necessario sostituire e quali no
-	
-	\item \textbf{JSX}
-	I componenti React utilizzano JSX\footnote{JSX: \url{https://jsx.github.io/}}, un linguaggio basato su JavaScript che introduce la tipizzazione delle variabili e un sistema di classi ben definito come in Java. Inoltre porta ottimizzazioni a livello di compilazione permettendo all'applicazione di essere più performante rispetto a normale codice JavaScript. \upe comunque possibile scrivere la propria applicazione utilizzando JavaScript, con un metodo che permette la conversione in codice JSX
-	
-	\item \textbf{One-way data flow} Le proprietà, un set di valori immutabili, sono passati al componente figlio all'interno del suo tag HTML.Il componente figlio non può modificare direttamente nessuna proprietà che gli è stata passata, ma può passare funzioni che possono modificare il valore. 
-	L'unidirezionalità del flusso dati viene specificata nell'architettura Flow, che verrà spiegata nella Sezione \ref{sec:flux}
-\end{itemize}
-
-\subsection{React Native}\label{sec:react-native}
-React Native\footnote{React Native: \url{https://facebook.github.io/react-native/}} è una libreria open-source rilasciata nel 2015 sempre da Facebook, proponendosi come implementazione del framework React per quanto riguarda le applicazioni mobile.
-Le principali differenze con React sono dovute alla difficoltà maggiore di sviluppare un framework per le applicazioni mobile. 
-Quando si sviluppa sul web, semplicemente si salvano i file modificati e si ricarica la pagina, cosa che non è possibile fare con le applicazioni mobile, perché è necessaria una nuova compilazione per vedere i cambiamenti apportati.
-Per risolvere questo problema, in React Native ci si basa sull'utilizzo di un server locale in \emph{node.js} che permette il caricamento delle modifiche dell'applicazione sul dispositivo senza ricompilare l'applicazione (Figura \ref{fig:flusso-sviluppo-react-native}) Questo server, il quale ha la funzione di packager, invia un bundle contente tutti i file JavaScript necessari per far funzionare l'applicazione. Questo funziona fino a quando le modifiche sono relative esclusivamente alla parte di codice JavaScript, mentre per quanto riguarda le modifiche a livello di codice nativo è sempre necessaria una nuova compilazione. Per esempio, quando è stato il momento di installare alcune librerie grafiche collegate ad elementi nativi è stato necessario apportare modifiche anche ai file di configurazione dei progetti Android e iOS, dato che diventavano necessari anche file aggiuntivi alla compilazione.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/flusso-sviluppo-react-native.pdf}
-	\caption{Flusso di sviluppo React Native\label{fig:flusso-sviluppo-react-native}}
-\end{figure}
-
-Con React Native è possibile migliorare l'esperienza d'uso sulle piattaforme mobile rispetto al web. Come primo aspetto si può accedere ai componenti specifici dell'interfaccia utente, come le mappe, i picker e gli switch, anche se tuttavia possono essere modificati nella loro implementazione.
-
-\subsection{Flux}\label{sec:flux}
-
-Flux\footnote{Flux: \url{https://facebook.github.io/flux/}} è un pattern architetturale creato da Facebook per gestire il flusso dei dati all'interno dell'applicazione. \upe complementare alla gestione delle view di React, in cui i componenti sfruttano un flusso di dati unidirezionale, come espresso in Figura \ref{fig:flux}.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/flux.png}
-	\caption{Flusso dati unidirezionale Flux}\label{fig:flux}
-\end{figure}
-Si tratta fondamentalmente di una modifica del pattern MVC (Model View Controller), al quale vengono effettuate alcune modifiche.
-Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologie di componenti principali: 
-\begin{enumerate}
-	\item \textbf{Dispatcher}
-	Il \emph{Dispatcher} è l'hub centrale che controlla tutto il flusso dei dati dell'applicazione. \upe essenzialmente un registro di callback alle \emph{Store} e possiede un meccanismo semplice per distribuire le \emph{Action} verso le \emph{Store}. Man mano che l'applicazione cresce di dimensioni, il \emph{Dispatcher} assume un'importanza sempre maggiore, perché può essere sfruttato per gestire le dipendenze tra le \emph{Store} invocando le callback registrate in un ordine specifico, talvolta anche attendendo la conclusione dell'aggiornamento delle altre \emph{Store} 
-	\item \textbf{Store}
-	Le \emph{Store} contengono lo stato dell'applicazione e la logica, e il loro ruolo è molto simile al modello nel pattern MVC, ma in Flux hanno il compito di modellare lo stato per un particolare dominio all'interno dell'applicazione
-	\item \textbf{View}
-	L'implementazione delle view proposta da React si sposa perfettamente con quella necessaria per Flux. Si tratta di un misto tra la view e il controller in MVC, perché permette al codice di ricevere i dati dalle store e passare questi dati direttamente ai discendenti per creare ogni singola sezione della pagina. Quando riceve un evento dalle \emph{store}, richiede i nuovi dati attraverso i \emph{getter} delle \emph{store}, per poi aggiornare il proprio stato interno e renderizzarlo a cascata utilizzando tutti i sottocomponenti.
-	\item \textbf{Action} Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}.
-\end{enumerate} 
-
-Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'architettura funzionale simile, presenta alcune semplificazioni:
-\begin{itemize}
-	\item Non è necessario implementare il \emph{Dispatcher}, componente che è già fornito dalla libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}
-	\item Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di Alt
-	\item Nelle \emph{Store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le \emph{Actions} corrispondenti
-	\item Il posizionamento delle operazioni preliminari al salvataggio dei dati è indifferente se sia nelle \emph{Actions} o nelle \emph{Stores} e può essere svolto prima o dopo l'operazione di dispatch di Alt, perché come spiegato nel punto precedente \emph{Actions} e \emph{Stores}
-\end{itemize}
-
