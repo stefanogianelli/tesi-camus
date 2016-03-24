@@ -1,6 +1,6 @@
 ~query Restaurant~ {
 	!executeQuery! (
-		@userId@: ~"USER_ID"~,
+		@userMail@: ~"USER_MAIL"~,
 		@idCdt@: ~"CDT_ID"~,
 		@context@: [
 			{
