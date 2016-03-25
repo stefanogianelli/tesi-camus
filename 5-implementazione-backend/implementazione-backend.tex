@@ -221,7 +221,7 @@ Di seguito viene presentata una descrizione dettagliata delle entità che compon
 
 \begin{itemize}
 	\item \textbf{User}
-	\upe l'entità che rappresenta un utente. Ogni utente viene descritto dal nome, cognome, indirizzo email, password e da un token che viene utilizzato per identificare la sessione. Un utente può possedere diversi \emph{CDT} e \emph{Mashup}
+	\upe l'entità che rappresenta un utente. Ogni utente viene descritto dal nome, cognome, indirizzo email, password e da un token che viene utilizzato per identificare la sessione. Un utente può possedere un \emph{CDT} e \emph{Mashup} personalizzato
 	\item \textbf{Cdt}
 	Rappresenta la radice di un albero di contesto. Un albero di contesto può essere posseduto da zero o più \emph{Utenti}. Il \emph{CDT Globale} è l'unico caso nel quale non vengono associati utenti, perché è universale e quindi valido per chiunque. In tutti gli altri casi si tratta di \emph{CDT su misura}, che devono quindi essere associati ad almeno un utente. Viene lasciata la possibilità di associazione con più utenti nel caso il loro profilo sia molto simile. A un CDT possono essere associati dei \emph{valori predefiniti}, che sono le coppie dimensione-valore sempre attive per gli utenti ai quali l'albero è associato
 	\item \textbf{Node}
