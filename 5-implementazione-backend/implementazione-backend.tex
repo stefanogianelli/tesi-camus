@@ -71,10 +71,12 @@ Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresen
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-nodo-cdt} viene mostrato un esempio di nodo.
-
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di nodo del CDT,
-	label=lst:esempio-nodo-cdt]{5-implementazione-backend/Codice/esempio_nodo_cdt.json}
+	
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_nodo_cdt.json}
+	\caption{Esempio di nodo del CDT}
+	\label{lst:esempio-nodo-cdt}
+\end{listing}
 
 \subsection{Parametri\label{sec:parametro-cdt}}
 
@@ -88,9 +90,11 @@ Questo oggetto definisce i parametri che sono associati a un nodo dimensione. Co
 
 Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di parametro.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di parametro associato a un nodo,
-	label=lst:esempio-parametro-cdt]{5-implementazione-backend/Codice/esempio_parametro_cdt.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_parametro_cdt.json}
+	\caption{Esempio di parametro associato a un nodo}
+	\label{lst:esempio-parametro-cdt}
+\end{listing}
 
 \section{Descrittore dei servizi\label{sec:descrittore-servizi}}
 
@@ -110,9 +114,11 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 
 Nel Listato \ref{lst:esempio-descrittore-servizio} viene mostrato un esempio di oggetto principale del servizio.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di servizio,
-	label=lst:esempio-descrittore-servizio]{5-implementazione-backend/Codice/esempio_descrittore_servizio.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_descrittore_servizio.json}
+	\caption{Esempio di servizio}
+	\label{lst:esempio-descrittore-servizio}
+\end{listing}
 
 \subsection{Operazioni\label{sec:descrittore-operazioni}}
 
@@ -134,9 +140,11 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 
 Nel Listato \ref{lst:esempio-descrittore-operazione} viene mostrato un esempio di operazione.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di operazione,
-	label=lst:esempio-descrittore-operazione]{5-implementazione-backend/Codice/esempio_descrittore_operazione.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_descrittore_operazione.json}
+	\caption{Esempio di operazione}
+	\label{lst:esempio-descrittore-operazione}
+\end{listing}
 
 \subsection{Parametri\label{sec:descrittore-parametri}}
 
@@ -156,9 +164,11 @@ In quest'oggetto vengono definiti i parametri in ingresso di un'operazione. I pa
 
 Nel Listato \ref{lst:esempio-descrittore-parametro} viene mostrato un esempio di parametro.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di parametro,
-	label=lst:esempio-descrittore-parametro]{5-implementazione-backend/Codice/esempio_descrittore_parametro.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_descrittore_parametro.json}
+	\caption{Esempio di parametro}
+	\label{lst:esempio-descrittore-parametro}
+\end{listing}
 
 \subsection{Formato della risposta\label{sec:descrittore-risposta}}
 
@@ -172,9 +182,11 @@ In quest'oggetto sono definite le regole con le quali vengono trasformate le ris
 
 Nel Listato \ref{lst:esempio-formato-risposta} viene mostrato un esempio di formato di risposta.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di formato di risposta,
-	label=lst:esempio-formato-risposta]{5-implementazione-backend/Codice/esempio_formato_risposta.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_formato_risposta.json}
+	\caption{Esempio di formato di risposta}
+	\label{lst:esempio-formato-risposta}
+\end{listing}
 
 \subsection{Paginazione\label{sec:descrittore-paginazione}}
 
@@ -189,9 +201,11 @@ In quest'oggetto vengono descritti gli attributi necessari per gestire la pagina
 
 Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio di descrittore della paginazione.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=Esempio di descrittore della paginazione,
-	label=lst:esempio-descrittore-paginazione]{5-implementazione-backend/Codice/esempio_descrittore_paginazione.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/esempio_descrittore_paginazione.json}
+	\caption{Esempio di descrittore della paginazione}
+	\label{lst:esempio-descrittore-paginazione}
+\end{listing}
 
 \section{Schema del database\label{sec:schema-database}}
 
@@ -494,8 +508,11 @@ Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Help
 
 Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio di richiesta per effettuare la ricerca di dati sia \emph{primari} sia di \emph{supporto}.
 
-\lstinputlisting[caption=Esempio richiesta executeQuery,
-	label=lst:esempio-richiesta-execute-query]{5-implementazione-backend/Codice/esempio_richiesta_execute_query.graphql}
+\begin{listing}[H]
+	\inputminted{text}{5-implementazione-backend/Codice/esempio_richiesta_execute_query.graphql}
+	\caption{Esempio richiesta executeQuery}
+	\label{lst:esempio-richiesta-execute-query}
+\end{listing}
 
 \subsection{Login\label{sec:login-endpoint}}
 
@@ -503,8 +520,11 @@ Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso 
 
 Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richiesta per effettuare l'autenticazione dell'utente.
 
-\lstinputlisting[caption=Esempio richiesta login,
-	label=lst:esempio-richiesta-login]{5-implementazione-backend/Codice/esempio_richiesta_login.graphql}
+\begin{listing}[H]
+	\inputminted{text}{5-implementazione-backend/Codice/esempio_richiesta_login.graphql}
+	\caption{Esempio richiesta login}
+	\label{lst:esempio-richiesta-login}
+\end{listing}
 
 \subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
 
@@ -546,8 +566,11 @@ Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono
 
 Nel Listato \ref{lst:esempio-get-personal-data} viene mostrato un esempio di richiesta per ricevere i dati personali dell'utente.
 
-\lstinputlisting[caption=Esempio richiesta getPersonalData,
-	label=lst:esempio-get-personal-data]{5-implementazione-backend/Codice/esempio_get_personal_data.graphql}
+\begin{listing}[H]
+	\inputminted{text}{5-implementazione-backend/Codice/esempio_get_personal_data.graphql}
+	\caption{Esempio richiesta getPersonalData}
+	\label{lst:esempio-get-personal-data}
+\end{listing}
 
 \section{Flusso di una richiesta\label{sec:flusso-richiesta-server}}
 
@@ -673,6 +696,8 @@ Nessun campo è obbligatorio, a eccezione dell'indirizzo di MongoDB, se non spec
 
 Nel Listato \ref{lst:file-configurazione-predefinito} viene mostrato il file di configurazione predefinito.
 
-\lstinputlisting[style=blocco-esempi,
-	caption=File di configurazione predefinito,
-	label=lst:file-configurazione-predefinito]{5-implementazione-backend/Codice/file_configurazione_predefinito.json}
+\begin{listing}[H]
+	\inputminted{json}{5-implementazione-backend/Codice/file_configurazione_predefinito.json}
+	\caption{File di configurazione predefinito}
+	\label{lst:file-configurazione-predefinito}
+\end{listing}

@@ -1,31 +1,31 @@
-	{
-		"list": "results",
-		"items": [
-			{
-				"termName": "title",
-				"path": "name"
-			},
-			{
-				"termName": "address",
-				"path": "vicinity"
-			},
-			{
-				"termName": "latitude",
-				"path": "geometry.location.lat"
-			},
-			{
-				"termName": "longitude",
-				"path": "geometry.location.lng"
-			}
-		],
-		"functions": [
-			{
-				"onAttribute": "latitude",
-				"run": "return String(value)"
-			},
-			{
-				"onAttribute": "longitude",
-				"run": "return String(value)"
-			}
-		]
-	}
+{
+  "list": "results",
+  "items": [
+    {
+      "termName": "title",
+      "path": "name"
+    },
+    {
+      "termName": "address",
+      "path": "vicinity"
+    },
+    {
+      "termName": "latitude",
+      "path": "geometry.location.lat"
+    },
+    {
+      "termName": "longitude",
+      "path": "geometry.location.lng"
+    }
+  ],
+  "functions": [
+    {
+      "onAttribute": "latitude",
+      "run": "return String(value)"
+    },
+    {
+      "onAttribute": "longitude",
+      "run": "return String(value)"
+    }
+  ]
+}
