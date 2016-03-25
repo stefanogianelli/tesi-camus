@@ -1,6 +1,6 @@
 {
-	!user!(@id@: ~2~) {
-		!name!
-		!surname!
-	}
+  user (id: 2) {
+    name
+    surname
+  }
 }

@@ -1,17 +1,17 @@
-	{
-		"name": "Location",
-		"for": "ranking|parameter",
-		"parameters": [
-			{
-				"name": "CityCoord",
-				"fields": [
-					{
-						"name": "Latitude"
-					},
-					{
-						"name": "Longitude"
-					}
-				]
-			}
-		]
-	}
+{
+  "name": "Location",
+  "for": "ranking|parameter",
+  "parameters": [
+    {
+      "name": "CityCoord",
+      "fields": [
+        {
+          "name": "Latitude"
+        },
+        {
+          "name": "Longitude"
+        }
+      ]
+    }
+  ]
+}

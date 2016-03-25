@@ -1,8 +1,8 @@
-	{
-		"name": "nearBySearch",
-		"type": "primary",
-		"path": "/nearbysearch/json",
-		"parameters": [ ... ],
-		"responseMapping": { ... },
-		"pagination": { ... }
-	}
+{
+  "name": "nearBySearch",
+  "type": "primary",
+  "path": "/nearbysearch/json",
+  "parameters": [ ... ],
+  "responseMapping": { ... },
+  "pagination": { ... }
+}

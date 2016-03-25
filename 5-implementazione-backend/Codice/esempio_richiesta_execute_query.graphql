@@ -1,61 +1,36 @@
-~query Restaurant~ {
-	!executeQuery! (
-		@userId@: ~"USER_ID"~,
-		@idCdt@: ~"CDT_ID"~,
-		@context@: [
-			{
-				@dimension@: ~"InterestTopic"~,
-				@value@: ~"Restaurant"~
-			},
-			{
-				@dimension@: ~"Location"~,
-				@parameters@: [
-					{
-						@name@: ~"CityCoord"~,
-						@fields@: [
-							{
-								@name@: ~"Latitude"~,
-								@value@: ~"45.4788807"~
-							},
-							{
-								@name@: ~"Longitude"~,
-								@value@: ~"9.2321363"~
-							}
-						]
-					}
-				]
-			},
-			{
-				@dimension@: ~"Transport"~,
-				@value@: ~"PublicTransport"~
-			},
-			{
-				@dimension@: ~"OS"~,
-				@value@: ~"iOS"~
-			}
-		],
-		@support@: [~"Transport"~]
-	)
-	{
-		!primaryResults! (@first@: ~9~) {
-			!data! {
-				!title!
-				!address!
-				!latitude!
-				!longitude!
-				!meta! {
-					!name!
-					!rank!
-				}
-			}
-		}
-		!supportResults! {
-			!data! {
-				!category!
-				!service!
-				!url!
-				!storeLink!
-			}
-		}
-	}
+query Restaurant {
+  executeQuery (
+    userMail: "USER_MAIL",
+    idCdt: "CDT_ID",
+    context: [
+      {
+        dimension: "InterestTopic",
+        value: "Restaurant"
+      },
+      [ ... ]
+    ],
+    support: ["Transport"]
+  )
+  {
+    primaryResults (first: 9) {
+      data {
+        title
+        address
+        latitude
+        longitude
+        meta {
+          name
+          rank
+        }
+      }
+    }
+    supportResults {
+      data {
+        category
+        service
+        url
+        storeLink
+      }
+    }
+  }
 }
