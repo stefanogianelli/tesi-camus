@@ -473,7 +473,15 @@ Per terminare l'attività vengono messe assieme tutte le parti. All'indirizzo di
 
 \section{Endpoint GraphQL\label{sec:endpoint-graphql}}
 
-Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare il punto d'accesso al sistema viene utilizzato GraphQL. In questa sezione si andranno ad analizzare le varie funzionalità fruibili dal client. L'indirizzo da contattare rimane sempre lo stesso per tutti i casi, quello che cambia sarà un parametro nella richiesta che permette di identificare quale attività si desidera svolgere. I nomi delle seguenti sottosezioni rappresentano proprio le attività precedentemente citate. Di seguito verranno identificate per semplicità di espressione col nome di endpoint, visto che il fine ultimo è paragonabile a quello degli endpoint nel mondo REST.
+Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare il punto d'accesso al sistema viene utilizzato GraphQL. In questa sezione si andranno ad analizzare le varie funzionalità fruibili dal client. L'indirizzo da contattare rimane sempre lo stesso per tutti i casi, quello che cambia sarà un parametro nella richiesta che permette di identificare quale attività si desidera svolgere. In Figura \ref{fig:schema-graphql} viene mostrato il diagramma delle classi dello schema di GraphQL, mettendo in evidenza le connessioni tra i vari oggetti e la tipologia dei campi.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/graphql-schema.png}
+	\caption{Diagramma dello schema GraphQL}\label{fig:schema-graphql}
+\end{figure}
+
+I nomi delle seguenti sottosezioni rappresentano proprio le attività precedentemente citate. Di seguito verranno identificate per semplicità di espressione col nome di endpoint, visto che il fine ultimo è paragonabile a quello degli endpoint nel mondo REST.
 
 \subsection{Execute Query\label{sec:execute-query-endpoint}}
 
