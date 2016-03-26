@@ -1,0 +1,46 @@
+{
+  "results": 
+    [ 
+      { 
+        "topic": "Restaurant",
+        "results": 
+          { 
+            "primaryResults": 
+            {
+               "data": [
+                 { 
+                   "title": "Peck",
+                   "address": "Via Spadari, 9, Milano",
+                   "longitude": "9.187005400000002",
+                   "latitude": "45.4635272",
+                   "meta": 
+                   { 
+                     "rank": 1, 
+                     "name": [ "GooglePlaces" ] 
+                   }
+                 },
+                 // altri risultati
+               ], 
+               "pageInfo": { 
+
+               } 
+            },
+         }
+       },     
+     { 
+       "topic": "Event",
+       "results": 
+         { 
+           "primaryResults": 
+             {
+               "data": [
+                // altri risultati
+               ],                                            
+               "pageInfo": { 
+
+               }
+             }
+         }
+     }
+  ]       
+}

@@ -1,0 +1,40 @@
+{
+  "data": {
+    "getPersonalData": {
+      "idCdt": "ID_CDT",
+      "context": [
+        {
+          "name": "InterestTopic",
+          "values": [
+            "Restaurant",
+            "Event"
+          ],
+          "parameters": [],
+          "parents": []
+        },
+        {
+          "name": "Location",
+          "values": [],
+          "parameters": [
+            {
+          "name": "CityCoord",
+          "type": null,
+          "enum": [],
+          "fields": [
+            {
+              "name": "Latitude"
+            },
+            {
+              "name": "Longitude"
+            }
+          ],
+          "parents": []
+        }
+      ]       
+    },
+        // altri valori simili
+  ],
+    "defaultValues": []
+  }
+}
+            }

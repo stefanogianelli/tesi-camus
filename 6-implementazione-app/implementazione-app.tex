@@ -3,7 +3,7 @@ Successivamente si tratterà del flusso dei dati all'interno dell'applicazione e
 
 \section {Architettura dell'applicazione}\label{sec:architettura-applicazione}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_architecture.pdf}
 	\caption{Architetture generale dell'app CAMUS}\label{fig:app-architecture}
@@ -13,7 +13,7 @@ E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:ap
 
 \subsection{Pagine dell'applicazione}
 Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un router. Si è scelto di sfruttare due router diversi, uno per gestire il login e un altro per la navigazione all'interno dell'applicazione. Il router per il login controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi possiede \emph{Login Page} e il secondo router, che racchiude la navigazione effettiva dell'utente autenticato.
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/screen-schema.pdf}
 	\caption{Schema delle pagine}\label{fig:screen-schema}
@@ -96,44 +96,11 @@ Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato t
 	
 \end{itemize}
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray},
-								caption = Esempio Data Store Mashup,
-								label = lst:store-two-topics]
-				results: 
-				   [ { topic: 'Restaurant',
-				       results: 
-				        { primaryResults: 
-				           {data: 
-			                   [{ title: 'Peck',
-			                     address: 'Via Spadari, 9, Milano',
-			                     longitude: '9.187005400000002',
-			                     latitude: '45.4635272',
-			                     email: null,
-			                     meta: { rank: 1, name: [ 'GooglePlaces' ] }
-			                  },
-			                  // altri risultati
-					           ]  
-				            } ,
-				             pageInfo: { endCursor: 'YXJyYXljb25uZWN0aW9uOjg=', hasNextPage: true } },
-				          supportResults: { data: [] } } },
-				     { topic: 'Event',
-				       results: 
-				        { primaryResults: 
-				           data:
-			                   [{ title: 'Gemitaiz',
-			                     address: 'Via Valtellina 21',
-			                     latitude: '45.4941542',
-			                     longitude: '9.1827734',
-			                     meta: { rank: 1, name: [ 'eventful' ] } ,
-
-			                   },
-			                   // altri risultati
-			                   ],       		            			                
-				             pageInfo: { endCursor: 'YXJyYXljb25uZWN0aW9uOjg=', hasNextPage: true } },
-				          supportResults: { data: [] } } } ],
-				}
-
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/store-two-topics.json}
+	\caption{Esempio Data Store Mashup}
+	\label{lst:store-two-topics}
+\end{listing}
 
 \section{Struttura dello schema di mashup}
 
@@ -143,54 +110,11 @@ Nella tipologia \emph{details} sono disponibili tutti i dettagli dell'item selez
 Considerando l'esempio dei ristoranti, per la lista sono associati i termini che servono per identificare l'oggetto, come il nome e l'indirizzo. Se poi l'utente vuole vedere la mappa e visualizzare gli estremi per contattare il ristorante per prenotare deve aprire la pagina dei dettagli, dove acquisendo i termini dal file di mashup, sono visualizzati tutti i dettagli necessari per l'utente. Inoltre è specificata la tipologia dell'elemento da visualizzare, in modo da permettere all'app di utilizzare le librerie di collegamento con le applicazioni specifiche del sistema operativo.
 
 Nel Listato \ref{lst:mashup-schema} viene mostrato un frammento del file JSON di mashup della pagina di dettaglio:
-\begin{lstlisting}[backgroundcolor = \color{lightgray},
-								caption = Esempio Schema Mashup,
-								label = lst:mashup-schema]
-	{	
-		details: 
-			[ 
-				{ 
-					topics:	
-						[ 
-							'Restaurant',
-							'Event' 
-						],
-					contents: 
-						[ 
-							{ 
-								type: 'text', 
-								contents: 'title' 
-							},
-							{ 
-								type: 'text', 
-								contents: 'address'
-							},
-							{ 
-								type: 'map', 
-								contents: [ 'latitude', 'longitude' ] 
-							},
-							{ 
-								type: 'phoneNumber', 
-								contents: 'telephone' 
-							},
-							{ 
-								type: 'website', 
-								contents: 'website' 
-							},
-							{ 
-								type: 'email',
-								contents: 'email' 
-							},
-							{ 
-								type: 'support', 
-								contents: 'Transport' 
-							}
-						] 
-					}
-				]	
-		}
-	
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-example-app.json}
+	\caption{Esempio Schema Mashup}
+	\label{lst:mashup-schema}
+\end{listing}
 
 Di seguito sono elencate le diverse tipologie di dato che compongono l'oggetto che rappresenta i file di \emph{mashup}:
 \begin{itemize}
@@ -231,47 +155,22 @@ Si suppone che nel file di mashup gli elementi siano già stati generati in ordi
 
 \subsection{Gestione degli stili}
 
-Per quanto riguarda la gestione degli stili si è scelto di adottare una soluzione molto semplice, ma allo stesso tempo molto efficace. Si è partiti dalla condizione che React Native utilizza come gestione dello stile Flexbox\footnote{Flexbox su W3Schools: \url{http://www.w3schools.com/css/css3_flexbox.asp}}, che è una variante basata sugli stili CSS ottimizzata per la gestione degli elementi che necessitano di adattarsi a differenti dimensioni degli schermi. Il linguaggio utilizzato risulta essere molto simile a JSON e quindi è facilmente integrabile in JavaScript. L'elemento che gestisce gli attributi grafici è lo \emph{StyleSheet}, che espone l'oggetto \emph{styles} e gli attributi \emph{PRIMARY\_COLOR} e \emph{SECODARY\_COLOR}.
+Per quanto riguarda la gestione degli stili si è scelto di adottare una soluzione molto semplice, ma allo stesso tempo molto efficace. Si è partiti dalla condizione che React Native utilizza come gestione dello stile Flexbox\footnote{Flexbox su W3Schools: \url{Htp://www.w3schools.com/css/css3_flexbox.asp}}, che è una variante basata sugli stili CSS ottimizzata per la gestione degli elementi che necessitano di adattarsi a differenti dimensioni degli schermi. Il linguaggio utilizzato risulta essere molto simile a JSON e quindi è facilmente integrabile in JavaScript. L'elemento che gestisce gli attributi grafici è lo \emph{StyleSheet}, che espone l'oggetto \emph{styles} e gli attributi \emph{PRIMARY\_COLOR} e \emph{SECODARY\_COLOR}.
 Nell'oggetto \emph{styles} sono impostati tutti gli stili di ogni componente grafico dell'applicazione che vengono richiamati nella fase di costruzione delle view. In questo modo ogni modifica all'interno dell'oggetto si ripercuote in tutta l'applicazione.
 I due attributi per la gestione dei colori sono risultati indispensabili in particolare per alcuni componenti, come la \emph{StatusBar} di Android, che hanno come elemento impostabile solo il colore e non lo stile completo. Ovviamente la modifica all'interno dello \emph{StyleSheet} dei parametri di colore è necessaria solo in un punto del codice, in modo da propagarsi in modo coerente per l'intera applicazione.
 Nel Listato \ref{lst:stylesheet} viene mostrato un frammento del foglio di stile utilizzato nell'applicazione. Si noti come i parametri che definiscono ogni singolo elemento sono abbastanza autoesplicativi, fornendo allo sviluppatore una maggiore semplicità di programmazione. Diversi parametri sono stati ripetuti, per permettere la visualizzazione del componente in modo ottimale sia in Android che in iOS.
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray},
-								caption = Frammento Foglio di Stile,
-								label = lst:stylesheet]
-	var styles = StyleSheet.create({
-	    container: {
-	        flex: 1,
-	        backgroundColor: 'white',
-	        marginTop: 20
-	    },
-	    iosContainer: {
-	        backgroundColor: 'white',
-	        marginTop: 70
-	    },
-	    iosStatusBar:{
-	        color: 'black'
-	    },
-	    buttonMaterial: {
-	        height: 36,
-	        backgroundColor: primary_color,
-	        borderColor: primary_color,
-	        borderWidth: 1,
-	        borderRadius: 8,
-	        marginBottom: 10,
-	        alignSelf: 'stretch',
-	        justifyContent: 'center'
-	
-	    }
-	    //altri elementi di stile
-	 })   
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{js}{6-implementazione-app/Codice/stylesheet.js}
+	\caption{Frammento Foglio di Stile}
+	\label{lst:stylesheet}
+\end{listing}
  
 
 \section{Flusso di esecuzione}
 
 In questa sezione si vuole analizzare il flusso dei dati all'interno dell'applicazione, partendo dal login dell'utente fino alla selezione di un elemento dalla lista dei risultati.
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_dataflow.pdf}
 	\caption{Flusso dei dati dell'app Flux}\label{fig:app-dataflow}
@@ -300,90 +199,20 @@ I dati necessari per la costruzione della query sono l'indirizzo email e la pass
 In caso di risposta affermativa viene restituito all'utente un token, generato ogni volta che l'utente effettua l'autenticazione. Questo token viene salvato sempre nella \emph{User Store} e successivamente inviato al server con la query \emph{getPersonalData()} per ottenere il CDT completo per poter costruire il contesto da mostrare all'utente e lo schema di mashup.
 Utilizzando un esempio pratico, dopo che l'utente Mario Rossi ha inserito le proprie credenziali di accesso, cioè indirizzo email e password, vengono restituiti questi dati (Listato \ref{lst:esempio-login-app}): 
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray},
-							caption = Esempio di risposta alla query di login,
-							label = lst:esempio-login-app]
-			{
-			  "data": {
-			    "login": {
-			      "id": "USER_ID",
-			      "name": "Mario",
-			      "surname": "Rossi",
-			      "token": "b6aa96da4c78e6e94468ffa25868867d"
-			    }
-			  }
-			}
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/esempio-login-app.json}
+	\caption{Esempio di risposta alla query di login}
+	\label{lst:esempio-login-app}
+\end{listing}
 
 L'indirizzo mail e il token sono inviati al server per ottenere il CDT e gli schemi di mashup associati all'utente. Un esempio delle informazioni ricevute in seguito a questa query è viene mostrato nel Listato \ref{lst:esempio-getcdt-app}.
 
 
-\begin{lstlisting}[caption = Esempio di risposta alla query di login,
-							backgroundcolor = \color{lightgray},
-							label = lst:esempio-getcdt-app]
-			{
-			  "data": {
-			    "getPersonalData": {
-			      "idCdt": "ID_CDT",
-			      "context": [
-			        {
-			          "name": "InterestTopic",
-			          "values": [
-			            "Restaurant",
-			            "Event"
-			          ],
-			          "parameters": [],
-			          "parents": []
-			        },
-			        {
-			          "name": "Location",
-			          "values": [],
-			          "parameters": [
-			            {
-			              "name": "CityCoord",
-			              "type": null,
-			              "enum": [],
-			              "fields": [
-			                {
-			                  "name": "Latitude"
-			                },
-			                {
-			                  "name": "Longitude"
-			                }
-			              ]
-			            }
-			          ],
-			          "parents": []
-			        },
-			        {
-			          "name": "Transport",
-			          "values": [
-			            "PublicTransport",
-			            "WithCar"
-			          ],
-			          "parameters": [],
-			          "parents": []
-			        },
-			        {
-			          "name": "Typology",
-			          "values": [
-			            "Bus",
-			            "Train",
-			            "Taxi",
-			            "CarSharing",
-			            "WithDriver"
-			          ],
-			          "parameters": [],
-			          "parents": [
-			            "PublicTransport"
-			          ]
-			        }
-			      ],
-			      "defaultValues": []
-			    }
-			  }
-			}
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/get-cdt-app.json}
+	\caption{Esempio acquisizione CDT}
+	\label{lst:esempio-getcdt-app}
+\end{listing}
 
 \subsection{Data Query} \label{sec:data-query}
 Le query per gestire i dati necessitano di tutta una serie di operazioni preliminari perché sono presenti diversi parametri da ricavare per poter formare una richiesta GraphQL. Oltre alla definizione spiegata nella Sezione \ref{sec:endpoint-graphql}, di seguito è spiegata la modalità di costruzione dei parametri che sono necessari per la composizione della query utilizzando il metodo \emph{client.query()} di \emph{Lokka}:
@@ -396,109 +225,25 @@ Le query per gestire i dati necessitano di tutta una serie di operazioni prelimi
 	\item \textbf{SupportResults} Lo stesso meccanismo utilizzato per i \emph{PrimaryResults} viene riproposto anche per i risultati di supporto. Invece di recuperare i mashup dalle \emph{Store} viene riproposta la stessa definizione per ogni query, perché i servizi di supporto sono definiti sempre nello stesso modo con i campi \emph{category}, \emph{service} e \emph{url}.
 \end{itemize}
 
-\begin{center}
-	\hspace*{-1.5cm}
-	\begin{minipage}[t]{0.63\textwidth}
-		\begin{lstlisting}[caption=Mashup di partenza, label=lst:esempio-data-mashup]
-{	
-details: 
-[ 
-	{ 
-		topics:	
-			[ 
-				'Restaurant',
-				'Event' 
-			],
-		contents: 
-			[ 
-				{ 
-					type: 'text', 
-					contents: 'title' 
-				},
-				{ 
-					type: 'text', 
-					contents: 'address'
-				},
-				{ 
-					type: 'map', 
-					contents: [ 'latitude', 'longitude' ] 
-				},
-				{ 
-					type: 'phoneNumber', 
-					contents: 'telephone' 
-				},
-				{ 
-					type: 'website', 
-					contents: 'website' 
-				},
-				{ 
-					type: 'email',
-					contents: 'email' 
-				},
-				{ 
-					type: 'support', 
-					contents: 'Transport' 
-				}
-			] 
-		}
-	]	
-}
-		\end{lstlisting}
-	\end{minipage}%
-	\begin{minipage}[t]{0.63\textwidth}
-		\begin{lstlisting}[caption=Definizione oggetto GraphQL per risultati primari, label=lst:esempio-primary-app,style=json]
-				!primaryResults! {
-					!data! {
-						!title!
-						!address!
-						!latitude!
-						!longitude!
-						!meta! {
-							!name!
-							!rank!
-						}
-					}
-				}
-		\end{lstlisting}
-	\end{minipage}	
-\end{center}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-app.json}
+	\caption{Schema di mashup di partenza}
+	\label{lst:esempio-data-mashup}
+\end{listing}
+
+\begin{listing}[H]
+	\inputminted{text}{6-implementazione-app/Codice/esempio-query-primary-app.txt}
+	\caption{Definizione oggetto GraphQL per risultati primari}
+	\label{lst:esempio-primary-app}
+\end{listing}
 
 Nel Listato \ref{lst:esempio-risposta-data-app} viene mostrata la risposta per quanto riguarda la query per i ristoranti effettuata dall'applicazione, limitando i risultati ai primi 5 disponibili dal server. 
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray},
-							caption = Esempio di risposta alla query per i Ristoranti,
-							label = lst:esempio-risposta-data-app]
-		{
-		  "data": {
-		    "executeQuery": {
-		      "primaryResults": {
-		        "data": [
-		          {
-		            "title": "Peck",
-		            "address": "Via Spadari, 9, Milano",
-		            "latitude": "45.4635272",
-		            "longitude": "9.187005400000002",
-		            "meta": {
-		              "name": [
-		                "GooglePlaces"
-		              ],
-		              "rank": 1
-		            }
-		          },
-		          // altri risultati
-		        ],
-		        "pageInfo": {
-	                "hasNextPage": true,
-	                "endCursor": "YXJyYXljb25uZWN0aW9uOjQ="
-	            }
-		      },
-		      "supportResults": {
-		        "data": []
-		      }
-		    }
-		  }
-		}
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/esempio-risposta-data-app.json}
+	\caption{Esempio di risposta alla query per i Ristoranti}
+	\label{lst:esempio-risposta-data-app}
+\end{listing}
 
 \subsection{Gestione paginazione}\label{sec:paginazione-app}
 
@@ -534,13 +279,8 @@ In generale il funzionamento di queste tipologie di collegamenti è gestito dall
 
 \end{itemize}
 
-\begin{lstlisting}[backgroundcolor = \color{lightgray},
-							caption = Esempio di risposta per i servizi di supporto,
-							label = lst:esempio-support-app]
-				supportServices: {
-						category: "Transport",
-						service: "Google Maps",
-						url: "google.navigation:q={value}",
-						storeLink: "market://details?id=com.google.android.apps.maps&hl=it"					
-				}
-\end{lstlisting}
+\begin{listing}[H]
+	\inputminted{json}{6-implementazione-app/Codice/esempio_supporto_app.json}
+	\caption{Esempio di servizi di supporto con intent}
+	\label{lst:esempio-support-app}
+\end{listing}

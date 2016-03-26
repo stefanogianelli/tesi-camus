@@ -1,0 +1,12 @@
+primaryResults {
+  data {
+	title
+	address
+	latitude
+	longitude
+	meta {
+	  name
+	  rank
+	}
+  }
+}
