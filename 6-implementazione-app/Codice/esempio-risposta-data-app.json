@@ -15,11 +15,11 @@
               "rank": 1
             }
           },
-          // altri risultati
+          [ ... ]
         ],
         "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "YXJyYXljb25uZWN0aW9uOjQ="
+          "hasNextPage": true,
+          "endCursor": "YXJyYXljb25uZWN0aW9uOjQ="
         }
       },
       "supportResults": {

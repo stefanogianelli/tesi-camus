@@ -1,29 +1,28 @@
 {
-  "details": 
-   [ 
-     {
-       "topics": [ 
-	     "Restaurant",
-	     "Event" 
-	   ],
-	   "contents": [ 
-	     { 
-	       "type": "text", 
-		   "contents": "title" 
-	     },
-		 { 
-		   "type": "text", 
-		   "contents": "address"
-		 },
-		 { 
-		   "type": "map", 
-		   "contents": [ "latitude", "longitude" ] 
-		 },
-		 { 
-		   "type": "phoneNumber", 
-		   "contents": "telephone" 
-		 }
-	   ] 
-     }
-   ]	
+  "details": [
+    {
+      "topics": [
+        "Restaurant",
+        "Event"
+      ],
+      "contents": [
+        {
+          "type": "text",
+          "contents": "title"
+        },
+        {
+          "type": "text",
+          "contents": "address"
+        },
+        {
+          "type": "map",
+          "contents": [ "latitude", "longitude" ]
+        },
+        {
+          "type": "phoneNumber",
+          "contents": "telephone"
+        }
+      ]
+    }
+  ]
 }

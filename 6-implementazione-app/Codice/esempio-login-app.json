@@ -1,10 +1,9 @@
 {
   "data": {
     "login": {
-      "id": "USER_ID",
-	  "name": "Mario",
-	  "surname": "Rossi",
-	  "token": "b6aa96da4c78e6e94468ffa25868867d"
-	}
+      "name": "Mario",
+      "surname": "Rossi",
+      "token": "b6aa96da4c78e6e94468ffa25868867d"
+    }
   }
 }

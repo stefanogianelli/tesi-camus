@@ -17,24 +17,24 @@
           "values": [],
           "parameters": [
             {
-          "name": "CityCoord",
-          "type": null,
-          "enum": [],
-          "fields": [
-            {
-              "name": "Latitude"
-            },
-            {
-              "name": "Longitude"
+              "name": "CityCoord",
+              "type": null,
+              "enum": [],
+              "fields": [
+                {
+                  "name": "Latitude"
+                },
+                {
+                  "name": "Longitude"
+                }
+              ],
+              "parents": []
             }
-          ],
-          "parents": []
-        }
-      ]       
-    },
-        // altri valori simili
-  ],
-    "defaultValues": []
+          ]
+        },
+        [ ... ]
+      ],
+      "defaultValues": []
+    }
   }
 }
-            }

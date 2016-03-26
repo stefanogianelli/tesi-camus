@@ -1,12 +1,12 @@
 primaryResults {
   data {
-	title
-	address
-	latitude
-	longitude
-	meta {
-	  name
-	  rank
-	}
+    title
+    address
+    latitude
+    longitude
+    meta {
+      name
+      rank
+    }
   }
 }

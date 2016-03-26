@@ -1,43 +1,38 @@
-{   
-  "details": 
-    [
+{
+  "details": {
+    "topics": [ 
+      "Restaurant",
+      "Event"
+    ],
+    "contents": [
       {
-        "topics":
-          [ 
-            "Restaurant",
-            "Event"
-          ],
-        "contents": 
-          [ 
-            {
-              "type": "text", 
-              "contents": "title" 
-            },
-            { 
-              "type": "text", 
-              "contents": "address"
-            },
-            { 
-              "type": "map", 
-              "contents": [ "latitude", "longitude" ] 
-            },
-            { 
-              "type": "phoneNumber", 
-              "contents": "telephone" 
-            },
-            { 
-              "type": "website", 
-              "contents": "website" 
-            },
-            { 
-              "type": "email",
-              "contents": "email" 
-            },
-            { 
-              "type": "support", 
-              "contents": "Transport" 
-            }
-          ] 
+        "type": "text",
+        "contents": "title"
+      },
+      {
+        "type": "text",
+        "contents": "address"
+      },
+      {
+        "type": "map",
+        "contents": [ "latitude", "longitude" ]
+      },
+      {
+        "type": "phoneNumber",
+        "contents": "telephone"
+      },
+      {
+        "type": "website",
+        "contents": "website"
+      },
+      {
+        "type": "email",
+        "contents": "email"
+      },
+      {
+        "type": "support",
+        "contents": "Transport"
       }
-    ]   
+    ]
+  }
 }
