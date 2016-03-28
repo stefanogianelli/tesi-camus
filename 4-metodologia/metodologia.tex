@@ -355,6 +355,62 @@ Una volta che i \emph{bucket} sono stati creati, è necessario effettuare una co
 	\end{algorithmic}
 \end{algorithm}
 
+Analizzando la struttura di questo algoritmo risulta però che la complessità temporale resta sempre pari a $ O(n^2) $, in quanto se tutti gli elementi hanno il medesimo codice fonetico verrebbero aggiunti in un singolo bucket, costringendo ad eseguire tutti i confronti. Questa situazione è un caso molto raro: si assume che gli elementi vengano distribuiti in modo uniforme all'interno dei bucket. In genere i bucket saranno composti al massimo da un numero di elementi pari al numero di servizi interrogati. Infatti generalmente gli elementi duplicati appartengono a servizi diversi. Questo valore può variare leggermente in alcuni casi particolari. Può capitare per esempio che elementi distinti tra loro possano essere aggiunti allo stesso bucket a causa della loro pronuncia fonetica simile. Nel caso medio si ottiene che questo algoritmo abbia una complessità $ \Omega(nm^2) $, dove \emph{n} rappresenta il numero di elementi e \emph{m} la lunghezza massima di un bucket, con $ m \lll n $. In Figura \ref{fig:tempo-esecuzione-algoritmo-duplicati} è stato effettuato un confronto tra la versione \virgolette{vecchia} dell'algoritmo, dove venivano effettuati tutti i confronti, e quella \virgolette{nuova}, con le ottimizzazioni attive. \upe stato utilizzato un dataset composto dall'elenco dei ristoranti di Milano proveniente da quattro diversi servizi e con un elevato numero di elementi simili ($ 81\% $). Come si può notare il nuovo algoritmo ha un incremento lineare dei tempi di esecuzione all'aumentare del numero di elementi, come ci si poteva aspettare.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/similarity_time_analysis.png}
+	\caption{Tempi di esecuzione algoritmo di ricerca duplicati}\label{fig:tempo-esecuzione-algoritmo-duplicati}
+\end{figure}
+
+Si è andati ad effettuare un'analisi delle prestazioni dell'algoritmo. A partire da un dataset composto da 100 ristoranti, acquisito da 4 differenti servizi e composto per l'$ 81\% $ da elementi duplicati, si è verificato quali di questi elementi vengono correttamente etichettati come duplicati. Per valutare la bontà dell'algoritmo sono stati utilizzati i seguenti indicatori:
+
+\begin{itemize}
+	\item \textbf{Precision} Rappresenta la proporzione di documenti pertinenti fra quelli recuperati
+	\item \textbf{Recall} Rappresenta il rapporto di documenti pertinenti che sono stati correttamente recuperati. Viene definita come la proporzione fra il numero di documenti rilevanti recuperati e il numero di tutti i documenti rilevanti disponibili nella collezione considerata
+\end{itemize}
+
+Queste due misure permettono di fornire un'indicazione su come si sta comportando l'algoritmo. Per calcolarle vengono utilizzate le seguenti formule:
+
+\begin{center}
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{equation*}
+			Precision = \frac{TP}{TP + FP}
+		\end{equation*}
+	\end{minipage}%
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{equation*}
+			Recall = \frac{TP}{TP + FN}
+		\end{equation*}
+	\end{minipage}
+\end{center}
+
+Dove \emph{TP} significa \virgolette{True Positive}, \emph{FP} sta per \virgolette{False Positive} e \emph{FN} per \virgolette{False Negative}. In Tabella \ref{table:confusion-matrix} viene chiarito il significato di questi parametri.
+
+\begin{table}[ht]
+	\caption{Confusion Matrix}
+	\label{table:confusion-matrix}
+	\begin{tabularx}{\textwidth}{l | cc}
+		\toprule
+		& \textbf{Predetto Positivo} & \textbf{Predetto Negativo} \\
+		\midrule
+		\textbf{Condizione Positiva} & True Positive & False Negative  \\
+		\hline
+		\textbf{Condizione Negativa} & False Positive & True Negative \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Per il caso in analisi i \emph{True Positive} sono gli elementi correttamente identificati come duplicati, i \emph{False Positive} sono gli elementi che sono stati identificati come duplicati ma non lo sono e \emph{False Negative} sono gli elementi duplicati che non sono stati rilevati. L'unico parametro configurabile dell'algoritmo è il \emph{threshold}, cioè la soglia minima affinché due elementi vengano identificati come duplicati. In Figura \ref{fig:prestazioni-algoritmo-duplicati} vengono mostrati i risultati ottenuti.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{4-metodologia/Immagini/similarity_precision_recall.png}
+	\caption{Prestazioni dell'algoritmo di ricerca dei duplicati}\label{fig:prestazioni-algoritmo-duplicati}
+\end{figure}
+
+Alti valori del \emph{threshold} permettono di avere una \emph{precision} del $ 100\% $, il che significa che non sono presenti falsi positivi. Il contro è avere un valore di \emph{recall} molto basso: in pratica molti elementi duplicati non vengono identificati. Trovare un valore di threshold è un compito delicato: bisogna cercare di bilanciare l'esigenza di trovare il maggior numero di duplicati possibili con quella di non sbagliare le rilevazioni con elementi che sono estranei.
+
 \section{Mashup Design\label{sec:mashup-design}}
 
 \begin{figure}[ht]
