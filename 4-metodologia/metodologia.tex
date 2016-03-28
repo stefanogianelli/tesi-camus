@@ -363,14 +363,14 @@ Analizzando la struttura di questo algoritmo risulta però che la complessità t
 	\caption{Tempi di esecuzione algoritmo di ricerca duplicati}\label{fig:tempo-esecuzione-algoritmo-duplicati}
 \end{figure}
 
-Si è andati ad effettuare un'analisi delle prestazioni dell'algoritmo. A partire da un dataset composto da 100 ristoranti, acquisito da 4 differenti servizi e composto per l'$ 81\% $ da elementi duplicati, si è verificato quali di questi elementi vengono correttamente etichettati come duplicati. Per valutare la bontà dell'algoritmo sono stati utilizzati i seguenti indicatori:
+Si è andati ad effettuare anche un'analisi delle prestazioni dell'algoritmo. A partire da un dataset composto da 100 ristoranti, acquisito da 4 differenti servizi e composto per l'$ 81\% $ da elementi duplicati, si è verificato quali di questi elementi vengono correttamente etichettati come duplicati. Per valutare la bontà dell'algoritmo sono stati utilizzati i seguenti indicatori:
 
 \begin{itemize}
 	\item \textbf{Precision} Rappresenta la proporzione di documenti pertinenti fra quelli recuperati
 	\item \textbf{Recall} Rappresenta il rapporto di documenti pertinenti che sono stati correttamente recuperati. Viene definita come la proporzione fra il numero di documenti rilevanti recuperati e il numero di tutti i documenti rilevanti disponibili nella collezione considerata
 \end{itemize}
 
-Queste due misure permettono di fornire un'indicazione su come si sta comportando l'algoritmo. Per calcolarle vengono utilizzate le seguenti formule:
+Queste due misure permettono di fornire un'indicazione su come si comporta l'algoritmo. Per calcolarle vengono utilizzate le seguenti formule:
 
 \begin{center}
 	\begin{minipage}[t]{0.5\textwidth}
@@ -409,7 +409,7 @@ Per il caso in analisi i \emph{True Positive} sono gli elementi correttamente id
 	\caption{Prestazioni dell'algoritmo di ricerca dei duplicati}\label{fig:prestazioni-algoritmo-duplicati}
 \end{figure}
 
-Alti valori del \emph{threshold} permettono di avere una \emph{precision} del $ 100\% $, il che significa che non sono presenti falsi positivi. Il contro è avere un valore di \emph{recall} molto basso: in pratica molti elementi duplicati non vengono identificati. Trovare un valore di threshold è un compito delicato: bisogna cercare di bilanciare l'esigenza di trovare il maggior numero di duplicati possibili con quella di non sbagliare le rilevazioni con elementi che sono estranei.
+Alti valori del \emph{threshold} permettono di avere una \emph{precision} del $ 100\% $, il che significa che non sono presenti falsi positivi. Il contro è avere un valore di \emph{recall} molto basso: in pratica molti elementi duplicati non vengono identificati. Calibrare il valore di \emph{threshold} è un compito delicato: bisogna cercare di bilanciare l'esigenza di trovare il maggior numero di duplicati possibili con quella di non sbagliare le rilevazioni con elementi che sono estranei.
 
 \section{Mashup Design\label{sec:mashup-design}}
 
