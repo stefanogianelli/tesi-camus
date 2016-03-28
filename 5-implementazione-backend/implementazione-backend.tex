@@ -399,7 +399,7 @@ I risultati della \emph{ricerca standard} vengono a loro volta divisi in base al
 
 Una volta acquisite le associazioni attive, viene calcolato il \emph{punteggio} di ogni operazione. Viene utilizzata la Formula \ref{eq:primary-service-formula} per il calcolo del \emph{punteggio} totale di ogni operazione.
 
-Completata questa fase, l'elenco delle operazioni viene riordinato in modo decrescente in base al \emph{punteggio} calcolato e vengono selezionate solamente le Top-N operazioni col punteggio più elevato. 
+Completata questa fase, l'elenco delle operazioni viene riordinato in modo decrescente in base al \emph{punteggio} calcolato e vengono selezionate solamente le Top-N operazioni col punteggio più elevato. \virgolette{N} è un numero fissato a priori che definisce il numero di operazioni che si desidera interrogare.
 
 \subsection{Query Handler\label{sec:query-handler}}
 
@@ -518,7 +518,7 @@ Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support
 	\end{algorithmic}
 \end{algorithm}
 
-Il primo passo riguarda la selezione dei simboli da utilizzare nella query. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o query. Viene subito composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio e il \emph{path specifico} dell'operazione. Ora incomincia la vera attività, la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base all'attributo \emph{required}:
+Il primo passo riguarda la selezione dei simboli da utilizzare nella query. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o query parametriche. Viene subito composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio e il \emph{path specifico} dell'operazione. Ora incomincia la vera attività, la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base all'attributo \emph{required}:
 
 \begin{enumerate}
 	\item \textbf{Parametro obbligatorio}

@@ -1,5 +1,24 @@
-\textcolor{red}{obiettivi dell'introduzione al passato}
+Questa tesi si è mirata nel ricercare una metodologia valida per diversi ambiti in grado di permettere una personalizzazione dei risultati ricercati dagli utenti in base alla situazione di utilizzo.
+
+Si è focalizzata molto l'attenzione sul \emph{contesto}, a partire dai modelli che potevano essere utilizzati. Si è dimostrato come una rappresentazione ad albero permetta una definizione molto completa e semplice delle possibili situazioni nei quali ci si può trovare. In seguito si è analizzato il problema di ricerca delle migliori fonti dalle quali acquisire informazioni. In particolare è stato proposto un metodo di associazione delle fonti disponibili al contesto mediante delle semplici regole, che permettono di selezionare solamente quelle più idonee in una particolare situazione. Si è potuto constatare come il contesto permette di avere a disposizione un'ottima quantità di informazioni per poter prendere la decisione sia per quanto riguarda le fonti da interrogare sia, una volta ricevuti i dati, per filtrarli ulteriormente e fornire così risultati ancora più ottimali.
+
+L'utilizzo del contesto si è notato essere complementare all'uso dei mashup, in quanto questi ultimi permettono di definire uno schema dinamico di generazione delle interfacce che faccia uso di informazioni di supporto per arricchire i dati ricevuti. Come è stato descritto più volte nella tesi, l'utilizzo di uno schema per la definizione dell'aspetto dell'app permette di ottenere vantaggi sia per quanto riguarda la flessibilità di modifica in base alla situazione di utilizzo sia per quanto riguarda l'associazione dei servizi di supporto.
+
+Infine si è potuta apprezzare la figura dell'\emph{esperto di settore}, che con la sua conoscenza permette di aiutare l'utente nella personalizzazione delle CAMUS app. Alcune operazioni non sono automatizzabili ed è stato quindi necessario introdurre una figura umana che svolgesse determinati compiti.
+
+Con questa tesi si sono volute creare della basi solide per il progetto CAMUS. Fornire un'esperienza semplice ma allo stesso tempo completa non è un'operazione semplice. In particolare l'ostacolo principale riguarda l'acquisizione dei dati, in quanto esistono una varietà infinita di fonti che possono essere interrogate. Inoltre ognuna di esse possiede i propri requisiti, che variano anche in maniera marcata tra una fonte e l'altra. Questa tesi è partita con l'affrontare i principali problemi che si sono incontrati. Si è data priorità allo sviluppo delle funzionalità \emph{core}, alcune volte in versione semplificata, in modo da fornire una solida base sulla quale migliorare. Nella prossima sezione verranno esposti alcuni punti per migliorare la soluzione presentata in questa tesi.
 
 \section{Sviluppi futuri}
 
-\textcolor{red}{TBC}
+In questa sezione si vogliono esporre alcuni punti di miglioramento della soluzione proposta da questa tesi:
+
+\begin{itemize}
+	\item
+	Flessibilità maggiore per associare più CDT o mashup agli utenti (data di scadenza?)
+	\item
+	Modifiche al CDT, or dei valori appartenenti alla stessa dimensione, coppie proibite
+	\item
+	dista da te 20 minuti
+	\item
+	Un’ulteriore attività (del Response Aggregator, ndr), che non è ancora stata implementata, riguarda l’assegnamento di un punteggio a ogni elemento, in base alle informazioni di contesto disponibili. Per esempio, sarà possibile assegnare un punteggio più alto all’elemento che si trova più vicino rispetto all’utente e, per gli altri elementi, verrà assegnato un punteggio via via decrescente man mano che ci si allontana dal punto di riferimento. Si stanno prendendo in considerazione anche logiche di selezione fuzzy per permettere una  flessibilità maggiore nell’assegnare i vari punteggi.
+\end{itemize}
