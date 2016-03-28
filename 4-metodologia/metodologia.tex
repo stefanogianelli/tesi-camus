@@ -319,6 +319,11 @@ Una volta che i \emph{bucket} sono stati creati, è necessario effettuare una co
 	\caption{Algoritmo di rimozione dei duplicati}
 	\label{alg:algoritmo-rimozione-duplicati}
 	\begin{algorithmic}
+		\Require
+			\Statex $ response $ \Comment The list of items received
+		\Ensure
+			\Statex $ output $ \Comment The results list without duplicates
+		\Statex
 		\ForAll{$ item\; in\; responses $}
 			\State $ class\_key \gets Soundex(item.title) $
 			\State $ buckets.add(class\_key, item) $
@@ -355,7 +360,7 @@ Una volta che i \emph{bucket} sono stati creati, è necessario effettuare una co
 	\end{algorithmic}
 \end{algorithm}
 
-Analizzando la struttura di questo algoritmo risulta però che la complessità temporale resta sempre pari a $ O(n^2) $, in quanto se tutti gli elementi hanno il medesimo codice fonetico verrebbero aggiunti in un singolo bucket, costringendo ad eseguire tutti i confronti. Questa situazione è un caso molto raro: si assume che gli elementi vengano distribuiti in modo uniforme all'interno dei bucket. In genere i bucket saranno composti al massimo da un numero di elementi pari al numero di servizi interrogati. Infatti generalmente gli elementi duplicati appartengono a servizi diversi. Questo valore può variare leggermente in alcuni casi particolari. Può capitare per esempio che elementi distinti tra loro possano essere aggiunti allo stesso bucket a causa della loro pronuncia fonetica simile. Nel caso medio si ottiene che questo algoritmo abbia una complessità $ \Omega(nm^2) $, dove \emph{n} rappresenta il numero di elementi e \emph{m} la lunghezza massima di un bucket, con $ m \lll n $. In Figura \ref{fig:tempo-esecuzione-algoritmo-duplicati} è stato effettuato un confronto tra la versione \virgolette{vecchia} dell'algoritmo, dove venivano effettuati tutti i confronti, e quella \virgolette{nuova}, con le ottimizzazioni attive. \upe stato utilizzato un dataset composto dall'elenco dei ristoranti di Milano proveniente da quattro diversi servizi e con un elevato numero di elementi simili ($ 81\% $). Come si può notare il nuovo algoritmo ha un incremento lineare dei tempi di esecuzione all'aumentare del numero di elementi, come ci si poteva aspettare.
+Analizzando la struttura di questo algoritmo risulta però che la complessità temporale resta sempre pari a $ O(n^2) $, in quanto se tutti gli elementi hanno il medesimo codice fonetico verrebbero aggiunti in un singolo bucket, costringendo a eseguire tutti i confronti. Questa situazione è un caso molto raro: si assume che gli elementi vengano distribuiti in modo uniforme all'interno dei bucket. In genere i bucket saranno composti al massimo da un numero di elementi pari al numero di servizi interrogati. Infatti generalmente gli elementi duplicati appartengono a servizi diversi. Questo valore può variare leggermente in alcuni casi particolari. Può capitare per esempio che elementi distinti tra loro possano essere aggiunti allo stesso bucket a causa della loro pronuncia fonetica simile. Nel caso medio si ottiene che questo algoritmo abbia una complessità $ \Omega(nm^2) $, dove \emph{n} rappresenta il numero di elementi e \emph{m} la lunghezza massima di un bucket, con $ m \lll n $. In Figura \ref{fig:tempo-esecuzione-algoritmo-duplicati} è stato effettuato un confronto tra la versione \virgolette{vecchia} dell'algoritmo, dove venivano effettuati tutti i confronti, e quella \virgolette{nuova}, con le ottimizzazioni attive. \upe stato utilizzato un dataset composto dall'elenco dei ristoranti di Milano proveniente da quattro diversi servizi e con un elevato numero di elementi simili ($ 81\% $). Come si può notare il nuovo algoritmo ha un incremento lineare dei tempi di esecuzione all'aumentare del numero di elementi, come ci si poteva aspettare.
 
 \begin{figure}[ht]
 	\centering
@@ -363,7 +368,7 @@ Analizzando la struttura di questo algoritmo risulta però che la complessità t
 	\caption{Tempi di esecuzione algoritmo di ricerca duplicati}\label{fig:tempo-esecuzione-algoritmo-duplicati}
 \end{figure}
 
-Si è andati ad effettuare anche un'analisi delle prestazioni dell'algoritmo. A partire da un dataset composto da 100 ristoranti, acquisito da 4 differenti servizi e composto per l'$ 81\% $ da elementi duplicati, si è verificato quali di questi elementi vengono correttamente etichettati come duplicati. Per valutare la bontà dell'algoritmo sono stati utilizzati i seguenti indicatori:
+Si è andati a effettuare anche un'analisi delle prestazioni dell'algoritmo. A partire da un dataset composto da 100 ristoranti, acquisito da 4 differenti servizi e composto per l'$ 81\% $ da elementi duplicati, si è verificato quali di questi elementi vengono correttamente etichettati come duplicati. Per valutare la bontà dell'algoritmo sono stati utilizzati i seguenti indicatori:
 
 \begin{itemize}
 	\item \textbf{Precision} Rappresenta la proporzione di documenti pertinenti fra quelli recuperati
