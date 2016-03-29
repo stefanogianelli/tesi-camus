@@ -57,7 +57,7 @@ I dati sono sintetizzati nella Tabella \ref{table:sintesi_architetturei}.
 	\end{tabularx}
 \end{table}
 
-Per CAMUS, è stato scelto sempre un sistema di tipo ibrido, ma spostando l'elaborazione del contesto, l'esecuzione delle richieste verso i servizi esterni e l'integrazione dei dati lato server, come si può osservare in Figura \ref{fig:architettura-sistema}. All'applicazione mobile vengono invece delegati i compiti di rendering dell'interfaccia grafica tramite gli schemi di mashup e l'interrogazione dei servizi di supporto per acquisire le informazioni utili ad arricchire i dati forniti dal server. Questa tecnica ha il vantaggio di ottimizzare il numero di richieste che vengono effettuate verso i servizi di supporto, limitandone il numero a quelle strettamente necessarie, che corrispondono al numero di elementi che l'utente decide di visualizzare nel dettaglio.
+Per CAMUS, è stato scelto sempre un sistema di tipo ibrido, ma spostando l'elaborazione del contesto, l'esecuzione delle richieste verso i servizi esterni e l'integrazione dei dati lato server, come si può osservare in Figura \ref{fig:architettura-sistema}. All'ap\-pli\-ca\-zio\-ne mobile vengono invece delegati i compiti di rendering dell'interfaccia grafica tramite gli schemi di mashup e l'interrogazione dei servizi di supporto per acquisire le informazioni utili ad arricchire i dati forniti dal server. Questa tecnica ha il vantaggio di ottimizzare il numero di richieste che vengono effettuate verso i servizi di supporto, limitandone il numero a quelle strettamente necessarie, che corrispondono al numero di elementi che l'utente decide di visualizzare nel dettaglio.
 
 \begin{figure}[ht]
 	\centering
@@ -198,7 +198,7 @@ Si ricorda che un \emph{contesto} è formato dalla congiunzione tra uno o più e
 	\caption{Esempio di contesto\label{fig:esempio-contesto}}
 \end{figure}
 
-Un contesto può essere dunque visto come un elenco di coppie $ {<}dimensione, valore{>} $, che rappresentano i nodi selezionati dall'utente. La ricerca delle associazioni che hanno validità nelle singole coppie avviene tramite una ricerca \emph{chiave-valore}, dove la \emph{chiave} è l'etichetta della dimensione mentre il \emph{valore} è il valore specifico assunto dalla dimensione, tra le associazioni definite nell'albero di contesto.
+Un contesto può essere dunque visto come un elenco di coppie {<}dimensione, valore{>}, che rappresentano i nodi selezionati dall'utente. La ricerca delle associazioni che hanno validità nelle singole coppie avviene tramite una ricerca \emph{chiave-valore}, dove la \emph{chiave} è l'etichetta della dimensione mentre il \emph{valore} è il valore specifico assunto dalla dimensione, tra le associazioni definite nell'albero di contesto.
 
 Questo metodo non è sempre utilizzabile: come già introdotto nella Sezione \ref{sec:associazione-servizi-cdt} esistono alcune associazioni particolari che necessitano di apposite funzioni per essere ricercate. L'elenco generato da queste funzioni viene integrato con quello prodotto dalla ricerca tramite $ {<}dimensione, valore{>} $.
 
@@ -266,7 +266,7 @@ dove \emph{SA(o)} rappresenta l'insieme dei nodi associati all'operazione \emph{
 	\caption{Esempio di assegnazione del punteggio per le operazioni primarie}\label{fig:esempio-punteggio-primari}
 \end{figure}
 
-I nodi \emph{Interest Topic} e \emph{Momento Giornata} sono di tipo \emph{filtro} mentre il nodo \emph{Località} è di tipo \emph{ranking} (come evidenziato dalla diversa forma utilizzata). I nodi foglia di colore grigio sono quelli selezionati, che corrispondono al contesto $ C = InterestTopic: Ristoranti\ \land\ Localit\acute{a}: Milano\ \land\ MomentoGiornata: Cena $. Dalla fase di ricerca vengono selezionate le operazioni dei servizi $ \{TripAdvisor, Zomato, Yelp\} $. Considerando come pesi dei nodi $ w_{FILTER} = 1 $  e $ w_{RANKING} = 4 $, viene calcolato il punteggio per ogni operazione:
+I nodi \emph{Interest Topic} e \emph{Momento Giornata} sono di tipo \emph{filtro} mentre il nodo \emph{Località} è di tipo \emph{ranking} (come evidenziato dalla diversa forma utilizzata). I nodi foglia di colore grigio sono quelli selezionati, che corrispondono al contesto $ C = InterestTopic: Ristoranti\ \land\ Localit\acute{a}: Milano\ \land\ MomentoGiornata: Cena $. Dalla fase di ricerca vengono selezionate le operazioni dei servizi $ \{TripAdvisor, Zomato,\\ Yelp\} $. Considerando come pesi dei nodi $ w_{FILTER} = 1 $  e $ w_{RANKING} = 4 $, viene calcolato il punteggio per ogni operazione:
 
 \begin{align*}
 	R_{TripAdvisor} &= \frac{1}{1} + \frac{1}{1} = 2 \\
@@ -301,7 +301,7 @@ In Figura \ref{fig:esempio-selezione-supporto} viene mostrato un contesto di ese
 	\caption{Esempio di selezione delle operazioni di supporto}\label{fig:esempio-selezione-supporto}
 \end{figure}
 
-I nodi attivi sono evidenziati in grigio ed equivalgono al contesto $ C = TipologiaMezzo: Bus\ \land\ Localit\acute{a}: Milano $. Per le operazioni \emph{ATM} e \emph{ATAC} vengono definite due associazioni, mentre per le operazioni \emph{FS\footnote{Ferrovie dello Stato: \url{http://www.trenitalia.com/}}} e \emph{Baltour\footnote{Tour operator di bus su tutta Italia: \url{www.baltour.it}}} viene effettuata una singola associazione. La fase di ricerca restituisce le operazioni \emph{ATM} con conteggio pari a due e le operazioni \emph{ATAC} e \emph{Baltour} entrambe con conteggio pari a uno. Le operazioni che hanno un valore del conteggio pari al numero minimo di associazioni sono \emph{ATM} e \emph{Baltour}. Alla fine verrà selezionata solamente l'operazione relativa al servizio \emph{ATM}, in quanto possiede il valore massimo del conteggio. Come si può notare, quest'ultimo filtro permette di selezionare le operazioni che hanno una maggiore rilevanza per il contesto corrente, escludendo le operazioni che forniscono risultati meno precisi.
+I nodi attivi sono evidenziati in grigio ed equivalgono al contesto $ C = Tipologia\\Mezzo: Bus\ \land\ Localit\acute{a}: Milano $. Per le operazioni \emph{ATM} e \emph{ATAC} vengono definite due associazioni, mentre per le operazioni \emph{FS\footnote{Ferrovie dello Stato: \url{http://www.trenitalia.com/}}} e \emph{Baltour\footnote{Tour operator di bus su tutta Italia: \url{www.baltour.it}}} viene effettuata una singola associazione. La fase di ricerca restituisce le operazioni \emph{ATM} con conteggio pari a due e le operazioni \emph{ATAC} e \emph{Baltour} entrambe con conteggio pari a uno. Le operazioni che hanno un valore del conteggio pari al numero minimo di associazioni sono \emph{ATM} e \emph{Baltour}. Alla fine verrà selezionata solamente l'operazione relativa al servizio \emph{ATM}, in quanto possiede il valore massimo del conteggio. Come si può notare, quest'ultimo filtro permette di selezionare le operazioni che hanno una maggiore rilevanza per il contesto corrente, escludendo le operazioni che forniscono risultati meno precisi.
 
 \section{Integrazione dei dati\label{(sec:integrazione-dati)}}
 

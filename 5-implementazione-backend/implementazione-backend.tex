@@ -136,7 +136,7 @@ Nel Listato \ref{lst:esempio-descrittore-servizio} viene mostrato un esempio di 
 
 \subsection{Operazioni\label{sec:descrittore-operazioni}}
 
-Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazione viene descritta dai seguenti campi:
+Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'o\-pe\-ra\-zio\-ne viene descritta dai seguenti campi:
 
 \begin{itemize}
 	\item \textbf{Name}
@@ -154,9 +154,9 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'operazi
 	\item \textbf{Bridge Name}
 	Questo campo è opzionale, definisce il nome del bridge con la logica necessaria per invocare il servizio. \upe obbligatorio il suo utilizzo quando per il servizio viene utilizzato il protocollo \emph{custom}
 	\item \textbf{Parameters}
-	Definisce l'elenco dei parametri accettati in ingresso dall'operazione. Per ulteriori dettagli su questo oggetto si fa riferimento alla Sezione \ref{sec:descrittore-parametri}
+	Definisce l'elenco dei parametri accettati in ingresso dall'o\-pe\-ra\-zio\-ne. Per ulteriori dettagli su questo oggetto si fa riferimento alla Sezione \ref{sec:descrittore-parametri}
 	\item \textbf{Headers}
-	Permette di specificare gli attributi da aggiungere all'header della richiesta. Vengono utilizzati i campi \virgolette{name} per specificare il nome dell'attributo e \virgolette{value} per specificarne il valore
+	Permette di specificare gli attributi da aggiungere all'header della richiesta. Vengono utilizzati i campi \virgolette{name} per specificare il nome dell'at\-tri\-bu\-to e \virgolette{value} per specificarne il valore
 	\item \textbf{Response Mapping}
 	Serve per definire le regole di associazione per mappare la risposta del servizio coi termini semantici utilizzati dal sistema. Maggiori dettagli su questo oggetto vengono discussi nella Sezione \ref{sec:descrittore-risposta}
 	\item \textbf{Pagination}
@@ -193,7 +193,7 @@ In quest'oggetto vengono definiti i parametri in ingresso di un'operazione. I pa
 	\item \textbf{Mapping Term}
 	Definisce uno o più termini semantici da associare al parametro. Questi termini vengono utilizzati a run-time per andare ad acquisire il valore del parametro dalle risposte ricevute dai servizi primari
 	\item \textbf{Translate}
-	Permette delle semplici trasformazioni dei valori acquisiti dall'albero di contesto per renderli conformi a quelli accettati dal servizio. \upe formato dai campi \virgolette{from} e \virgolette{to}, che specificano rispettivamente il valore di \emph{origine} e quello \emph{tradotto}. Vengono definite tante traduzioni quanti sono i valori che può assumere il rispettivo nodo del CDT
+	Permette delle semplici trasformazioni dei valori acquisiti dall'al\-be\-ro di contesto per renderli conformi a quelli accettati dal servizio. \upe formato dai campi \virgolette{from} e \virgolette{to}, che specificano rispettivamente il valore di \emph{origine} e quello \emph{tradotto}. Vengono definite tante traduzioni quanti sono i valori che può assumere il rispettivo nodo del CDT
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-descrittore-parametro} viene mostrato un esempio di parametro.
@@ -288,7 +288,7 @@ Di seguito viene presentata una descrizione dettagliata delle entità che compon
 	\item \textbf{Pagination}
 	Specifica quali sono gli attributi della risposta usati per gestire la paginazione dei risultati
 	\item \textbf{Header}
-	Questa entità definisce gli attributi che devono essere aggiunti all'header di un richiesta. \upe formato dal \virgolette{nome} del campo e il \virgolette{valore} da associargli
+	Questa entità definisce gli attributi che devono essere aggiunti all'he\-a\-der di un richiesta. \upe formato dal \virgolette{nome} del campo e il \virgolette{valore} da associargli
 	\item \textbf{Response}
 	\upe l'entità che descrive il formato della risposta ricevuta e definisce come mappare gli attributi che la compongono con i termini semantici. A questa entità vengono associati diversi \emph{Item}, che specificano i termini semantici da associare agli attributi della risposta. Inoltre è possibile associare delle funzioni che agiscono sui termini per effettuare delle semplici traduzioni 
 	\item \textbf{Item}
@@ -309,7 +309,7 @@ Di seguito viene presentata una descrizione dettagliata delle entità che compon
 	Questa entità viene utilizzata per acquisire lo schema di \emph{Mashup Globale} nel caso in cui a un utente non è stato creato uno schema specifico
 \end{itemize}
 
-Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'implementazione. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
+Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
 
 In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
 
@@ -524,7 +524,7 @@ Il primo passo riguarda la selezione dei simboli da utilizzare nella query. Verr
 	\item \textbf{Parametro obbligatorio}
 	In questo caso deve per forza essere associato un valore. Se non è presente nessuna associazione nè con il CDT nè con i termini semantici verrà utilizzato il valore predefinito. Se non è stato definito nemmeno un valore predefinito verrà lanciata un'eccezione, in quanto il servizio senza un parametro obbligatorio non è utilizzabile
 	\item \textbf{Parametro facoltativo}
-	In questo caso viene cercato prima un valore nell'albero di contesto o tra i termini semantici e, se trovata una corrispondenza, il rispettivo valore viene acquisito e il parametro entrerà a far parte della query
+	In questo caso viene cercato prima un valore nell'al\-be\-ro di contesto o tra i termini semantici e, se trovata una corrispondenza, il rispettivo valore viene acquisito e il parametro entrerà a far parte della query
 \end{enumerate}
 
 Durante la ricerca dei valori nell'albero di contesto viene anche eseguita la traduzione del valore, se necessario. Se vengono trovate più di una corrispondenza, i valori sono concatenati assieme e divisi tramite il separatore definito nel descrittore. Una volta acquisiti i valori vengono composti assieme, tramite i vari simboli, a formare la seconda parte dell'indirizzo.
@@ -597,7 +597,7 @@ Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio 
 
 Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo SHA1\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono a un utente vengono restituiti un \emph{token}, utilizzato per mantenere aperta la sessione, e il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'app con le informazioni personali.
 
-Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richiesta per effettuare l'autenticazione dell'utente.
+Nel Listato \ref{lst:esempio-richiesta-login} viene mostrato un esempio di richiesta per effettuare l'au\-ten\-ti\-ca\-zio\-ne dell'utente.
 
 \begin{listing}[H]
 	\inputminted{text}{5-implementazione-backend/Codice/esempio_richiesta_login.graphql}
@@ -739,7 +739,7 @@ Per configurare agilmente determinati parametri del sistema, vengono sfruttate l
 
 \begin{enumerate}
 	\item \textbf{Variabili d'ambiente}
-	Vengono inizialmente considerate le variabili d'ambiente
+	Vengono inizialmente considerate le variabili d'am\-bien\-te
 	\item \textbf{File di configurazione}
 	Il valore viene acquisito dal file di configurazione
 	\item \textbf{Valore predefinito}

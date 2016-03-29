@@ -182,7 +182,7 @@ Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizza
 \upe l'acronimo di \emph{Simple Object Access Protocol} e fornisce un framework per lo scambio di messaggi.  Utilizza come formato di risposta XML e nella maggior parte dei casi si appoggia al protocollo HTTP come livello di trasporto. Vengono scambiate delle \emph{buste}, che contengono le informazioni su come interrogare il servizio e come sono rappresentate le risposte. L'architettura SOAP viene distinta per tre caratteristiche principali:
 
 \begin{enumerate}
-	\item \textbf{Estensibilità} Le funzionalità di base possono essere ampliate attraverso l'utilizzo di estensioni
+	\item \textbf{Estensibilità} Le funzionalità di base possono essere ampliate attraverso l'u\-ti\-liz\-zo di estensioni
 	\item \textbf{Neutralità} Non dipende da nessun protocollo di comunicazione in particolare. Quello più utilizzato è HTTP, ma esistono delle implementazioni per SMTP, TCP, UDP o JMS per citarne alcuni
 	\item \textbf{Indipendenza} Può essere utilizzato da diversi linguaggi di programmazione
 \end{enumerate}
@@ -219,22 +219,23 @@ Applicando i principi REST alle API dei servizi web si ottengono quelle che veng
 	\item Utilizzano dei link come referenza dello stato
 \end{itemize}
 
-Solitamente a una URI può essere associata una funzione diversa in base al verbo con la quale viene chiamata, come si può notare nell'esempio in Tabella \ref{table:esempio-rest-api}.
+Solitamente a una URI viene associata una funzione diversa in base al verbo con la quale viene chiamata, in modo da distinguere l'operazione che si vuole eseguire sull'elemento o collezione. Per esempio, eseguire una \virgolette{GET} su di un'elemento permette di recuperarne le informazioni mentre eseguire una \virgolette{PUT} crea un nuovo elemento.
+%, come si può notare nell'esempio in Tabella \ref{table:esempio-rest-api}.
 
-\begin{table}[ht]
-	\caption{Esempio RESTful API}
-	\label{table:esempio-rest-api}
-	\noindent\makebox[\textwidth]{%
-	\begin{tabularx}{1.3\textwidth}{lXXXX}
-		\toprule
-		\thead{Risorsa} & \thead{GET} & \thead{PUT} & \thead{POST} & \thead{DELETE} \\
-		\midrule
-		\url{http://api.example.com/resources/} & \textbf{Elenca} le URI insieme a eventuali altri dettagli sulla collezione & \textbf{Sostituisce} la collezione con un'altra & \textbf{Aggiunge} un nuovo elemento alla collezione. L'URI viene generato automaticamente e restituito dall'operazione & \textbf{Elimina} l'intera collezione \\
-		\hline
-		\url{http://api.example.com/resources/item17} & \textbf{Restituisce} una rappresentazione dell'oggetto, espresso con un particolare \emph{media type} & \textbf{Sostituisce} l'elemento della collezione o, se non esiste, ne crea uno nuovo & \textbf{Crea} un nuovo elemento & \textbf{Rimuove} l'elemento dalla collezione \\
-		\bottomrule
-	\end{tabularx}}
-\end{table}
+%\begin{table}[ht]
+%	\caption{Esempio RESTful API}
+%	\label{table:esempio-rest-api}
+%	\noindent\makebox[\textwidth]{%
+%	\begin{tabularx}{1.3\textwidth}{lXXXX}
+%		\toprule
+%		\thead{Risorsa} & \thead{GET} & \thead{PUT} & \thead{POST} & \thead{DELETE} \\
+%		\midrule
+%		\url{http://api.example.com/resources/} & \textbf{Elenca} le URI insieme a eventuali altri dettagli sulla collezione & \textbf{Sostituisce} la collezione con un'altra & \textbf{Aggiunge} un nuovo elemento alla collezione. L'URI viene generato automaticamente e restituito dall'operazione & \textbf{Elimina} l'intera collezione \\
+%		\hline
+%		\url{http://api.example.com/resources/item17} & \textbf{Restituisce} una rappresentazione dell'oggetto, espresso con un particolare \emph{media type} & \textbf{Sostituisce} l'elemento della collezione o, se non esiste, ne crea uno nuovo & \textbf{Crea} un nuovo elemento & \textbf{Rimuove} l'elemento dalla collezione \\
+%		\bottomrule
+%	\end{tabularx}}
+%\end{table}
 
 \section{Tecnologie utilizzate per il backend\label{sec:tecnologie-backend-background}}
 
@@ -380,7 +381,7 @@ Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologi
 	\item \textbf{Action} Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}.
 \end{enumerate} 
 
-Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'architettura funzionale simile, presenta alcune semplificazioni:
+Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'ar\-chi\-tet\-tu\-ra funzionale simile, presenta alcune semplificazioni:
 \begin{itemize}
 	\item Non è necessario implementare il \emph{Dispatcher}, componente che è già fornito dalla libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}
 	\item Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di Alt
