@@ -359,11 +359,11 @@ Gli strumenti di sviluppo \emph{cross-platform} solitamente si basano sul princi
 \begin{enumerate}
 	\item \textbf{Rendering tramite componenti nativi}
 	In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
-	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire una migliore esperienza d'uso per l'utente. Anche per quanto riguarda altri strumenti come React Native o Native Script\footnote{Native Script: \url{https://www.nativescript.org/}} che utilizzano JavaScript viene riproposto lo stesso principio compositivo.
+	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire una migliore esperienza d'uso per l'utente. Anche per quanto riguarda altri strumenti come React Native o Native Script\footnote{Native Script: \url{https://www.nativescript.org/}} che utilizzano JavaScript viene riproposto lo stesso principio compositivo
 	\item \textbf{Rendering tramite WebView}
 	In questo caso la costruzione della maggior parte dell'applicazione è svolta utilizzando una \emph{Web View}, cioè viene mostrata una pagina web all'interno di un contenitore nativo.
 	In questo caso è possibile programmare l'applicazione come se fosse una pagina web, implementandolo allo stesso modo di un sito web per browser. Nonostante si tratti di un'implementazione non molto legata alla logica nativa, è possibile in alcuni casi permettere un'interazione dell'applicazione con i sensori del dispositivo.
-	Questo modello offre un'infinità di possibilità implementative a livello grafico e una elevata capacità di adattamento a diversi dispositivi, tuttavia le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa.
+	Questo modello offre un'infinità di possibilità implementative a livello grafico e una elevata capacità di adattamento a diversi dispositivi, tuttavia le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa
 \end{enumerate}
 
 Per la creazione di CAMUS si è scelto di utilizzare anche lato \emph{frontend} degli strumenti che siano implementabili in maniera semplice e dove la suddivisione in moduli singoli riutilizzabili assuma un ruolo di primo piano. Per questo motivo si è scelto di utilizzare degli strumenti tecnologici che sono all'avanguardia nello svolgere questo compito, come React e la sua derivazione per la programmazione mobile React Native. Successivamente è introdotta la parte logica dell'applicazione con il funzionamento architetturale dell'aggiornamento dati, con il paradigma Flux.
@@ -423,7 +423,7 @@ Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologi
 	Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}.
 \end{enumerate} 
 
-Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'ar\-chi\-tet\-tu\-ra funzionale simile, presenta alcune semplificazioni:
+Nell'applicazione è stato scelto di utilizzare la libreria \emph{Alt.js}\footnote{Alt.JS: \url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'ar\-chi\-tet\-tu\-ra funzionale simile, presenta alcune semplificazioni:
 
 \begin{itemize}
 	\item
@@ -505,7 +505,7 @@ Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Develop
 
 \subsection*{Karma}
 
-Karma\footnote{Karma : \url{http://usc-isi-i2.github.io/karma/}} è uno strumento di integrazione dati sviluppato dalla University of Southern California, che permette agli utenti di creare rapidamente e facilmente una nuova rappresentazione dei dati  da diverse fonti, come database, web API e documenti di diversa natura (XML, JSON, KML, ecc.). Gli utenti possono integrare le informazioni modellandole tramite un'ontologia di loro scelta. Questa attività viene svolta interamente tramite un'interfaccia grafica, in modo da semplificare il processo. 
+Karma\footnote{Karma: \url{http://usc-isi-i2.github.io/karma/}} è uno strumento di integrazione dati sviluppato dalla University of Southern California, che permette agli utenti di creare rapidamente e facilmente una nuova rappresentazione dei dati  da diverse fonti, come database, web API e documenti di diversa natura (XML, JSON, KML, ecc.). Gli utenti possono integrare le informazioni modellandole tramite un'ontologia di loro scelta. Questa attività viene svolta interamente tramite un'interfaccia grafica, in modo da semplificare il processo. 
 Dopo questa operazione è possibile interagire con il sistema per correggere il modello generato in modo automatico ed è possibile trasformare i dati per normalizzarli. Una volta che il modello è completo, gli utenti possono pubblicare i nuovi dati come RDF o salvarli su un database.
 Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti:
 
