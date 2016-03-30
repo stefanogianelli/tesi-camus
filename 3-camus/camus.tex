@@ -20,13 +20,20 @@ L'obiettivo principale del progetto CAMUS è definire la metodologia con la qual
 Per la creazione del framework sono state rispettate le seguenti linee guida:
 
 \begin{itemize}
-	\item \textbf{Creazione visuale} Questo punto è relativo alla modalità di realizzazione delle app. Si vuole ideare un sistema che permetta la composizione dell'interfaccia grafica interamente in modo visuale, senza la necessità di scrivere codice
-	\item \textbf{Contestualità} Si vuole sfruttare il contesto dell'utente per comprendere quali siano le sue esigenze e mostrargli così le informazioni maggiormente pertinenti alla situazione. In questo modo è possibile utilizzare anche diverse fonti per acquisire dati più precisi e variegati, che verranno filtrati adeguatamente in modo da mostrare le informazioni più rilevanti e nascondere quelle che porterebbero solamente a una maggior confusione
-	\item \textbf{Semplicità} Ogni operazione deve essere facile, in modo che anche persone non pratiche di informatica possano creare delle app CAMUS. Qualsiasi attività di creazione e modifica viene dunque effettuata tramite un'interfaccia grafica, in modo da aiutare l'utente nella composizione dell'applicazione. Inoltre sono stati scelti dei modelli concettuali semplici, di facile comprensione ma sufficientemente potenti da creare schemi di una certa complessità
-	\item \textbf{Automazione} Si vuole far ripetere all'utente il minor numero di azioni possibile; in quest'ottica vengono sfruttati i sensori disponibili sui dispositivi per acquisire in maniera automatica determinate informazioni, sgravando l'utente da questo compito
-	\item \textbf{Uniformità dell'accesso ai dati} Il framework non prevede l'interfacciamento con un database per il recupero delle informazioni, bensì i dati vengono acquisiti tramite l'utilizzo dei \emph{servizi}. Questa soluzione rende più flessibile l'accesso ai dati, in quanto viene fornita un'interfaccia comune per servizi sia interni, cioè gestiti direttamente dal creatore dell'app, sia esterni, cioè mantenuti da terzi. Inoltre apre la strada all'utilizzo dei servizi di supporto, che forniscono dati complementari che arricchiscono le informazioni finali
-	\item \textbf{Personalizzazione} Una delle principali caratteristiche del framework è la possibilità di modificare l'aspetto dell'app in modo intuitivo. Viene dunque agevolata la personalizzazione dell'interfaccia grafica non solo in base alla situazione di utilizzo ma anche tenendo conto del profilo dell'utente. Ogni utilizzatore dell'app può così avere una visualizzazione delle informazioni adatta alle sue esigenze, cosicché si possa concentrare esclusivamente sulla fruizione dei contenuti. Verrà dunque preferito uno schema flessibile che permetta la generazione dinamica delle schermate da mostrare all'utente e soprattutto verrà privilegiato un metodo semplice e visuale per la creazione di questi schemi
-	\item \textbf{Universalità} CAMUS deve essere utilizzabile in ambiti diversi. Si vuole realizzare un modello che sia valido e in grado di essere applicato in contesti anche molto diversi tra loro. Per questo motivo il framework non viene costruito con elementi specifici di un determinato settore, proprio per evitare perdite di generalità
+	\item \textbf{Creazione visuale}
+	Questo punto è relativo alla modalità di realizzazione delle app. Si vuole ideare un sistema che permetta la composizione dell'interfaccia grafica interamente in modo visuale, senza la necessità di scrivere codice
+	\item \textbf{Contestualità}
+	Si vuole sfruttare il contesto dell'utente per comprendere quali siano le sue esigenze e mostrargli così le informazioni maggiormente pertinenti alla situazione. In questo modo è possibile utilizzare anche diverse fonti per acquisire dati più precisi e variegati, che verranno filtrati adeguatamente in modo da mostrare le informazioni più rilevanti e nascondere quelle che porterebbero solamente a una maggior confusione
+	\item \textbf{Semplicità}
+	Ogni operazione deve essere facile, in modo che anche persone non pratiche di informatica possano creare delle app CAMUS. Qualsiasi attività di creazione e modifica viene dunque effettuata tramite un'interfaccia grafica, in modo da aiutare l'utente nella composizione dell'applicazione. Inoltre sono stati scelti dei modelli concettuali semplici, di facile comprensione ma sufficientemente potenti da creare schemi di una certa complessità
+	\item \textbf{Automazione}
+	Si vuole far ripetere all'utente il minor numero di azioni possibile; in quest'ottica vengono sfruttati i sensori disponibili sui dispositivi per acquisire in maniera automatica determinate informazioni, sgravando l'utente da questo compito
+	\item \textbf{Uniformità dell'accesso ai dati}
+	Il framework non prevede l'interfacciamento con un database per il recupero delle informazioni, bensì i dati vengono acquisiti tramite l'utilizzo dei \emph{servizi}. Questa soluzione rende più flessibile l'accesso ai dati, in quanto viene fornita un'interfaccia comune per servizi sia interni, cioè gestiti direttamente dal creatore dell'app, sia esterni, cioè mantenuti da terzi. Inoltre apre la strada all'utilizzo dei servizi di supporto, che forniscono dati complementari che arricchiscono le informazioni finali
+	\item \textbf{Personalizzazione}
+	Una delle principali caratteristiche del framework è la possibilità di modificare l'aspetto dell'app in modo intuitivo. Viene dunque agevolata la personalizzazione dell'interfaccia grafica non solo in base alla situazione di utilizzo ma anche tenendo conto del profilo dell'utente. Ogni utilizzatore dell'app può così avere una visualizzazione delle informazioni adatta alle sue esigenze, cosicché si possa concentrare esclusivamente sulla fruizione dei contenuti. Verrà dunque preferito uno schema flessibile che permetta la generazione dinamica delle schermate da mostrare all'utente e soprattutto verrà privilegiato un metodo semplice e visuale per la creazione di questi schemi
+	\item \textbf{Universalità}
+	CAMUS deve essere utilizzabile in ambiti diversi. Si vuole realizzare un modello che sia valido e in grado di essere applicato in contesti anche molto diversi tra loro. Per questo motivo il framework non viene costruito con elementi specifici di un determinato settore, proprio per evitare perdite di generalità
 \end{itemize}
 
 \section{Integrazione del contesto con i mashup\label{sec:integrazione-contesto-mashup}}
@@ -38,9 +45,12 @@ Rispetto al paradigma di composizione presentato nella Sezione \ref{sec:mobile-m
 Un'altra parte del framework viene dunque dedicata all'integrazione dei dati. \upe in questa attività che entra in gioco il \emph{contesto}. Grazie alle informazioni sulla situazione nella quale si trova l'utente, è possibile selezionare \emph{quali} sono i servizi che forniscono i migliori risultati e, una volta acquisiti i dati, possono fornire le informazioni necessarie per assegnare un \emph{punteggio} ai vari elementi, in modo da portare in primo piano quelli più rilevanti. Quest'attività viene divisa in tre parti principali:
 
 \begin{enumerate}
-	\item \textbf{Selezione dei servizi} Vengono selezionati, grazie alle informazioni di contesto, i servizi che sono più idonei per la situazione corrente
-	\item \textbf{Acquisizione dei dati} Vengono interrogati i servizi scelti per acquisire i dati
-	\item \textbf{Integrazione delle informazioni} I dati ricevuti dai vari servizi vengono integrati in modo da formare un unico dataset. Quest'operazione prevede tre fasi: \emph{i)} trasformazione delle risposte in una rappresentazione comune; \emph{ii)} fusione degli elementi duplicati; \emph{iii)} assegnamento di un punteggio agli elementi, tenendo conto delle informazioni fornite dal contesto
+	\item \textbf{Selezione dei servizi}
+	Vengono selezionati, grazie alle informazioni di contesto, i servizi che sono più idonei per la situazione corrente
+	\item \textbf{Acquisizione dei dati}
+	Vengono interrogati i servizi scelti per acquisire i dati
+	\item \textbf{Integrazione delle informazioni}
+	I dati ricevuti dai vari servizi vengono integrati in modo da formare un unico dataset. Quest'operazione prevede tre fasi: \emph{i)} trasformazione delle risposte in una rappresentazione comune; \emph{ii)} fusione degli elementi duplicati; \emph{iii)} assegnamento di un punteggio agli elementi, tenendo conto delle informazioni fornite dal contesto
 \end{enumerate}
 
 \section{Utilizzo dei servizi\label{sec:utilizzo-servizi}}
@@ -48,9 +58,12 @@ Un'altra parte del framework viene dunque dedicata all'integrazione dei dati. \u
 Uno dei punti chiave del framework, seguendo la filosofia dei mashup, è di non essere limitati a una singola fonte per l'acquisizione dei dati, bensì si vuole essere in grado di recuperare le informazioni da diverse sorgenti. In questo modo è possibile ottenere diversi vantaggi, come l'acquisizione di una maggiore quantità di risultati, ottenere informazioni più complete, ecc. Presenta però anche degli svantaggi: avere molti dati a disposizione può essere dispersivo ed esiste il rischio di ottenere entità ridondanti. Per fornire un'elevata flessibilità, il framework prevede il disaccoppiamento della logica di accesso ai dati: per l'acquisizione delle informazioni viene fornita un'unica interfaccia, rappresentata dai \emph{servizi}. Questo metodo permette di avere una descrizione unica sul come recuperare i dati, indipendentemente dal fornitore che li mette a disposizione. L'utilizzo dei servizi porta i seguenti vantaggi:
 
 \begin{itemize}
-	\item \textbf{Varietà}	L'utilizzo di un'interfaccia generica per l'accesso ai dati favorisce l'acquisizione di informazioni da fonti diverse. In questo modo è possibile ottenere dei dataset più ampi
-	\item \textbf{Integrabilità} Ogni servizio restituisce i dati secondo una propria rappresentazione. Avere un unico metodo di accesso ai dati permette anche di descrivere come queste informazioni vengano trattate una volta ricevute. Questo passaggio permette di uniformare le rappresentazioni fornite in ingresso, in modo tale che siano trasformate in una forma più idonea per le future elaborazioni
-	\item \textbf{Completezza} Acquisendo informazioni da diverse fonti è possibile ottenere degli elementi duplicati. Questa caratteristica potrebbe sembrare un difetto mentre in realtà fornisce una risorsa molto importante: la possibilità di ottenere degli elementi più completi. Diverse fonti possono essere utilizzate per acquisire informazioni di entità diversa, in modo da generare un elemento descritto in maniera più precisa e che colga maggiori aspetti
+	\item \textbf{Varietà}
+	L'utilizzo di un'interfaccia generica per l'accesso ai dati favorisce l'acquisizione di informazioni da fonti diverse. In questo modo è possibile ottenere dei dataset più ampi
+	\item \textbf{Integrabilità}
+	Ogni servizio restituisce i dati secondo una propria rappresentazione. Avere un unico metodo di accesso ai dati permette anche di descrivere come queste informazioni vengano trattate una volta ricevute. Questo passaggio permette di uniformare le rappresentazioni fornite in ingresso, in modo tale che siano trasformate in una forma più idonea per le future elaborazioni
+	\item \textbf{Completezza}
+	Acquisendo informazioni da diverse fonti è possibile ottenere degli elementi duplicati. Questa caratteristica potrebbe sembrare un difetto mentre in realtà fornisce una risorsa molto importante: la possibilità di ottenere degli elementi più completi. Diverse fonti possono essere utilizzate per acquisire informazioni di entità diversa, in modo da generare un elemento descritto in maniera più precisa e che colga maggiori aspetti
 \end{itemize}
 
 Questa scelta permette inoltre di dividere l'acquisizione dei dati in due passaggi: \emph{i)} acquisizione delle informazioni principali; \emph{ii)} acquisizione di dati che vanno ad arricchire le informazioni principali. 

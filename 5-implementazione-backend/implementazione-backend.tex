@@ -707,31 +707,23 @@ Nelle successive sottosezioni verranno analizzate nel dettaglio ognuna delle pre
 
 \subsection*{Acquisizione dei dati primari}
 
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_servizi_primari.png}
+	\caption{Flusso di richiesta dei risultati primari\label{fig:flusso-servizi-primari}}
+\end{figure}
+
 Questa fase viene eseguita una volta terminata la creazione del \emph{CDT decorato}. In Figura \ref{fig:flusso-servizi-primari} viene mostrato il diagramma di flusso che mostra come viene gestita una richiesta.
 
 La prima attività che viene svolta riguarda il controllo, come nel passaggio precedente, se la richiesta era già stata gestita in passato. Se si tratta di una nuova richiesta, l'attività viene svolta dai componenti che fanno parte del blocco \virgolette{Primary Service} nella Figura \ref{fig:flusso-nuova-richiesta}. Il primo componente che viene eseguito è il \emph{Primary Service Selection}, che si occupa di selezionare le operazioni che sono più idonee al contesto fornito dall'utente. Prodotto l'elenco entra in gioco il \emph{Query Handler}, che ha un duplice compito: il primo, con l'ausilio di uno o più \emph{Bridge}, è l'invocazione dei servizi prescelti mentre il secondo è l'acquisizione delle relative risposte. Una volta ricevute le risposte provvede a trasformarle nel formato interno, tramite le funzioni messe a disposizione dal \emph{Response Parser}. Tutte le risposte ricevute vengono infine unite a formare un'unica lista e restituite per essere ulteriormente elaborate dal \emph{Response Aggregator}, che effettua un'attività di rimozione dei duplicati. L'elenco dei risultati identificato verrà dunque salvato per un periodo di tempo in cache in modo da poter essere riutilizzato per richieste future.
 
 L'altra eventualità si verifica quando la risposta è presente in cache. Questo caso ha una gestione un po' più complessa rispetto al precedente perché viene considerata anche la paginazione dei risultati. La prima verifica riguarda la disponibilità di informazioni da restituire al client. Se la quantità di dati contenuti in cache è sufficiente a evadere la richiesta viene subito restituita la porzione di informazioni richiesta. Altrimenti viene effettuata una nuova richiesta verso i servizi che hanno ulteriori dati da mostrare. La regola di ricaricamento dei dati è la stessa descritta nella Sezione \ref{sec:session-helper}. Qualsiasi casistica termina sempre con l'aggiornamento dello stato nella cache, in quanto vengono sia salvati l'elenco dei risultati sia il numero di elementi che il client ha già richiesto. Il processo termina una volta che tutti i servizi non ha più dati da mostrare. In quel caso il client verrà informato del fatto che non sono più disponibili ulteriori pagine.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_servizi_primari.png}
-	\caption{Flusso di richiesta dei risultati primari\label{fig:flusso-servizi-primari}}
-\end{figure}
-
 \subsection*{Acquisizione dei servizi di supporto}
 
 Questa attività incomincia una volta creato il \emph{CDT decorato} e opera parallelamente all'acquisizione dei servizi primari. Coinvolge unicamente il componente \emph{Support Service Selection}, che si occupa di selezionare i servizi di supporto o gli intent richiesti dal client. In ingresso viene fornita la \emph{categoria} dei servizi che si vuole selezionare in base al contesto fornito.
 
 Una volta selezionati incomincia la fase di composizione degli URL necessarie per interrogare il servizio o richiamare l'intent specifico.
-
-In Figura \ref{fig:flusso-servizi-supporto} viene mostrato il semplice flusso delle attività svolte dal \emph{Support Service Selection}.
-	
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.3\textwidth]{5-implementazione-backend/Immagini/diagramma_flusso_servizi_supporto.png}
-	\caption{Flusso di richiesta dei risultati di supporto\label{fig:flusso-servizi-supporto}}
-\end{figure}
 
 \section{File di configurazione\label{sec:file-configurazione}}
 

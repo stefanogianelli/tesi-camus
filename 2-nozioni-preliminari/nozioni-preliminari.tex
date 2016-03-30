@@ -23,7 +23,7 @@ In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/esempio_cdt.png}
-	\caption{Context Dimension Tree}\label{fig:context-dimension-tree}
+	\caption[Context Dimension Tree]{Context Dimension Tree (Fonte: \virgolette{CARVE: context-aware automatic view de nition over relational databases}, 2013)}\label{fig:context-dimension-tree}
 \end{figure}
 
 Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. Nell'esempio in Figura \ref{fig:context-dimension-tree}, le \emph{dimensioni principali} sono il \emph{ruolo} dell'utente, l'\emph{interfaccia} tramite la quale accede ai dati, l'\emph{interest topic} e la \emph{posizione} in cui si trova. Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. Per esempio, l'interest topic \virgolette{ordine} può essere analizzato in base allo \emph{stato} in cui si trova oppure in base alla sua \emph{tipologia}.
@@ -72,7 +72,7 @@ Infine, dopo aver discusso del modello e di come vengono rappresentati i vari co
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/configuration-based-mapping.png}
-	\caption{Configuration-based mapping}\label{fig:configuration-based-mapping}
+	\caption[Configuration-based mapping]{Configuration-based mapping (Fonte: \virgolette{And what can context do for data?}, 2009)}\label{fig:configuration-based-mapping}
 \end{figure}
 
 La strategia \emph{configuration-based mapping} prevede che il designer definisca per ogni contesto possibile la relativa porzione del dataset da mostrare. Questa operazione può essere effettuata definendo delle viste nel linguaggio specifico del database adottato. In Figura \ref{fig:configuration-based-mapping} viene mostrato un esempio per il contesto nel quale un manager è interessato alle informazioni relative le sue agenzie. In questo caso il designer specifica delle viste in linguaggio SQL relative al contesto specifico, mettendo in evidenza i dati del personale che lavora nelle agenzie gestite dal manager, i contratti di affitto e vendita e infine le informazioni relative alle proprietà.
@@ -82,7 +82,7 @@ Questa strategia ha il vantaggio di generare delle viste molto precise rispetto 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/value-based-mapping.png}
-	\caption{Value-based mapping}\label{fig:value-based-mapping}
+	\caption[Value-based mapping]{Value-based mapping (Fonte: \virgolette{And what can context do for data?}, 2009)}\label{fig:value-based-mapping}
 \end{figure}
 
 La strategia \emph{value-based mapping} permette di superare i limiti evidenziati per la strategia precedente. Questa strategia prevede che il designer definisca le viste parziali relative a un particolare elemento del contesto, indipendentemente dagli altri. Quindi, una volta selezionato un contesto, un algoritmo si occuperà di combinare assieme le varie viste parziali definite dai singoli elementi per formare la vista globale adatta allo specifico contesto. La Figura \ref{fig:value-based-mapping} mostra come il contesto dell'esempio precedente viene mappato tramite questa strategia. Le linee tratteggiate mostrano le viste parziali che vengono associate ai vari elementi del contesto, mentre nel riquadro in basso viene mostrata la vista globale generata dalla combinazione delle viste parziali. L'algoritmo di composizione delle view parziali è basato sull'utilizzo di diverse policy e operatori di composizione, tra i quali i più utilizzati sono \emph{double union}, \emph{double intersection} e \emph{double difference} \cite{DBLP:conf/er/BolchiniQR07}.
@@ -97,6 +97,7 @@ Inizialmente la composizione era limitata all'utilizzo per la realizzazione rapi
 
 Molto diffuse in questa prima fase sono state le applicazioni che offrivano integrazione con mappe geografiche, come \emph{HousingMaps} \footnote{Housing Maps: \url{http://www.housingmaps.com}}, che combinava le informazioni tra Google Maps, per quanto riguarda ovviamente le mappe, e Craiglist, un portale che ospita annunci di diversa tipologia (es.: lavoro, incontri, ecc.).
 %Altri esempi sono le mappe interattive che è possibile creare a partire da Google Maps o servizi simili; in questi casi viene arricchita la mappa con altre informazioni, a esempio traffico, dati demografici o altri dati. 
+
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/potholes_service.jpg}
@@ -112,14 +113,19 @@ La crescita esponenziale della quantità di informazioni presente nel web, con i
 %Tra le diverse tipologie di mashups elencate in \cite{picozziTesiDottorato}, per quanto riguarda il progetto CAMUS, ci si soffermerà principalmente sui \emph{mobile mashups}.
 
 \subsection{Classificazione dei mashup\label{sec:mashup-classification}}
+
 I mashup possono essere distinti in diverse tipologie, a prescindere dalla piattaforma sulla quale vengono utilizzati.
 In questo caso, la classificazione è basata soprattutto alla metodologia con la quale vengono integrate le diverse risorse che compongono i mashup. Vengono definite tre macro famiglie:
+
 \begin{enumerate}
-	\item \textbf{Consumer Mashups} Sono i mashup che combinano elementi visuali e dati da diverse fonti. Un ottimo esempio può essere considerato Housing Maps citato nella Sezione \ref{sec:mashup}, dove vengono integrati i dati provenienti da Craigslist e mostrati sulla mappa creata sfruttando le API di Google Maps
-	\item \textbf{Data Mashups} Sono mashup che combinano più risorse di dati in una singola applicazione. Questa tipologia di mashup viene invece sfruttata per realizzare molte applicazioni, anche in settori di utilizzo diversi tra loro.
+	\item \textbf{Consumer Mashups}
+	Sono i mashup che combinano elementi visuali e dati da diverse fonti. Un ottimo esempio può essere considerato Housing Maps citato nella Sezione \ref{sec:mashup}, dove vengono integrati i dati provenienti da Craigslist e mostrati sulla mappa creata sfruttando le API di Google Maps
+	\item \textbf{Data Mashups}
+	Sono mashup che combinano più risorse di dati in una singola applicazione. Questa tipologia di mashup viene invece sfruttata per realizzare molte applicazioni, anche in settori di utilizzo diversi tra loro.
 	Nell'ambito dei viaggi, un esempio viene fornito da Kayak \footnote{Kayak : \url{http://www.kayak.com}}, che è un sito di ricerca dei viaggi che acquisisce dati da oltre 100 siti diversi. Inoltre non vende direttamente i contenuti ai fornitori, ma si propone come un portale attraverso il quale i clienti possono essere dirottati verso le agenzie viaggi per completare la procedura di acquisto o specificare alcune esigenze particolari.
 	Un altro ambito completamente differente riguarda Facile.it \footnote{Facile.it : \url{http://www.facile.it}}, che permette di confrontare diverse offerte per quanto riguarda diversi settori (es.: assicurazioni, mutui, linee telefoniche, ecc.), permettendo di visualizzarli in unico portale e valutare la proposta migliore per le esigenze dell'utente
-	\item \textbf{Business Mashups} I business mashups sono utili per quanto riguarda l'integrazione di servizi business, permettendo di sviluppare più facilmente servizi integrati e, di conseguenza, semplificare l'utilizzo all'utente attraverso interfacce web. Si differiscono dai \emph{consumer mashup} a livello di integrazione con i sistemi business, perché sono necessarie funzionalità aggiuntive, riguardanti sicurezza, controllo di accesso, governance e complessità degli editor utilizzati. Un'altra differenza è data dall'utilizzo crescente di business mashups nei modelli software as a service (SaaS), dove un produttore sviluppa e gestisce un'applicazione web che mette a disposizione dei propri clienti via internet, come servizio cloud.
+	\item \textbf{Business Mashups}
+	I business mashups sono utili per quanto riguarda l'in\-te\-gra\-zio\-ne di servizi business, permettendo di sviluppare più facilmente servizi integrati e, di conseguenza, semplificare l'utilizzo all'utente attraverso interfacce web. Si differiscono dai \emph{consumer mashup} a livello di integrazione con i sistemi business, perché sono necessarie funzionalità aggiuntive, riguardanti sicurezza, controllo di accesso, governance e complessità degli editor utilizzati. Un'altra differenza è data dall'utilizzo crescente di business mashups nei modelli software as a service (SaaS), dove un produttore sviluppa e gestisce un'applicazione web che mette a disposizione dei propri clienti via internet, come servizio cloud.
 \end{enumerate}
 
 \subsection{Mobile Mashup\label{sec:mobile-mashup}}
@@ -132,20 +138,26 @@ Spesso i mashup di questo tipo sono costruiti utilizzando un'applicazione di \em
 In CAMUS è stata adottata la metodologia descritta in \cite{Cappiello:2015:UAE:2788341.2735632}, che pone al centro l'interfaccia utente per integrare i dati: durante la creazione delle view dell'applicazione è possibile vedere in modo immediato il risultato del visual mapping. In questo approccio si sono volute seguire le linee dettate dalla filosofia di Model-Driven Engineering (MDE) \cite{schmidt2006model}, che permettono di generalizzare la creazione degli schemi dell'applicazione, e delegare l'interpretazione di tali schemi nelle differenti piattaforme. Così è possibile creare applicazioni \emph{cross platform}, che, pur basandosi su uno schema comune, possono essere istanziate su diversi sistemi operativi. 
 
 \subsection{Funzionamento generale\label{sec:mashup-operations}}
+
 Generalmente le piattaforme di sviluppo dei mashup prevedono due differenti partecipanti, spesso separati fisicamente:
+
 \begin{enumerate}
-	\item \textbf{Content Providers} Questi sono i fornitori dei contenuti che verranno utilizzati nell'applicazione di mashup, spesso dei più disparati generi e tipi.
+	\item \textbf{Content Providers}
+	Questi sono i fornitori dei contenuti che verranno utilizzati nell'applicazione di mashup, spesso dei più disparati generi e tipi.
 	Le risorse dalle quali è possibile ottenere contenuti sono:
 	\begin{itemize}
-		\item \textbf{API} fornite da alcuni provider di contenuti (es. Google, Facebook, Twitter, Amazon)\\
-		Una API permette di creare un mashup basato sul web fornendo un punto di accesso a una funzionalità o a un contenuto (es.: Google Maps).
-		Le API possono essere di due tipi:
+		\item \textbf{API}
+		Vengono fornite da alcuni provider di contenuti (es. Google, Facebook, Twitter, Amazon). Una API permette di creare un mashup basato sul web fornendo un punto di accesso a una funzionalità o a un contenuto (es.: Google Maps). Le API possono essere di due tipi:
 		\begin{enumerate}
-			\item \emph{Proprietarie} Richiedono la stipulazione di un contratto di licenza che comprende spesso il pagamento di una quota per poter usufruire del servizio
-			\item \emph{Free} Non richiedono il pagamento di nessuna licenza; tuttavia, in alcuni casi, possono esserci limitazioni nel numero di chiamate che l'applicazione finale può fare verso il provider
+			\item \emph{Proprietarie}
+			Richiedono la stipulazione di un contratto di licenza che comprende spesso il pagamento di una quota per poter usufruire del servizio
+			\item \emph{Free}
+			Non richiedono il pagamento di nessuna licenza; tuttavia, in alcuni casi, possono esserci limitazioni nel numero di chiamate che l'applicazione finale può fare verso il provider
 		\end{enumerate} 
-		\item \textbf{Information Feed} Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio sono i news feed in formato RSS utilizzati dalle agenzie di stampa come Reuters\footnote{Reuters: \url{http://it.reuters.com/}} o Ansa\footnote{Ansa: \url{http://www.ansa.it/}} per inviare le notizie alle altre testate giornalistiche
-		\item \textbf{Documenti HTML, XML/JSON} I formati HTML, XML e JSON sono standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping} e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, a ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
+		\item \textbf{Information Feed}
+		Gli Information Feed sono informazioni formattate secondo specifiche prestabilite, spesso utilizzate per distribuire notizie in tempo reale. Un esempio sono i news feed in formato RSS utilizzati dalle agenzie di stampa come Reuters\footnote{Reuters: \url{http://it.reuters.com/}} o Ansa\footnote{Ansa: \url{http://www.ansa.it/}} per inviare le notizie alle altre testate giornalistiche
+		\item \textbf{Documenti HTML, XML/JSON}
+		I formati HTML, XML e JSON sono standard per il trasferimento di dati attraverso Internet. Dopo averli analizzati, gli utenti possono creare dei mashup a partire dai dati generati dai siti web. Questo tipo di operazione è detta \emph{scraping} e, a differenza di API e Information Feed, è necessaria una conoscenza approfondita dei linguaggi di programmazione e, inoltre, a ogni variazione nello schema dei dati nel sito web originale, il codice scritto per lo scraping può non essere più valido
 	\end{itemize} 
 	\item \textbf{Web Mashup}
 	Il Web Mashup è l'applicazione finale resa disponibile online. Questa viene spesso generata utilizzando codice di tipo client-side, cioè eseguito sul client, (es.: JavaScript), con tecnologie di caricamento dei dati dinamiche come Ajax, che permette di evitare di ricaricare l'intera pagina se una parte di essa subisce delle modifiche. Non è tuttavia escluso l'utilizzo di codice server-side
@@ -154,8 +166,10 @@ Generalmente le piattaforme di sviluppo dei mashup prevedono due differenti part
 Le informazioni grezze ottenute direttamente dai servizi esterni non è detto che siano già pronte per essere visualizzate nel mashup finale. Esse necessitano di trasformazioni per poter migliorare e integrare i diversi dati ricevuti. Come esposto in \cite{caio2011tesi} queste operazioni possono essere definite mediante template visuali, i quali offrono una rappresentazione dei dati come saranno mostrati nell'applicazione finale. Nel caso di applicazioni sui contenuti si hanno generalmente due schermate: una mostra tutti i risultati provenienti dai diversi servizi, l'altra invece mostra i dettagli dell'elemento selezionato. Le operazioni sui dati da svolgere sono due:
 
 \begin{enumerate}
-	\item \textbf{Union} L'operazione di union ha lo scopo di definire l'unione di tutti gli elementi che provengono dai diversi servizi, cercando indicare ridondanze e quindi fondere le istanze che si riferiscono a una stessa entità
-	\item \textbf{Merge} L'operazione di merge permette di mostrare tutti i dettagli di una istanza selezionata nelle viste di unione. In questo modo i dati provenienti da più servizi ma relativi all'entità selezionata, vengono mostrati nella stessa schermata. Questa operazione è eseguita durante la composizione del mashup, associando gli attributi forniti dai vari servizi a campi visuali di un template. i campi al servizio corrispondente
+	\item \textbf{Union}
+	L'operazione di union ha lo scopo di definire l'unione di tutti gli elementi che provengono dai diversi servizi, cercando indicare ridondanze e quindi fondere le istanze che si riferiscono a una stessa entità
+	\item \textbf{Merge}
+	L'operazione di merge permette di mostrare tutti i dettagli di una istanza selezionata nelle viste di unione. In questo modo i dati provenienti da più servizi ma relativi all'entità selezionata, vengono mostrati nella stessa schermata. Questa operazione è eseguita durante la composizione del mashup, associando gli attributi forniti dai vari servizi a campi visuali di un template. i campi al servizio corrispondente
 \end{enumerate}
 
 \begin{figure}[ht]
@@ -182,9 +196,12 @@ Di seguito vengono analizzate alcune tra le tecnologie e paradigmi più utilizza
 \upe l'acronimo di \emph{Simple Object Access Protocol} e fornisce un framework per lo scambio di messaggi.  Utilizza come formato di risposta XML e nella maggior parte dei casi si appoggia al protocollo HTTP come livello di trasporto. Vengono scambiate delle \emph{buste}, che contengono le informazioni su come interrogare il servizio e come sono rappresentate le risposte. L'architettura SOAP viene distinta per tre caratteristiche principali:
 
 \begin{enumerate}
-	\item \textbf{Estensibilità} Le funzionalità di base possono essere ampliate attraverso l'u\-ti\-liz\-zo di estensioni
-	\item \textbf{Neutralità} Non dipende da nessun protocollo di comunicazione in particolare. Quello più utilizzato è HTTP, ma esistono delle implementazioni per SMTP, TCP, UDP o JMS per citarne alcuni
-	\item \textbf{Indipendenza} Può essere utilizzato da diversi linguaggi di programmazione
+	\item \textbf{Estensibilità}
+	Le funzionalità di base possono essere ampliate attraverso l'u\-ti\-liz\-zo di estensioni
+	\item \textbf{Neutralità}
+	Non dipende da nessun protocollo di comunicazione in particolare. Quello più utilizzato è HTTP, ma esistono delle implementazioni per SMTP, TCP, UDP o JMS per citarne alcuni
+	\item \textbf{Indipendenza}
+	Può essere utilizzato da diversi linguaggi di programmazione
 \end{enumerate}
 
 In seguito, SOAP è stato utilizzato come base per altre tecnologie legate ai web services, come il \emph{Web Services Description Language} (WSDL), che è un'interfaccia di descrizione delle funzionalità fornite dal servizio, e l'\emph{Universal Description Discovery and Integration} (UDDI), che è un registro dove è possibile ricercare i servizi.
@@ -196,27 +213,41 @@ In seguito, SOAP è stato utilizzato come base per altre tecnologie legate ai we
 I vincoli definiti dall'architettura sono:
 
 \begin{itemize}
-	\item \textbf{Client-server} C'è una separazione delle attività che devono essere eseguite sul client e sul server. Per esempio, i client non devono occuparsi della memorizzazione dei dati, che rimane interna al server, in modo da favorire la \emph{portabilità} del codice del client. Il server invece non deve preoccuparsi dell'interfaccia e dello stato dell'utente, in modo da rendere l'implementazione del server più semplice e \emph{scalabile}. Il client e il server possono essere sostituiti e sviluppati separatamente a patto che le interfacce tra di loro rimangono immutate
-	\item \textbf{Stateless} Lo stato non deve essere assolutamente salvato sul server. Ogni richieste che proviene dal client deve contenere tutte le informazioni necessarie alla sua esecuzione. Sarà compito del client mantenere memorizzato lo stato corrente. Lo stato della sessione può però essere trasferito dal server verso un ulteriore servizio di memorizzazione, per esempio un database, per un periodo di tempo limitato. Al client viene affidato il compito di decidere quando è pronto a passare a un nuovo stato
-	\item \textbf{Cacheable} Sia il client sia il server possono effettuare caching delle risposte. Le risposte devono innanzitutto definire se possono essere salvate in cache o meno, in modo da limitare le situazioni nelle quali il client utilizza informazioni non corrette o non più valide. Implementare un ottimo sistema di cache permette di ridurre il numero di interazioni tra il client e il server, migliorando la scalabilità e le performance del sistema
-	\item \textbf{Layered system} Un client non può specificare se è connesso direttamente al server di più basso livello oppure a un server intermediario. L'utilizzo di server intermediari permette di migliorare la scalabilità del sistema, tramite load balancer e cache distribuite. Possono inoltre fornire ulteriori misure di sicurezza
-	\item \textbf{Uniform interface} L'utilizzo delle \emph{uniform interface} permette di semplificare e disaccoppiare i vari componenti dell'architettura, rendendo possibile lo sviluppo indipendente delle varie parti del sistema. I quattro vincoli riguardo le \emph{uniform interface} sono:
+	\item \textbf{Client-server}
+	C'è una separazione delle attività che devono essere eseguite sul client e sul server. Per esempio, i client non devono occuparsi della memorizzazione dei dati, che rimane interna al server, in modo da favorire la \emph{portabilità} del codice del client. Il server invece non deve preoccuparsi dell'interfaccia e dello stato dell'utente, in modo da rendere l'implementazione del server più semplice e \emph{scalabile}. Il client e il server possono essere sostituiti e sviluppati separatamente a patto che le interfacce tra di loro rimangono immutate
+	\item \textbf{Stateless}
+	Lo stato non deve essere assolutamente salvato sul server. Ogni richieste che proviene dal client deve contenere tutte le informazioni necessarie alla sua esecuzione. Sarà compito del client mantenere memorizzato lo stato corrente. Lo stato della sessione può però essere trasferito dal server verso un ulteriore servizio di memorizzazione, per esempio un database, per un periodo di tempo limitato. Al client viene affidato il compito di decidere quando è pronto a passare a un nuovo stato
+	\item \textbf{Cacheable}
+	Sia il client sia il server possono effettuare caching delle risposte. Le risposte devono innanzitutto definire se possono essere salvate in cache o meno, in modo da limitare le situazioni nelle quali il client utilizza informazioni non corrette o non più valide. Implementare un ottimo sistema di cache permette di ridurre il numero di interazioni tra il client e il server, migliorando la scalabilità e le performance del sistema
+	\item \textbf{Layered system}
+	Un client non può specificare se è connesso direttamente al server di più basso livello oppure a un server intermediario. L'utilizzo di server intermediari permette di migliorare la scalabilità del sistema, tramite load balancer e cache distribuite. Possono inoltre fornire ulteriori misure di sicurezza
+	\item \textbf{Uniform interface}
+	L'utilizzo delle \emph{uniform interface} permette di semplificare e disaccoppiare i vari componenti dell'architettura, rendendo possibile lo sviluppo indipendente delle varie parti del sistema. I quattro vincoli riguardo le \emph{uniform interface} sono:
 	\begin{enumerate}
-		\item \textbf{Identificazione delle risorse} Le singole risorse vengono identificate nella richiesta tramite, per esempio, un \emph{URI}. Le risorse sono concettualmente separate dalle rappresentazioni che vengono inviate al client. Per esempio, un server può inviare dati acquisiti dal database sotto forma di file HTML, XML o JSON, che sono diversi dalla rappresentazione interna del server
-		\item \textbf{Manipolazione delle risorse tramite le rappresentazioni} Ogni rappresentazione di una risorsa che viene inviata al client deve contenere tutte le informazioni che permettano la modifica o l'eliminazione della risorsa
-		\item \textbf{Messaggi autoesplicativi} Ogni messaggio deve contenere informazioni su come trattare l'informazioni che porta con sè, tramite per esempio i \emph{media type}
-		\item \textbf{Sfruttamento dell'hypermedia (HATEOAS)} I client possono effettuare delle azioni che vengono dinamicamente messe a disposizione dal server tramite hypermedia (es.: link). A eccezione dello stato iniziale, il client conosce le attività che possono essere eseguite a partire da una data rappresentazione solamente tra quelle che espone
+		\item \textbf{Identificazione delle risorse}
+		Le singole risorse vengono identificate nella richiesta tramite, per esempio, un \emph{URI}. Le risorse sono concettualmente separate dalle rappresentazioni che vengono inviate al client. Per esempio, un server può inviare dati acquisiti dal database sotto forma di file HTML, XML o JSON, che sono diversi dalla rappresentazione interna del server
+		\item \textbf{Manipolazione delle risorse tramite le rappresentazioni}
+		Ogni rappresentazione di una risorsa che viene inviata al client deve contenere tutte le informazioni che permettano la modifica o l'eliminazione della risorsa
+		\item \textbf{Messaggi autoesplicativi}
+		Ogni messaggio deve contenere informazioni su come trattare l'informazioni che porta con sè, tramite per esempio i \emph{media type}
+		\item \textbf{Sfruttamento dell'hypermedia (HATEOAS)}
+		I client possono effettuare delle azioni che vengono dinamicamente messe a disposizione dal server tramite hypermedia (es.: link). A eccezione dello stato iniziale, il client conosce le attività che possono essere eseguite a partire da una data rappresentazione solamente tra quelle che espone
 	\end{enumerate}
 \end{itemize}
 
 Applicando i principi REST alle API dei servizi web si ottengono quelle che vengono definite \emph{RESTful API}. Le \emph{RESTful API} che sfruttano il protocollo HTTP sono definite tramite le seguenti caratteristiche:
 
 \begin{itemize}
-	\item Possiedono un URI di base
-	\item Definiscono un media type, che indica il formato della risposta, che nelle implementazioni più comuni è JSON
-	\item Utilizzano i verbi standard del protocollo HTTP (es.: OPTIONS, GET, PUT, POST e DELETE)
-	\item Mettono a disposizione dei link come referenza per passare alle risorse correlate
-	\item Utilizzano dei link come referenza dello stato
+	\item
+	Possiedono un URI di base
+	\item
+	Definiscono un media type, che indica il formato della risposta, che nelle implementazioni più comuni è JSON
+	\item
+	Utilizzano i verbi standard del protocollo HTTP (es.: OPTIONS, GET, PUT, POST e DELETE)
+	\item
+	Mettono a disposizione dei link come referenza per passare alle risorse correlate
+	\item
+	Utilizzano dei link come referenza dello stato
 \end{itemize}
 
 Solitamente a una URI viene associata una funzione diversa in base al verbo con la quale viene chiamata, in modo da distinguere l'operazione che si vuole eseguire sull'elemento o collezione. Per esempio, eseguire una \virgolette{GET} su di un'elemento permette di recuperarne le informazioni mentre eseguire una \virgolette{PUT} crea un nuovo elemento.
@@ -247,7 +278,7 @@ La logica del sistema è stata realizzata a partire da Node.js\footnote{Node.js:
 
 \subsection{MongoDB}
 
-Come database è stato scelto di utilizzare MongoDB\footnote{MongoDB: \url{https://www.mongodb.org/}}. MongoDB fa parte della categoria NoSQL, in quanto abbandona lo schema relazionale classico basato su tabelle in favore di uno basato sui documenti. Ogni documento ha una struttura simile a un file JSON, che in MongoDB viene nominato BSON. A differenza dei database relazionali che hanno uno schema ben definito a priori, in MongoDB viene preferito uno schema dinamico, cioè che varia in base alle esigenze dello sviluppatore. Questa caratteristica permette di sviluppare in maniera più semplice e rapida le applicazioni e di integrare facilmente determinate tipologie di dato. La struttura a documento prevede però un approccio differente nella fase di modellazione, in quanto applicare uno schema adatto a un sistema relazionale in MongoDB porterebbe a diverse inefficienze. Per esempio, chi è abituato a un database relazionale deve essere consapevole che in MongoDB non esiste l'operatore di JOIN, bensì viene fornita la possibilità di salvare dei sotto-documenti all'interno di un documento. Per esempio, se si vuole memorizzare un libro che ha più autori è possibile salvare l'elenco degli autori, insieme a eventuali altri suoi dati, all'interno del documento contenente le informazioni del libro\footnote{Questo è solo un esempio indicativo, non è una soluzione ottima in quanto un autore può pubblicare più di un libro e utilizzando questo schema si otterrebbe duplicazione delle informazioni}. Un'altra caratteristica di MongoDB è la flessibilità nella composizione delle query: possono essere specificate sui campi, su un range di valori o tramite un'espressione regolare. Sono sempre ammesse proiezioni degli attributi che si vogliono visualizzare nei risultati. Sempre per interrogare i dati si possono utilizzare funzioni \emph{MapReduce} e di \emph{aggregazione}. In particolare quest'ultima permette di ottenere un risultato simile all'operatore GROUP BY dei database SQL, ma fornisce inoltre la flessibilità di concatenare più operazioni per formare una \emph{pipeline}. Mette a disposizione anche il comando \emph{\$lookup} per effettuare un'unione tra documenti diversi, al fine di simulare un'operazione di JOIN. MongoDB permette di definire degli \emph{indici} sui campi che vengono utilizzati di frequente nelle query per velocizzarne l'esecuzione. Una caratteristica che rende MongoDB estremamente scalabile è la possibilità di eseguire multiple istanze su macchine diverse, permettendo al sistema di scalare orizzontalmente. Sarà compito di MongoDB gestire le chiamate e selezionare il nodo dove effettuare la richiesta, tramite un sistema di load-balancing. Questa caratteristica viene agevolata dalla struttura del file system utilizzato da MongoDB, chiamato \emph{Grid File System}, che gestisce la divisione dei documenti in diversi \virgolette{pezzi}. Oltre al load-balancing, che viene utilizzato per migliorare le prestazioni, è possibile anche utilizzare altre macchine come \emph{repliche}, in modo da garantire la sicurezza dei dati nel caso di guasti.
+Come database è stato scelto di utilizzare MongoDB\footnote{MongoDB: \url{https://www.mongodb.org/}}. MongoDB fa parte della categoria NoSQL, in quanto abbandona lo schema relazionale classico basato su tabelle in favore di uno basato sui documenti. Ogni documento ha una struttura simile a un file JSON, che in MongoDB viene nominato BSON. A differenza dei database relazionali che hanno uno schema ben definito a priori, in MongoDB viene preferito uno schema dinamico, cioè che varia in base alle esigenze dello sviluppatore. Questa caratteristica permette di sviluppare in maniera più semplice e rapida le applicazioni e di integrare facilmente determinate tipologie di dato. La struttura a documento prevede però un approccio differente nella fase di modellazione, in quanto applicare uno schema adatto a un sistema relazionale in MongoDB porterebbe a diverse inefficienze. Per esempio, chi è abituato a un database relazionale deve essere consapevole che in MongoDB non esiste l'operatore di JOIN, bensì viene fornita la possibilità di salvare dei sotto-documenti all'interno di un documento. Per esempio, se si vuole memorizzare un libro che ha più autori è possibile salvare l'elenco degli autori, insieme a eventuali altri suoi dati, all'interno del documento contenente le informazioni del libro\footnote{Questo è solo un esempio indicativo, non è una soluzione ottima in quanto un autore può pubblicare più di un libro e utilizzando questo schema si otterrebbe duplicazione delle informazioni.}. Un'altra caratteristica di MongoDB è la flessibilità nella composizione delle query: possono essere specificate sui campi, su un range di valori o tramite un'espressione regolare. Sono sempre ammesse proiezioni degli attributi che si vogliono visualizzare nei risultati. Sempre per interrogare i dati si possono utilizzare funzioni \emph{MapReduce} e di \emph{aggregazione}. In particolare quest'ultima permette di ottenere un risultato simile all'operatore GROUP BY dei database SQL, ma fornisce inoltre la flessibilità di concatenare più operazioni per formare una \emph{pipeline}. Mette a disposizione anche il comando \emph{\$lookup} per effettuare un'unione tra documenti diversi, al fine di simulare un'operazione di JOIN. MongoDB permette di definire degli \emph{indici} sui campi che vengono utilizzati di frequente nelle query per velocizzarne l'esecuzione. Una caratteristica che rende MongoDB estremamente scalabile è la possibilità di eseguire multiple istanze su macchine diverse, permettendo al sistema di scalare orizzontalmente. Sarà compito di MongoDB gestire le chiamate e selezionare il nodo dove effettuare la richiesta, tramite un sistema di load-balancing. Questa caratteristica viene agevolata dalla struttura del file system utilizzato da MongoDB, chiamato \emph{Grid File System}, che gestisce la divisione dei documenti in diversi \virgolette{pezzi}. Oltre al load-balancing, che viene utilizzato per migliorare le prestazioni, è possibile anche utilizzare altre macchine come \emph{repliche}, in modo da garantire la sicurezza dei dati nel caso di guasti.
 
 Il fatto che MongoDB memorizzi i file in un formato dalla struttura molto simile a un JSON agevola l'integrazione con Node.js, che a sua volta utilizza oggetti semplicemente convertibili in formato JSON.
 
@@ -262,23 +293,28 @@ Oltre a un database che garantisse la persistenza dei dati più importanti, si �
 Alla base di \emph{GraphQL} ci sono i seguenti principi:
 
 \begin{itemize}
-	\item \textbf{Gerarchico} Una buona parte dei prodotti sviluppati implica la creazione e manipolazione di view gerarchiche. Per mantenere coerenza con la struttura delle applicazioni, le query \emph{GraphQL} sono esse stesse strutturate gerarchicamente. La query viene plasmata esattamente come i dati che deve restituire. \upe un metodo naturale per permettere ai client di descrivere i vincoli sui dati
-	\item \textbf{Basato sul prodotto} \emph{GraphQL} è stato creato tenendo ben presenti i requisiti delle view e del come gli sviluppatori di front-end li esplicitano
-	\item \textbf{Tipizzato} Ogni server \emph{GraphQL} definisce il proprio schema specifico per l'applicazione in uso. Le query vengono eseguite a partire dal contesto definito da questo schema. Inoltre vengono effettuati dei controlli al fine di verificare che la query sia sintatticamente corretta e valida  prima di essere eseguita
-	\item \textbf{Query definite dal client} Negli schemi viene inoltre definito il formato della risposta, compresa la tipologia di ogni dato. Sarà poi il client a specificare esattamente quali sono le informazioni che gli interessano. Rispetto ad altri approcci, dove è il server a decidere quali dati restituire ai client, in \emph{GraphQL} invece vengono restituiti solamente i dati che vengono richiesti e nulla di più
-	\item \textbf{Introspettivo} Qualsiasi schema \emph{GraphQL} può essere interrogato tramite query. In questo modo è possibile conoscere la struttura globale dello schema, così come le query che sono permesse e quali dati possono essere richiesti. Queste introspezioni vengono utilizzate da vari tool per avere una visione completa dello schema che viene esposto dal server
+	\item \textbf{Gerarchico}
+	Una buona parte dei prodotti sviluppati implica la creazione e manipolazione di view gerarchiche. Per mantenere coerenza con la struttura delle applicazioni, le query \emph{GraphQL} sono esse stesse strutturate gerarchicamente. La query viene plasmata esattamente come i dati che deve restituire. \upe un metodo naturale per permettere ai client di descrivere i vincoli sui dati
+	\item \textbf{Basato sul prodotto}
+	\emph{GraphQL} è stato creato tenendo ben presenti i requisiti delle view e del come gli sviluppatori di front-end li esplicitano
+	\item \textbf{Tipizzato}
+	Ogni server \emph{GraphQL} definisce il proprio schema specifico per l'applicazione in uso. Le query vengono eseguite a partire dal contesto definito da questo schema. Inoltre vengono effettuati dei controlli al fine di verificare che la query sia sintatticamente corretta e valida  prima di essere eseguita
+	\item \textbf{Query definite dal client}
+	Negli schemi viene inoltre definito il formato della risposta, compresa la tipologia di ogni dato. Sarà poi il client a specificare esattamente quali sono le informazioni che gli interessano. Rispetto ad altri approcci, dove è il server a decidere quali dati restituire ai client, in \emph{GraphQL} invece vengono restituiti solamente i dati che vengono richiesti e nulla di più
+	\item \textbf{Introspettivo}
+	Qualsiasi schema \emph{GraphQL} può essere interrogato tramite query. In questo modo è possibile conoscere la struttura globale dello schema, così come le query che sono permesse e quali dati possono essere richiesti. Queste introspezioni vengono utilizzate da vari tool per avere una visione completa dello schema che viene esposto dal server
 \end{itemize}
 
 \begin{figure}[ht]
-	\begin{minipage}[t]{0.5\textwidth}
+	\begin{minipage}[t]{0.49\textwidth}
 		\begin{listing}[H]
 			\inputminted{text}{2-nozioni-preliminari/Codice/esempio_query_graphql.graphql}
-			\caption{Esempio di query GraphQL}
+			\caption{Esempio query GraphQL}
 			\label{lst:esempio-query-graphql}
 		\end{listing}
 	\end{minipage}%
 	\hspace{2mm}%
-	\begin{minipage}[t]{0.5\textwidth}
+	\begin{minipage}[t]{0.49\textwidth}
 		\begin{listing}[H]
 			\inputminted{json}{2-nozioni-preliminari/Codice/esempio_risposta_graphql.json}
 			\caption{Esempio di risposta}
@@ -292,16 +328,16 @@ Nel Listato \ref{lst:esempio-query-graphql} viene riportato un semplice esempio 
 \emph{GraphQL} fornisce inoltre un'altra funzionalità estremamente utile: le \emph{connessioni}. Una \emph{connessione} permette a un oggetto di definire i legami che ha con altri oggetti, anche di tipo diverso dal proprio. In questo modo è possibile richiedere direttamente le informazioni riguardo altri oggetti tramite un'unica query; questa caratteristica non è presente nei sistemi REST e permette di ottenere un netto miglioramento delle performance. Infatti nei sistemi REST, per richiedere le rappresentazioni correlate sono necessarie \emph{n} query, dove \emph{n} è il numero di risorse da richiedere. Con GraphQL invece è sufficiente una sola richiesta, nella quale viene specificato che si è interessati anche alle altre risorse. Inoltre, GraphQL mette a disposizione per ogni connessione la \emph{paginazione} dei risultati, ossia la possibilità di richiedere un determinato numero di elementi a ogni richiesta. A ogni oggetto viene automaticamente associato un \emph{token} che lo identifica univocamente: in questo modo è possibile chiedere ulteriori elementi in una seconda query, specificando il \emph{token} dell'oggetto dal quale si desidera partire.
 
 \begin{figure}[ht]
-	\hspace*{-1.5cm}
-	\begin{minipage}[t]{0.58\textwidth}
+	\hspace*{-1.2cm}
+	\begin{minipage}[t]{0.55\textwidth}
 		\begin{listing}[H]
 			\inputminted{text}{2-nozioni-preliminari/Codice/esempio_connessione_graphql.graphql}
-			\caption{Esempio di connessione GraphQL}
+			\caption{Esempio connessione GraphQL}
 			\label{lst:esempio-connessione-graphql}
 		\end{listing}
 	\end{minipage}%
 	\hspace{2mm}%
-	\begin{minipage}[t]{0.58\textwidth}
+	\begin{minipage}[t]{0.55\textwidth}
 		\begin{listing}[H]
 			\inputminted{json}{2-nozioni-preliminari/Codice/esempio_risposta_connessione_graphql.json}
 			\caption{Esempio di risposta}
@@ -321,9 +357,11 @@ Gli strumenti di sviluppo \emph{cross-platform} solitamente si basano sul princi
 \upe possibile identificare due famiglie di strumenti per la programmazione multi piattaforma:
 
 \begin{enumerate}
-	\item \textbf{Rendering tramite componenti nativi} In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
+	\item \textbf{Rendering tramite componenti nativi}
+	In questa famiglia il rendering dell'applicazione viene fatto utilizzando le API grafiche native del sistema operativo di destinazione.
 	Al fine di ottenere ciò è necessario implementare una traduzione in codice nativo a partire dal linguaggio utilizzato per programmare. Ad esempio in Xamarin si programma utilizzando C\# per programmare sia in Android che in iOS ed è possibile effettuare \emph{Linking} con le librerie di sistema dei due sistemi operativi e fornire una migliore esperienza d'uso per l'utente. Anche per quanto riguarda altri strumenti come React Native o Native Script\footnote{Native Script: \url{https://www.nativescript.org/}} che utilizzano JavaScript viene riproposto lo stesso principio compositivo.
-	\item \textbf{Rendering tramite WebView} In questo caso la costruzione della maggior parte dell'applicazione è svolta utilizzando una \emph{Web View}, cioè viene mostrata una pagina web all'interno di un contenitore nativo.
+	\item \textbf{Rendering tramite WebView}
+	In questo caso la costruzione della maggior parte dell'applicazione è svolta utilizzando una \emph{Web View}, cioè viene mostrata una pagina web all'interno di un contenitore nativo.
 	In questo caso è possibile programmare l'applicazione come se fosse una pagina web, implementandolo allo stesso modo di un sito web per browser. Nonostante si tratti di un'implementazione non molto legata alla logica nativa, è possibile in alcuni casi permettere un'interazione dell'applicazione con i sensori del dispositivo.
 	Questo modello offre un'infinità di possibilità implementative a livello grafico e una elevata capacità di adattamento a diversi dispositivi, tuttavia le prestazioni possono risentire del fatto che si stia interagendo con una pagina web e non con una applicazione nativa.
 \end{enumerate}
@@ -335,18 +373,19 @@ Per la creazione di CAMUS si è scelto di utilizzare anche lato \emph{frontend} 
 React\footnote{React:\url{https://facebook.github.io/react/}} nasce come libreria open-source rilasciata nel 2013 da Facebook, che permette di ottimizzare le visualizzazioni delle pagine HTML, utilizzando componentine racchiudono altri specificati come HTML tag personalizzati.
 Essa proviene da XHP\footnote{XHP: \url{http://facebook.github.io/xhp-lib/}}, che è un framework HTML per il linguaggio PHP creato sempre in Facebook per gestire tutta la logica del social network. L'impiego di \emph{React} è stato inizialmente nel newsfeed di \emph Facebook nel 2011 e più tardi nel sito web di Instagram.
 Le principali funzionalità in React sono le seguenti:
+
 \begin{itemize}
 	\item \textbf{Virtual DOM}
 	React crea una propria struttura dati in memoria, che calcola le differenze risultanti e aggiorna il DOM HTML risultante nella pagina in modo efficiente. In questo modo il programmatore può scrivere codice come se l'intera pagina è ricaricata ogni volta, mentre il motore React a stabilire quali siano i componenti che è necessario sostituire e quali no
-	
 	\item \textbf{JSX}
 	I componenti React utilizzano JSX\footnote{JSX: \url{https://jsx.github.io/}}, un linguaggio basato su JavaScript che introduce la tipizzazione delle variabili e un sistema di classi ben definito come in Java. Inoltre porta ottimizzazioni a livello di compilazione permettendo all'applicazione di essere più performante rispetto a normale codice JavaScript. \upe comunque possibile scrivere la propria applicazione utilizzando JavaScript, con un metodo che permette la conversione in codice JSX
-	
-	\item \textbf{One-way data flow} Le proprietà, un set di valori immutabili, sono passati al componente figlio all'interno del suo tag HTML.Il componente figlio non può modificare direttamente nessuna proprietà che gli è stata passata, ma può passare funzioni che possono modificare il valore. 
+	\item \textbf{One-way data flow}
+	Le proprietà, un set di valori immutabili, sono passati al componente figlio all'interno del suo tag HTML.Il componente figlio non può modificare direttamente nessuna proprietà che gli è stata passata, ma può passare funzioni che possono modificare il valore. 
 	L'unidirezionalità del flusso dati viene specificata nell'architettura Flow, che verrà spiegata nella Sezione \ref{sec:flux}
 \end{itemize}
 
 \subsection{React Native}\label{sec:react-native}
+
 React Native\footnote{React Native: \url{https://facebook.github.io/react-native/}} è una libreria open-source rilasciata nel 2015 sempre da Facebook, proponendosi come implementazione del framework React per quanto riguarda le applicazioni mobile.
 Le principali differenze con React sono dovute alla difficoltà maggiore di sviluppare un framework per le applicazioni mobile. 
 Quando si sviluppa sul web, semplicemente si salvano i file modificati e si ricarica la pagina, cosa che non è possibile fare con le applicazioni mobile, perché è necessaria una nuova compilazione per vedere i cambiamenti apportati.
@@ -369,8 +408,10 @@ Flux\footnote{Flux: \url{https://facebook.github.io/flux/}} è un pattern archit
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/flux.png}
 	\caption{Flusso dati unidirezionale Flux}\label{fig:flux}
 \end{figure}
+
 Si tratta fondamentalmente di una modifica del pattern MVC (Model View Controller), al quale vengono effettuate alcune modifiche.
-Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologie di componenti principali: 
+Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologie di componenti principali:
+
 \begin{enumerate}
 	\item \textbf{Dispatcher}
 	Il \emph{Dispatcher} è l'hub centrale che controlla tutto il flusso dei dati dell'applicazione. \upe essenzialmente un registro di callback alle \emph{Store} e possiede un meccanismo semplice per distribuire le \emph{Action} verso le \emph{Store}. Man mano che l'applicazione cresce di dimensioni, il \emph{Dispatcher} assume un'importanza sempre maggiore, perché può essere sfruttato per gestire le dipendenze tra le \emph{Store} invocando le callback registrate in un ordine specifico, talvolta anche attendendo la conclusione dell'aggiornamento delle altre \emph{Store} 
@@ -378,15 +419,21 @@ Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologi
 	Le \emph{Store} contengono lo stato dell'applicazione e la logica, e il loro ruolo è molto simile al modello nel pattern MVC, ma in Flux hanno il compito di modellare lo stato per un particolare dominio all'interno dell'applicazione
 	\item \textbf{View}
 	L'implementazione delle view proposta da React si sposa perfettamente con quella necessaria per Flux. Si tratta di un misto tra la view e il controller in MVC, perché permette al codice di ricevere i dati dalle store e passare questi dati direttamente ai discendenti per creare ogni singola sezione della pagina. Quando riceve un evento dalle \emph{store}, richiede i nuovi dati attraverso i \emph{getter} delle \emph{store}, per poi aggiornare il proprio stato interno e renderizzarlo a cascata utilizzando tutti i sottocomponenti.
-	\item \textbf{Action} Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}.
+	\item \textbf{Action}
+	Con il termine \emph{Action} si intende il payload di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}.
 \end{enumerate} 
 
 Nell'applicazione è stato scelto di utilizzare la libreria \textbf{Alt.js}\footnote{Alt.JS :\url{http://alt.js.org/}} una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'ar\-chi\-tet\-tu\-ra funzionale simile, presenta alcune semplificazioni:
+
 \begin{itemize}
-	\item Non è necessario implementare il \emph{Dispatcher}, componente che è già fornito dalla libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}
-	\item Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di Alt
-	\item Nelle \emph{Store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le \emph{Actions} corrispondenti
-	\item Il posizionamento delle operazioni preliminari al salvataggio dei dati è indifferente se sia nelle \emph{Actions} o nelle \emph{Stores} e può essere svolto prima o dopo l'operazione di dispatch di Alt, perché come spiegato nel punto precedente \emph{Actions} e \emph{Stores}
+	\item
+	Non è necessario implementare il \emph{Dispatcher}, componente che è già fornito dalla libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}
+	\item
+	Le actions sono molto simili a quelle definite da Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di Alt
+	\item
+	Nelle \emph{Store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le \emph{Actions} corrispondenti
+	\item
+	Il posizionamento delle operazioni preliminari al salvataggio dei dati è indifferente se sia nelle \emph{Actions} o nelle \emph{Stores} e può essere svolto prima o dopo l'operazione di dispatch di Alt, perché come spiegato nel punto precedente \emph{Actions} e \emph{Stores}
 \end{itemize}
 
 \section{Stato dell'arte\label{sec:stato-arte}}
@@ -399,9 +446,12 @@ Swagger \footnote{Swagger: \url{http://swagger.io}} è uno dei servizi più famo
 Lo scopo di Swagger è di definire un'interfaccia standard e indipendente dal linguaggio utilizzato per le diverse API al fine di permettere la scoperta e la comprensione delle risorse di un servizio, senza accedere ai suoi parametri tecnici (es.: codice sorgente, documentazione o ispezione del traffico di rete). Una volta definiti i servizi via Swagger, un consumatore può interagire con il servizio remoto implementando una minima parte di logica.
 Swagger è quindi, tecnicamente parlando, una specifica formale supportata da un grande ecosistema di strumenti aggiuntivi, che comprende interfacce utente frontend, librerie di codice a basso livello e soluzioni commerciali per gestire le API.
 Per poter descrivere la propria API con Swagger ci sono diversi approcci disponibili:
+
 \begin{itemize}
-	\item \textbf{Top-down} L'approccio top-down considera per prima la definizione del servizio che si vuole avere come output e successivamente genera l'applicazione. Per la prima operazione lo strumento fornito è lo \emph{Swagger Editor} (Figura \ref{fig:swagger}), che permette la definizione del nuovo servizio, mentre per la seconda operazione lo strumento utilizzato è \emph{Swagger Codegen}
-	\item \textbf{Bottom-up} Nel caso in cui si ha una già API REST esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso si utilizzi uno dei framework supportati (es.: JAX-RS, Node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
+	\item \textbf{Top-down}
+	L'approccio top-down considera per prima la definizione del servizio che si vuole avere come output e successivamente genera l'applicazione. Per la prima operazione lo strumento fornito è lo \emph{Swagger Editor} (Figura \ref{fig:swagger}), che permette la definizione del nuovo servizio, mentre per la seconda operazione lo strumento utilizzato è \emph{Swagger Codegen}
+	\item \textbf{Bottom-up}
+	Nel caso in cui si ha una già API REST esistente e si vuole creare una nuova definizione si usa un approccio bottom-up. \upe possibile creare la definizione manualmente utilizzando lo \emph{Swagger Editor} oppure, nel caso si utilizzi uno dei framework supportati (es.: JAX-RS, Node.js, ecc.), è possibile generare in modo automatico la definizione Swagger
 \end{itemize}
 
 \begin{figure}[ht]
@@ -419,13 +469,16 @@ Nel caso in cui si utilizzi una API e se ne voglia integrare un'altra che già p
 \end{figure}
 
 Nell'esempio in Figura \ref{fig:swagger-petstore} è presente una descrizione del servizio che è possibile generare con Swagger. In questo caso si tratta di un interfaccia di tipo REST con le operazioni CRUD, spiegate nel dettaglio in \ref{sec:web-services} e gli endpoint che è possibile invocare.
+
 \subsection*{Appery.io}
 
 Appery.io è uno strumento basato sul cloud che offre la possibilità di velocizzare lo sviluppo di applicazioni mobile e responsive. Ha due funzionalità principali: la costruzione di applicazioni mobile in maniera rapida e l'offerta di un servizio di Mobile Backend as a service (MBaaS).
 Con il servizio di App Builder, è possibile creare applicazioni per dispositivi mobili che possono girare sui sistemi operativi più diffusi come iOS, Android e Windows Phone, a partire da un unica implementazione logica.
-\upe possibile creare applicazioni di due tipi: 
+\upe possibile creare applicazioni di due tipi:
+
 \begin{enumerate}
-	\item \textbf{Hybrid Apps} Creare applicazioni ibride che utilizzano API comuni e indipendenti dal sistema operativo, che girano in modo coerente su iOS, Android e Windows Phone, integrando il supporto per i framework più diffusi come Apache Cordova (precedentemente conosciuto come PhoneGap), Ionic e jQuery Mobile. In questo modo è possibile fornire all'applicazione le potenzialità delle applicazioni completamente native, senza la necessità di imparare diversi linguaggi nativi. Si possono sfruttare inoltre tutti i plug-in disponibili per i vari framework, per implementare funzionalità più avanzate rispetto a quelle fornite dal framework stesso
+	\item \textbf{Hybrid Apps}
+	Creare applicazioni ibride che utilizzano API comuni e indipendenti dal sistema operativo, che girano in modo coerente su iOS, Android e Windows Phone, integrando il supporto per i framework più diffusi come Apache Cordova (precedentemente conosciuto come PhoneGap), Ionic e jQuery Mobile. In questo modo è possibile fornire all'applicazione le potenzialità delle applicazioni completamente native, senza la necessità di imparare diversi linguaggi nativi. Si possono sfruttare inoltre tutti i plug-in disponibili per i vari framework, per implementare funzionalità più avanzate rispetto a quelle fornite dal framework stesso
 	\item \textbf{Responsive Web Apps}
 	Con il supporto a Bootstrap, il framework UI per le interfacce di tipo responsive, è possibile creare applicazioni web che adattano la modalità con la quale vengono visualizzate in base al tipo di dispositivo e alla dimensione dello schermo
 \end{enumerate}
@@ -441,22 +494,30 @@ Per poter creare le applicazioni si utilizzano paradigmi di \emph{Visual Develop
 \begin{itemize}
 	\item \textbf{Development}
 	La costruzione delle applicazioni è svolta in modo modulare, con componenti riutilizzabili in maniera veloce e semplice, come in Figura \ref{fig:appery-visual-composition}. Possono essere già presenti oppure creati ex-novo. Il tipo di struttura dati utilizzato, invece, è di tipo \emph{model-based}, in particolare è usato il pattern MVC (Model View Controller). Anche per quanto riguarda lo storage dei dati la soluzione scelta per l'interazione dell'utente è di tipo visuale, tramite la \emph{Storage API}, che permette di gestire le variabili in modo semplice
-	\item \textbf{Deployment} Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione per le diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code. \upe sufficiente inviare questo codice per permettere di scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione come sorgenti HTML5/CSS oppure come progetti per gli IDE di sviluppo native come Android Studio, XCode o Visual Studio
-	\item \textbf{Testing} \upe considerato anche l'aspetto del testing, sia per quanto riguarda HTML5 sia per  le app native.
+	\item \textbf{Deployment}
+	Successivamente alla fase di sviluppo, in Appery.io è presente anche una parte per poter esportare la propria applicazione per le diverse piattaforme. In particolare, il metodo più veloce per poter diffondere l'app appena creata è l'utilizzo di un QR code. \upe sufficiente inviare questo codice per permettere di scaricare l'applicazione sul dispositivo. Oltre a questo metodo è possibile esportare l'applicazione come sorgenti HTML5/CSS oppure come progetti per gli IDE di sviluppo native come Android Studio, XCode o Visual Studio
+	\item \textbf{Testing}
+	\upe considerato anche l'aspetto del testing, sia per quanto riguarda HTML5 sia per  le app native.
 	Nel primo caso è possibile eseguire testing istantaneamente nel browser o direttamente sul telefono, mentre nel secondo caso è supportato anche l'offline testing, cioè è possibile fare test di unità e di integrazione senza installare l'app sul dispositivo
-	\item \textbf{Administration} La parte amministrativa è la parte che si riferisce al Mobile Backend as a Service (MBaaS) e permette di gestire tutta la parte di logica e storage sul cloud. Per quanto riguarda questo aspetto è presente in Appery.io una console di controllo, con la quale è possibile inviare notifiche push, controllare i certificati e le API key necessarie all'app, condividere lo sviluppo con altri utenti, gestire i ruoli del team di sviluppo e controllare i rilasci delle versioni dell'applicazione
+	\item \textbf{Administration}
+	La parte amministrativa è la parte che si riferisce al Mobile Backend as a Service (MBaaS) e permette di gestire tutta la parte di logica e storage sul cloud. Per quanto riguarda questo aspetto è presente in Appery.io una console di controllo, con la quale è possibile inviare notifiche push, controllare i certificati e le API key necessarie all'app, condividere lo sviluppo con altri utenti, gestire i ruoli del team di sviluppo e controllare i rilasci delle versioni dell'applicazione
 \end{itemize}
 
 \subsection*{Karma}
 
 Karma\footnote{Karma : \url{http://usc-isi-i2.github.io/karma/}} è uno strumento di integrazione dati sviluppato dalla University of Southern California, che permette agli utenti di creare rapidamente e facilmente una nuova rappresentazione dei dati  da diverse fonti, come database, web API e documenti di diversa natura (XML, JSON, KML, ecc.). Gli utenti possono integrare le informazioni modellandole tramite un'ontologia di loro scelta. Questa attività viene svolta interamente tramite un'interfaccia grafica, in modo da semplificare il processo. 
 Dopo questa operazione è possibile interagire con il sistema per correggere il modello generato in modo automatico ed è possibile trasformare i dati per normalizzarli. Una volta che il modello è completo, gli utenti possono pubblicare i nuovi dati come RDF o salvarli su un database.
-Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti: 
+Oltre a queste funzionalità, altre caratteristiche di Karma sono le seguenti:
+
 \begin{itemize}
-	\item \textbf{Ease of use} L'utente, utilizzando tecniche di programmazione per esempi e algoritmi  di ottimizzazione (es.: Steiner tree), perfeziona il modello generato in modo automatico utilizzando un interfaccia grafica che maschera la complessità delle regole di mapping usate
-	\item \textbf{Semantic Models} Karma permette agli utenti di combinare diverse ontologie per permettere loro di mappare i loro dati a vocabolari standard
-	\item \textbf{Scalable Processing} Anche la scalabilità è un elemento importante in Karma; infatti gli utenti lavorano con un sottoinsieme dei loro dati, permettendo di creare un'interfaccia utente dove essi definiscono il modello di integrazione dei dati. Dopo questo passaggio, il sistema usa questi modelli in modalità batch per integrare una quantità maggiore di dati
-	\item \textbf{Data Transformation} Viene offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
+	\item \textbf{Ease of use}
+	L'utente, utilizzando tecniche di programmazione per esempi e algoritmi  di ottimizzazione (es.: Steiner tree), perfeziona il modello generato in modo automatico utilizzando un interfaccia grafica che maschera la complessità delle regole di mapping usate
+	\item \textbf{Semantic Models}
+	Karma permette agli utenti di combinare diverse ontologie per permettere loro di mappare i loro dati a vocabolari standard
+	\item \textbf{Scalable Processing}
+	Anche la scalabilità è un elemento importante in Karma; infatti gli utenti lavorano con un sottoinsieme dei loro dati, permettendo di creare un'interfaccia utente dove essi definiscono il modello di integrazione dei dati. Dopo questo passaggio, il sistema usa questi modelli in modalità batch per integrare una quantità maggiore di dati
+	\item \textbf{Data Transformation}
+	Viene offerta un'interfaccia di programmazione per esempi che permette all'utente di definire le operazioni di trasformazione dei dati per poter restituire un unico formato comune
 \end{itemize}
 
 \begin{figure}[ht]
@@ -472,13 +533,15 @@ Nel caso dei dati di reperti dei musei, utilizzando questo tool si sono converti
 
 PEUDOM \cite{Cappiello:2015:UAE:2788341.2735632} è un progetto di ricerca sui mashup nato all'interno del dipartimento di Ingegneria Informatica del Politecnico di Milano. Si tratta di una piattaforma per la creazione di mashup interamente visuale che consente all'utente finale di sviluppare la propria applicazione su misura. La piattaforma guida l'utente nella scelta dei componenti e nelle definizioni delle relazioni, permettendo alcune operazioni e negandone altre secondo determinate regole di compatibilità definite a priori.
 L'elemento peculiare di questa piattaforma è l'utilizzo di paradigmi di composizione visuale per definire la l'integrazione dei componenti a livello di presentazione. Questi paradigmi agiscono direttamente sull'interfaccia utente del mashup, in una sorta di programmazione in tempo reale nella quale i risultati della composizione sono visibili appena definiti.
-Esistono due tipologie di componenti: 
+Esistono due tipologie di componenti:
+
 \begin{enumerate}
 	\item \textbf{Wrapped UI Components}
 	Questi sono i widget già predisposti da sviluppatori esperti, che specificano la logica dei i wrapper per l'accesso ai servizi Web e alle API
 	\item \textbf{VI Components}
 	VI Components significa \emph{Visual Integration based Component}s e si tratta di componenti creati direttamente dall'utente, manipolando i result set estratti da uno o più \emph{data component} e utilizzando i diversi UI template a disposizione
 \end{enumerate}
+
 Alla fine del processo di definizione dei componenti, questi vengono sincronizzati tra loro attraverso regole di sincronizzazione, che ne determinano il comportamento del mashup finale.
 
 \begin{figure}[ht]
@@ -500,17 +563,20 @@ dove nella schermata principale è presentata la lista degli argomenti. Quando u
 
 \subsection*{CADD}
 
-CADD è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il Context Dimension Tree (CDT), usato anche in CAMUS.  Una volta stabilito il modello di contesto, vengono creati i contesti dal designer, il quale viene guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso tramite espressioni XQuery\footnote{XQuery: \url{https://www.w3.org/TR/xquery/}} usate per potare i dati XML da inviare ai dispositivi mobili.
+CADD \cite{bolchini2007cadd} è un tool sviluppato all'interno del progetto Context-ADDICT del Politecnico di Milano, il cui scopo è la definizione di un framework che supporta l'integrazione di nuove informazioni basate sul contesto sui dispositivi mobili degli utenti. In particolare CADD è lo strumento che permette di progettare i contesti. In questo sistema è stato usato come modello di contesto il Context Dimension Tree (CDT), usato anche in CAMUS.  Una volta stabilito il modello di contesto, vengono creati i contesti dal designer, il quale viene guidato nell'associazione dei contenuti con la porzione di dati presente sul dispositivo mobile dell'utente finale. Come risultato, il sistema genera le query necessarie a selezionare i dati rilevanti per ogni contesto, in questo caso tramite espressioni XQuery\footnote{XQuery: \url{https://www.w3.org/TR/xquery/}} usate per potare i dati XML da inviare ai dispositivi mobili.
 Il Context-ADDICT Server supporta la selezione dei dati online e l'invio dei risultati all'applicazione mobile. 
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-nozioni-preliminari/Immagini/cadd.png}
-	\caption{CADD}\label{fig:cadd}
+	\caption[CADD]{CADD (Fonte: \virgolette{CADD: a tool for context modeling and data tailoring}, 2007)}\label{fig:cadd}
 \end{figure}
-I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i seguenti:  
+
+I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i seguenti:
+
 \begin{itemize}
-	\item \textbf{Context Space Designer Assistant} Il designer viene supportato nella modifica del CDT usando una procedura guidata. In questo modo può aggiungere, modificare ed eliminare i nodi dell'albero di contesto in modo semplice
+	\item \textbf{Context Space Designer Assistant}
+	Il designer viene supportato nella modifica del CDT usando una procedura guidata. In questo modo può aggiungere, modificare ed eliminare i nodi dell'albero di contesto in modo semplice
 	\item \textbf{Valid Contexts Generation}
 	Una volta terminata la fase di design, questo componente genera automaticamente tutti i contesti validi, come combinazione dei valori dimensione
 	\item \textbf{Data Tailoring Assistant}

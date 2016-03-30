@@ -13,7 +13,8 @@ Vengono inizialmente fornite alcune definizioni che saranno utili per comprender
 	\upe il tempo che il sistema impiega a completare una richiesta. Tiene conto esclusivamente del tempo impiegato per le elaborazioni, non considerando eventuali ritardi dovuti dal canale di trasmissione o il tempo passato in coda. Viene misurato in secondi
 	\item \textbf{Response Time}
 	Rappresenta il tempo totale che il sistema impiega a completare una richiesta, compreso il tempo nel quale rimane in coda in attesa che un'istanza si liberi. Viene misurato in secondi
-	\item \textbf{Arrival Rate ($ \lambda $)} Rappresenta la frequenza con la quale arrivano le richieste al sistema. Viene misurata in richieste al secondo
+	\item \textbf{Arrival Rate ($ \lambda $)}
+	Rappresenta la frequenza con la quale arrivano le richieste al sistema. Viene misurata in richieste al secondo
 \end{itemize}
 
 In Figura \ref{fig:sistema-coda} viene mostrata una schematizzazione del flusso di una richiesta.
@@ -21,7 +22,7 @@ In Figura \ref{fig:sistema-coda} viene mostrata una schematizzazione del flusso 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{7-performance/Immagini/sistema_coda.png}
-	\caption{Sistema con coda}\label{fig:sistema-coda}
+	\caption{Sistema a singola coda}\label{fig:sistema-coda}
 \end{figure}
 
 Si prosegue con una descrizione del comportamento del sistema. Si è giunti alla conclusione che il sistema in analisi può essere modellato come una coda M/G/1 \cite{sundarapandian2009probability}, in quanto valgono le seguenti considerazioni:
@@ -38,7 +39,7 @@ Si prosegue con una descrizione del comportamento del sistema. Si è giunti alla
 I testi sono stati tutti effettuati su una macchina virtuale. Il motivo di questa decisione è la flessibilità nella scelta dei componenti della macchina, in quanto è possibile variare semplicemente il numero di core del processore e la dimensione della RAM. Le caratteristiche del sistema fisico utilizzato vengono elencate nella Tabella \ref{table:performance-pc}.
 
 \begin{table}[ht]
-	\caption{Dati connessione Test tempi risposta a condizioni di rete diverse}
+	\caption{Caratteristiche della macchine di test}
 	\label{table:performance-pc}
 	\centering
 	\begin{tabularx}{0.7\textwidth}{lX}
@@ -151,7 +152,7 @@ All'interno dell'applicazione è stato utilizzato un metodo di test che effettua
 Nella Tabella \ref{table:connections-data-test} sono mostrati i parametri delle condizioni di simulazione, dove l'ADSL indica la connessione internet utilizzata dal computer e gli altri parametri sono quelli utilizzati nello strumento di modifica delle condizioni di rete. Come si può notare le aspettative di tempi di risposta in ordine crescente sono WiFi, 3G ed Edge.
 
 \begin{table}[ht]
-	\caption{Dati connessione Test tempi risposta a condizioni di rete diverse}
+	\caption{Analisi velocità delle connessioni}
 	\label{table:connections-data-test}
 	\begin{tabularx}{\textwidth}{CCCCC}
 		\toprule

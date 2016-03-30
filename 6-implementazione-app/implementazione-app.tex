@@ -12,88 +12,128 @@ Successivamente si tratterà del flusso dei dati all'interno dell'applicazione e
 E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:app-architecture}. Per una migliore comprensione dello schema nelle sezioni seguenti verranno analizzati nel dettaglio i singoli componenti che la compongono.
 
 \subsection{Pagine dell'applicazione}
+
 Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un router. Si è scelto di sfruttare due router diversi, uno per gestire il login e un altro per la navigazione all'interno dell'applicazione. Il router per il login controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi possiede \emph{Login Page} e il secondo router, che racchiude la navigazione effettiva dell'utente autenticato.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/screen-schema.pdf}
 	\caption{Schema delle pagine}\label{fig:screen-schema}
 \end{figure}
+
 Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le seguenti:
+
 \begin{itemize}
-	\item \textbf{Login Page} \upe la pagina dove l'utente inserisce le proprie credenziali per accedere al sistema CAMUS e ottenere i parametri per il corretto funzionamento dell'applicazione
-	\item \textbf{Logged Area} Si tratta della parte dell'applicazione alla quale l'utente può accedere nel caso in cui sia autenticato e gestisce le pagine di composizione del contesto e di visualizzazione dati:
+	\item \textbf{Login Page}
+	\upe la pagina dove l'utente inserisce le proprie credenziali per accedere al sistema CAMUS e ottenere i parametri per il corretto funzionamento dell'applicazione
+	\item \textbf{Logged Area}
+	Si tratta della parte dell'applicazione alla quale l'utente può accedere nel caso in cui sia autenticato e gestisce le pagine di composizione del contesto e di visualizzazione dati:
 	\begin{itemize}
-		\item \textbf{Main Page} È la pagina principale dell'applicazione e permette all'utente di mostrare tutti gli \emph{Interest Topic} presenti nel suo CDT. La scelta della categoria desiderata permette di accedere alla \emph{Context Selection Page}
-		\item \textbf{Context Dimension Page} In questa pagina viene chiesto il contesto all'utente mediante un'interfaccia che si adatta a runtime man mano che l'utente effettua delle scelte per guidarlo nella definizione del contesto da inviare come richiesta al server. Una volta composto il contesto viene costruita la query e inviata all'endpoint GraphQL del server CAMUS. 
-		\item \textbf{Results Page} Si tratta della pagina che deve mostrare l'intero dataset proveniente dal server e gestisce la paginazione dei risultati, a seconda della posizione del cursore dell'utente nella ListView 
-		\item \textbf{Details Page} In questa pagina vengono visualizzati i dettagli dell'oggetto selezionato e sono gestiti i collegamenti con le applicazioni esterne, per mezzo della libreria di \emph{Linking} di React Native o tramite moduli personalizzati
+		\item \textbf{Main Page}
+		È la pagina principale dell'applicazione e permette all'utente di mostrare tutti gli \emph{Interest Topic} presenti nel suo CDT. La scelta della categoria desiderata permette di accedere alla \emph{Context Selection Page}
+		\item \textbf{Context Dimension Page}
+		In questa pagina viene chiesto il contesto all'utente mediante un'interfaccia che si adatta a runtime man mano che l'utente effettua delle scelte per guidarlo nella definizione del contesto da inviare come richiesta al server. Una volta composto il contesto viene costruita la query e inviata all'endpoint GraphQL del server CAMUS. 
+		\item \textbf{Results Page}
+		Si tratta della pagina che deve mostrare l'intero dataset proveniente dal server e gestisce la paginazione dei risultati, a seconda della posizione del cursore dell'utente nella ListView 
+		\item \textbf{Details Page}
+		In questa pagina vengono visualizzati i dettagli dell'oggetto selezionato e sono gestiti i collegamenti con le applicazioni esterne, per mezzo della libreria di \emph{Linking} di React Native o tramite moduli personalizzati
 	\end{itemize}
 \end{itemize}
 
 \subsection{Helpers}
+
 Le pagine spiegate nella sezione precedente utilizzano alcuni componenti che sono in comune tra tutte le pagine dell'applicazione in quanto aiutano a eseguire funzionalità comuni. Di seguito sono elencati i componenti che svolgono questo compito:
 
 \begin{itemize}
-	\item \textbf{View Builder} Si tratta del componente che costruisce le view dinamiche partendo dallo schema di mashup
-	\item \textbf{Connection Manager} In questo componente vengono gestite tutte le connessioni con l'endpoint GraphQL. Permette di gestire la fase di login e di scambio dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
-	\item \textbf{StyleSheet} Si tratta del foglio di stile nel quale sono impostati tutti i parametri predefiniti per la visualizzazione dei componenti dell'applicazione
+	\item \textbf{View Builder}
+	Si tratta del componente che costruisce le view dinamiche partendo dallo schema di mashup
+	\item \textbf{Connection Manager}
+	In questo componente vengono gestite tutte le connessioni con l'endpoint GraphQL. Permette di gestire la fase di login e di scambio dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
+	\item \textbf{StyleSheet}
+	Si tratta del foglio di stile nel quale sono impostati tutti i parametri predefiniti per la visualizzazione dei componenti dell'applicazione
 \end{itemize}
 
 \subsection{Actions}\label{sec:actions}
-Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificare lo stato dell'applicazione. Nell'applicazione CAMUS sono utilizzate principalmente in due modi: 
+
+Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificare lo stato dell'applicazione. Nell'applicazione CAMUS sono utilizzate principalmente in due modi:
+
 \begin{itemize}
-	\item \textbf{Data Fetching} Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
+	\item \textbf{Data Fetching}
+	Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
 	Per esempio quando si preme il bottone per effettuare una nuova richiesta basata sul contesto viene invocata un'azione per mantenere lo stato coerente tra più componenti e permettere di mostrare in fase di caricamento uno Spinner e una volta che i dati sono arrivati all'interno dell'applicazione mostrarli nella ListView
-	\item \textbf{Application State} Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate tramite le Action nelle Store
+	\item \textbf{Application State}
+	Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate tramite le Action nelle Store
 \end{itemize}	
 
 Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti:
+
 \begin{itemize}
-	\item \textbf{User Actions} Sono le azioni che servono ad aggiornare i parametri relativi all'utente, come password, email e suo identificativo nel database:
+	\item \textbf{User Actions}
+	Sono le azioni che servono ad aggiornare i parametri relativi all'utente, come password, email e suo identificativo nel database:
 	\begin{itemize}
-		\item \textbf{Update Email} Metodo per aggiornare l'email dell'utente 
-		\item \textbf{Update Password} Metodo per aggiornare la password dell'utente
-		\item \textbf{Update Token} Metodo per tenere in memoria il Token della connessione col server per ottenere il CDT
+		\item \textbf{Update Email}
+		Metodo per aggiornare l'email dell'utente 
+		\item \textbf{Update Password}
+		Metodo per aggiornare la password dell'utente
+		\item \textbf{Update Token}
+		Metodo per tenere in memoria il Token della connessione col server per ottenere il CDT
 	\end{itemize}
-	\item \textbf{Context Actions} Sono le azioni che gestiscono la selezione del contesto, consentendo di modificare le scelte effettuate dall'utente:
+	\item \textbf{Context Actions}
+	Sono le azioni che gestiscono la selezione del contesto, consentendo di modificare le scelte effettuate dall'utente:
 	\begin{itemize}
-		\item \textbf{Set Transport} Metodo per salvare la tipologia di trasporto da parte dell'utente
-		\item \textbf{Set Typology} Metodo per salvare la tipologia nel caso di trasporto non con mezzi propri
-		\item \textbf{Add Forbidden} Metodo per aggiungere un parametro in quelli da nascondere all'utente
-		\item \textbf{Remove Forbidden} Metodo per rimuovere il parametro selezionato dalla lista di quelli da nascondere all'utente
-		\item \textbf{Update Last Context} Metodo per salvare l'ultimo contesto inviato al server, per poterlo riutilizzare nelle richieste per le pagine successive
+		\item \textbf{Set Transport}
+		Metodo per salvare la tipologia di trasporto da parte dell'utente
+		\item \textbf{Set Typology}
+		Metodo per salvare la tipologia nel caso di trasporto non con mezzi propri
+		\item \textbf{Add Forbidden}
+		Metodo per aggiungere un parametro in quelli da nascondere all'utente
+		\item \textbf{Remove Forbidden}
+		Metodo per rimuovere il parametro selezionato dalla lista di quelli da nascondere all'utente
+		\item \textbf{Update Last Context}
+		Metodo per salvare l'ultimo contesto inviato al server, per poterlo riutilizzare nelle richieste per le pagine successive
 	\end{itemize}
-	\item \textbf{View Actions} Sono le azioni relative alla gestione dei mashup ma non dello stato della navigazione, per le quali è utilizzato un componente aggiuntivo sempre basato su Flux (React Native Router Flux):
+	\item \textbf{View Actions}
+	Sono le azioni relative alla gestione dei mashup ma non dello stato della navigazione, per le quali è utilizzato un componente aggiuntivo sempre basato su Flux (React Native Router Flux):
 	\begin{itemize}
-		\item \textbf{Set Views} Metodo per salvare il file con le view provenienti dal server 
-		\item \textbf{Select Interest Topic} Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente
+		\item \textbf{Set Views}
+		Metodo per salvare il file con le view provenienti dal server 
+		\item \textbf{Select Interest Topic}
+		Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente
 	\end{itemize}
-	\item \textbf{Data Actions} Trattano della gestione del CDT e dei risultati ottenuti dal server:
+	\item \textbf{Data Actions}
+	Trattano della gestione del CDT e dei risultati ottenuti dal server:
 	\begin{itemize}
-		\item \textbf{Update Results} Metodo per aggiornare i dati dei risultati provenienti dalla query basata sul contesto
-		\item \textbf{Results Failed} Metodo per inviare il messaggio di errore proveniente dalla richiesta
-		\item \textbf{Update Full CDT} Metodo per aggiornare il CDT associato all'utente
-		\item \textbf{Update Id CDT} Metodo per salvare soltanto l'identificativo del CDT
-		\item \textbf{Update UserID} Metodo per memorizzare l'id dell'utente del server CAMUS
+		\item \textbf{Update Results}
+		Metodo per aggiornare i dati dei risultati provenienti dalla query basata sul contesto
+		\item \textbf{Results Failed}
+		Metodo per inviare il messaggio di errore proveniente dalla richiesta
+		\item \textbf{Update Full CDT}
+		Metodo per aggiornare il CDT associato all'utente
 	\end{itemize}
 \end{itemize}
 
-
 \subsection{Stores}\label{sec:action-store}
+
 Le \emph{Stores} sono il modulo dove lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
 Per ogni interazione sui dati dell'applicazione che necessitano di rimanere persistenti viene invocata una action dal componente e dalla view che si propaga prima nelle store, e successivamente aggiorna nuovamente la view.
 Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato trattata:
+
 \begin{itemize}
-	\item  \textbf{User Store} Nella \emph{User Store} sono memorizzati tutti i dati relativi all'utente. In particolare viene memorizzata la mail dell'utente nel database del server e l'identificativo del CDT a lui associato, che serviranno per poter effettuare le query GraphQL per ottenere i dati
-	\item \textbf{Context Store} Nel \emph{Context Store} vengono gestiti i dati che riguardano i dati di contesto, come le coordinate geografiche e le scelte delle tipologie di trasporto pubblico, in modo da essere riutilizzate. Per quanto riguarda le richieste di dati, una volta che il contesto viene composto per effettuare la prima query, questo payload viene salvato qui e poi riutilizzato nelle query dei risultati successivi
-	\item \textbf{View Store} In questa store sono memorizzati tutti i dati relativi alle view. Qui viene salvato lo schema di mashup e l'\emph{Interest Topic} corrente
-	\item \textbf{Data Store} Si tratta della store più complessa perchè deve gestire in modo dinamico diverse tipologie di dato. Quando viene ricevuto il CDT vengono scanditi gli \emph{interest topic} è creato un oggetto nel campo \emph{results} che è composto da un array di tanti oggetti definiti da due campi:
+	\item  \textbf{User Store}
+	Nella \emph{User Store} sono memorizzati tutti i dati relativi all'utente. In particolare viene memorizzata la mail dell'utente nel database del server e l'identificativo del CDT a lui associato, che serviranno per poter effettuare le query GraphQL per ottenere i dati
+	\item \textbf{Context Store}
+	Nel \emph{Context Store} vengono gestiti i dati che riguardano i dati di contesto, come le coordinate geografiche e le scelte delle tipologie di trasporto pubblico, in modo da essere riutilizzate. Per quanto riguarda le richieste di dati, una volta che il contesto viene composto per effettuare la prima query, questo payload viene salvato qui e poi riutilizzato nelle query dei risultati successivi
+	\item \textbf{View Store}
+	In questa store sono memorizzati tutti i dati relativi alle view. Qui viene salvato lo schema di mashup e l'\emph{Interest Topic} corrente
+	\item \textbf{Data Store}
+	Si tratta della store più complessa perchè deve gestire in modo dinamico diverse tipologie di dato. Quando viene ricevuto il CDT vengono scanditi gli \emph{interest topic} è creato un oggetto nel campo \emph{results} che è composto da un array di tanti oggetti definiti da due campi:
 	\begin{enumerate}
-		\item \textbf{Results} Rappresenta i risultati ricevuti per quell'\emph{interest topic}, comprende i dai servizi primari e i collegamenti per i servizi di supporto
-		\item \textbf{Topic} Rappresenta l'\emph{Interest topic} associato ai risultati ricevuti dal server
+		\item \textbf{Results}
+		Rappresenta i risultati ricevuti per quell'\emph{interest topic}, comprende i dai servizi primari e i collegamenti per i servizi di supporto
+		\item \textbf{Topic}
+		Rappresenta l'\emph{Interest topic} associato ai risultati ricevuti dal server
 	\end{enumerate}
 	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics} è mostrato come viene rappresentato lo stato nel caso in cui l'utente abbia a disposizione due \emph{Interest Topic} e la suddivisione dei risultati per le due tipologie, in questo caso \emph{Restaurants} ed \emph{Event}. Si noti che oltre ai risultati sono salvati anche i parametri con lo stato della paginazione, per lasciare la possibilità di riprendere la visione di nuovi risultati.
-	
 \end{itemize}
 
 \begin{listing}[H]
@@ -110,6 +150,7 @@ Nella tipologia \emph{details} sono disponibili tutti i dettagli dell'item selez
 Considerando l'esempio dei ristoranti, per la lista sono associati i termini che servono per identificare l'oggetto, come il nome e l'indirizzo. Se poi l'utente vuole vedere la mappa e visualizzare gli estremi per contattare il ristorante per prenotare deve aprire la pagina dei dettagli, dove acquisendo i termini dal file di mashup, sono visualizzati tutti i dettagli necessari per l'utente. Inoltre è specificata la tipologia dell'elemento da visualizzare, in modo da permettere all'app di utilizzare le librerie di collegamento con le applicazioni specifiche del sistema operativo.
 
 Nel Listato \ref{lst:mashup-schema} viene mostrato un frammento del file JSON di mashup della pagina di dettaglio:
+
 \begin{listing}[H]
 	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-example-app.json}
 	\caption{Esempio Schema Mashup}
@@ -117,11 +158,16 @@ Nel Listato \ref{lst:mashup-schema} viene mostrato un frammento del file JSON di
 \end{listing}
 
 Di seguito sono elencate le diverse tipologie di dato che compongono l'oggetto che rappresenta i file di \emph{mashup}:
+
 \begin{itemize}
-	\item \textbf{Type} Il termine \emph{type} indica il tipo dell'elemento da visualizzare nella view. È associato a un componente React Native, che verrà richiamato nella fase di costruzione dell'interfaccia grafica
-	\item \textbf{Topic} Si tratta di un array di stringhe che indica tutte le aree di interesse associate allo schema in questione. Si è scelto di utilizzare una struttura basata su tag: una volta che l’utente ha scelto l’Interest Topic viene utilizzato lo schema che lo possiede nei suoi tag 
-	\item \textbf{Contents} Indicano i termini del mashup o dei nuovi componenti innestati. Se nell'oggetto padre è specificato un tipo gli elementi in \emph{contents} rappresentano i termini da richiedere nella query GraphQL. In caso contrario questo campo indica che in \emph{contents} è presente un nuovo livello di annidamento. Ci possono essere tanti annidamenti, fino a quando non si arriva ad avere un oggetto che possiede il campo \emph{type}
-	\item \textbf{Style} Questo campo serve per definire uno stile da assegnare al componente. Permette di personalizzare l’aspetto del componente, andando a ridefinire lo stile predefinito. Viene utilizzato Flexbox per la specifica degli stili
+	\item \textbf{Type}
+	Il termine \emph{type} indica il tipo dell'elemento da visualizzare nella view. È associato a un componente React Native, che verrà richiamato nella fase di costruzione dell'interfaccia grafica
+	\item \textbf{Topic}
+	Si tratta di un array di stringhe che indica tutte le aree di interesse associate allo schema in questione. Si è scelto di utilizzare una struttura basata su tag: una volta che l’utente ha scelto l’Interest Topic viene utilizzato lo schema che lo possiede nei suoi tag 
+	\item \textbf{Contents}
+	Indicano i termini del mashup o dei nuovi componenti innestati. Se nell'oggetto padre è specificato un tipo gli elementi in \emph{contents} rappresentano i termini da richiedere nella query GraphQL. In caso contrario questo campo indica che in \emph{contents} è presente un nuovo livello di annidamento. Ci possono essere tanti annidamenti, fino a quando non si arriva ad avere un oggetto che possiede il campo \emph{type}
+	\item \textbf{Style}
+	Questo campo serve per definire uno stile da assegnare al componente. Permette di personalizzare l’aspetto del componente, andando a ridefinire lo stile predefinito. Viene utilizzato Flexbox per la specifica degli stili
 \end{itemize}
 
 \section{Rendering delle view}\label{sec:rendering-view}
@@ -131,27 +177,39 @@ Mentre in codice nativo questo problema può presentare delle difficoltà a live
 Per questo motivo è stato creato un componente apposito, il View Render, che, dato un oggetto contenente il mashup, riesce a fare l'associazione dei contenuti semantici all'interno di questo con i componenti presenti nell'applicazione, restituendo il componente finito.
 Sono presenti all'interno due tipologie di rendering: il rendering del contesto e il rendering dei risultati.
 
-\subsection{Rendering del contesto} 
+\subsection{Rendering del contesto}
+
 Nel caso del rendering della pagina di contesto non si ritiene necessario l'utilizzo di un mashup esterno, in quanto tutte le informazioni presenti all'interno del CDT sono sufficienti a definire in modo corretto la sua visualizzazione e la sua compilazione da parte dell'utente.
-	Per ogni oggetto facente parte del CDT viene eseguita un'associazione a componenti già esistenti della view che non sono modificabili dall'esterno.
-	\begin{itemize}
-		\item \textbf{Interest Topic} Per quanto riguarda gli \emph{Interest Topic} hanno bisogno di essere selezionati nella pagina iniziale appena dopo il login e caricati in una lista di bottoni con due elementi per riga, con un'icona rappresentativa. I bottoni e le icone sono predefinite nell'applicazione e necessitano soltanto di una associazione \emph<nome, elemento> dal campo \emph{Interest Topic} del CDT. Questa funzione molto semplice viene eseguita direttamente all'interno della pagina principale senza la necessità di utilizzare il View Render
-		\item \textbf{Altri elementi} Gli altri elementi del contesto sono processati all'interno del componente View Builder. Con una funzione ricorsiva viene scandito l'intero CDT ricevuto dal server con i campi da modificare e in base ai contenuti viene costruito l'elemento della view, a seconda della tipologia. Per esempio se per un campo è richiesto l'inserimento di un numero verrà mostrato un TextInput che permette il completamento solo con numeri, mentre se ho a disposizione una scelta tra più elementi verrà mostrata una lista selezionabile.
-		Assume una grande importanza anche la gestione delle esclusioni tra le operazioni. Se viene selezionato \virgolette{With Car} non è corretto mostrare le possibili tipologie di trasporto pubblico, perché si conosce già a priori che l'utente non selezionerà mai nello stesso momento come mezzo di trasporto l'automobile e il bus. Per questo scopo all'interno della \emph{Context Store} vengono gestiti con una struttura dati ad Array i nodi che non devono essere mostrati e questa variabile viene aggiornata con le selezioni che sono state fatte nell'interfaccia utente all'interno della pagina di contesto
-	\end{itemize}
+Per ogni oggetto facente parte del CDT viene eseguita un'associazione a componenti già esistenti della view che non sono modificabili dall'esterno.
+
+\begin{itemize}
+	\item \textbf{Interest Topic}
+	Per quanto riguarda gli \emph{Interest Topic} hanno bisogno di essere selezionati nella pagina iniziale appena dopo il login e caricati in una lista di bottoni con due elementi per riga, con un'icona rappresentativa. I bottoni e le icone sono predefinite nell'applicazione e necessitano soltanto di una associazione \emph<nome, elemento> dal campo \emph{Interest Topic} del CDT. Questa funzione molto semplice viene eseguita direttamente all'interno della pagina principale senza la necessità di utilizzare il View Render
+	\item \textbf{Altri elementi}
+	Gli altri elementi del contesto sono processati all'interno del componente View Builder. Con una funzione ricorsiva viene scandito l'intero CDT ricevuto dal server con i campi da modificare e in base ai contenuti viene costruito l'elemento della view, a seconda della tipologia. Per esempio se per un campo è richiesto l'inserimento di un numero verrà mostrato un TextInput che permette il completamento solo con numeri, mentre se ho a disposizione una scelta tra più elementi verrà mostrata una lista selezionabile.
+	Assume una grande importanza anche la gestione delle esclusioni tra le operazioni. Se viene selezionato \virgolette{With Car} non è corretto mostrare le possibili tipologie di trasporto pubblico, perché si conosce già a priori che l'utente non selezionerà mai nello stesso momento come mezzo di trasporto l'automobile e il bus. Per questo scopo all'interno della \emph{Context Store} vengono gestiti con una struttura dati ad Array i nodi che non devono essere mostrati e questa variabile viene aggiornata con le selezioni che sono state fatte nell'interfaccia utente all'interno della pagina di contesto
+\end{itemize}
 	
 \subsection{Rendering dei Risultati}\label{sec:view-risultati}
+
 Per quanto concerne i risultati ottenuti dalle query GraphQL entrano in gioco in maniera preponderante gli schemi di mashup. Per i motivi spiegati in \ref{sec:mashup-design}, la risoluzione del problema necessita di un funzionamento più complesso rispetto alla visualizzazione del contesto. La funzione di rendering per quanto riguarda i risultati è la medesima sia per la lista che per i dettagli, quello che cambia è il contenitore del componente View Builder: per la lista è un figlio nel metodo di \emph{renderItem()} della ListView, mentre per i dettagli definisce l'intera pagina.
 Al componente View Render sono necessari due oggetti: il file di mashup e i dati del singolo risultato.
 Si suppone che nel file di mashup gli elementi siano già stati generati in ordine di visualizzazione, perché nella funzione di costruzione non è possibile modificarlo. Tuttavia è possibile modificare lo stile più esterno del componente risultante per cambiare il layout dei figli del \emph{View Builder}. Per prima cosa il \emph{View Builder} deve scegliere le view associate all'\emph{Interest Topic} facendo una ricerca della prima vista che contiene il valore corrente dell'\emph{Interest Topic} e passare questo oggetto alla funzione di rendering. A questo punto si è pronti per costruire la view del componente: viene scandito ogni elemento del file di mashup e si associa il valore dato dal termine dell'oggetto del risultato e viene ritornato il componente pronto per essere elaborato per la visualizzazione. Nel caso in cui non fosse presente un valore per il termine desiderato ovviamente non viene renderizzato nessun elemento, ritornando una \emph{View} base vuota, che non ha nessuna incidenza sulla grafica avendo dimensione nulla. Nel caso in cui esista un oggetto di tipo \emph{style}, esso ha la priorità rispetto a quello presente nel foglio di stile predefinito dell'applicazione. Per il momento sono disponibili queste tipologie di componenti specificabili nel campo \emph{type} dell'oggetto di mashup che sono pienamente supportati:
-	\begin{itemize}
-		\item \textbf{Text} \upe il componente di testo base; per la sua differenziazione si utilizzano attributi diversi nel foglio di stile in comune per tutta l'applicazione o le specifiche presenti nell'attributo \emph{style} del mashup
-		\item \textbf{Map} \upe il componente che renderizza le mappe. Presenta due implementazioni differenti per quanto riguarda iOS e Android, poiché come mappe di sistema utilizzano due applicazioni differenti. Per iOS sono presenti le mappe di Apple, già integrate nel componente \emph{MapView} fornito da React Native, mentre per Android vengono utilizzate le mappe di Google Maps, per le quali è stato utilizzato un componente esterno
-		\item \textbf{Website} Viene utilizzato per gli indirizzi web. Permette di aprire il collegamento direttamente nel browser del dispositivo
-		\item \textbf{Email} Permette di visualizzare l'indirizzo mail dell'elemento e selezionando l'icona di invio email l'utente viene reindirizzato all'applicazione o alla scelta di un'applicazione per inviare un messaggio all'indirizzo specificato
-		\item \textbf{Phone} Questo componente gestisce il numero di telefono dell'elemento, con la possibilità di inviare un messaggio al numero o di effettuare una telefonata, sempre utilizzando le applicazioni predefinite del dispositivo mobile
-		\item \textbf{Support} Si tratta del componente che gestisce i servizi di supporto con i collegamenti alle applicazioni esterne, verrà spiegato nei dettagli nella Sezione \ref{sec:servizi-supporto-app}
-	\end{itemize}
+
+\begin{itemize}
+	\item \textbf{Text}
+	\upe il componente di testo base; per la sua differenziazione si utilizzano attributi diversi nel foglio di stile in comune per tutta l'applicazione o le specifiche presenti nell'attributo \emph{style} del mashup
+	\item \textbf{Map}
+	\upe il componente che renderizza le mappe. Presenta due implementazioni differenti per quanto riguarda iOS e Android, poiché come mappe di sistema utilizzano due applicazioni differenti. Per iOS sono presenti le mappe di Apple, già integrate nel componente \emph{MapView} fornito da React Native, mentre per Android vengono utilizzate le mappe di Google Maps, per le quali è stato utilizzato un componente esterno
+	\item \textbf{Website}
+	Viene utilizzato per gli indirizzi web. Permette di aprire il collegamento direttamente nel browser del dispositivo
+	\item \textbf{Email}
+	Permette di visualizzare l'indirizzo mail dell'elemento e selezionando l'icona di invio email l'utente viene reindirizzato all'applicazione o alla scelta di un'applicazione per inviare un messaggio all'indirizzo specificato
+	\item \textbf{Phone}
+	Questo componente gestisce il numero di telefono dell'elemento, con la possibilità di inviare un messaggio al numero o di effettuare una telefonata, sempre utilizzando le applicazioni predefinite del dispositivo mobile
+	\item \textbf{Support}
+	Si tratta del componente che gestisce i servizi di supporto con i collegamenti alle applicazioni esterne, verrà spiegato nei dettagli nella Sezione \ref{sec:servizi-supporto-app}
+\end{itemize}
 
 \subsection{Gestione degli stili}
 
@@ -166,26 +224,37 @@ Nel Listato \ref{lst:stylesheet} viene mostrato un frammento del foglio di stile
 	\label{lst:stylesheet}
 \end{listing}
  
-
 \section{Flusso di esecuzione}
 
 In questa sezione si vuole analizzare il flusso dei dati all'interno dell'applicazione, partendo dal login dell'utente fino alla selezione di un elemento dalla lista dei risultati.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_dataflow.pdf}
 	\caption{Flusso dei dati dell'app Flux}\label{fig:app-dataflow}
 \end{figure}
+
 Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati all'interno dell'ap\-pli\-ca\-zio\-ne e di seguito vengono esposti i passaggi principali:
+
 \begin{enumerate}
-	\item La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
-	\item Vengono ricevuti il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario a caricare l'interfaccia grafica. Nel frattempo il router mostra la pagina iniziale dell'applicazione
-	\item L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto dove vengono mostrati i campi che devono essere compilati
-	\item Dopo aver definito i parametri del contesto desiderati l'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
-	\item I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
-	\item Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
-	\item I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
-	\item L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
-	\item L'applicazione carica la pagina dove vengono passati i dati completi dell'e\-le\-men\-to selezionato e visualizzati nella pagina
+	\item
+	La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
+	\item
+	Vengono ricevuti il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario a caricare l'interfaccia grafica. Nel frattempo il router mostra la pagina iniziale dell'applicazione
+	\item
+	L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto dove vengono mostrati i campi che devono essere compilati
+	\item
+	Dopo aver definito i parametri del contesto desiderati l'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
+	\item
+	I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
+	\item
+	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
+	\item
+	I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
+	\item
+	L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
+	\item
+	L'applicazione carica la pagina dove vengono passati i dati completi dell'e\-le\-men\-to selezionato e visualizzati nella pagina
 \end{enumerate}
 
 \section{Query GraphQL}\label{sec:utilizzo-dati-app}
@@ -194,6 +263,7 @@ I dati nell'intero sistema CAMUS assumono un ruolo fondamentale. In questa sezio
 Tutto lo scambio di dati tra l'applicazione e il server viene svolto utilizzando query GraphQL, come spiegato nella Sezione \ref{sec:graphql-introduzione}. Per implementare il modulo di gestione delle connessioni si è scelto di utilizzare \emph{Lokka} \footnote{Github Lokka: \url{https://github.com/kadirahq/lokka}}, un client compatibile con GraphQL che permette di gestire le query come se fossero normali \emph{fetch()} di JavaScript e lasciare una configurazione più libera e adattabile alle esigenze del sistema. Questo si sposa alla perfezione con il paradigma Flux, salvando la maggior parte del contenuto della risposta nella \emph{Data Store} con le modalità esposte nella Sezione \ref{sec:action-store} e rendendolo quindi disponibile per tutti i singoli componenti dell'applicazione. Di seguito sono spiegate le due tipologie principali di query gestite con GraphQL, che sono le query di login e le query per accedere ai dati.
 
 \subsection{Login Query}
+
 Le query per gestire il meccanismo di login sono molto semplici. Sono basate sui dati inseriti dall'utente quando si trova nella \emph{Login Page} e sulle risposte intermedie fornite dal server. Queste query servono per ottenere l'identificativo del CDT a lui associato e lo schema dei mashup con le definizioni delle sue view.
 I dati necessari per la costruzione della query sono l'indirizzo email e la password, che sono inseriti dall'utente nella prima pagina che gli viene mostrata. A questo punto questi dati vengono salvati nella \emph{User Store} e sono tenuti nello stato dell'applicazione, nel caso in cui fosse necessario effettuare una nuova richiesta richiederli nuovamente. Nel caso in cui l'indirizzo email e/o la password siano errati viene notificato un errore mentre se uno dei due campi è mancante vengono richiesti nuovamente senza inviare nessuna richiesta.
 In caso di risposta affermativa viene restituito all'utente un token, generato ogni volta che l'utente effettua l'autenticazione. Questo token viene salvato sempre nella \emph{User Store} e successivamente inviato al server con la query \emph{getPersonalData()} per ottenere il CDT completo per poter costruire il contesto da mostrare all'utente e lo schema di mashup.
@@ -207,7 +277,6 @@ Utilizzando un esempio pratico, dopo che l'utente Mario Rossi ha inserito le pro
 
 L'indirizzo mail e il token sono inviati al server per ottenere il CDT e gli schemi di mashup associati all'utente. Un esempio delle informazioni ricevute in seguito a questa query è viene mostrato nel Listato \ref{lst:esempio-getcdt-app}.
 
-
 \begin{listing}[H]
 	\inputminted{json}{6-implementazione-app/Codice/get-cdt-app.json}
 	\caption{Esempio acquisizione CDT}
@@ -215,14 +284,22 @@ L'indirizzo mail e il token sono inviati al server per ottenere il CDT e gli sch
 \end{listing}
 
 \subsection{Data Query} \label{sec:data-query}
+
 Le query per gestire i dati necessitano di tutta una serie di operazioni preliminari perché sono presenti diversi parametri da ricavare per poter formare una richiesta GraphQL. Oltre alla definizione spiegata nella Sezione \ref{sec:endpoint-graphql}, di seguito è spiegata la modalità di costruzione dei parametri che sono necessari per la composizione della query utilizzando il metodo \emph{client.query()} di \emph{Lokka}:
+
 \begin{itemize}
-	\item \textbf{Email} Si tratta della mail dell'utente nel database del server
-	\item \textbf{IdCdt} Rappresenta l'identificativo del CDT. Come spiegato nelle sezioni precedenti questo identificativo appartiene a ogni singolo utente
-	\item \textbf{Context} \upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano di una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come payload nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e produce in uscita una stringa. Per poter convertire anche gli oggetti che sono innestati a un livello superiore viene utilizzata una ricorsione che richiama la prima funzione
-	\item \textbf{Support} Rappresenta la tipologia di servizi di supporto che l'utente richiede per integrare al meglio i dati che gli necessitano. Per esempio nella demo di CAMUS si utilizzano i servizi di tipo \virgolette{Transport}
-	\item \textbf{PrimaryResults} Rappresentano i dati provenienti dai servizi invocati dal server per costruire l'insieme dei risultati per l'utente. GraphQL permette di eseguire delle richieste di dati altamente personalizzate, permettendo di richiedere la minima quantità di dati indispensabile per l'utilizzo da parte dell'utente. Per poter svolgere questo compito si è scelto di utilizzare i termini semantici dei mashup, in particolare della tipologia \emph{details}, perché si suppone che nel caso della lista si abbia un sottoinsieme dei termini semantici. Come per la funzione di costruzione della view espressa nella Sezione \ref{sec:rendering-view}, anche in questo caso è necessario acquisire i mashup associati all'\emph{Interest Topic} e poi selezionare i termini (Listato \ref{lst:esempio-data-mashup}), che verranno posizionati in una stringa e inviati al server (Listato \ref{lst:esempio-primary-app}).
-	\item \textbf{SupportResults} Lo stesso meccanismo utilizzato per i \emph{PrimaryResults} viene riproposto anche per i risultati di supporto. Invece di recuperare i mashup dalle \emph{Store} viene riproposta la stessa definizione per ogni query, perché i servizi di supporto sono definiti sempre nello stesso modo con i campi \emph{category}, \emph{service} e \emph{url}.
+	\item \textbf{Email}
+	Si tratta della mail dell'utente nel database del server
+	\item \textbf{IdCdt}
+	Rappresenta l'identificativo del CDT. Come spiegato nelle sezioni precedenti questo identificativo appartiene a ogni singolo utente
+	\item \textbf{Context}
+	\upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano di una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come payload nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e produce in uscita una stringa. Per poter convertire anche gli oggetti che sono innestati a un livello superiore viene utilizzata una ricorsione che richiama la prima funzione
+	\item \textbf{Support}
+	Rappresenta la tipologia di servizi di supporto che l'utente richiede per integrare al meglio i dati che gli necessitano. Per esempio nella demo di CAMUS si utilizzano i servizi di tipo \virgolette{Transport}
+	\item \textbf{PrimaryResults}
+	Rappresentano i dati provenienti dai servizi invocati dal server per costruire l'insieme dei risultati per l'utente. GraphQL permette di eseguire delle richieste di dati altamente personalizzate, permettendo di richiedere la minima quantità di dati indispensabile per l'utilizzo da parte dell'utente. Per poter svolgere questo compito si è scelto di utilizzare i termini semantici dei mashup, in particolare della tipologia \emph{details}, perché si suppone che nel caso della lista si abbia un sottoinsieme dei termini semantici. Come per la funzione di costruzione della view espressa nella Sezione \ref{sec:rendering-view}, anche in questo caso è necessario acquisire i mashup associati all'\emph{Interest Topic} e poi selezionare i termini (Listato \ref{lst:esempio-data-mashup}), che verranno posizionati in una stringa e inviati al server (Listato \ref{lst:esempio-primary-app}).
+	\item \textbf{SupportResults}
+	Lo stesso meccanismo utilizzato per i \emph{PrimaryResults} viene riproposto anche per i risultati di supporto. Invece di recuperare i mashup dalle \emph{Store} viene riproposta la stessa definizione per ogni query, perché i servizi di supporto sono definiti sempre nello stesso modo con i campi \emph{category}, \emph{service} e \emph{url}.
 \end{itemize}
 
 \begin{listing}[H]
@@ -248,14 +325,19 @@ Nel Listato \ref{lst:esempio-risposta-data-app} viene mostrata la risposta per q
 \subsection{Gestione paginazione}\label{sec:paginazione-app}
 
 Per quanto riguarda la gestione dei risultati l'applicazione sfrutta la paginazione messa a disposizione da GraphQL. A livello client viene implementata quando viene restituito il risultato della query basata sul contesto, per velocizzare e ottimizzare lo scambio dati col server. Nel modulo \emph{Connection Manager} sono implementati due metodi diversi per creare le query, uno per la prima query e un altro per le successive. Si tratta di due richieste non molto differenti tra loro:
+
 \begin{enumerate}
-	\item \textbf{Richiesta iniziale} Nella richiesta iniziale è necessario acquisire i parametri del contesto costruiti dalle \emph{Context Selection Page} e gli oggetti ricavati dai parametri definiti dall'utente e dai sensori, sotto forma in stringhe. Inoltre vengono definiti i parametri sulle dimensioni della pagina, ma senza nessun riferimento agli elementi precedenti.
+	\item \textbf{Richiesta iniziale}
+	Nella richiesta iniziale è necessario acquisire i parametri del contesto costruiti dalle \emph{Context Selection Page} e gli oggetti ricavati dai parametri definiti dall'utente e dai sensori, sotto forma in stringhe. Inoltre vengono definiti i parametri sulle dimensioni della pagina, ma senza nessun riferimento agli elementi precedenti.
 	Nel Listato \ref{lst:esempio-risposta-data-app} l'oggetto che indica le informazioni sulla paginazione è \emph{PageInfo}. Esso possiede due parametri:
 	\begin{enumerate}
-		\item \textbf{hasNextPage} Indica se è presente una pagina aggiuntiva oltre a quella corrente
-		\item \textbf{endCursor} Indica il cursore associato all'ultimo elemento della lista dei risultati, per poi chiedere gli elementi successivi
+		\item \textbf{hasNextPage}
+		Indica se è presente una pagina aggiuntiva oltre a quella corrente
+		\item \textbf{endCursor}
+		Indica il cursore associato all'ultimo elemento della lista dei risultati, per poi chiedere gli elementi successivi
 	\end{enumerate}
-	\item \textbf{Richiesta pagine successive} Quando vengono richieste le pagine successive è sbagliato far ricavare nuovamente dai sensori e dall'utente il contesto, perché non è detto che questo rimanga statico. Per esempio se l'utente è in viaggio in treno le coordinate geografiche cambiano molto velocemente e quindi per il server si tratta di un nuovo contesto, restituendo un nuovo insieme di risultati. In questo modo si avrebbe nella migliore delle ipotesi un ricaricamento degli stessi dati ottenuti precedentemente mentre nella peggiore dei dati diversi. Per risolvere questo problema si è scelto di memorizzare nella \emph{Context Store} il contesto e i parametri immutabili della prima richiesta, come il contesto, le definizioni dei dati e i servizi di supporto. La nuova query cambia recuperando l'identificativo dell'ultimo elemento ritornato dalla query della pagina precedente, ponendo quest'ultimo come parametro \emph{after} e mantenendo costante la dimensione della pagina
+	\item \textbf{Richiesta pagine successive}
+	Quando vengono richieste le pagine successive è sbagliato far ricavare nuovamente dai sensori e dall'utente il contesto, perché non è detto che questo rimanga statico. Per esempio se l'utente è in viaggio in treno le coordinate geografiche cambiano molto velocemente e quindi per il server si tratta di un nuovo contesto, restituendo un nuovo insieme di risultati. In questo modo si avrebbe nella migliore delle ipotesi un ricaricamento degli stessi dati ottenuti precedentemente mentre nella peggiore dei dati diversi. Per risolvere questo problema si è scelto di memorizzare nella \emph{Context Store} il contesto e i parametri immutabili della prima richiesta, come il contesto, le definizioni dei dati e i servizi di supporto. La nuova query cambia recuperando l'identificativo dell'ultimo elemento ritornato dalla query della pagina precedente, ponendo quest'ultimo come parametro \emph{after} e mantenendo costante la dimensione della pagina
 \end{enumerate} 
 
 Questi due metodi sono chiamati dall'applicazione in due fasi differenti: la richiesta iniziale viene invocata quando l'utente ha appena definito il contesto e richiede nuovi dati, la richiesta delle pagine successive quando l'utente si trova nella \emph{Results Page} e scorre fino in fondo la lista di risultati. 
@@ -265,18 +347,25 @@ Considerando sempre il Listato \ref{lst:esempio-risposta-data-app}, dove è most
 \section{Servizi di supporto}\label{sec:servizi-supporto-app}
 
 Come spiegato nella Sezione \ref{sec:architettura-sistema}, i servizi di supporto sono utilizzati principalmente nell'applicazione. Quando viene effettuata una richiesta viene inserita la tipologia desiderata di servizi di supporto e il server restituisce un indirizzo che l'applicazione può gestire in diversi modi:
+
 \begin{itemize}
-	\item \textbf{Web Linking} L'applicazione riceve un link per accedere all'endpoint del servizio, richiede i dati e li visualizza all'interno del componente preposto dell'app. Questa soluzione è gestita mediante una funzione del \emph{Connection Manager} che gestisce le query nella modalità richiesta dal servizio da interrogare
-	\item \textbf{Deep Linking} I \emph{Deep Link} sono degli URI che permettono di lanciare una applicazione preinstallata sul dispositivo. Sono collegamenti molto simili agli URL HTTP, con la differenza che viene specificato il nome che identifica l'applicazione da lanciare. Se l'applicazione desiderata non è presente sul dispositivo è necessario gestire l'errore e reindirizzare l'utente sull'App Store o sul Google Play Store per poterla scaricare. Questa tipologia di collegamenti migliora l'integrazione dell'applicazione CAMUS con l'intero sistema operativo. 
+	\item \textbf{Web Linking}
+	L'applicazione riceve un link per accedere all'endpoint del servizio, richiede i dati e li visualizza all'interno del componente preposto dell'app. Questa soluzione è gestita mediante una funzione del \emph{Connection Manager} che gestisce le query nella modalità richiesta dal servizio da interrogare
+	\item \textbf{Deep Linking}
+	I \emph{Deep Link} sono degli URI che permettono di lanciare una applicazione preinstallata sul dispositivo. Sono collegamenti molto simili agli URL HTTP, con la differenza che viene specificato il nome che identifica l'applicazione da lanciare. Se l'applicazione desiderata non è presente sul dispositivo è necessario gestire l'errore e reindirizzare l'utente sull'App Store o sul Google Play Store per poterla scaricare. Questa tipologia di collegamenti migliora l'integrazione dell'applicazione CAMUS con l'intero sistema operativo. 
 \end{itemize}
 	 
 In generale il funzionamento di queste tipologie di collegamenti è gestito dall'ap\-pli\-ca\-zio\-ne con le stesse modalità. Nel risultato proveniente dal server viene restituito un link del tipo \emph{nomeapp://?param={value}} e l'applicazione è in grado di sostituire al posto di \emph{value} il valore proveniente dall'elemento dei risultati per poter aprire l'applicazione di supporto. La scelta che è stata fatta è di utilizzare due link diversi per ogni sistema operativo: il primo punta all'applicazione installata sul dispositivo, mentre il secondo allo store predefinito per scaricare l'applicazione. Questa scelta permette di definire applicazioni diverse o di usare la stessa applicazione nel caso in cui utilizzi link diversi a seconda del sistema operativo. Un esempio di applicazione che ha questo problema è Google Maps: in Android l'URI è del tipo \emph{google.navigation:q={value}}, mentre in iOS è del tipo \emph{comgooglemaps://?saddr={value}}. In React Native la libreria di \emph{Linking} è in comune tra le diverse piattaforme e quindi è necessario prestare attenzione al collegamento che viene passato. Nell'applicazione questo viene implementato con il metodo \emph{Linking.canOpenUrl(URI)} nel quale viene passato al suo interno il link da aprire. Se il metodo ritorna un errore allora viene aperto il collegamento che punta all'App Store mentre in caso di risposta affermativa l'applicazione desiderata viene aperta. Nel Listato \ref{lst:esempio-support-app} viene rappresentato un esempio completo dell'oggetto che rappresenta il servizio di supporto proveniente dal server, dove:
-\begin{itemize}
-	\item \textbf{Category} Indica la categoria di appartenenza del servizio
-	\item \textbf{Service} Rappresenta il nome del servizio
-	\item \textbf{Url} Indica l'Url per invocare il servizio o aprire l'applicazione
-	\item \textbf{Store Link}: Rappresenta il link nello store di sistema per scaricare l'ap\-pli\-ca\-zio\-ne se non è installata sul dispositivo  
 
+\begin{itemize}
+	\item \textbf{Category}
+	Indica la categoria di appartenenza del servizio
+	\item \textbf{Service}
+	Rappresenta il nome del servizio
+	\item \textbf{Url}
+	Indica l'Url per invocare il servizio o aprire l'applicazione
+	\item \textbf{Store Link}
+	Rappresenta il link nello store di sistema per scaricare l'ap\-pli\-ca\-zio\-ne se non è installata sul dispositivo  
 \end{itemize}
 
 \begin{listing}[H]
