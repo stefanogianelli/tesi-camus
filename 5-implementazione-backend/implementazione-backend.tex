@@ -309,15 +309,15 @@ Di seguito viene presentata una descrizione dettagliata delle entità che compon
 	Questa entità viene utilizzata per acquisire lo schema di \emph{Mashup Globale} nel caso in cui a un utente non è stato creato uno schema specifico
 \end{itemize}
 
-Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
-
-In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
-
-\begin{figure}[ht]
+\begin{figure}[!b]
 	\centering
 	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_logico_db.png}
 	\caption{Schema logico del database}\label{fig:schema-logico-db}
 \end{figure}
+
+Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
+
+In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
 
 \section{Componenti\label{sec:componenti-backend}}
 
@@ -816,7 +816,7 @@ Nessun campo è obbligatorio, a eccezione dell'indirizzo di MongoDB, se non spec
 
 Nel Listato \ref{lst:file-configurazione-predefinito} viene mostrato il file di configurazione predefinito.
 
-\begin{listing}[H]
+\begin{listing}[h]
 	\inputminted{json}{5-implementazione-backend/Codice/file_configurazione_predefinito.json}
 	\caption{File di configurazione predefinito}
 	\label{lst:file-configurazione-predefinito}
