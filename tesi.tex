@@ -100,9 +100,9 @@
 
 \cleardoublepage{}
 
-%\begin{flushright}
-%\emph{\input{dedica.tex}}\cleardoublepage{}
-%\par\end{flushright}
+\begin{flushright}
+\emph{\input{dedica.tex}}\cleardoublepage{}
+\par\end{flushright}
 
 
 \chapter*{Ringraziamenti}
@@ -172,5 +172,10 @@
 \bibliography{bibliografia}
 \addcontentsline{toc}{chapter}{Bibliografia}
 
-\cleardoublepage{}
+\appendix
+
+\chapter{Prima appendice\label{app:prima-appendice}}
+
+\input{appendice-a/appendice-a.tex}
+
 \end{document}
