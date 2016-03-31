@@ -1,16 +1,16 @@
-In questo capitolo si entrerà nei dettagli che hanno portato alla realizzazione del backend del progetto CAMUS. Il capitolo inizia con l'analisi dello schema dell'architettura del sistema e la descrizione delle tecnologie che sono state utilizzate. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Descritti i componenti viene mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
+Questo capitolo illustra la realizzazione del backend dell piattaforma CAMUS. Il capitolo inizia con l'analisi dello schema dell'architettura e la descrizione delle tecnologie che sono state utilizzate. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati, si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Viene quindi mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
 
 \section{Schema del database\label{sec:schema-database}}
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[height=\textwidth, angle=90]{5-implementazione-backend/Immagini/schema_er_db.png}
+	\caption{Diagramma ER del database}\label{fig:schema-er-db}
+\end{figure}
 
 La base di dati viene utilizzata principalmente per garantire la persistenza di tre elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto e \emph{iii)} le associazioni tra operazioni e nodi del CDT.
 
 Queste entità permettono al sistema di svolgere le attività principali. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_er_db.png}
-	\caption{Diagramma ER del database}\label{fig:schema-er-db}
-\end{figure}
 
 \textcolor{red}{aggiungere descrizione testuale delle entità che non verranno descritte in seguito}
 
@@ -68,17 +68,17 @@ Nel Listato \ref{lst:esempio-nodo-cdt} viene mostrato un esempio di nodo.
 	\label{lst:esempio-nodo-cdt}
 \end{listing}
 
-\subsection{Parametri\label{sec:parametro-cdt}}
+\subsection{Parametri dei nodi\label{sec:parametro-cdt}}
 
 Questo oggetto definisce i parametri che sono associati a un nodo dimensione. Corrisponde ai nodi di tipo \emph{parametro} del modello del CDT. I parametri vengono utilizzati per permettere all'utente di specificare dei valori di sua scelta (es.: località). \upe composto dai seguenti campi:
 
 \begin{itemize}
 	\item \textbf{Name}
-	Il nome del parametro, che deve essere lo stesso definito dall'operazione. Questo campo verrà utilizzato in fase di composizione della query per invocare il servizio ed è quindi essenziale che equivalga al nome fornito dal gestore del servizio
+	Il nome del parametro
 	\item \textbf{Type}
 	Il/I formato/i del dato che vengono accettati
 	\item \textbf{Fields}
-	Questo elenco permette di definire dei campi che vanno ulteriormente a specificare il parametro. Un esempio viene dato dal parametro \virgolette{Località}, che può essere specializzato nei campi \virgolette{Latitudine} e \virgolette{Longitudine}
+	Questo elenco permette di definire dei campi che vanno ulteriormente a specificare il parametro. Un esempio viene dato dal parametro \virgolette{Luogo}, che può essere specializzato nei campi \virgolette{Latitudine} e \virgolette{Longitudine}
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di parametro.
@@ -91,7 +91,7 @@ Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di paramet
 
 \section{Descrittore dei servizi\label{sec:descrittore-servizi}}
 
-In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella Sezione \ref{sec:utilizzo-servizi}. Affinché il sistema possa effettuare le richieste è necessario che sia presente una formato per descrivere le caratteristiche di ogni servizio (es.: l'indirizzo verso il quale effettuare la richiesta, i parametri da inserire, ecc.). Per questo motivo è stato introdotto l'utilizzo di un \emph{descrittore dei servizi} in grado di descrivere tutte le possibili configurazioni che i servizi possono richiedere. I \emph{descrittori} non sono altro che configurazioni dei servizi espressi tramite file JSON. Di seguito verranno analizzati nel dettaglio tutti i campi che compongono il descrittore. Visto che il descrittore contiene una moltitudine di informazioni che riguardano diversi aspetti di un servizio, viene diviso in sotto-oggetti in modo da semplificarne la comprensione e la lettura.
+Affinché il sistema possa effettuare le richieste è necessario che sia presente una formato per descrivere le caratteristiche di ogni servizio (es.: l'indirizzo verso il quale effettuare la richiesta, i parametri da inserire, ecc.). Per questo motivo è stato introdotto l'utilizzo di un \emph{descrittore dei servizi} in grado di specificare tutte le possibili configurazioni che i servizi possono richiedere. I \emph{descrittori} non sono altro che configurazioni dei servizi espressi tramite file JSON. Di seguito verranno analizzati nel dettaglio tutti i campi che compongono il descrittore. Visto che il descrittore contiene informazioni che riguardano diversi aspetti di un servizio, viene diviso in sotto-oggetti in modo da semplificarne la comprensione e la lettura.
 
 \subsection{Oggetto principale\label{sec:oggetto-principale-servizi}}
 
@@ -103,9 +103,9 @@ In CAMUS l'acquisizione dei dati avviene tramite servizi, come descritto nella S
 	\item \textbf{Description}
 	Fornisce una descrizione delle funzionalità del servizio
 	\item \textbf{Protocol}
-	Definisce la tipologia con la quale accedere al servizio. Può assumere i valori \virgolette{rest}, \virgolette{query} o \virgolette{custom}, per specificare rispettivamente che il servizio viene invocato secondo la logica REST, viene composta una query con parametri o necessita di un metodo particolare per l'accesso
+	Definisce la tipologia con la quale accedere al servizio. Può assumere i valori \virgolette{rest}, \virgolette{query} o \virgolette{custom}, per specificare rispettivamente che il servizio viene invocato secondo il protocollo REST, viene composta una query con parametri o è necessario invocare un metodo particolare per l'accesso
 	\item \textbf{Base Path}
-	Rappresenta l'indirizzo di base del servizio. A partire da questo indirizzo verrà composto quello completo aggiungendo in coda i percorsi specifici delle \emph{operazioni} richieste. Non deve essere inserita al termine nessuna slash (\virgolette{/})
+	Rappresenta l'indirizzo di base del servizio. A partire da questo indirizzo verrà composto quello completo aggiungendo in coda i percorsi specifici delle \emph{operazioni} richieste. Non deve essere inserita al termine nessuno slash (\virgolette{/})
 	\item \textbf{Operazioni}
 	L'elenco delle operazioni esposte dal servizio. Per un approfondimento riguardo questo oggetto fare riferimento alla Sezione \ref{sec:descrittore-operazioni}
 \end{itemize}
@@ -132,7 +132,7 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'o\-pe\-
 	\item \textbf{Path}
 	Il percorso specifico per richiamare l'operazione. Questo valore viene aggiunto al \emph{Base Path} del servizio. Deve essere sempre preceduto da una slash (\virgolette{/})
 	\item \textbf{Protocol}
-	Permette di ridefinire il protocollo utilizzato esclusivamente per l'operazione corrente. \upe utile nei casi in cui un'operazione, per una qualsiasi ragione, utilizzi un paradigma di composizione della query diverso da quello specificato dal servizio. Per esempio, viene utilizzato per mappare gli intent su diversi sistemi operativi, che hanno diverse regole di composizione. Oltre alle tipologie definite per i \emph{servizi} supporta anche il protocollo \virgolette{android}
+	Permette di ridefinire il protocollo utilizzato esclusivamente per l'operazione corrente. \upe utile nei casi in cui un'operazione, per una qualsiasi ragione, utilizzi un paradigma di composizione della query diverso da quello specificato dal servizio. Per esempio, viene utilizzato per mappare gli \virgolette{intent} su diversi sistemi operativi dei dispositivi, che hanno diverse regole di composizione. Oltre alle tipologie definite per i \emph{servizi} supporta anche il protocollo \virgolette{android}
 	\item \textbf{Store Link}
 	Utilizzato esclusivamente per i servizi di supporto, permette di definire il link nello store di riferimento per scaricare l'app necessaria a utilizzare l'intent associato
 	\item \textbf{Bridge Name}
@@ -155,7 +155,7 @@ Nel Listato \ref{lst:esempio-descrittore-operazione} viene mostrato un esempio d
 	\label{lst:esempio-descrittore-operazione}
 \end{listing}
 
-\subsection{Parametri\label{sec:descrittore-parametri}}
+\subsection{Parametri delle operazioni\label{sec:descrittore-parametri}}
 
 In quest'oggetto vengono definiti i parametri in ingresso di un'operazione. I parametri generalmente sono composti da due campi: uno ne definisce il \emph{nome} e l'altro il rispettivo \emph{valore}. In alcuni casi vengono accettati più valori, quindi il descrittore deve dunque essere in grado di gestire questa situazione. Un ulteriore compito affidato a questo oggetto è quello di acquisire il valore di un determinato parametro dal \emph{contesto}. Viene inoltre fornito un semplice sistema di traduzione dei dati acquisiti dal contesto, per permettere le trasformazioni verso un valore idoneo per l'operazione corrente. Infine, soprattutto per le operazioni di \emph{supporto}, viene permessa un'associazione del parametro verso uno o più \emph{termini semantici}, per permettere all'app mobile di conoscere l'attributo dove andare a recuperare il valore concreto a run-time. Nello specifico, l'oggetto è così composto:
 
@@ -234,6 +234,12 @@ Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio 
 
 \section{Componenti\label{sec:componenti-backend}}
 
+\begin{figure}[p]
+	\centering
+	\includegraphics[width=\textheight, angle=90]{5-implementazione-backend/Immagini/diagramma_classi_backend.png}
+	\caption{Diagramma delle classi del backend}\label{fig:class-diagram-backend}
+\end{figure}
+
 Come già evidenziato nella Sezione \ref{sec:architettura-backend}, l'architettura del backend è composta da diversi \emph{componenti}. Questa soluzione è stata adottata per via dell'elevata flessibilità che garantisce. Ogni componente è specializzato in un compito preciso e il concatenamento di più componenti permette di realizzare funzionalità più complesse per produrre il risultato desiderato. Per svolgere le principali attività vengono dunque create delle \emph{pipeline}, dove il risultato di un componente viene acquisito e ulteriormente elaborato dal successivo.
 
 Altra caratteristica importante è l'assenza di informazioni sullo stato in ogni componente. Una richiesta nasce nel momento in cui l'utente conferma l'attività e muore una volta che viene evasa. La ragione principale di questa scelta risiede nel fatto che sarebbe oneroso lato backend gestire tutte le informazioni della moltitudine di utenti che sono connessi al sistema. Inoltre mantenere uno stato limiterebbe la scalabilità del sistema, in quanto se un utente inizia la sessione su di un determinato server dovrà continuare sempre su quello, rendendo complicato il bilanciamento dei carichi tra le diverse macchine.
@@ -243,13 +249,6 @@ A questo punto è necessaria una importante precisazione: per la gestione della 
 In CAMUS questa attività viene svolta da Redis, che è stato selezionato per l'elevata rapidità nell'evadere le richieste e nella possibilità di associare un periodo di vita alle informazioni che vengono memorizzate. Viene ipotizzato che dopo un periodo nel quale l'utente non effettua più interazione sulla sessione, essa può ritenersi estinta e i suoi dati eliminati.
 
 In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle classi di tutti i componenti che formano il backend del sistema.
-
-\begin{figure}[ht]
-	\hspace*{-2.2cm}
-	\centering
-	\includegraphics[width=1.4\textwidth]{5-implementazione-backend/Immagini/diagramma_classi_backend.png}
-	\caption{Diagramma delle classi del backend}\label{fig:class-diagram-backend}
-\end{figure}
 
 Nelle seguenti sottosezioni verranno analizzate nel dettaglio le attività svolte dai componenti principali del sistema.
 
@@ -286,7 +285,7 @@ In seguito inizia la fase di creazione del \emph{CDT decorato}. Questa rappresen
 	\item \textbf{Ranking Nodes}
 	L'elenco dei nodi di tipo ranking che vengono utilizzati per selezionare le operazioni
 	\item \textbf{Specific Nodes}
-	Sono i nodi che non utilizzano la ricerca standard delle associazioni ma richiedono una ricerca specifica
+	Sono i nodi che non utilizzano la ricerca standard delle associazioni ma richiedono una ricerca specifica. La definizione di queste due tipologie verrà approfondita nella Sezione \ref{sec:primary-service-selection}
 	\item \textbf{Parameter Nodes}
 	L'elenco dei nodi dai quali recuperare i valori da utilizzare per la composizione delle query
 \end{itemize}
@@ -308,11 +307,7 @@ La prima attività svolta riguarda l'acquisizione delle operazioni che sono asso
 	Utilizza dei metodi specifici per ricercare le associazioni. Un esempio è la ricerca delle operazioni tramite \emph{coordinate}, che sfrutta le funzionalità di MongoDB di effettuare query geospaziali
 \end{enumerate}
 
-I risultati della \emph{ricerca standard} vengono a loro volta divisi in base alla tipologia di nodo alla quale sono associati. Le due categorie sono \emph{filter} e \emph{ranking}, alle quali viene assegnato un peso diverso come descritto nella Sezione \ref{sec:selezione-operazioni}. Invece i risultati delle ricerche specifiche vengono classificati sempre come \emph{ranking}.
-
-Una volta acquisite le associazioni attive, viene calcolato il \emph{punteggio} di ogni operazione. Viene utilizzata la Formula \ref{eq:primary-service-formula} per il calcolo del \emph{punteggio} totale di ogni operazione.
-
-Completata questa fase, l'elenco delle operazioni viene riordinato in modo decrescente in base al \emph{punteggio} calcolato e vengono selezionate solamente le Top-N operazioni col punteggio più elevato. \virgolette{N} è un numero fissato a priori che definisce il numero di operazioni che si desidera interrogare.
+\textcolor{red}{Definire meglio il funzionamento delle ricerche ed espandere, senza ripetere cose già dette nelle metodologie}
 
 \subsection{Query Handler\label{sec:query-handler}}
 
@@ -342,6 +337,8 @@ Infine vengono restituite in uscita la risposta del servizio insieme alle eventu
 
 \subsection{Response Aggregator\label{sec:response-aggregator}}
 
+\textcolor{red}{rimuovere cose già dette}
+
 Il \emph{Response Aggregator} entra in gioco una volta che sono stati interrogati tutti i servizi. Riceve in input l'elenco dei risultati già trasformati. Il suo compito è di effettuare diverse attività per pulire i dati o aggiungere ulteriori informazioni. Attualmente nel prototipo viene eseguita unicamente la \emph{ricerca dei duplicati}. Questa attività scorre l'intera lista dei risultati e cerca gli oggetti che sono simili tra loro, cioè che rappresentano la medesima entità reale. Ogni qualvolta che due o più oggetti vengono identificati come duplicati, viene avviata un'attività per unirli in un unico oggetto. Questo oggetto conterrà l'unione delle informazioni che ognuno degli elementi mette a disposizione. In questo modo è possibile creare un entità più ricca rispetto a quelle originali. Nel caso in cui ci sia sovrapposizione, ossia quando due o più entità forniscono lo stesso attributo, viene mantenuto il valore restituito dal servizio col punteggio più alto, che si ipotizza sia quello che mette a disposizione i migliori dati per la situazione corrente. Per un'analisi più approfondita dell'algoritmo di ricerca dei duplicati si fa riferimento all'Algoritmo \ref{alg:algoritmo-rimozione-duplicati}.
 
 Una volta terminate le attività sui dati, viene restituita la nuova lista dei risultati.
@@ -349,8 +346,6 @@ Una volta terminate le attività sui dati, viene restituita la nuova lista dei r
 \subsection{Support Service Selection\label{sec:support-service-selection}}
 
 Il \emph{Support Service Selection} è il componente dedicato alla selezione delle operazioni di supporto o intent. Riceve in ingresso il \emph{CDT Decorato} che, oltre a contenere le selezioni fatte dall'utente, elenca anche le categorie di servizi che si desidera ricevere. Le categorie servono per raggruppare assieme più servizi che svolgono una funzione simile. In base alle associazioni definite verrà poi selezionato il servizio più idoneo per la situazione corrente. L'attività di selezione appena descritta viene ripetuta integralmente per ognuna delle categorie, in quanto si vuole ottenere almeno un riscontro per tutte le categorie elencate.
-
-La metodologia di selezione delle operazioni è la stessa descritta nella Sezione \ref{sec:selezione-operazioni}. Una volta identificate le operazioni che sono adatte al contesto si passa alla fase di composizione degli indirizzi. In seguito l'elenco creato viene restituito nella risposta alla mobile app.
 
 \subsection{Session Helper\label{sec:session-helper}}
 
@@ -446,7 +441,7 @@ Per terminare l'attività vengono messe assieme tutte le parti. All'indirizzo di
 
 \section{Endpoint GraphQL\label{sec:endpoint-graphql}}
 
-Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare il punto d'accesso al sistema viene utilizzato GraphQL. In questa sezione si andranno ad analizzare le varie funzionalità fruibili dal client. L'indirizzo da contattare rimane sempre lo stesso per tutti i casi, quello che cambia sarà un parametro nella richiesta che permette di identificare quale attività si desidera svolgere. In Figura \ref{fig:schema-graphql} viene mostrato il diagramma delle classi dello schema di GraphQL, mettendo in evidenza le connessioni tra i vari oggetti e la tipologia dei campi.
+Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare il punto d'accesso al sistema viene utilizzato GraphQL. In questa sezione si andranno ad analizzare le varie funzionalità fruibili dal client. L'indirizzo di accesso rimane sempre lo stesso per tutti i casi, quello che cambia sarà un parametro nella richiesta che permette di identificare quale attività si desidera svolgere. In Figura \ref{fig:schema-graphql} viene mostrato il diagramma delle classi dello schema di GraphQL, mettendo in evidenza le connessioni tra i vari oggetti e la tipologia dei campi.
 
 \begin{figure}[ht]
 	\centering
@@ -454,7 +449,7 @@ Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare 
 	\caption{Diagramma dello schema GraphQL}\label{fig:schema-graphql}
 \end{figure}
 
-I nomi delle seguenti sottosezioni rappresentano proprio le attività precedentemente citate. Di seguito verranno identificate per semplicità di espressione col nome di endpoint, visto che il fine ultimo è paragonabile a quello degli endpoint nel mondo REST.
+Il resto di questa sezione descriverà in dettaglio le varie attività che possono essere invocate. Esse saranno identificate per semplicità di espressione col nome di endpoint, visto che il fine ultimo è paragonabile a quello degli endpoint nel mondo REST.
 
 \subsection{Execute Query\label{sec:execute-query-endpoint}}
 
@@ -493,9 +488,9 @@ Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Help
 	\item \textbf{Connection Id}
 	Identificativo univoco della sessione. Viene utilizzato per segnalare a chi effettua la query se la risposta fa parte di una sessione precedente o si tratta di una nuova
 	\item \textbf{Primary Connection}
-	Mette a disposizione l'elenco dei risultati. La particolarità è che si tratta di una \emph{connessione}, che è una tipologia specifica di GraphQL che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A GraphQL viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal client. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} first, dove viene specificato il numero di elementi che si desidera ricevere; \emph{ii)} after, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, GraphQL restituisce i primi N risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrati gli N elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da GraphQL per ogni elemento della risposta. Per permettere al client di conoscere lo stato della paginazione oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} hasNextPage, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} endCursor, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al client di gestire il numero di elementi da ricevere. Ogni oggetto che compone la risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
+	Mette a disposizione l'elenco dei risultati integrati forniti dai servizi primari. La particolarità è che si tratta di una \emph{connessione}, che è una tipologia specifica di GraphQL che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A GraphQL viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal client. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} first, dove viene specificato un numero \emph{N} di elementi che si desidera ricevere; \emph{ii)} after, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, GraphQL restituisce i primi \emph{N} risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrati gli \emph{N} elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da GraphQL per ogni elemento della risposta. Per permettere al client di conoscere lo stato della paginazione oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} hasNextPage, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} endCursor, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al client di gestire il numero di elementi da ricevere. Ogni oggetto che compone la risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
 	\item \textbf{Support Connection}
-	Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come il caso dei risultati primari viene utilizzata una \emph{connessione} di GraphQL. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
+	Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come nel caso dei risultati primari viene utilizzata una \emph{connessione} di GraphQL. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio di richiesta per effettuare la ricerca di dati sia \emph{primari} sia di \emph{supporto}.
