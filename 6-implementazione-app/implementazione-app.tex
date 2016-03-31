@@ -1,146 +1,7 @@
+\textcolor{red}{sistemare ...}
+
 L'applicazione mobile CAMUS rappresenta l'altro elemento fondamentale dell'ar\-chi\-tet\-tu\-ra. Fornisce all'utente finale l'interfaccia per accedere al sistema e semplifica l'utilizzo e l'accesso ai dati. Poi è presente una spiegazione generale delle tecnologie che sono state impiegate nell'applicazione, come React Native e Flux. Il capitolo si apre con la presentazione dell'architettura interna dell'applicazione e le motivazioni che hanno spinto verso una soluzione di questo tipo. Viene introdotto lo schema per definire le pagine e la logica di aggiornamento dei dati, seguendo il principio del flusso dati unidirezionale. In seguito verrà definita la struttura del file di mashup proveniente dal server che è indispensabile per la creazione delle schermate, per poi trattare nello specifico i metodi che occorrono per costruire queste schermate.
 Successivamente si tratterà del flusso dei dati all'interno dell'applicazione e di come vengono gestite le richieste dati verso il server, tramite GraphQL, per effettuare le richieste riguardanti il login e i risultati contestuali per l'utente. In conclusione verrà trattato l'argomento riguardante i servizi di supporto.
-
-\section {Architettura dell'applicazione}\label{sec:architettura-applicazione}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_architecture.pdf}
-	\caption{Architetture generale dell'app CAMUS}\label{fig:app-architecture}
-\end{figure}
-
-E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:app-architecture}. Per una migliore comprensione dello schema nelle sezioni seguenti verranno analizzati nel dettaglio i singoli componenti che la compongono.
-
-\subsection{Pagine dell'applicazione}
-
-Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un router. Si è scelto di sfruttare due router diversi, uno per gestire il login e un altro per la navigazione all'interno dell'applicazione. Il router per il login controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi possiede \emph{Login Page} e il secondo router, che racchiude la navigazione effettiva dell'utente autenticato.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/screen-schema.pdf}
-	\caption{Schema delle pagine}\label{fig:screen-schema}
-\end{figure}
-
-Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le seguenti:
-
-\begin{itemize}
-	\item \textbf{Login Page}
-	\upe la pagina dove l'utente inserisce le proprie credenziali per accedere al sistema CAMUS e ottenere i parametri per il corretto funzionamento dell'applicazione
-	\item \textbf{Logged Area}
-	Si tratta della parte dell'applicazione alla quale l'utente può accedere nel caso in cui sia autenticato e gestisce le pagine di composizione del contesto e di visualizzazione dati:
-	\begin{itemize}
-		\item \textbf{Main Page}
-		È la pagina principale dell'applicazione e permette all'utente di mostrare tutti gli \emph{Interest Topic} presenti nel suo CDT. La scelta della categoria desiderata permette di accedere alla \emph{Context Selection Page}
-		\item \textbf{Context Dimension Page}
-		In questa pagina viene chiesto il contesto all'utente mediante un'interfaccia che si adatta a runtime man mano che l'utente effettua delle scelte per guidarlo nella definizione del contesto da inviare come richiesta al server. Una volta composto il contesto viene costruita la query e inviata all'endpoint GraphQL del server CAMUS. 
-		\item \textbf{Results Page}
-		Si tratta della pagina che deve mostrare l'intero dataset proveniente dal server e gestisce la paginazione dei risultati, a seconda della posizione del cursore dell'utente nella ListView 
-		\item \textbf{Details Page}
-		In questa pagina vengono visualizzati i dettagli dell'oggetto selezionato e sono gestiti i collegamenti con le applicazioni esterne, per mezzo della libreria di \emph{Linking} di React Native o tramite moduli personalizzati
-	\end{itemize}
-\end{itemize}
-
-\subsection{Helpers}
-
-Le pagine spiegate nella sezione precedente utilizzano alcuni componenti che sono in comune tra tutte le pagine dell'applicazione in quanto aiutano a eseguire funzionalità comuni. Di seguito sono elencati i componenti che svolgono questo compito:
-
-\begin{itemize}
-	\item \textbf{View Builder}
-	Si tratta del componente che costruisce le view dinamiche partendo dallo schema di mashup
-	\item \textbf{Connection Manager}
-	In questo componente vengono gestite tutte le connessioni con l'endpoint GraphQL. Permette di gestire la fase di login e di scambio dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
-	\item \textbf{StyleSheet}
-	Si tratta del foglio di stile nel quale sono impostati tutti i parametri predefiniti per la visualizzazione dei componenti dell'applicazione
-\end{itemize}
-
-\subsection{Actions}\label{sec:actions}
-
-Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificare lo stato dell'ap\-pli\-ca\-zio\-ne. Nell'applicazione CAMUS sono utilizzate principalmente in due modi:
-
-\begin{itemize}
-	\item \textbf{Data Fetching}
-	Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
-	Per esempio quando si preme il bottone per effettuare una nuova richiesta basata sul contesto viene invocata un'azione per mantenere lo stato coerente tra più componenti e permettere di mostrare in fase di caricamento uno Spinner e una volta che i dati sono arrivati all'interno dell'applicazione mostrarli nella ListView
-	\item \textbf{Application State}
-	Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate tramite le Action nelle Store
-\end{itemize}	
-
-Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti:
-
-\begin{itemize}
-	\item \textbf{User Actions}
-	Sono le azioni che servono ad aggiornare i parametri relativi all'utente, come password, email e suo identificativo nel database:
-	\begin{itemize}
-		\item \textbf{Update Email}
-		Metodo per aggiornare l'email dell'utente 
-		\item \textbf{Update Password}
-		Metodo per aggiornare la password dell'utente
-		\item \textbf{Update Token}
-		Metodo per tenere in memoria il Token della connessione col server per ottenere il CDT
-	\end{itemize}
-	\item \textbf{Context Actions}
-	Sono le azioni che gestiscono la selezione del contesto, consentendo di modificare le scelte effettuate dall'utente:
-	\begin{itemize}
-		\item \textbf{Set Transport}
-		Metodo per salvare la tipologia di trasporto da parte dell'utente
-		\item \textbf{Set Typology}
-		Metodo per salvare la tipologia nel caso di trasporto non con mezzi propri
-		\item \textbf{Add Forbidden}
-		Metodo per aggiungere un parametro in quelli da nascondere all'utente
-		\item \textbf{Remove Forbidden}
-		Metodo per rimuovere il parametro selezionato dalla lista di quelli da nascondere all'utente
-		\item \textbf{Update Last Context}
-		Metodo per salvare l'ultimo contesto inviato al server, per poterlo riutilizzare nelle richieste per le pagine successive
-	\end{itemize}
-	\item \textbf{View Actions}
-	Sono le azioni relative alla gestione dei mashup ma non dello stato della navigazione, per le quali è utilizzato un componente aggiuntivo sempre basato su Flux (React Native Router Flux):
-	\begin{itemize}
-		\item \textbf{Set Views}
-		Metodo per salvare il file con le view provenienti dal server 
-		\item \textbf{Select Interest Topic}
-		Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente
-	\end{itemize}
-	\item \textbf{Data Actions}
-	Trattano della gestione del CDT e dei risultati ottenuti dal server:
-	\begin{itemize}
-		\item \textbf{Update Results}
-		Metodo per aggiornare i dati dei risultati provenienti dalla query basata sul contesto
-		\item \textbf{Results Failed}
-		Metodo per inviare il messaggio di errore proveniente dalla richiesta
-		\item \textbf{Update Full CDT}
-		Metodo per aggiornare il CDT associato all'utente
-	\end{itemize}
-\end{itemize}
-
-\subsection{Stores}\label{sec:action-store}
-
-Le \emph{Stores} sono il modulo dove lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
-Per ogni interazione sui dati dell'applicazione che necessitano di rimanere persistenti viene invocata una action dal componente e dalla view che si propaga prima nelle store, e successivamente aggiorna nuovamente la view.
-Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato trattata:
-
-\begin{itemize}
-	\item  \textbf{User Store}
-	Nella \emph{User Store} sono memorizzati tutti i dati relativi all'utente. In particolare viene memorizzata la mail dell'utente nel database del server e l'identificativo del CDT a lui associato, che serviranno per poter effettuare le query GraphQL per ottenere i dati
-	\item \textbf{Context Store}
-	Nel \emph{Context Store} vengono gestiti i dati che riguardano i dati di contesto, come le coordinate geografiche e le scelte delle tipologie di trasporto pubblico, in modo da essere riutilizzate. Per quanto riguarda le richieste di dati, una volta che il contesto viene composto per effettuare la prima query, questo payload viene salvato qui e poi riutilizzato nelle query dei risultati successivi
-	\item \textbf{View Store}
-	In questa store sono memorizzati tutti i dati relativi alle view. Qui viene salvato lo schema di mashup e l'\emph{Interest Topic} corrente
-	\item \textbf{Data Store}
-	Si tratta della store più complessa perchè deve gestire in modo dinamico diverse tipologie di dato. Quando viene ricevuto il CDT vengono scanditi gli \emph{interest topic} è creato un oggetto nel campo \emph{results} che è composto da un array di tanti oggetti definiti da due campi:
-	\begin{enumerate}
-		\item \textbf{Results}
-		Rappresenta i risultati ricevuti per quell'\emph{interest topic}, comprende i dai servizi primari e i collegamenti per i servizi di supporto
-		\item \textbf{Topic}
-		Rappresenta l'\emph{Interest topic} associato ai risultati ricevuti dal server
-	\end{enumerate}
-	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics} è mostrato come viene rappresentato lo stato nel caso in cui l'utente abbia a disposizione due \emph{Interest Topic} e la suddivisione dei risultati per le due tipologie, in questo caso \emph{Restaurants} ed \emph{Event}. Si noti che oltre ai risultati sono salvati anche i parametri con lo stato della paginazione, per lasciare la possibilità di riprendere la visione di nuovi risultati.
-\end{itemize}
-
-\begin{listing}[H]
-	\inputminted{json}{6-implementazione-app/Codice/store-two-topics.json}
-	\caption{Esempio Data Store Mashup}
-	\label{lst:store-two-topics}
-\end{listing}
 
 \section{Struttura dello schema di mashup}
 
@@ -223,39 +84,6 @@ Nel Listato \ref{lst:stylesheet} viene mostrato un frammento del foglio di stile
 	\caption{Frammento Foglio di Stile}
 	\label{lst:stylesheet}
 \end{listing}
- 
-\section{Flusso di esecuzione}
-
-In questa sezione si vuole analizzare il flusso dei dati all'interno dell'applicazione, partendo dal login dell'utente fino alla selezione di un elemento dalla lista dei risultati.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{6-implementazione-app/immagini/app_dataflow.pdf}
-	\caption{Flusso dei dati dell'app Flux}\label{fig:app-dataflow}
-\end{figure}
-
-Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati all'interno dell'ap\-pli\-ca\-zio\-ne e di seguito vengono esposti i passaggi principali:
-
-\begin{enumerate}
-	\item
-	La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
-	\item
-	Vengono ricevuti il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario a caricare l'interfaccia grafica. Nel frattempo il router mostra la pagina iniziale dell'applicazione
-	\item
-	L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto dove vengono mostrati i campi che devono essere compilati
-	\item
-	Dopo aver definito i parametri del contesto desiderati l'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
-	\item
-	I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
-	\item
-	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
-	\item
-	I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
-	\item
-	L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
-	\item
-	L'applicazione carica la pagina dove vengono passati i dati completi dell'e\-le\-men\-to selezionato e visualizzati nella pagina
-\end{enumerate}
 
 \section{Query GraphQL}\label{sec:utilizzo-dati-app}
 
@@ -267,21 +95,8 @@ Tutto lo scambio di dati tra l'applicazione e il server viene svolto utilizzando
 Le query per gestire il meccanismo di login sono molto semplici. Sono basate sui dati inseriti dall'utente quando si trova nella \emph{Login Page} e sulle risposte intermedie fornite dal server. Queste query servono per ottenere l'identificativo del CDT a lui associato e lo schema dei mashup con le definizioni delle sue view.
 I dati necessari per la costruzione della query sono l'indirizzo email e la password, che sono inseriti dall'utente nella prima pagina che gli viene mostrata. A questo punto questi dati vengono salvati nella \emph{User Store} e sono tenuti nello stato dell'applicazione, nel caso in cui fosse necessario effettuare una nuova richiesta richiederli nuovamente. Nel caso in cui l'indirizzo email e/o la password siano errati viene notificato un errore mentre se uno dei due campi è mancante vengono richiesti nuovamente senza inviare nessuna richiesta.
 In caso di risposta affermativa viene restituito all'utente un token, generato ogni volta che l'utente effettua l'autenticazione. Questo token viene salvato sempre nella \emph{User Store} e successivamente inviato al server con la query \emph{getPersonalData()} per ottenere il CDT completo per poter costruire il contesto da mostrare all'utente e lo schema di mashup.
-Utilizzando un esempio pratico, dopo che l'utente Mario Rossi ha inserito le proprie credenziali di accesso, cioè indirizzo email e password, vengono restituiti questi dati (Listato \ref{lst:esempio-login-app}): 
 
-\begin{listing}[H]
-	\inputminted{json}{6-implementazione-app/Codice/esempio-login-app.json}
-	\caption{Esempio di risposta alla query di login}
-	\label{lst:esempio-login-app}
-\end{listing}
-
-L'indirizzo mail e il token sono inviati al server per ottenere il CDT e gli schemi di mashup associati all'utente. Un esempio delle informazioni ricevute in seguito a questa query è viene mostrato nel Listato \ref{lst:esempio-getcdt-app}.
-
-\begin{listing}[H]
-	\inputminted{json}{6-implementazione-app/Codice/get-cdt-app.json}
-	\caption{Esempio acquisizione CDT}
-	\label{lst:esempio-getcdt-app}
-\end{listing}
+L'indirizzo mail e il token sono inviati al server per ottenere il CDT e gli schemi di mashup associati all'utente.
 
 \subsection{Data Query} \label{sec:data-query}
 
@@ -297,30 +112,10 @@ Le query per gestire i dati necessitano di tutta una serie di operazioni prelimi
 	\item \textbf{Support}
 	Rappresenta la tipologia di servizi di supporto che l'utente richiede per integrare al meglio i dati che gli necessitano. Per esempio nella demo di CAMUS si utilizzano i servizi di tipo \virgolette{Transport}
 	\item \textbf{PrimaryResults}
-	Rappresentano i dati provenienti dai servizi invocati dal server per costruire l'insieme dei risultati per l'utente. GraphQL permette di eseguire delle richieste di dati altamente personalizzate, permettendo di richiedere la minima quantità di dati indispensabile per l'utilizzo da parte dell'utente. Per poter svolgere questo compito si è scelto di utilizzare i termini semantici dei mashup, in particolare della tipologia \emph{details}, perché si suppone che nel caso della lista si abbia un sottoinsieme dei termini semantici. Come per la funzione di costruzione della view espressa nella Sezione \ref{sec:rendering-view}, anche in questo caso è necessario acquisire i mashup associati all'\emph{Interest Topic} e poi selezionare i termini (Listato \ref{lst:esempio-data-mashup}), che verranno posizionati in una stringa e inviati al server (Listato \ref{lst:esempio-primary-app}).
+	Rappresentano i dati provenienti dai servizi invocati dal server per costruire l'insieme dei risultati per l'utente. GraphQL permette di eseguire delle richieste di dati altamente personalizzate, permettendo di richiedere la minima quantità di dati indispensabile per l'utilizzo da parte dell'utente. Per poter svolgere questo compito si è scelto di utilizzare i termini semantici dei mashup, in particolare della tipologia \emph{details}, perché si suppone che nel caso della lista si abbia un sottoinsieme dei termini semantici. Come per la funzione di costruzione della view espressa nella Sezione \ref{sec:rendering-view}, anche in questo caso è necessario acquisire i mashup associati all'\emph{Interest Topic} e poi selezionare i termini, che verranno posizionati in una stringa e inviati al server.
 	\item \textbf{SupportResults}
 	Lo stesso meccanismo utilizzato per i \emph{PrimaryResults} viene riproposto anche per i risultati di supporto. Invece di recuperare i mashup dalle \emph{Store} viene riproposta la stessa definizione per ogni query, perché i servizi di supporto sono definiti sempre nello stesso modo con i campi \emph{category}, \emph{service} e \emph{url}.
 \end{itemize}
-
-\begin{listing}[H]
-	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-app.json}
-	\caption{Schema di mashup di partenza}
-	\label{lst:esempio-data-mashup}
-\end{listing}
-
-\begin{listing}[H]
-	\inputminted{text}{6-implementazione-app/Codice/esempio-query-primary-app.txt}
-	\caption{Definizione oggetto GraphQL per risultati primari}
-	\label{lst:esempio-primary-app}
-\end{listing}
-
-Nel Listato \ref{lst:esempio-risposta-data-app} viene mostrata la risposta per quanto riguarda la query per i ristoranti effettuata dall'applicazione, limitando i risultati ai primi 5 disponibili dal server. 
-
-\begin{listing}[H]
-	\inputminted{json}{6-implementazione-app/Codice/esempio-risposta-data-app.json}
-	\caption{Esempio di risposta alla query per i Ristoranti}
-	\label{lst:esempio-risposta-data-app}
-\end{listing}
 
 \subsection{Gestione paginazione}\label{sec:paginazione-app}
 
