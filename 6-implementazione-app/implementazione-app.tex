@@ -55,7 +55,7 @@ Le pagine spiegate nella sezione precedente utilizzano alcuni componenti che son
 
 \subsection{Actions}\label{sec:actions}
 
-Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificare lo stato dell'applicazione. Nell'applicazione CAMUS sono utilizzate principalmente in due modi:
+Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificare lo stato dell'ap\-pli\-ca\-zio\-ne. Nell'applicazione CAMUS sono utilizzate principalmente in due modi:
 
 \begin{itemize}
 	\item \textbf{Data Fetching}
@@ -260,7 +260,7 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 \section{Query GraphQL}\label{sec:utilizzo-dati-app}
 
 I dati nell'intero sistema CAMUS assumono un ruolo fondamentale. In questa sezione si vuole affrontare la gestione dei dati all'interno dell'applicazione, partendo dagli algoritmi per costruire le query GraphQL per poi parlare dell'utilizzo dei dati all'interno dell'applicazione, tramite la gestione della paginazione dei risultati.
-Tutto lo scambio di dati tra l'applicazione e il server viene svolto utilizzando query GraphQL, come spiegato nella Sezione \ref{sec:graphql-introduzione}. Per implementare il modulo di gestione delle connessioni si è scelto di utilizzare \emph{Lokka} \footnote{Github Lokka: \url{https://github.com/kadirahq/lokka}}, un client compatibile con GraphQL che permette di gestire le query come se fossero normali \emph{fetch()} di JavaScript e lasciare una configurazione più libera e adattabile alle esigenze del sistema. Questo si sposa alla perfezione con il paradigma Flux, salvando la maggior parte del contenuto della risposta nella \emph{Data Store} con le modalità esposte nella Sezione \ref{sec:action-store} e rendendolo quindi disponibile per tutti i singoli componenti dell'applicazione. Di seguito sono spiegate le due tipologie principali di query gestite con GraphQL, che sono le query di login e le query per accedere ai dati.
+Tutto lo scambio di dati tra l'applicazione e il server viene svolto utilizzando query GraphQL, come spiegato nella Sezione \ref{sec:graphql-introduzione}. Per implementare il modulo di gestione delle connessioni si è scelto di utilizzare \emph{Lokka}\footnote{Lokka: \url{https://github.com/kadirahq/lokka}}, un client compatibile con GraphQL che permette di gestire le query come se fossero normali \emph{fetch()} di JavaScript e lasciare una configurazione più libera e adattabile alle esigenze del sistema. Questo si sposa alla perfezione con il paradigma Flux, salvando la maggior parte del contenuto della risposta nella \emph{Data Store} con le modalità esposte nella Sezione \ref{sec:action-store} e rendendolo quindi disponibile per tutti i singoli componenti dell'applicazione. Di seguito sono spiegate le due tipologie principali di query gestite con GraphQL, che sono le query di login e le query per accedere ai dati.
 
 \subsection{Login Query}
 
