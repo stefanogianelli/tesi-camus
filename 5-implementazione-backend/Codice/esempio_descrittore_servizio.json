@@ -1,6 +1,5 @@
 {
   "name": "GooglePlaces",
   "protocol": "query",
-  "basePath": "https://maps.googleapis.com/maps/api/place",
-  "operations": [ ... ]
+  "basePath": "https://maps.googleapis.com/maps/api/place"
 }

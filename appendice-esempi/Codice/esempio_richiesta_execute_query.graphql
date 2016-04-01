@@ -12,7 +12,11 @@ query Restaurant {
     support: ["Transport"]
   )
   {
-    primaryResults (first: 9) {
+    primaryResults (first: 9, after: "YXJyYXljb25uZWN0aW9uOjg=") {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       data {
         title
         address

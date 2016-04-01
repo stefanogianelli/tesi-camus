@@ -6,6 +6,10 @@
       "path": "name"
     },
     {
+      "termName": "address",
+      "path": "vicinity"
+    },
+    {
       "termName": "latitude",
       "path": "geometry.location.lat"
     },
