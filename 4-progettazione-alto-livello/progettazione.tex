@@ -56,7 +56,7 @@ E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:ap
 
 \subsubsection{Pagine dell'applicazione}
 
-Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un router. Si è scelto di sfruttare due router diversi, uno per gestire il login e un altro per la navigazione all'interno dell'applicazione. Il router per il login controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi possiede \emph{Login Page} e il secondo router, che racchiude la navigazione effettiva dell'utente autenticato.
+Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi possiede \emph{Login Page} e il \emph{secondary router}, che racchiude la navigazione effettiva dell'utente autenticato.
 
 \begin{figure}[H]
 	\centering
@@ -70,7 +70,7 @@ Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le segu
 	\item \textbf{Login Page}
 	\upe la pagina dove l'utente inserisce le proprie credenziali per accedere al sistema CAMUS e ottenere i parametri per il corretto funzionamento dell'applicazione
 	\item \textbf{Logged Area}
-	Si tratta della parte dell'applicazione alla quale l'utente può accedere nel caso in cui sia autenticato e gestisce le pagine di composizione del contesto e di visualizzazione dati:
+	Si tratta della parte dell'applicazione alla quale l'utente può accedere nel caso in cui sia autenticato e gestisce le pagine di selezione del contesto e di visualizzazione dati:
 	\begin{itemize}
 		\item \textbf{Main Page}
 		È la pagina principale dell'applicazione e permette all'utente di mostrare tutti gli \emph{Interest Topic} presenti nel suo CDT. La scelta della categoria desiderata permette di accedere alla \emph{Context Selection Page}
@@ -85,13 +85,13 @@ Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le segu
 
 \subsubsection{Helpers}
 
-Le pagine spiegate nella sezione precedente utilizzano alcuni componenti che sono in comune tra tutte le pagine dell'applicazione in quanto aiutano a eseguire funzionalità comuni. Di seguito sono elencati i componenti che svolgono questo compito:
+Le pagine descritte nella sezione precedente utilizzano alcuni componenti che sono in comune tra tutte le pagine dell'applicazione in quanto aiutano a eseguire funzionalità comuni. Di seguito sono elencati i componenti che svolgono questo compito:
 
 \begin{itemize}
-	\item \textbf{View Builder}
-	Si tratta del componente che costruisce le view dinamiche partendo dallo schema di mashup
 	\item \textbf{Connection Manager}
-	In questo componente vengono gestite tutte le connessioni con l'endpoint GraphQL. Permette di gestire la fase di login e di scambio dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
+	In questo componente vengono gestite tutte le connessioni con l'\emph{endpoint} GraphQL. Permette di gestire la fase di login e di scambio dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
+	\item \textbf{View Builder}
+	Si tratta del componente che costruisce le \emph{view} dinamiche partendo dallo schema di mashup, scaricato assieme al CDT appena effettuato il \emph{login}	
 	\item \textbf{StyleSheet}
 	Si tratta del foglio di stile nel quale sono impostati tutti i parametri predefiniti per la visualizzazione dei componenti dell'applicazione
 \end{itemize}
@@ -105,7 +105,7 @@ Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificar
 	Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
 	Per esempio quando si preme il bottone per effettuare una nuova richiesta basata sul contesto viene invocata un'azione per mantenere lo stato coerente tra più componenti e permettere di mostrare in fase di caricamento uno Spinner e una volta che i dati sono arrivati all'interno dell'applicazione mostrarli nella ListView
 	\item \textbf{Application State}
-	Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate tramite le Action nelle Store
+	Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate dall'utente tramite le Action nelle Store
 \end{itemize}	
 
 Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti:
@@ -157,7 +157,7 @@ Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti
 
 \subsubsection{Stores\label{sec:action-store}}
 
-Le \emph{Stores} sono il modulo dove lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
+Le \emph{Stores} salvano lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
 Per ogni interazione sui dati dell'applicazione che necessitano di rimanere persistenti viene invocata una action dal componente e dalla view che si propaga prima nelle store, e successivamente aggiorna nuovamente la view.
 Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato trattata:
 
@@ -258,21 +258,21 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 	\item
 	La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
 	\item
-	Vengono ricevuti il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario a caricare l'interfaccia grafica. Nel frattempo il router mostra la pagina iniziale dell'applicazione
+	L'app riceve il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario per caricare l'interfaccia grafica. Nel frattempo viene mostrata la pagina iniziale dell'applicazione
 	\item
 	L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto dove vengono mostrati i campi che devono essere compilati
 	\item
-	Dopo aver definito i parametri del contesto desiderati l'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
+	Dopo aver definito i parametri del contesto desiderati l'utente preme il bottone per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
 	\item
 	I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
 	\item
-	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
+	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale durante l'attesa della risposta dal server, continua a mostrare un'interfaccia di caricamento
 	\item
 	I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
 	\item
 	L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
 	\item
-	L'applicazione carica la pagina dove vengono passati i dati completi dell'e\-le\-men\-to selezionato e visualizzati nella pagina
+	L'applicazione carica la pagina dove vengono visualizzati i dati completi relativi al dettaglio dell'e\-le\-men\-to selezionato e visualizzati nella pagina
 \end{enumerate}
 
 \section{Esempio del flusso di esecuzione}
