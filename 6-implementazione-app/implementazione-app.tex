@@ -1,9 +1,8 @@
 \textcolor{red}{sistemare ...}
-
 L'applicazione mobile CAMUS rappresenta l'altro elemento fondamentale dell'ar\-chi\-tet\-tu\-ra. Fornisce all'utente finale l'interfaccia per accedere al sistema e semplifica l'utilizzo e l'accesso ai dati. Poi è presente una spiegazione generale delle tecnologie che sono state impiegate nell'applicazione, come React Native e Flux. Il capitolo si apre con la presentazione dell'architettura interna dell'applicazione e le motivazioni che hanno spinto verso una soluzione di questo tipo. Viene introdotto lo schema per definire le pagine e la logica di aggiornamento dei dati, seguendo il principio del flusso dati unidirezionale. In seguito verrà definita la struttura del file di mashup proveniente dal server che è indispensabile per la creazione delle schermate, per poi trattare nello specifico i metodi che occorrono per costruire queste schermate.
 Successivamente si tratterà del flusso dei dati all'interno dell'applicazione e di come vengono gestite le richieste dati verso il server, tramite GraphQL, per effettuare le richieste riguardanti il login e i risultati contestuali per l'utente. In conclusione verrà trattato l'argomento riguardante i servizi di supporto.
 
-\section{Struttura dello schema di mashup}
+\section{Struttura dello schema di mashup\label{sec:struttura-schemi-mashup}}
 
 Per poter permettere una dinamicità nella visualizzazione delle schermate che formano l'applicazione si è scelto di utilizzare uno schema di mashup molto semplice e allo stesso tempo sufficientemente potente. Si è scelto di utilizzare uno schema di tipo JSON in modo da essere facilmente sfruttato all'interno del motore JavaScript di React Native. 
 Nel caso di CAMUS l'oggetto che è presente nelle view considera due tipologie diverse: la \emph{list} e la \emph{details}. Nella tipologia \emph{list} sono definite le view che definiscono il singolo item della ListView e generalmente si compone di una quantità non eccessiva di componenti.

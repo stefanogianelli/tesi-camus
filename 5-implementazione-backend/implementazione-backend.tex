@@ -1,3 +1,5 @@
+\textcolor{red}{da rivedere ...}
+
 Questo capitolo illustra la realizzazione del backend dell piattaforma CAMUS. Il capitolo inizia con l'analisi dello schema dell'architettura e la descrizione delle tecnologie che sono state utilizzate. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati, si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Viene quindi mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
 
 \section{Schema del database\label{sec:schema-database}}
@@ -10,9 +12,9 @@ Questo capitolo illustra la realizzazione del backend dell piattaforma CAMUS. Il
 
 La base di dati viene utilizzata principalmente per garantire la persistenza di tre elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto e \emph{iii)} le associazioni tra operazioni e nodi del CDT.
 
-Queste entità permettono al sistema di svolgere le attività principali. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
+Queste entità permettono al sistema di svolgere le attività principali. In quanto oggetti complessi verranno descritti nel dettaglio nelle sezioni successive, per metterne in risalto le caratteristiche e le peculiarità. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
 
-\textcolor{red}{aggiungere descrizione testuale delle entità che non verranno descritte in seguito}
+Altre entità vengono utilizzate per la memorizzazione delle informazioni sull'u\-ten\-te. Un'altra entità importante riguarda i \emph{mashup}, che sono associati all'utente per permettere la definizione di schemi personalizzati. I dettagli verranno esposti nella Sezione \ref{sec:struttura-schemi-mashup}.
 
 Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
 
@@ -61,12 +63,6 @@ Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresen
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-nodo-cdt} viene mostrato un esempio di nodo.
-	
-\begin{listing}[H]
-	\inputminted{json}{5-implementazione-backend/Codice/esempio_nodo_cdt.json}
-	\caption{Esempio di nodo del CDT}
-	\label{lst:esempio-nodo-cdt}
-\end{listing}
 
 \subsection{Parametri dei nodi\label{sec:parametro-cdt}}
 
