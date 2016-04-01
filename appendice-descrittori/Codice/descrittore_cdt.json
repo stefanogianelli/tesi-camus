@@ -1,0 +1,29 @@
+{
+  "userId": [ "ObjectId" ],
+  "context": [
+    {
+      "name": "String",
+      "for": "String",
+      "values": [ "String" ],
+      "parameters": [
+        {
+          "name": "String",
+          "type": "String",
+          "fields": [
+            {
+              "name": "String",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "parents": [ "String" ]
+    }
+  ],
+  "defaultValues": [
+    {
+      "dimension": "String",
+      "value": "String"
+    }
+  ]
+}

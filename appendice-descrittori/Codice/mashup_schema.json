@@ -1,0 +1,27 @@
+{
+  "userId": "ObjectId",
+  "list": [
+    {
+      "topics": [ "String" ],
+      "contents": [
+        {
+          "type": "String",
+          "style": "String",
+          "contents": [ "String" ]
+        }
+      ]
+    }
+  ],
+  "details": [
+    {
+      "topics": [ "String" ],
+      "contents": [
+        {
+          "type": "String",
+          "style": "String",
+          "contents": [ "String" ]
+        }
+      ]
+    }
+  ]
+}

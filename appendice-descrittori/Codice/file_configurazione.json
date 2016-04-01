@@ -1,0 +1,30 @@
+{
+  "server": {
+    "port": "Numeric"
+  },
+  "database": {
+    "address": "String"
+  },
+  "redis": {
+    "address": "String"
+  },
+  "rest": {
+    "timeout": {
+      "service": "Numeric",
+      "cache": "Numeric"
+    }
+  },
+  "primaryService": {
+    "n": "Numeric",
+    "weight": {
+      "filter": "Numeric",
+      "ranking": "Numeric"
+    }
+  },
+  "similarity": {
+    "threshold": "Numeric"
+  },
+  "paginationTTL": "Numeric",
+  "debug": "Boolean",
+  "metrics": "Boolean"
+}

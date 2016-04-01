@@ -1,0 +1,45 @@
+{
+  "service": "ObjectId",
+  "name": "String",
+  "type": "String",
+  "description": "String",
+  "protocol": "String",
+  "path": "String",
+  "storeLink": "String",
+  "bridgeName": "String",
+  "parameters": [{
+      "name": "String",
+      "description": "String",
+      "required": "Boolean",
+      "type": "String",
+      "default": "String",
+      "collectionFormat": "String",
+      "mappingCDT": [ "String" ],
+      "mappingTerm": [ "String" ],
+      "translate": [{
+          "from": "String",
+          "to": "String"
+        }]
+    }],
+  "headers": [{
+      "name": "String",
+      "value": "String"
+    }],
+  "responseMapping": {
+    "list": "String",
+    "items": [{
+        "termName": "String",
+        "path": "String"
+      }],
+    "functions": [{
+        "run": "String",
+        "onAttribute": "String"
+      }]
+  },
+  "pagination": {
+    "attributeName": "String",
+    "type": "String",
+    "tokenAttribute": "String",
+    "pageCountAttribute": "String"
+  }
+}
