@@ -1,6 +1,4 @@
-\textcolor{red}{da rivedere ...}
-
-Questo capitolo illustra la realizzazione del backend dell piattaforma CAMUS. Il capitolo inizia con l'analisi dello schema dell'architettura e la descrizione delle tecnologie che sono state utilizzate. In seguito vengono presentati due descrittori che definiscono il comportamento dell'applicazione nelle diverse situazioni di utilizzo, che sono quello dell'albero di contesto e quello dei servizi. Viene mostrato prima il modello concettuale del database, con una descrizione delle entità e relazioni che lo compongono, e successivamente lo schema logico risultante. Una volta definita la base di dati, si passa all'analisi dettagliata dei principali componenti che fanno parte del sistema, con l'ausilio di diagrammi e pseudocodice per una maggiore comprensione. Viene quindi mostrato come dall'esterno è possibile eseguire le attività che il backend mette a disposizione tramite l'unico endpoint fornito da GraphQL. Per una maggiore chiarezza viene mostrato il flusso che una richiesta percorre nel backend affinché venga evasa, mostrando nel dettaglio le varianti che possono verificarsi. In conclusione viene mostrato come è possibile configurare alcuni parametri del sistema per modificarne il comportamento, attraverso variabili d'ambiente e file di configurazione.
+Questo capitolo illustra nel dettaglio la realizzazione del \emph{backend} della piattaforma CAMUS. Il capitolo si apre con l'esposizione e la descrizione delle entità principali. Alcune di queste entità meritano però una sezione a parte, data la loro complessità. In particolare vengono analizzate dettagliatamente il descrittore dell'albero del contesto e il descrittore dei servizi. Verrà fornita una descrizione degli attributi che li caratterizzano, con l'ausilio di esempi per chiarire meglio i concetti. Successivamente viene mostrato lo schema logico del \emph{backend} e vengono analizzati i dettagli implementativi dei singoli componenti. Una sezione verrà dedicata all'\emph{endpoint GraphQL}, che permette alle applicazioni esterne di eseguire le attività messe a disposizione dal \emph{backend}. Il capitolo termina con la documentazione relativa la configurazione del sistema, che permette la definizione di alcuni parametri utilizzati nella fase di esecuzione per modificarne il comportamento. Una configurazione può essere definita tramite variabili d'ambiente o file di configurazione. Verranno descritte entrambe le possibilità.
 
 \section{Schema del database\label{sec:schema-database}}
 
@@ -351,7 +349,7 @@ Il \emph{Support Service Selection} è il componente dedicato alla selezione del
 
 \subsection{Session Helper\label{sec:session-helper}}
 
-Il \emph{Sessione Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e l'\emph{app} mobile richiede ulteriori dati. Si occupa di gestire il salvataggio in \emph{cache} della sessione ed eventualmente, quando il primo \emph{result set} sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
+Il \emph{Session Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e l'\emph{app} mobile richiede ulteriori dati. Si occupa di gestire il salvataggio in \emph{cache} della sessione ed eventualmente, quando il primo \emph{result set} sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
 
 Per gestire la paginazione tra \emph{backend} e \emph{app mobile} vengono utilizzati due parametri:
 
@@ -362,7 +360,7 @@ Per gestire la paginazione tra \emph{backend} e \emph{app mobile} vengono utiliz
 	Definisce il \emph{cursore} di partenza. Verranno quindi restituiti il numero di elementi specificati nell'attributo \virgolette{first} dopo l'elemento con quello specifico identificatore
 \end{itemize}
 
-La prima attività che viene eseguita è tenere traccia di quanti elementi sono stati visualizzati dall'utente. Questa informazione è necessaria per conoscere quanti elementi rimangono ancora da visualizzare. A questo punto viene controllato se sono disponibili abbastanza informazioni da mostrare, tramite la formula:
+Questi parametri vengono ereditati dal sistema di gestione della paginazione di \emph{GraphQL}. La prima attività che viene eseguita è tenere traccia di quanti elementi del \emph{result set} corrente sono stati visualizzati dall'utente. Questa informazione è necessaria per conoscere quanti elementi rimangono ancora da visualizzare. A questo punto viene effettuata una verifica se sono disponibili abbastanza informazioni da mostrare, tramite la formula:
 
 \begin{equation}
 	elementi\_mostrati \le totale\_elementi - first - 1
@@ -374,16 +372,16 @@ Dove:
 	\item \textbf{elementi\_mostrati}
 	indica il numero di elementi che sono già stati mostrati all'utente
 	\item \textbf{totale\_elementi}
-	rappresenta il numero totale di elementi presenti in \emph{cache}
+	rappresenta il numero totale di elementi presenti nel \emph{result set}
 	\item \textbf{first}
 	è lo stesso attributo descritto in precedenza, che indica quanti elementi sono stati richiesti dal \emph{client}
 \end{itemize}
 
-Se l'equazione è rispettata vengono semplicemente restituiti i dati presenti in \emph{cache}, altrimenti il \emph{Session Helper} si occupa di recuperare dalla \emph{cache} le informazioni sui servizi prescelti nella richiesta originale e sulle pagine da richiedere ed effettua le richieste ai servizi, sfruttando in particolare il \emph{Query Handler} e il \emph{Response Aggregator}.
+Se l'equazione è rispettata vengono semplicemente restituiti i dati presenti in \emph{cache}, altrimenti il \emph{Session Helper} si occupa di recuperare dalla \emph{cache} le informazioni sui servizi prescelti nella richiesta originale e sulle pagine da richiedere ed effettua le richieste ai servizi, sfruttando il \emph{Query Handler} e il \emph{Response Aggregator}.
 
 \subsection{Query Composer\label{sec:query-composer}}
 
-Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support-service-selection} è stato menzionato il processo di composizione delle query per interrogare i servizi. Si è scelto di creare un componente ad-hoc in quanto le due attività hanno delle lievi differenze che però non giustificano l'utilizzo di due logiche differenti. Inoltre la composizione degli indirizzi per i servizi di supporto sfrutta alcune regole che sono implementate per i servizi primari. Da qui l'esigenza di avere un unico metodo che si occupa di analizzare il descrittore dei servizi per comprendere come comporre tra loro i parametri e fornire una \emph{query} completa.
+Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support-service-selection} è stato menzionato il processo di composizione delle query per interrogare i servizi. Si è scelto di creare un componente \emph{ad-hoc} in quanto le due attività hanno delle lievi differenze che però non giustificano l'utilizzo di due logiche differenti. Inoltre la composizione degli indirizzi per i servizi di supporto sfrutta alcune regole che vengono utilizzate per i servizi primari. Da qui l'esigenza di avere un unico metodo che si occupa di analizzare il descrittore dei servizi per comprendere come comporre tra loro i parametri e fornire una \emph{query} completa.
 
 \begin{algorithm}
 	\caption{Algoritmo di composizione degli indirizzi}
@@ -428,22 +426,22 @@ Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support
 	\end{algorithmic}
 \end{algorithm}
 
-Il primo passo riguarda la selezione dei simboli da utilizzare nella \emph{query}. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o \emph{query} parametriche. Viene subito composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio e il \emph{path specifico} dell'operazione. Ora inizia la vera attività, la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base all'attributo \emph{required}:
+Il primo passo riguarda la selezione dei simboli da utilizzare nella \emph{query}. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o necessita di \emph{query} parametriche. Viene innanzitutto composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio e il \emph{path specifico} dell'operazione. Ora inizia la vera attività, ovvero la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine di priorità. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base al valore assunto dall'attributo \emph{required}:
 
 \begin{enumerate}
 	\item \textbf{Parametro obbligatorio}
-	In questo caso deve per forza essere associato un valore. Se non è presente nessuna associazione nè con il CDT nè con i termini semantici verrà utilizzato il valore predefinito. Se non è stato definito nemmeno un valore predefinito verrà lanciata un'eccezione, in quanto il servizio senza un parametro obbligatorio non è utilizzabile
+	In questo caso deve per forza essere associato un valore. Se non è presente nessuna associazione né con il CDT né con i termini semantici verrà utilizzato il valore predefinito. Se non è stato definito nemmeno un valore predefinito verrà lanciata un'eccezione, in quanto il servizio senza un parametro obbligatorio non è utilizzabile
 	\item \textbf{Parametro facoltativo}
-	In questo caso viene cercato prima un valore nell'al\-be\-ro di contesto o tra i termini semantici e, se trovata una corrispondenza, il rispettivo valore viene acquisito e il parametro entrerà a far parte della query
+	In questo caso viene cercato prima un valore nell'al\-be\-ro di contesto e in seguito tra i termini semantici. Se viene trovata una corrispondenza il rispettivo valore viene acquisito e il parametro entrerà a far parte della query
 \end{enumerate}
 
-Durante la ricerca dei valori nell'albero di contesto viene anche eseguita la traduzione del valore, se necessario. Se vengono trovate più di una corrispondenza, i valori sono concatenati assieme e divisi tramite il separatore definito nel descrittore. Una volta acquisiti i valori vengono composti assieme, tramite i vari simboli, a formare la seconda parte dell'indirizzo.
+Durante la ricerca dei valori nell'albero di contesto viene anche eseguita la traduzione del valore, ove necessario. Se vengono trovate più di una corrispondenza, i valori sono concatenati assieme e divisi tramite il separatore definito nel descrittore. Una volta terminata l'acquisizione il nome del parametro e il/i valore/i entrano a far parte dell'indirizzo.
 
 Per terminare l'attività vengono messe assieme tutte le parti. All'indirizzo di base viene aggiunta la parte dei parametri appena composta e anche l'attributo relativo alla paginazione, se richiesto.
 
 \section{Endpoint GraphQL\label{sec:endpoint-graphql}}
 
-Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare il punto d'accesso al sistema viene utilizzato GraphQL. In questa sezione si andranno ad analizzare le varie funzionalità fruibili dal client. L'indirizzo di accesso rimane sempre lo stesso per tutti i casi, quello che cambia sarà un parametro nella richiesta che permette di identificare quale attività si desidera svolgere. In Figura \ref{fig:schema-graphql} viene mostrato il diagramma delle classi dello schema di GraphQL, mettendo in evidenza le connessioni tra i vari oggetti e la tipologia dei campi.
+\upe possibile per le applicazioni interrogare il \emph{backend} attraverso l'\emph{endpoint} definito tramite GraphQL. In questa sezione si andranno ad analizzare le varie funzionalità fruibili dal \emph{client}. L'indirizzo di accesso rimane sempre lo stesso per tutti i casi, quello che cambia sarà un parametro nella richiesta che permette di identificare quale attività si desidera svolgere. In Figura \ref{fig:schema-graphql} viene mostrato il diagramma delle classi dello schema di \emph{GraphQL}, mettendo in evidenza le connessioni tra i vari oggetti e la tipologia dei campi.
 
 \begin{figure}[ht]
 	\centering
@@ -451,15 +449,15 @@ Come già definito nella Sezione \ref{sec:architettura-backend}, per realizzare 
 	\caption{Diagramma dello schema GraphQL}\label{fig:schema-graphql}
 \end{figure}
 
-Il resto di questa sezione descriverà in dettaglio le varie attività che possono essere invocate. Esse saranno identificate per semplicità di espressione col nome di endpoint, visto che il fine ultimo è paragonabile a quello degli endpoint nel mondo REST.
+Il resto di questa sezione descriverà in dettaglio le varie attività che possono essere invocate. Esse saranno identificate per semplicità di espressione col nome \virgolette{endpoint}, visto che il fine ultimo è paragonabile a quello degli \emph{endpoint} nel mondo REST.
 
 \subsection{Execute Query\label{sec:execute-query-endpoint}}
 
-\upe l'endpoint principale, riceve in ingresso il contesto dell'utente e restituisce le informazioni recuperate, divise in \emph{primarie} e di \emph{supporto}. L'oggetto accettato in ingresso è composto dai seguenti campi:
+\upe l'\emph{endpoint} principale, riceve in ingresso il contesto dell'utente e restituisce le informazioni recuperate, divise in \emph{primarie} e di \emph{supporto}. L'oggetto accettato in ingresso è composto dai seguenti campi:
 
 \begin{itemize}
 	\item \textbf{User Mail}
-	L'indirizzo mail dell'utente
+	L'indirizzo \emph{mail} dell'utente
 	\item \textbf{Id Cdt}
 	\upe l'identificativo dell'albero di contesto che si desidera utilizzare
 	\item \textbf{Context}
@@ -490,24 +488,24 @@ Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Help
 	\item \textbf{Connection Id}
 	Identificativo univoco della sessione. Viene utilizzato per segnalare a chi effettua la query se la risposta fa parte di una sessione precedente o si tratta di una nuova
 	\item \textbf{Primary Connection}
-	Mette a disposizione l'elenco dei risultati integrati forniti dai servizi primari. La particolarità è che si tratta di una \emph{connessione}, che è una tipologia specifica di GraphQL che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A GraphQL viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal client. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} first, dove viene specificato un numero \emph{N} di elementi che si desidera ricevere; \emph{ii)} after, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, GraphQL restituisce i primi \emph{N} risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrati gli \emph{N} elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da GraphQL per ogni elemento della risposta. Per permettere al client di conoscere lo stato della paginazione oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} hasNextPage, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} endCursor, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al client di gestire il numero di elementi da ricevere. Ogni oggetto che compone la risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
+	Mette a disposizione l'elenco dei risultati integrati forniti dai servizi primari. La particolarità è che si tratta di una \emph{connessione}, che è una tipologia specifica di \emph{GraphQL} che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A \emph{GraphQL} viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal \emph{client}. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} \emph{first}, dove viene specificato un numero \emph{N} di elementi che si desidera ricevere; \emph{ii)} \emph{after}, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, \emph{GraphQL} restituisce i primi \emph{N} risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrati gli \emph{N} elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da \emph{GraphQL} per ogni elemento della risposta. Per permettere al \emph{client} di conoscere lo stato della paginazione oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} \emph{hasNextPage}, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} \emph{endCursor}, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al \emph{client} di gestire il numero di elementi da ricevere. Ogni oggetto che compone la risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
 	\item \textbf{Support Connection}
-	Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come nel caso dei risultati primari viene utilizzata una \emph{connessione} di GraphQL. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
+	Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come nel caso dei risultati primari viene utilizzata una \emph{connessione} di \emph{GraphQL}. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio di richiesta per effettuare la ricerca di dati sia \emph{primari} sia di \emph{supporto}.
 
 \subsection{Login\label{sec:login-endpoint}}
 
-Questo endpoint è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo SHA1\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono a un utente vengono restituiti un \emph{token}, utilizzato per mantenere aperta la sessione, e il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'app con le informazioni personali.
+Questo \emph{endpoint} è dedicato all'autenticazione degli utenti. Riceve in ingresso l'indirizzo \emph{mail} e la \emph{password}, cifrata con algoritmo \emph{SHA1}\footnote{SHA1: \url{https://en.wikipedia.org/wiki/SHA-1}}, digitati dall'utente. Se i due parametri corrispondono a un utente vengono restituiti un \emph{token}, utilizzato per mantenere aperta la sessione, e il \emph{nome} e \emph{cognome} dell'utente, per personalizzare l'\emph{app} con le informazioni personali.
 
 \subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
 
-Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'app mobile può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
+Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'\emph{app} mobile può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
 
 \begin{itemize}
 	\item \textbf{Cdt}
-	Rappresenta la radice dell'albero di contesto. Un CDT viene definito dai seguenti attributi:
+	Rappresenta la radice dell'albero di contesto. Un \emph{CDT} viene definito dai seguenti attributi:
 	\begin{itemize}
 		\item \textbf{Id Cdt}
 		L'identificativo dell'albero di contesto
@@ -535,7 +533,7 @@ Questo endpoint provvede a fornire all'utente i suoi dati personali, che possono
 		Elenco dei valori che non vengono mostrati nell'albero di contesto perché precedentemente selezionati. Questo oggetto è composto dagli attributi \virgolette{dimension}, che rappresenta il nome del nodo dimensione, e \virgolette{value}, che è il valore associato al nodo
 	\end{itemize}
 	\item \textbf{Mashup}
-	Rappresenta lo schema dei mashup. Fornisce all'app mobile le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di mashup è composto dai seguenti campi:
+	Rappresenta lo schema dei \emph{mashup}. Fornisce all'\emph{app} mobile le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di \emph{mashup} è composto dai seguenti campi:
 	\begin{itemize}
 		\item \textbf{List}
 		Questo oggetto fornisce le regole per rappresentare la lista dei risultati, ossia la schermata di \emph{merge} o \emph{master}. In questa pagina viene mostrato l'elenco dei dati recuperati, descritti da un insieme ridotto di attributi. Per specificare quali dati devono essere mostrati e come vengono utilizzati i seguenti attributi:
@@ -579,11 +577,11 @@ Vengono messe a disposizione le seguenti variabili d'ambiente:
 	\item \textbf{NODE\_ENV}
 	Per definire l'ambiente nel quale avviare l'applicazione (es.: production, development, testing, ecc.)
 	\item \textbf{PORT}
-	La porta che si vuole utilizzare per richiamare gli endpoint
+	La porta che si vuole utilizzare per richiamare gli \emph{endpoint}
 	\item \textbf{MONGO\_URI}
-	L'indirizzo di MongoDB. Può comprendere anche l'utente e la password di accesso al database
+	L'indirizzo di \emph{MongoDB}. Può comprendere anche l'utente e la password di accesso al database
 	\item \textbf{REDIS\_URL}
-	L'indirizzo di Redis. Può comprendere anche l'utente e la password di accesso al database
+	L'indirizzo di \emph{Redis}. Può comprendere anche l'utente e la password di accesso al database
 \end{itemize}
 
 Nella cartella \virgolette{config} è possibile aggiungere dei file per configurare altri parametri. Possono essere creati più file di configurazione, che verranno caricati per i diversi ambienti nel quale può funzionare l'applicazione. Basta chiamare il file col nome dell'ambiente di destinazione (es.: production, development, qa, staging, ecc.) affinché venga selezionata la configurazione corretta. Viene fornita una configurazione di \virgolette{default}, utilizzata quando non è presente nessun file relativo all'ambiente corrente. Di seguito vengono elencati i parametri che possono essere configurati; tra parentesi sono indicati i valori predefiniti di ciascun campo:
@@ -593,19 +591,19 @@ Nella cartella \virgolette{config} è possibile aggiungere dei file per configur
 	Contiene la configurazione del server
 	\begin{itemize}
 		\item \textbf{port}
-		(3001) Definisce la porta che si vuole utilizzare per richiamare l'endpoint
+		(3001) Definisce la porta che si vuole utilizzare per richiamare l'\emph{endpoint}
 	\end{itemize}
 	\item \textbf{database}
-	Contiene la configurazione di MongoDB
+	Contiene la configurazione di \emph{MongoDB}
 	\begin{itemize}
 		\item \textbf{address}
 		Definisce l'indirizzo del database. Possono essere incluse le informazioni di autenticazione
 	\end{itemize}
 	\item \textbf{redis}
-	Definisce la configurazione di Redis
+	Definisce la configurazione di \emph{Redis}
 	\begin{itemize}
 		\item \textbf{address}
-		(localhost:6379) Specifica l'indirizzo del database in-memory. Possono essere incluse le informazioni di autenticazioni
+		(localhost:6379) Specifica l'indirizzo del database \emph{in-memory}. Possono essere incluse le informazioni di autenticazioni
 	\end{itemize}
 	\item \textbf{rest}
 	Specifica la configurazione del bridge per i servizi REST
@@ -614,9 +612,9 @@ Nella cartella \virgolette{config} è possibile aggiungere dei file per configur
 		Definisce i periodi di tempo dopo i quali scatta il timeout
 		\begin{itemize}
 			\item \textbf{service}
-			(3000) Valore di timeout dopo il quale una richiesta verso i servizi esterni scade. Il valore viene specificato in millisecondi (ms)
+			(3000) Valore di \emph{timeout} dopo il quale una richiesta verso i servizi esterni scade. Il valore viene specificato in millisecondi (ms)
 			\item \textbf{cache}
-			(1800) Specifica il tempo per il quale rimangono salvati in cache le risposte ricevute dai servizi. Il tempo viene espresso in secondi (s)
+			(1800) Specifica il tempo per il quale rimangono salvati in \emph{cache} le risposte ricevute dai servizi. Il tempo viene espresso in secondi (s)
 		\end{itemize}
 	\end{itemize}
 	\item \textbf{primaryService}
@@ -640,11 +638,11 @@ Nella cartella \virgolette{config} è possibile aggiungere dei file per configur
 		(0.85) Definisce la percentuale minima di similarità tra due elementi affinché vengano considerati duplicati. Una valore maggiore indica un'elevata similarità tra gli elementi. Viene considerato come una percentuale (es.: 0.9 equivale al 90\% di similarità)
 	\end{itemize}
 	\item \textbf{paginationTTL}
-	(1800) Definisce il tempo per il quale rimane memorizzato lo stato di una connessione in cache. Il tempo viene specificato in secondi (s)
+	(1800) Definisce il tempo per il quale rimane memorizzato lo stato di una connessione in \emph{cache}. Il tempo viene specificato in secondi (s)
 	\item \textbf{debug}
-	(false) Indicatore booleano che abilita o disabilita il logging delle informazioni su console
+	(false) Indicatore booleano che abilita o disabilita il \emph{logging} delle informazioni su console
 	\item \textbf{metrics}
 	(false) Valore booleano che abilita o disabilita la raccolta delle informazioni sui tempi di esecuzione dei metodi principali e delle chiamate verso i database
 \end{itemize}
 
-Nessun campo è obbligatorio, a eccezione dell'indirizzo di MongoDB, se non specificato tramite \emph{variabili d'ambiente}. In assenza degli altri campi verranno utilizzati i rispettivi valori di default.
+Nessun campo è obbligatorio, a eccezione dell'indirizzo di \emph{MongoDB}, se non specificato tramite \emph{variabili d'ambiente}. In assenza degli altri campi verranno utilizzati i rispettivi valori di default.
