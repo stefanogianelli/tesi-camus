@@ -258,21 +258,21 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 	\item
 	La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
 	\item
-	Vengono ricevuti il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario a caricare l'interfaccia grafica. Nel frattempo il router mostra la pagina iniziale dell'applicazione
+	L'app riceve il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario per caricare l'interfaccia grafica. Nel frattempo viene mostrata la pagina iniziale dell'applicazione
 	\item
 	L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto dove vengono mostrati i campi che devono essere compilati
 	\item
-	Dopo aver definito i parametri del contesto desiderati l'utente preme sul tasto per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
+	Dopo aver definito i parametri del contesto desiderati l'utente preme il bottone per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
 	\item
 	I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
 	\item
-	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale fino a quando non arriva una risposta dal server continua a mostrare un'interfaccia di caricamento
+	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale durante l'attesa della risposta dal server, continua a mostrare un'interfaccia di caricamento
 	\item
 	I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
 	\item
 	L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
 	\item
-	L'applicazione carica la pagina dove vengono passati i dati completi dell'e\-le\-men\-to selezionato e visualizzati nella pagina
+	L'applicazione carica la pagina dove vengono visualizzati i dati completi relativi al dettaglio dell'e\-le\-men\-to selezionato e visualizzati nella pagina
 \end{enumerate}
 
 \section{Esempio del flusso di esecuzione}
