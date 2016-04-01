@@ -1,9 +1,8 @@
-\textcolor{red}{da riscrivere ...}
-In questo capitolo vengono esposti i concetti alla base del progetto CAMUS. In questo modo viene fornito al lettore un quadro generale delle tematiche che verranno affrontate nei successivi capitoli. Il capitolo inizia con l'introduzione del concetto di \emph{context awareness}, che è la prima delle due anime del progetto, seguita dalla presentazione del modello del contesto che viene utilizzato in CAMUS, il \emph{Context Dimension Tree}. Successivamente viene presentato il secondo pilastro del progetto, i \emph{mashup}, e in particolar modo la tipologia di nostro interesse, i \emph{mobile mashup}. Di seguito verranno analizzate le varie tipologie di \emph{servizi} che il web mette a disposizione. La loro posizione non deve trarre in inganno: i servizi sono egualmente importanti in quanto permettono all'intero sistema di funzionare: infatti forniscono le informazioni che vengono presentate all'utente; senza servizi l'intero progetto non sarebbe altro che un'impalcatura fine a se stessa. Viene inoltre fornita una panoramica sulle tecnologie e framework utilizzati per sviluppare il backend di CAMUS ed in seguito per quanto riguarda lo sviluppo \emph{Cross-Platform} e le tecnologie sfruttate per l'app mobile. Infine viene effettuato un confronto con i principali competitor di CAMUS, cioè tutti i lavori esistenti che affrontano le medesime tematiche.
+In questo capitolo vengono esposti i concetti alla base del progetto CAMUS, per fornire al lettore un quadro generale delle tematiche che verranno affrontate nei successivi capitoli. Vengono inizialmente introdotti i concetti preliminari che sono necessari per la comprensione delle tematiche affrontate nella tesi. In particolare si vogliono introdurre i concetti relativi la \emph{Context-Awareness} e i \emph{Mashup}, in quanto componenti fondamentali del \emph{framework}. Successivamente verranno presentate e analizzate le soluzioni che mirano a risolvere problemi simili a CAMUS. Infine il capitolo fornirà una panoramica sulle principali tecnologie e i \emph{framework} che sono stati adoperati per lo sviluppo della piattaforma. Sono state utilizzate sia tecnologie più consolidate sia tecnologie di più recente introduzione. Questa sezione si soffermerà maggiormente sulla descrizione di queste ultime, in quanto meno conosciute data la loro gioventù.
 
 \section{Concetti Preliminari\label{sec:concetti-preliminari}}
 
-\textcolor{red}{Introduzione ...}
+Questa sezione fornisce al lettore una panoramica delle nozioni e dei modelli che verranno utilizzati nello svolgimento della tesi. Viene inizialmente discusso il concetto di \emph{Context-Awareness} e viene introdotto il modello del contesto che è stato selezionato per CAMUS. In seguito verrà definito cosa si intende per \emph{Mashup} e le varie tipologie disponibili, soffermandosi in particolare sulla tipologia che copre il mondo \emph{mobile}. Infine verrà fornita una descrizione del funzionamento dei servizi web e saranno analizzate le tipologie REST e SOAP, in quante le più diffuse
 
 \subsection{Context-Awareness\label{sec:context-awareness}}
 
@@ -38,11 +37,11 @@ In questa sezione viene presentato nel dettaglio il \emph{Context Dimension Tree
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{2-preliminari/Immagini/esempio_cdt.png}
-	\caption[Context Dimension Tree]{Context Dimension Tree (Fonte: \virgolette{CARVE: context-aware automatic view de nition over relational databases}, 2013)}\label{fig:context-dimension-tree}
+	\includegraphics[width=\textwidth]{2-preliminari/Immagini/esempio_cdt.pdf}
+	\caption{Context Dimension Tree}\label{fig:context-dimension-tree}
 \end{figure}
 
-Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. Nell'esempio in Figura \ref{fig:context-dimension-tree}, le \emph{dimensioni principali} sono il \emph{ruolo} dell'utente, l'\emph{interfaccia} tramite la quale accede ai dati, l'\emph{interest topic} e la \emph{posizione} in cui si trova. Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. Per esempio, l'interest topic \virgolette{ordine} può essere analizzato in base allo \emph{stato} in cui si trova oppure in base alla sua \emph{tipologia}.
+Le dimensioni che sono dirette discendenti della radice vengono chiamate \emph{dimensioni principali}, perché definiscono le differenti caratteristiche dell'utente e del contesto nel quale agiscono. Nell'esempio in Figura \ref{fig:context-dimension-tree}, le \emph{dimensioni principali} sono il \emph{ruolo} dell'utente, l'\emph{interest topic}, la \emph{situazione}, il \emph{tempo} e il \emph{luogo} in cui si trova. Inoltre, ogni valore può essere ulteriormente specializzato tramite \emph{sottodimensioni}, che a loro volta formano un sottoalbero. Per esempio, l'interest topic \virgolette{estate} può essere analizzato in base al \emph{prezzo}, alla \emph{categoria}, alla \emph{tipologia di proprietà} e al \emph{numero di camere}.
 
 Ogni nodo del CDT è caratterizzato dalla sua tipologia, che può essere \emph{dimensione} o \emph{concetto}, e dalla sua etichetta; può essere identificato univocamente tramite l'unico percorso che lo collega fino alla radice. Senza perdita di generalità, viene adottata l'ipotesi che ogni etichetta sia unica in un albero, quindi ogni nodo può essere identificato semplicemente dalla sua etichetta. I collegamenti tra i vari nodi non vengono invece etichettati.
 
@@ -74,14 +73,14 @@ Non è necessario selezionare per forza tutte le dimensioni presenti nell'albero
 
 \begin{figure}[ht]
 	\begin{align*}
-		C =\ &role : customer\ (\$cid : ``Bill")\ \land \\
-			&interest\_topic : orders\ \land \\
-			&interface : smartphone
+		C =\ &role : manager\ (\$manager\_id : ``2")\ \land \\
+			&interest\_topic : agency\ (\$a\_id : ``5") \land \\
+			&situation : in\_office
 	\end{align*}
 	\caption{Esempio di contesto}\label{fig:esempio-contesto-base}
 \end{figure}
 
-In Figura \ref{fig:esempio-contesto-base} viene mostrato un esempio che rappresenta il contesto in cui il cliente Bill è interessato nel ricevere informazioni sui propri ordini sullo smartphone. Il contesto \emph{C} è quindi composto da tre elementi del contesto.
+In Figura \ref{fig:esempio-contesto-base} viene mostrato un esempio che rappresenta il contesto in cui il manager con identificativo \virgolette{2} è interessato alle proprietà gestite dall'agenzia con identificativo \virgolette{5} e si trova nel suo ufficio.
 
 Infine, dopo aver discusso del modello e di come vengono rappresentati i vari contesti, resta da definire come è possibile acquisire i dati che sono pertinenti a un determinato contesto. Come evidenziato in \cite{DBLP:journals/cacm/BolchiniCOQRST09}, esistono due strategie principali per definire le associazioni tra i contesti e la porzione di dati rilevanti per i vari contesti, chiamate \emph{configuration-based mapping} e \emph{value-based mapping}.
 
@@ -433,11 +432,11 @@ I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i 
 
 \section{Tecnologie utilizzate}
 
-\textcolor{red}{Introduzione ...}
+Questa sezione vuole introdurre le tecnologie e i framework che hanno assistito lo sviluppo della piattaforma. La sezione incomincia con la descrizione delle tecnologie utilizzate per il backend per poi passare a quelle relative all'applicazione.
 
 \subsection{Tecnologie utilizzate per il backend\label{sec:tecnologie-backend-background}}
 
-In questa sezione si vuole fornire una panoramica sulle tecnologie che sono state utilizzate per lo sviluppo del backend. Verrà analizzato per prima il framework Node.js, con il quale è stata sviluppata la logica del backend. In seguito verranno descritti i due sistemi di gestione di database utilizzati: MongoDB, per la persistenza dei dati, e Redis, per la gestione della cache.
+In questa sezione si vuole fornire una panoramica sulle tecnologie che sono state utilizzate per lo sviluppo del backend. Verrà analizzato il framework Node.js, con il quale è stata sviluppata la logica del backend. In seguito saranno descritti i due sistemi di gestione di database utilizzati: MongoDB, per la persistenza dei dati, e Redis, per la gestione della cache.
 
 \subsubsection{Node.js}
 
