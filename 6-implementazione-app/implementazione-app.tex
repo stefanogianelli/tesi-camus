@@ -1,7 +1,96 @@
-\textcolor{red}{sistemare ...}
-L'applicazione mobile CAMUS rappresenta l'altro elemento fondamentale dell'ar\-chi\-tet\-tu\-ra. Fornisce all'utente finale l'interfaccia per accedere al sistema e semplifica l'utilizzo e l'accesso ai dati. Il capitolo si apre con la presentazione dell'architettura interna dell'applicazione e le motivazioni che hanno spinto verso una soluzione di questo tipo. Viene introdotto lo schema per definire le pagine e la logica di aggiornamento dei dati, seguendo il principio del flusso dati unidirezionale. In seguito è definita la struttura del file di mashup proveniente dal server che è indispensabile per la creazione delle schermate, per poi trattare nello specifico i metodi che occorrono per costruire queste schermate.
+L'applicazione mobile CAMUS rappresenta l'altro elemento fondamentale dell'ar\-chi\-tet\-tu\-ra. Fornisce all'utente finale l'interfaccia per accedere al sistema e semplifica l'utilizzo e l'accesso ai dati. Il capitolo si apre con una descrizione dettagliata delle \emph{Actions} e delle \emph{Stores} di \emph{Alt.js}. Successivamente viene introdotto lo schema per definire le pagine e la logica di aggiornamento dei dati, seguendo il principio del flusso dati unidirezionale. In seguito è definita la struttura del file di mashup proveniente dal server che è indispensabile per la creazione delle schermate, per poi trattare nello specifico i metodi che occorrono per costruire queste schermate.
 Successivamente si tratterà del flusso dei dati all'interno dell'applicazione e di come vengono gestite le richieste dati verso il server, tramite GraphQL, per effettuare le richieste riguardanti il login e i risultati contestuali per l'utente. In conclusione verrà trattato l'argomento riguardante i servizi di supporto.
 
+\section{Gestione dello stato}\label{sec:state-management}
+In questa sezione sono descritte nei dettagli tutte le \emph{Actions} e le \emph{Stores} utilizzate nell'applicazione e presentate nella Sezione \ref
+\subsubsection{Actions\label{sec:actions}}
+
+Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificare lo stato dell'ap\-pli\-ca\-zio\-ne. Nell'applicazione CAMUS sono utilizzate principalmente in due modi:
+
+\begin{itemize}
+	\item \textbf{Data Fetching}
+	Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
+	Per esempio quando si preme il bottone per effettuare una nuova richiesta basata sul contesto viene invocata un'azione per mantenere lo stato coerente tra più componenti e permettere di mostrare in fase di caricamento uno Spinner e una volta che i dati sono arrivati all'interno dell'applicazione mostrarli nella ListView
+	\item \textbf{Application State}
+	Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate dall'utente tramite le Action nelle Store
+\end{itemize}	
+
+Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti:
+
+\begin{itemize}
+	\item \textbf{User Actions}
+	Sono le azioni che servono ad aggiornare i parametri relativi all'utente, come password, email e suo identificativo nel database:
+	\begin{itemize}
+		\item \textbf{Update Email}
+		Metodo per aggiornare l'email dell'utente 
+		\item \textbf{Update Password}
+		Metodo per aggiornare la password dell'utente
+		\item \textbf{Update Token}
+		Metodo per tenere in memoria il Token della connessione col server per ottenere il CDT
+	\end{itemize}
+	\item \textbf{Context Actions}
+	Sono le azioni che gestiscono la selezione del contesto, consentendo di modificare le scelte effettuate dall'utente:
+	\begin{itemize}
+		\item \textbf{Set Transport}
+		Metodo per salvare la tipologia di trasporto da parte dell'utente
+		\item \textbf{Set Typology}
+		Metodo per salvare la tipologia nel caso di trasporto non con mezzi propri
+		\item \textbf{Add Forbidden}
+		Metodo per aggiungere un parametro in quelli da nascondere all'utente
+		\item \textbf{Remove Forbidden}
+		Metodo per rimuovere il parametro selezionato dalla lista di quelli da nascondere all'utente
+		\item \textbf{Update Last Context}
+		Metodo per salvare l'ultimo contesto inviato al server, per poterlo riutilizzare nelle richieste per le pagine successive
+	\end{itemize}
+	\item \textbf{View Actions}
+	Sono le azioni relative alla gestione dei mashup ma non dello stato della navigazione, per le quali è utilizzato un componente aggiuntivo sempre basato su Flux (React Native Router Flux):
+	\begin{itemize}
+		\item \textbf{Set Views}
+		Metodo per salvare il file con le view provenienti dal server 
+		\item \textbf{Select Interest Topic}
+		Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente
+	\end{itemize}
+	\item \textbf{Data Actions}
+	Trattano della gestione del CDT e dei risultati ottenuti dal server:
+	\begin{itemize}
+		\item \textbf{Update Results}
+		Metodo per aggiornare i dati dei risultati provenienti dalla query basata sul contesto
+		\item \textbf{Results Failed}
+		Metodo per inviare il messaggio di errore proveniente dalla richiesta
+		\item \textbf{Update Full CDT}
+		Metodo per aggiornare il CDT associato all'utente
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Stores\label{sec:action-store}}
+
+Le \emph{Stores} salvano lo stato dell'applicazione viene salvato e forniscono alle view nuovi dati ogni volta che sono aggiornate. 
+Per ogni interazione sui dati dell'applicazione che necessitano di rimanere persistenti viene invocata una action dal componente e dalla view che si propaga prima nelle store, e successivamente aggiorna nuovamente la view.
+Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato trattata:
+
+\begin{itemize}
+	\item  \textbf{User Store}
+	Nella \emph{User Store} sono memorizzati tutti i dati relativi all'utente. In particolare viene memorizzata la mail dell'utente nel database del server e l'identificativo del CDT a lui associato, che serviranno per poter effettuare le query GraphQL per ottenere i dati
+	\item \textbf{Context Store}
+	Nel \emph{Context Store} vengono gestiti i dati che riguardano i dati di contesto, come le coordinate geografiche e le scelte delle tipologie di trasporto pubblico, in modo da essere riutilizzate. Per quanto riguarda le richieste di dati, una volta che il contesto viene composto per effettuare la prima query, questo payload viene salvato qui e poi riutilizzato nelle query dei risultati successivi
+	\item \textbf{View Store}
+	In questa store sono memorizzati tutti i dati relativi alle view. Qui viene salvato lo schema di mashup e l'\emph{Interest Topic} corrente
+	\item \textbf{Data Store}
+	Si tratta della store più complessa perchè deve gestire in modo dinamico diverse tipologie di dato. Quando viene ricevuto il CDT vengono scanditi gli \emph{interest topic} è creato un oggetto nel campo \emph{results} che è composto da un array di tanti oggetti definiti da due campi:
+	\begin{enumerate}
+		\item \textbf{Results}
+		Rappresenta i risultati ricevuti per quell'\emph{interest topic}, comprende i dai servizi primari e i collegamenti per i servizi di supporto
+		\item \textbf{Topic}
+		Rappresenta l'\emph{Interest topic} associato ai risultati ricevuti dal server
+	\end{enumerate}
+	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal server e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics} è mostrato come viene rappresentato lo stato nel caso in cui l'utente abbia a disposizione due \emph{Interest Topic} e la suddivisione dei risultati per le due tipologie, in questo caso \emph{Restaurants} ed \emph{Event}. Si noti che oltre ai risultati sono salvati anche i parametri con lo stato della paginazione, per lasciare la possibilità di riprendere la visione di nuovi risultati.
+\end{itemize}
+
+\begin{listing}[H]
+	\inputminted{json}{4-progettazione-alto-livello/Codice/store-two-topics.json}
+	\caption{Esempio Data Store Mashup}
+	\label{lst:store-two-topics}
+\end{listing}
 \section{Struttura dello schema di mashup\label{sec:struttura-schemi-mashup}}
 
 Per poter permettere una dinamicità nella visualizzazione delle schermate che formano l'applicazione si è scelto di utilizzare uno schema di mashup molto semplice e allo stesso tempo in grado di fornire i parametri necessari all'applicazione per costruire le viste in tempo reale. Si è scelto di utilizzare una rappresentazione in JSON in modo da essere facilmente interpretabile all'interno del motore JavaScript di React Native. 
