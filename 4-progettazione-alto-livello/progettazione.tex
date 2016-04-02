@@ -1,8 +1,8 @@
-Questo capitolo viene dedicato allo studio della progettazione relativa il prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito verrà approfondito il flusso di esecuzione delle richieste, partendo dalla \emph{mobile app} fino ad arrivare al \emph{backend}, analizzando tutti i passaggi che vengono eseguiti. Infine il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire meglio il flusso esposto nella sezione precedente.
+Questo capitolo viene dedicato allo studio della progettazione relativa al prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito verrà approfondito il flusso di esecuzione delle richieste, partendo dalla \emph{mobile app} fino ad arrivare al \emph{backend}, analizzando tutti i passaggi che vengono eseguiti. Infine il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire meglio il flusso esposto nella sezione precedente.
 
 \section{Architettura e tecnologie utilizzate}
 
-Questa sezione vuole fornire i dettagli riguardo l'architettura della piattaforma. Verranno spiegate le scelte che hanno portato alla realizzazione dell'architettura e messi in risalto le caratteristiche principali. La sezione viene divisa in due parti: la prima riguarda l'esposizione dell'architettura del \emph{backend} per poi passare all'analisi dell'architettura della \emph{mobile app}. La struttura interna delle due sezioni sarà molto simile: verrà inizialmente mostrato un diagramma dell'architettura per poi passare alla descrizione dei componenti che ne fanno parte. 
+Questa sezione vuole fornire i dettagli riguardo all'architettura della piattaforma. Verranno spiegate le scelte che hanno portato alla realizzazione dell'architettura e messi in risalto le caratteristiche principali. La sezione viene divisa in due parti: la prima riguarda l'esposizione dell'architettura del \emph{backend} per poi passare all'analisi dell'architettura della \emph{mobile app}. La struttura interna delle due sezioni sarà molto simile: verrà inizialmente mostrato un diagramma dell'architettura per poi passare alla descrizione dei componenti che ne fanno parte. 
 
 \subsection{Backend\label{sec:architettura-backend}}
 
@@ -34,9 +34,9 @@ Per quanto riguarda l'esposizione dei metodi che possono essere richiamati dal \
 
 In questa sezione si è voluta dare una visione d'insieme sui compiti che spettano ai vari componenti. Un'analisi più approfondita delle attività di ognuno di essi verrà svolta nella Sezione \ref{sec:componenti-backend}.
 
-\subsection {Mobile app}\label{sec:architettura-applicazione}
+\subsection{Mobile app}\label{sec:architettura-applicazione}
 
-E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:app-architecture}. Per una migliore comprensione dello schema nelle sezioni seguenti verranno analizzati nel dettaglio i singoli componenti che la compongono.
+In questa sezione è presentata l'architettura dell'applicazione mobile CAMUS, spiegando in modo rapido le diverse tipologie di moduli che la compongono. Si è voluta seguire principalmente un'architettura simile alle applicazioni web per quanto riguarda il controllo della navigazione e della visualizzazione e per quanto riguarda la logica seguire le linee guida di Alt.js. Guardando lo schema presente in Figura \ref{fig:app-architecture} è possibile distinguere diverse tipologie di moduli: le pagine dell'applicazione, gli \emph{helpers} e i componenti che gestiscono lo stato (\emph{Actions} e \emph{Stores}).
 
 \begin{figure}[h]
 	\centering
@@ -192,4 +192,43 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 
 \section{Esempio del flusso di esecuzione}
 
-\textcolor{red}{Completare ...}
+In questa sezione viene introdotto un esempio di caso d'uso reale, che vuole illustrare un flusso di esecuzione complessivo svolto da un utente, cercando di mostrare le attività svolte lato \emph{client} e lato \emph{backend}.
+Introduciamo l'utente Andrea, che sarà il nome di fantasia che utilizzeremo in questo esempio d'uso. Supponiamo che sia per un weekend a Milano con la sua fidanzata Barbara e prima di partire ha comunicato all'esperto CAMUS, Giovanni, di essere \upe interessato ad avere all'interno dell'applicazione alcuni \emph{Interest Topic}: \virgolette{Restaurant}, \virgolette{Cinema}, \virgolette{Theater}, \virgolette{Hotel}, \virgolette{Museum} ed \virgolette{Event}. Successivamente Giovanni ha compiuto tutte le associazioni delle operazioni dei servizi già registrati a CAMUS e le modifiche all'interfaccia grafica dell'applicazione di Andrea.
+Qualche giorno più tardi Andrea e Barbara si trovano a Milano in zona Centro e stanno cercando un posto dove poter andare a cena, dato che ormai sono quasi le 20.00. Allora apre la propria applicazione CAMUS sul suo \textit{smartphone} e inserisce le proprie credenziali di accesso, dato che è la prima volta che la apre (Figura \ref{fig:usecase-login}). 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/login_caso_d'uso.png}
+	\caption{Schermata di login dell'applicazioni con i dati di Andrea}\label{fig:usecase-login}
+\end{figure}
+
+Dopo qualche istante il server risponde all'applicazione che il login è avvenuto, mostrando la pagina principale associata ad Andrea, con la possibilità di scegliere l'\emph{Interest Topic} desiderato tra quelli disponibili (Figura \ref{fig:usecase-home}). La scelta ricade su quello più appropriato: \virgolette{Restaurants}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/home_caso_d'uso.png}
+	\caption{Schermata Home di Andrea}\label{fig:usecase-home}
+\end{figure}
+
+A questo punto è necessario completare il contesto per poter effettuare la richiesta dei ristoranti. Il sistema propone la schermata di selezione del contesto, permettendo nel loro caso di scegliere solamente i mezzi di trasporto, dato che gli altri parametri del profilo di Andrea erano già stati inseriti da Giovanni. Essendo arrivati a Milano utilizzando il treno, viene inserita la possibilità di raggiungere il ristorante con i mezzi pubblici, in particolare con i bus (Figura \ref{fig:usecase-contesto}). 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/contesto_caso_d'uso.png}
+	\caption{Selezione del contesto}\label{fig:usecase-contesto}
+\end{figure}
+
+Selezionando \virgolette{Query} viene costruita la query, prendendo i termini dagli schemi di \emph{mashup} e il contesto appena inserito, e inviata al server, il quale seleziona i servizi da invocare in base al contesto appena ricevuto, li interroga e costruisce l'insieme di risultati da restituire all'applicazione. Dopo qualche secondo Andrea riceve sul suo \emph{smartphone} la prima pagina dei risultati da lui richiesti (Figura \ref{fig:usecase-results}) \textcolor{red}{(cambio immagine)}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/results_caso_d'uso.png}
+	\caption{Risultati dal server}\label{fig:usecase-results}
+\end{figure} 
+
+Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \textcolor{red}{Aggiungere nome} per vedere dei dettagli in più. Convinti della scelta e scoprendo della raggiungibilità anche a piedi decidono di provare a telefonare per prenotare un tavolo per due persone, selezionando la cornetta (Figura \ref{fig:usecase-details}) \textcolor{red}{(devo mettere screen migliore)}. La risposta del ristoratore è affermativa, quindi Andrea e Barbara possono recarsi a cenare. %e a passare una piacevole serata.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/details_caso_d'uso.png}
+	\caption{Dettagli oggetto selezionato}\label{fig:usecase-details}
+\end{figure} 
