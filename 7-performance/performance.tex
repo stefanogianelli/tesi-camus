@@ -22,7 +22,7 @@ In Figura \ref{fig:sistema-coda} viene mostrata una schematizzazione del flusso 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{7-performance/Immagini/sistema_coda.png}
-	\caption{Sistema a singola coda}\label{fig:sistema-coda}
+	\caption{Sistema a coda singola}\label{fig:sistema-coda}
 \end{figure}
 
 Si prosegue con una descrizione del comportamento del sistema. Si è giunti alla conclusione che il sistema in analisi può essere modellato come una coda M/G/1 \cite{sundarapandian2009probability}, in quanto valgono le seguenti considerazioni:
@@ -39,7 +39,7 @@ Si prosegue con una descrizione del comportamento del sistema. Si è giunti alla
 I test sono stati tutti effettuati su una macchina virtuale. Il motivo di questa decisione è la flessibilità nella scelta dei componenti della macchina, in quanto è possibile variare semplicemente il numero di core del processore e la dimensione della RAM. Le caratteristiche del sistema fisico utilizzato vengono elencate nella Tabella \ref{table:performance-pc}.
 
 \begin{table}[ht]
-	\caption{Caratteristiche della macchine di test}
+	\caption{Caratteristiche della macchina di test}
 	\label{table:performance-pc}
 	\centering
 	\begin{tabularx}{0.7\textwidth}{lX}

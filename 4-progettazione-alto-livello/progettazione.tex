@@ -1,6 +1,6 @@
 Questo capitolo viene dedicato allo studio della progettazione relativa al prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito verrà approfondito il flusso di esecuzione delle richieste, partendo dalla \emph{mobile app} fino ad arrivare al \emph{backend}, analizzando tutti i passaggi che vengono eseguiti. Infine il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire meglio il flusso esposto nella sezione precedente.
 
-\section{Architettura e tecnologie utilizzate}
+\section{Architettura del sistema}
 
 Questa sezione vuole fornire i dettagli riguardo all'architettura della piattaforma. Verranno spiegate le scelte che hanno portato alla realizzazione dell'architettura e messi in risalto le caratteristiche principali. La sezione viene divisa in due parti: la prima riguarda l'esposizione dell'architettura del \emph{backend} per poi passare all'analisi dell'architettura della \emph{mobile app}. La struttura interna delle due sezioni sarà molto simile: verrà inizialmente mostrato un diagramma dell'architettura per poi passare alla descrizione dei componenti che ne fanno parte. 
 
@@ -41,7 +41,7 @@ In questa sezione è presentata l'architettura dell'applicazione mobile CAMUS, s
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/app_architecture.pdf}
-	\caption{Architetture generale dell'app CAMUS}\label{fig:app-architecture}
+	\caption{Architettura della mobile app}\label{fig:app-architecture}
 \end{figure}
 
 \subsubsection{Pagine dell'applicazione}
@@ -65,9 +65,9 @@ Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le segu
 		\item \textbf{Main Page}
 		È la pagina principale dell'applicazione e permette all'utente di mostrare tutti gli \emph{Interest Topic} presenti nel suo CDT. La scelta della categoria desiderata permette di accedere alla \emph{Context Selection Page}
 		\item \textbf{Context Dimension Page}
-		In questa pagina viene chiesto il contesto all'utente mediante un'interfaccia che si adatta a runtime man mano che l'utente effettua delle scelte per guidarlo nella definizione del contesto da inviare come richiesta al server. Una volta composto il contesto viene costruita la query e inviata all'endpoint GraphQL del server CAMUS. 
+		In questa pagina viene chiesto il contesto all'utente mediante un'interfaccia che si adatta a \emph{runtime} man mano che l'utente effettua delle scelte per guidarlo nella definizione del contesto da inviare come richiesta al \emph{server}. Una volta composto il contesto viene costruita la \emph{query} e inviata all'\emph{endpoint} GraphQL del \emph{server} CAMUS. 
 		\item \textbf{Results Page}
-		Si tratta della pagina che deve mostrare l'intero dataset proveniente dal server e gestisce la paginazione dei risultati, a seconda della posizione del cursore dell'utente nella ListView 
+		Si tratta della pagina che deve mostrare l'intero \emph{dataset} proveniente dal \emph{server} e gestisce la paginazione dei risultati, a seconda della posizione del cursore dell'utente nella \emph{ListView} 
 		\item \textbf{Details Page}
 		In questa pagina vengono visualizzati i dettagli dell'oggetto selezionato e sono gestiti i collegamenti con le applicazioni esterne, per mezzo della libreria di \emph{Linking} di React Native o tramite moduli personalizzati
 	\end{itemize}
@@ -79,9 +79,9 @@ Le pagine descritte nella sezione precedente utilizzano alcuni componenti che so
 
 \begin{itemize}
 	\item \textbf{Connection Manager}
-	In questo componente vengono gestite tutte le connessioni con l'\emph{endpoint} GraphQL. Permette di gestire la fase di login e di scambio dati per scaricare il CDT, gli schemi di mashup e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
+	In questo componente vengono gestite tutte le connessioni con l'\emph{endpoint} GraphQL. Permette di gestire la fase di \emph{login} e di scambio dati per scaricare il CDT, gli schemi di \emph{mashup} e i dati. Per quanto riguarda i dati sono esposti due metodi distinti, il primo per gestire la prima richiesta di nuovi dati, il secondo per quelle successive, chiedendo una nuova pagina come spiegato nella Sezione \ref{sec:paginazione-app}
 	\item \textbf{View Builder}
-	Si tratta del componente che costruisce le \emph{view} dinamiche partendo dallo schema di mashup, scaricato assieme al CDT appena effettuato il \emph{login}	
+	Si tratta del componente che costruisce le \emph{view} dinamiche partendo dallo schema di \emph{mashup}, scaricato assieme al CDT appena effettuato il \emph{login}	
 	\item \textbf{StyleSheet}
 	Si tratta del foglio di stile nel quale sono impostati tutti i parametri predefiniti per la visualizzazione dei componenti dell'applicazione
 \end{itemize}
@@ -90,23 +90,23 @@ Le pagine descritte nella sezione precedente utilizzano alcuni componenti che so
 Per quanto riguarda la gestione dello stato dell'applicazione si è scelto di seguire in modo piuttosto rigoroso le linee guida fornite da \emph{Alt.js}: le \emph{Action} e le \emph{Store} devono essere collegate tra di loro e riguardare delle funzionalità specifiche.
 Per questo motivo sono state create quattro tipologie di coppie \emph{Action-Store} che hanno il compito di gestire il salvataggio dei diversi dati dello stato dell'applicazione: 
 \begin{enumerate}
-	\item \textbf{User} Ha il compito di gestire tutti i dati anagrafici legati all'utente.
-	\item \textbf{Data} Memorizza tutto quello che riguarda i dati per l'applicazione, come il CDT e i risultati che provengono dal server.
-	\item \textbf{View} Gestisce gli schemi di mashup e il loro aggiornamento all'interno dell'applicazione
-	\item \textbf{Context} Ha il compito di memorizzare le scelte in base al contesto fatte dall'utente, permettendo di guidarlo nella definizione della propria situazione.
+	\item \textbf{User} Ha il compito di gestire tutti i dati anagrafici legati all'utente
+	\item \textbf{Data} Memorizza tutto quello che riguarda i dati per l'applicazione, come il CDT e i risultati che provengono dal \emph{server}
+	\item \textbf{View} Gestisce gli schemi di \emph{mashup} e il loro aggiornamento all'interno dell'applicazione
+	\item \textbf{Context} Ha il compito di memorizzare le scelte in base al contesto fatte dall'utente, permettendo di guidarlo nella definizione della propria situazione
 \end{enumerate}
 
-Queste tipologie verranno spiegate nei dettagli nella Sezione \ref{sec:state-management}
+Queste tipologie verranno spiegate nei dettagli nella Sezione \ref{sec:state-management}.
 
 \section{Flusso di una richiesta}
 
-Questa sezione vuole mostrare al lettore il flusso di esecuzione delle attività all'interno della piattaforma. Questa analisi verrà scomposta in due fasi, per dare risalto alle particolarità di ognuna. Sarà analizzato il flusso delle attività relative il \emph{backend} per poi passare al flusso relativo alla \emph{mobile app}. Per ognuna saranno analizzati nel dettaglio tutti i passaggi necessari al completamento di una richiesta, mostrando nel dettaglio l'ordine col quale vengono eseguite le attività e descrivendo i componenti che vengono coinvolti.
+Questa sezione vuole mostrare al lettore il flusso di esecuzione delle attività all'interno della piattaforma. Questa analisi verrà scomposta in due fasi, per dare risalto alle particolarità di ognuna. Verrà analizzato il flusso delle attività relative il \emph{backend} per poi passare al flusso relativo alla \emph{mobile app}. Per entrambe saranno analizzati nel dettaglio tutti i passaggi necessari al completamento di una richiesta, mostrando nel dettaglio l'ordine col quale vengono eseguite le attività e descrivendo i componenti che vengono coinvolti.
 
 \subsection{Backend\label{sec:flusso-richiesta-server}}
 
-In questa sezione viene analizzato il flusso di esecuzione principale del sistema, quello che riguarda le richieste proveniente dalla mobile app. Le prime attività che svolge sono il login dell'utente, tramite l'endpoint \emph{login} (Sezione \ref{sec:login-endpoint}), e l'acquisizione dei dati personali dell'utente, tramite l'endpoint \emph{getPersonalData} (Sezione \ref{sec:get-personal-data-endpoint}).
+In questa sezione viene analizzato il flusso di esecuzione principale del sistema, quello che riguarda le richieste proveniente dalla \emph{mobile app}. Le prime attività che svolge sono il \emph{login} dell'utente, tramite l'\emph{endpoint} \virgolette{login} (Sezione \ref{sec:login-endpoint}), e l'acquisizione dei dati personali dell'utente, tramite l'\emph{endpoint} \virgolette{getPersonalData} (Sezione \ref{sec:get-personal-data-endpoint}).
 
-L'attività più importante riguarda invece l'endpoint \emph{executeQuery} (Sezione \ref{sec:execute-query-endpoint}), che è dedicato all'invio delle informazioni trovate in base al contesto dell'utente. In Figura \ref{fig:flusso-nuova-richiesta} vengono mostrati i componenti coinvolti in questa fase e l'ordine col quale sono eseguiti.
+L'attività più importante riguarda invece l'\emph{endpoint} \virgolette{executeQuery} (Sezione \ref{sec:execute-query-endpoint}), che è dedicato all'invio delle informazioni trovate in base al contesto dell'utente. In Figura \ref{fig:flusso-nuova-richiesta} vengono mostrati i componenti coinvolti in questa fase e l'ordine col quale sono eseguiti.
 
 \begin{figure}[ht]
 	\centering
@@ -118,18 +118,18 @@ L'attività viene divisa in tre fasi:
 
 \begin{enumerate}
 	\item \textbf{Creazione CDT decorato}
-	\upe la prima fase che viene eseguita. Una volta ricevuto il \emph{contesto} dal client, questo viene analizzato e trasformato nella versione \emph{decorata}
+	\upe la prima fase che viene eseguita. Una volta ricevuto il contesto dal \emph{client}, questo viene analizzato e trasformato nella versione \emph{decorata}
 	\item \textbf{Acquisizione dati primari}
-	Questa fase avviene dopo la creazione del CDT decorato. Si occupa di selezionare le operazioni attinenti al contesto, interrogare i servizi, integrare le risposte e inviare i dati finali al client
+	Questa fase avviene dopo la creazione del CDT decorato. Si occupa di selezionare le operazioni attinenti al contesto, interrogare i servizi, integrare le risposte e inviare i dati finali al \emph{client}
 	\item \textbf{Composizione servizi di supporto}
-	Questa fase avviene dopo la creazione del CDT e in parallelo all'acquisizione dei dati primari. A partire dal contesto si occupa di selezionare i servizi di supporto richiesti dal client e ne compone le query
+	Questa fase avviene dopo la creazione del CDT e in parallelo all'acquisizione dei dati primari. A partire dal contesto si occupa di selezionare i servizi di supporto richiesti dal \emph{client} e ne compone le \emph{query}
 \end{enumerate}
 
 Nelle successive sottosezioni verranno analizzate nel dettaglio ognuna delle precedenti fasi.
 
 \subsubsection*{Creazione del CDT decorato}
 
-\upe la prima attività che viene eseguita, della quale si occupa il \emph{Context Manager}. In Figura \ref{fig:flusso-decorated-cdt} viene mostrato il diagramma di flusso delle attività svolte. Riceve in ingresso il \emph{contesto} che è stato composto dall'utente e lo trasforma nella relativa versione \emph{decorata}. Se il contesto è già stato ricevuto in una precedente richiesta, viene recuperata dalla cache la versione decorata che è già stata elaborata, altrimenti viene avviato il processo di trasformazione. Al fine di identificare univocamente ogni contesto viene generato un hash dell'oggetto ricevuto per poterlo memorizzare e recuperare in cache. In questo modo è possibile anche condividere un contesto tra più utenti diversi.
+\upe la prima attività che viene eseguita, della quale si occupa il \emph{Context Manager}. In Figura \ref{fig:flusso-decorated-cdt} viene mostrato il diagramma di flusso delle attività svolte. Riceve in ingresso il \emph{contesto} che è stato composto dall'utente e lo trasforma nella relativa versione \emph{decorata}. Se il contesto è già stato ricevuto in una precedente richiesta, viene recuperata dalla \emph{cache} la versione decorata che è già stata elaborata, altrimenti viene avviato il processo di trasformazione. Al fine di identificare univocamente ogni contesto viene generato un \emph{hash} dell'oggetto ricevuto per poterlo memorizzare e recuperare in \emph{cache}. In questo modo è possibile anche condividere un contesto tra più utenti diversi.
 
 \begin{figure}[ht]
 	\centering
@@ -147,15 +147,15 @@ Nelle successive sottosezioni verranno analizzate nel dettaglio ognuna delle pre
 
 Questa fase viene eseguita una volta terminata la creazione del \emph{CDT decorato}. In Figura \ref{fig:flusso-servizi-primari} viene mostrato il diagramma di flusso che mostra come viene gestita una richiesta.
 
-La prima attività che viene svolta riguarda il controllo, come nel passaggio precedente, se la richiesta era già stata gestita in passato. Se si tratta di una nuova richiesta, l'attività viene svolta dai componenti che fanno parte del blocco \virgolette{Primary Service} nella Figura \ref{fig:flusso-nuova-richiesta}. Il primo componente che viene eseguito è il \emph{Primary Service Selection}, che si occupa di selezionare le operazioni che sono più idonee al contesto fornito dall'utente. Prodotto l'elenco entra in gioco il \emph{Query Handler}, che ha un duplice compito: il primo, con l'ausilio di uno o più \emph{Bridge}, è l'invocazione dei servizi prescelti mentre il secondo è l'acquisizione delle relative risposte. Una volta ricevute le risposte provvede a trasformarle nel formato interno, tramite le funzioni messe a disposizione dal \emph{Response Parser}. Tutte le risposte ricevute vengono infine unite a formare un'unica lista e restituite per essere ulteriormente elaborate dal \emph{Response Aggregator}, che effettua un'attività di rimozione dei duplicati. L'elenco dei risultati identificato verrà dunque salvato per un periodo di tempo in cache in modo da poter essere riutilizzato per richieste future.
+La prima attività che viene svolta riguarda il controllo, come nel passaggio precedente, se la richiesta è già stata gestita in passato. Se si tratta di una nuova richiesta, l'attività viene svolta dai componenti che fanno parte del blocco \virgolette{Primary Service} nella Figura \ref{fig:flusso-nuova-richiesta}. Il primo componente che viene eseguito è il \emph{Primary Service Selection}, che si occupa di selezionare le operazioni che sono più idonee al contesto fornito dall'utente. Prodotto l'elenco entra in gioco il \emph{Query Handler}, che ha un duplice compito: il primo, con l'ausilio di uno o più \emph{Bridge}, è l'interrogazione dei servizi prescelti mentre il secondo è l'acquisizione delle relative risposte. Una volta ricevute le risposte provvede a trasformarle nel formato interno, tramite le funzioni messe a disposizione dal \emph{Response Parser}. Tutte le risposte ricevute vengono infine unite a formare un'unica lista e restituite per essere ulteriormente elaborate dal \emph{Response Aggregator}, che effettua un'attività di rimozione dei duplicati. L'elenco dei risultati identificato verrà dunque salvato per un periodo di tempo in \emph{cache} in modo da poter essere riutilizzato per richieste future.
 
-L'altra eventualità si verifica quando la risposta è presente in cache. Questo caso ha una gestione un po' più complessa rispetto al precedente perché viene considerata anche la paginazione dei risultati. La prima verifica riguarda la disponibilità di informazioni da restituire al client. Se la quantità di dati contenuti in cache è sufficiente a evadere la richiesta viene subito restituita la porzione di informazioni richiesta. Altrimenti viene effettuata una nuova richiesta verso i servizi che hanno ulteriori dati da mostrare. La regola di ricaricamento dei dati è la stessa descritta nella Sezione \ref{sec:session-helper}. Qualsiasi casistica termina sempre con l'aggiornamento dello stato nella cache, in quanto vengono sia salvati l'elenco dei risultati sia il numero di elementi che il client ha già richiesto. Il processo termina una volta che tutti i servizi non ha più dati da mostrare. In quel caso il client verrà informato del fatto che non sono più disponibili ulteriori pagine.
+L'altra eventualità si verifica quando la risposta è presente in \emph{cache}. Questo caso ha una gestione un po' più complessa rispetto al precedente perché viene considerata anche la paginazione dei risultati. La prima verifica riguarda la disponibilità di informazioni da restituire al \emph{client}. Se la quantità di dati contenuti in \emph{cache} è sufficiente a evadere la richiesta viene subito restituita la relativa porzione di informazioni. Altrimenti viene effettuata una nuova richiesta verso i servizi che hanno ulteriori dati da mostrare. La regola di ricaricamento dei dati è la stessa descritta nella Sezione \ref{sec:session-helper}. Qualsiasi casistica termina sempre con l'aggiornamento dello stato nella \emph{cache}, in quanto vengono sia salvati l'elenco dei risultati sia il numero di elementi che il \emph{client} ha già richiesto. Il processo termina una volta che tutti i servizi non ha più dati da mostrare. In quel caso il \emph{client} verrà informato del fatto che non sono più disponibili ulteriori pagine.
 
 \subsubsection*{Acquisizione dei servizi di supporto}
 
-Questa attività incomincia una volta creato il \emph{CDT decorato} e opera parallelamente all'acquisizione dei servizi primari. Coinvolge unicamente il componente \emph{Support Service Selection}, che si occupa di selezionare i servizi di supporto o gli intent richiesti dal client. In ingresso viene fornita la \emph{categoria} dei servizi che si vuole selezionare in base al contesto fornito.
+Questa attività incomincia una volta creato il \emph{CDT decorato} e opera parallelamente all'acquisizione dei servizi primari. Coinvolge unicamente il componente \emph{Support Service Selection}, che si occupa di selezionare i servizi di supporto o gli \emph{intent} richiesti dal \emph{client}. In ingresso viene fornita la \emph{categoria} dei servizi che si vuole selezionare in base al contesto fornito.
 
-Una volta selezionati incomincia la fase di composizione degli URL necessarie per interrogare il servizio o richiamare l'intent specifico.
+Una volta selezionati incomincia la fase di composizione degli URL necessarie per interrogare il servizio o richiamare l'\emph{intent} specifico.
 
 \subsection{Mobile app}
 
@@ -171,26 +171,26 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 
 \begin{enumerate}
 	\item
-	La prima schermata che appare nell'applicazione è quella di login; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di login come definito in \ref{sec:login-endpoint}
+	La prima schermata che appare nell'applicazione è quella di \emph{login}; qui l'utente inserisce le proprie credenziali e viene effettuata la richiesta GraphQL di \emph{login} come definito nella Sezione \ref{sec:login-endpoint}
 	\item
-	L'app riceve il CDT e i mashup dal server e quindi l'applicazione possiede tutto ciò che è necessario per caricare l'interfaccia grafica. Nel frattempo viene mostrata la pagina iniziale dell'applicazione
+	L'\emph{app} riceve il CDT e i \emph{mashup} dal \emph{server} e quindi l'applicazione possiede tutto ciò che è necessario per caricare l'interfaccia grafica. Nel frattempo viene mostrata la pagina iniziale dell'applicazione
 	\item
 	L'utente seleziona l'\emph{Interest Topic} desiderato e viene reindirizzato alla pagina di selezione del contesto dove vengono mostrati i campi che devono essere compilati
 	\item
-	Dopo aver definito i parametri del contesto desiderati l'utente preme il bottone per effettuare la richiesta al server: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo mobile
+	Dopo aver definito i parametri del contesto desiderati l'utente preme il pulsante per effettuare la richiesta al \emph{server}: l'applicazione recupera i dati inseriti dall'utente e allo stesso tempo i dati di posizione provenienti dai sensori del dispositivo
 	\item
-	I dati di contesto sono composti assieme ai dati provenienti dai mashup per costruire la query GraphQL, come spiegato nella sezione \ref{sec:data-query}
+	I dati di contesto sono composti assieme ai dati provenienti dai \emph{mashup} per costruire la \emph{query} GraphQL, come spiegato nella Sezione \ref{sec:data-query}
 	\item
-	Il router dell'applicazione mostra all'utente la pagina dei risultati, la quale durante l'attesa della risposta dal server, continua a mostrare un'interfaccia di caricamento
+	Il \emph{router} dell'applicazione mostra all'utente la pagina dei risultati, la quale durante l'attesa della risposta dal \emph{server}, continua a mostrare un'interfaccia di caricamento per informare l'utente sull'avanzamento della richiesta
 	\item
-	I risultati vengono processati insieme ai file di mashup per mostrare i dati nella pagina che mostra la lista di risultati
+	I risultati vengono processati insieme ai file di \emph{mashup} per mostrare i dati nella pagina che mostra la lista di risultati
 	\item
-	L'utente scorre il result set ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
+	L'utente scorre il \emph{result set} ottenuto fino a quando non sceglie un elemento per visualizzarne i dettagli
 	\item
 	L'applicazione carica la pagina dove vengono visualizzati i dati completi relativi al dettaglio dell'e\-le\-men\-to selezionato e visualizzati nella pagina
 \end{enumerate}
 
-\section{Esempio del flusso di esecuzione}
+\section{Scenario d'uso}
 
 In questa sezione viene introdotto un esempio di caso d'uso reale, che vuole illustrare un flusso di esecuzione complessivo svolto da un utente, cercando di mostrare le attività svolte lato \emph{client} e lato \emph{backend}.
 Introduciamo l'utente Andrea, che sarà il nome di fantasia che utilizzeremo in questo esempio d'uso. Supponiamo che sia per un weekend a Milano con la sua fidanzata Barbara e prima di partire ha comunicato all'esperto CAMUS, Giovanni, di essere \upe interessato ad avere all'interno dell'applicazione alcuni \emph{Interest Topic}: \virgolette{Restaurant}, \virgolette{Cinema}, \virgolette{Theater}, \virgolette{Hotel}, \virgolette{Museum} ed \virgolette{Event}. Successivamente Giovanni ha compiuto tutte le associazioni delle operazioni dei servizi già registrati a CAMUS e le modifiche all'interfaccia grafica dell'applicazione di Andrea.
