@@ -11,7 +11,7 @@ Le \emph{Actions} sono i metodi invocati dall'ap\-pli\-ca\-zio\-ne per modificar
 
 \begin{itemize}
 	\item \textbf{Data Fetching}
-	Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le action hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
+	Quando è necessario scaricare gli elementi necessari per il corretto funzionamento dell'applicazione (CDT e mashup) o i dati provenienti dalle richieste, le \emph{action} hanno lo scopo di modificare lo stato per cambiare la view dell'applicazione a seconda dello stato della richiesta.
 	Per esempio quando si preme il bottone per effettuare una nuova richiesta basata sul contesto viene invocata un'azione per mantenere lo stato coerente tra più componenti e permettere di mostrare in fase di caricamento uno Spinner e una volta che i dati sono arrivati all'interno dell'applicazione mostrarli nella ListView
 	\item \textbf{Application State}
 	Lo stato generale dell'applicazione viene salvato utilizzando delle \emph{Action} chiamate dalle interazioni dell'utente con l'interfaccia grafica. Per esempio quando viene composto il contesto le diverse selezioni sono passate dall'utente tramite le Action nelle Store
@@ -50,8 +50,9 @@ Le \emph{Actions} che sono state implementate nell'applicazione sono le seguenti
 		\item \textbf{Set Views}
 		Metodo per salvare il file con le view provenienti dal server 
 		\item \textbf{Select Interest Topic}
-		Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente
+		Metodo per salvare l'\emph{Interest Topic} corrente selezionato da parte dell'utente. Questa funzione è chiamata quando nella pagina iniziale l'utente seleziona l'\emph{Interest Topic} e questo valore viene poi riutilizzato per la selezione delle \emph{view} appropriate.
 	\end{itemize}
+	
 	\item \textbf{Data Actions}
 	Trattano della gestione del CDT e dei risultati ottenuti dal server:
 	\begin{itemize}
@@ -103,13 +104,28 @@ Nel caso della \emph{list} sono definiti gli elementi da mostrare quando è pres
 Nella tipologia \emph{details} sono disponibili tutti i dettagli dell'item selezionato e sono definiti tutti i termini necessari a identificare l'elemento per l'utente.
 Considerando l'esempio dei ristoranti, per la lista sono associati i termini che servono a identificare l'oggetto, come il nome e l'indirizzo. Se poi l'utente vuole vedere la mappa e visualizzare gli estremi per contattare il ristorante, deve aprire la pagina dei dettagli, dove acquisendo i termini dal file di mashup, sono visualizzati tutti i dettagli necessari per l'utente. Inoltre è specificata la tipologia dell'elemento da visualizzare, in modo da permettere all'app di utilizzare le librerie di collegamento con le applicazioni specifiche del sistema operativo.
 
-Nel Listato \ref{lst:mashup-schema} viene mostrato un frammento del file JSON di mashup della pagina di dettaglio:
+Nel Listato \ref{lst:mashup-schema} viene mostrato un frammento del file JSON di mashup della pagina di dettaglio e nella Figura \ref{fig:schermate-app-mashup} la sua traduzione nelle due applicazioni.
 
 \begin{listing}[H]
 	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-example-app.json}
 	\caption{Esempio Schema Mashup}
 	\label{lst:mashup-schema}
 \end{listing}
+
+\begin{figure}[ht]
+	\begin{minipage}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[scale=0.1]{6-implementazione-app/immagini/details_android.png}
+		\caption{Dettagli in Android}
+	\end{minipage}%
+	\hspace{2mm}%
+	\begin{minipage}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[scale=0.1]{6-implementazione-app/immagini/details_ios.pdf}
+		\caption{Dettagli in iOS}
+	\end{minipage}	
+	\label{fig:schermate-app-mashup}
+\end{figure}
 
 Di seguito sono elencate le diverse tipologie di dato che compongono l'oggetto che rappresenta i file di \emph{mashup}:
 
@@ -138,21 +154,21 @@ Per ogni oggetto facente parte del CDT viene eseguita un'associazione a componen
 
 \begin{itemize}
 	\item \textbf{Interest Topic}
-	Gli \emph{Interest Topic} hanno bisogno di essere selezionati nella pagina iniziale appena dopo il login e caricati in una lista di bottoni con due elementi per riga, con un'icona rappresentativa. I bottoni e le icone sono predefinite nell'applicazione e necessitano soltanto di una associazione \emph<nome, elemento> dal campo \emph{Interest Topic} del CDT. Questa funzione molto semplice viene eseguita direttamente all'interno della pagina principale senza la necessità di utilizzare il View Render
+	Gli \emph{Interest Topic} hanno bisogno di essere selezionati nella pagina iniziale appena dopo il login e caricati in una lista di bottoni con due elementi per riga, con un'icona rappresentativa. I bottoni e le icone sono predefinite nell'applicazione e necessitano soltanto di una associazione <\emph{nome},\emph{elemento}> dal campo \emph{Interest Topic} del CDT. Questa funzione molto semplice viene eseguita direttamente all'interno della pagina principale senza la necessità di utilizzare il View Render. 	
 	\item \textbf{Altri elementi}
-	Gli altri elementi del contesto sono elaborati all'interno del componente View Builder. Con una funzione ricorsiva viene scandito l'intero CDT ricevuto dal server con i campi da modificare e in base ai contenuti viene costruito l'elemento della view, a seconda della tipologia. Per esempio, se per un campo è richiesto l'inserimento di un numero verrà mostrato un TextInput che permette il completamento solo con numeri, mentre se ho a disposizione una scelta tra più elementi verrà mostrata una lista selezionabile.
-	Assume una grande importanza anche la gestione delle esclusioni tra le operazioni. Se viene selezionato \virgolette{With Car} non è corretto mostrare le possibili tipologie di trasporto pubblico, perché si conosce già a priori che l'utente non selezionerà mai nello stesso momento come mezzo di trasporto l'automobile e il bus. Per questo scopo all'interno della \emph{Context Store} vengono gestiti con una struttura dati ad Array i nodi che non devono essere mostrati e questa variabile viene aggiornata con le selezioni che sono state fatte nell'interfaccia utente all'interno della pagina di contesto. Si prenda come esempio la selezione del mezzo di trasporto: se l'utente seleziona \virgolette{WithCar}, non è necessario mostrargli la possibilità di scegliere le tipologie di mezzi di trasporto pubblico, mentre queste opzioni gli sono mostrate solo nel caso in cui selezioni l'opzione \virgolette{Public Transport}
+	Gli altri elementi del contesto sono elaborati all'interno del componente \emph{View Builder}. Con una funzione ricorsiva viene scandito l'intero CDT ricevuto dal server con i campi da modificare e in base ai contenuti viene costruito l'elemento della view, a seconda della tipologia. Per esempio, se per un campo è richiesto l'inserimento di un numero verrà mostrato un \emph{TextInput} che permette il completamento solo con numeri, mentre se ho a disposizione una scelta tra più elementi verrà mostrata una lista selezionabile.
+	Assume una grande importanza anche la gestione delle esclusioni tra le operazioni. Se viene selezionato \virgolette{With Car} non è corretto mostrare le possibili tipologie di trasporto pubblico, perché si conosce già a priori che l'utente non selezionerà mai nello stesso momento come mezzo di trasporto l'automobile e il bus. Per questo scopo viene utilizzato il parametro \emph{parents} presente in ogni elemento del CDT; se il valore è stato selezionato dall'utente, allora gli sono mostrate tutte le sottocategorie. Per esempio quando l'utente seleziona \virgolette{With Car} non gli sono proposte tipologie diverse di trasporto con l'auto, mentre se seleziona \virgolette{Public Transport} allora può scegliere una categoria ben definita di trasporto pubblico, a seconda delle sue esigenze
 \end{itemize}
 	
 \subsection{Rendering dei Risultati}\label{sec:view-risultati}
 
-Per quanto concerne i risultati ottenuti dalle query GraphQL entrano in gioco in maniera preponderante gli schemi di mashup. Per i motivi spiegati in \ref{sec:mashup-design}, la risoluzione del problema necessita di un funzionamento più complesso rispetto alla visualizzazione del contesto. La funzione di rendering per quanto riguarda i risultati è la medesima sia per la lista che per i dettagli, quello che cambia è il contenitore del componente \emph{View Builder}: per la lista è un figlio nel metodo di \emph{renderItem()} della ListView, mentre per i dettagli definisce l'intera pagina.
-Al componente View Render sono necessari due oggetti: il file di mashup e i dati del singolo risultato.
-Si suppone che nel file di mashup gli elementi siano già stati generati in ordine di visualizzazione, perché nella funzione di costruzione  delle view non è possibile modificare tale ordine. Tuttavia è possibile modificare lo stile più esterno del componente risultante per cambiare il layout dei figli del \emph{View Builder}. Per prima cosa il \emph{View Builder} deve scegliere le view associate all'\emph{Interest Topic} facendo una ricerca della prima vista che contiene il valore corrente dell'\emph{Interest Topic} e passare questo oggetto alla funzione di rendering. A questo punto si è pronti per costruire la view del componente: viene scandito ogni elemento del file di mashup e si associa il valore dato dal termine dell'oggetto del risultato e viene restituito il componente pronto per essere elaborato per la visualizzazione. Nel caso in cui non fosse presente un valore per il termine desiderato ovviamente non viene visualizzato alcun elemento, si restituisce una \emph{View} base vuota, che non ha nessuna incidenza sulla grafica avendo dimensione nulla. Nel caso in cui esista un oggetto di tipo \emph{style}, esso ha la priorità rispetto a quello presente nel foglio di stile predefinito dell'applicazione. Per il momento sono disponibili queste tipologie di componenti specificabili nel campo \emph{type} dell'oggetto di mashup che sono pienamente supportati:
+Per quanto concerne i risultati ottenuti dalle \textit{query} GraphQL entrano in gioco in maniera preponderante gli schemi di \textit{mashup}. Per i motivi spiegati in \ref{sec:mashup-design}, la risoluzione del problema necessita di un funzionamento più complesso rispetto alla visualizzazione del contesto. La funzione di \textit{rendering} per quanto riguarda i risultati è la medesima sia per la lista che per i dettagli, quello che cambia è il contenitore del componente \emph{View Builder}: per la lista è un figlio nel metodo di \emph{renderItem()} della ListView, mentre per i dettagli definisce l'intera pagina.
+Al componente \emph{View Render} sono necessari due oggetti: il file di \textit{mashup} e i dati del singolo risultato.
+Si suppone che nel file di \textit{mashup} gli elementi siano già stati generati in ordine di visualizzazione, perché nella funzione di costruzione delle view non è possibile modificare tale ordine. Tuttavia è possibile modificare lo stile più esterno del componente risultante per cambiare il layout dei figli del \emph{View Builder}. Per prima cosa il \emph{View Builder} deve scegliere le view associate all'\emph{Interest Topic} facendo una ricerca della prima vista che contiene il valore corrente dell'\emph{Interest Topic} e passare questo oggetto alla funzione di \textit{rendering}. A questo punto si è pronti per costruire la view del componente: viene scandito ogni elemento del file di \textit{mashup} e si associa il valore dato dal termine dell'oggetto del risultato e viene restituito il componente pronto per essere elaborato per la visualizzazione. Nel caso in cui non fosse presente un valore per il termine desiderato ovviamente non viene visualizzato alcun elemento, si restituisce una \emph{View} base vuota, che non ha nessuna incidenza sulla grafica avendo dimensione nulla. Nel caso in cui esista un oggetto di tipo \emph{style}, esso ha la priorità rispetto a quello presente nel foglio di stile predefinito dell'applicazione. Per il momento sono disponibili queste tipologie di componenti specificabili nel campo \emph{type} dell'oggetto di \textit{mashup} che sono pienamente supportati:
 
 \begin{itemize}
 	\item \textbf{Text}
-	\upe il componente di testo base; per la sua differenziazione si utilizzano attributi diversi nel foglio di stile in comune per tutta l'applicazione o le specifiche presenti nell'attributo \emph{style} del mashup
+	\upe il componente di testo base; per la sua differenziazione si utilizzano attributi diversi nel foglio di stile in comune per tutta l'applicazione o le specifiche presenti nell'attributo \emph{style} del \textit{mashup}
 	\item \textbf{Map}
 	\upe il componente che visualizza le mappe. Presenta due implementazioni differenti per quanto riguarda iOS e Android, poiché come mappe di sistema utilizzano due applicazioni differenti. Per iOS visualizzate presenti le mappe di Apple, già integrate nel componente \emph{MapView} fornito da React Native, mentre per Android vengono utilizzate le mappe di Google Maps, per le quali è stato utilizzato un modulo aggiuntivo
 	\item \textbf{Website}
@@ -165,6 +181,7 @@ Si suppone che nel file di mashup gli elementi siano già stati generati in ordi
 	Si tratta del componente che gestisce i servizi di supporto con i collegamenti alle applicazioni esterne, verrà spiegato nei dettagli nella Sezione \ref{sec:servizi-supporto-app}
 \end{itemize}
 
+Nelle Figure \ref{} e \ref{} sono mostrati due esempi di schermate dell'applicazione.
 \subsection{Gestione degli stili}
 
 Per quanto riguarda la gestione degli stili si è scelto di adottare una soluzione molto semplice, ma allo stesso tempo molto efficace. Si è partiti dalla condizione che React Native utilizza come gestione dello stile Flexbox\footnote{Flexbox su W3Schools: \url{Htp://www.w3schools.com/css/css3_flexbox.asp}}, che è una variante basata sugli stili CSS ottimizzata per la gestione degli elementi che necessitano di adattarsi a differenti dimensioni degli schermi. Il linguaggio utilizzato risulta essere molto simile a JSON e quindi è facilmente integrabile in JavaScript. L'elemento che gestisce gli attributi grafici è lo \emph{StyleSheet}, che espone l'oggetto \emph{styles} e gli attributi \emph{PRIMARY\_COLOR} e \emph{SECODARY\_COLOR}.
@@ -201,7 +218,7 @@ Le query per gestire i dati necessitano di tutta una serie di operazioni prelimi
 	\item \textbf{IdCdt}
 	Rappresenta l'identificativo del CDT. Come spiegato nelle sezioni precedenti questo identificativo appartiene a ogni singolo utente
 	\item \textbf{Context}
-	\upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano di una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come payload nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e produce in uscita una stringa. Per poter convertire anche gli oggetti che sono innestati a un livello superiore viene utilizzata una ricorsione che richiama la prima funzione
+	\upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano di una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come \textit{payload} nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e produce in uscita una stringa. Per poter convertire anche gli oggetti che sono innestati a un livello superiore viene utilizzata una ricorsione che richiama la prima funzione. \upe necessario risolvere anche un altro problema, cioè quello legato ai valori del CDT che possiedono il parametro \virgolette{Parents}. In questo caso non è corretto inviare entrambi i parametri, ma solamente quello figlio: è poi il server che ha la capacità di comprendere che è selezionato anche il parametro padre. Per esempio se si considera il parametro \virgolette{Public Transport}, si hanno due possibilità. La prima è che se l'utente non seleziona alcuna categoria allora l'applicazione invia l'oggetto così com'è nella \textit{query}, ma viene chiamato la \emph{Action} delle \emph{ContextActions} \virgolette{removeForbidden()} che, nel caso in cui sia stata selezionata in precedenza una tipologia che aveva come padre \virgolette{Public Transport}  . La seconda è che l'utente selezioni una tipologia specifica, come \virgolette{Bus}: l'applicazione chiama la \emph{Action} \virgolette{addForbidden()} e il valore \virgolette{Public Transport} viene inserito nell'elenco degli elementi da non considerare mentre viene costruita la \textit{query}. 
 	\item \textbf{Support}
 	Rappresenta la tipologia di servizi di supporto che l'utente richiede per integrare al meglio i dati che gli necessitano. %Per esempio nella demo di CAMUS si utilizzano i servizi di tipo \virgolette{Transport}
 	\item \textbf{PrimaryResults}
