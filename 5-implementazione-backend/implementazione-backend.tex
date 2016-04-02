@@ -248,6 +248,14 @@ A questo punto è necessaria una importante precisazione: per la gestione della 
 
 In CAMUS questa attività viene svolta da \emph{Redis}, che è stato selezionato per l'elevata rapidità nell'evadere le richieste e nella possibilità di associare un periodo di vita alle informazioni che vengono memorizzate. Viene ipotizzato che dopo un intervallo di tempo nel quale l'utente non effettua più interazione sulla sessione, essa può ritenersi estinta e i suoi dati eliminati.
 
+Per gestire le funzionalità del server viene utilizzato il \emph{web framework} \emph{ExpressJS}\footnote{ExpressJS: \url{http://expressjs.com/}}. \emph{ExpressJS} è un \emph{framework} molto leggero, che mette a disposizione le funzionalità base affinché un server sia operativo. Ha la potenzialità di avere un ottimo sistema di \emph{middleware}, che permette di utilizzare altre funzionalità più avanzate.
+
+Per \emph{GraphQL} viene utilizzata l'implementazione specifica per \emph{Javascript} rilasciata da \emph{Facebook}\footnote{GraphQL-js: \url{https://github.com/graphql/graphql-js}} e l'estensione di \emph{Relay}\footnote{Relay-GraphQL: \url{https://github.com/graphql/graphql-relay-js}} per gestire le connessioni. Affinché gli schemi di \emph{GraphQL} possano essere esposti dal server si sfrutta l'apposito \emph{middleware} \emph{Express-GraphQL}\footnote{Express-GraphQL: \url{https://github.com/graphql/express-graphql}}.
+
+\emph{MongoDB} non possiede una struttura dello schema del database definita a priori. Per garantire coerenza coi dati memorizzati si è scelto di utilizzare un \emph{Object Relational Mapping} (ORM)\footnote{Object Relational Mapping: \url{https://it.wikipedia.org/wiki/Object-relational_mapping}}. Un ORM fornisce un livello di astrazione superiore a un driver nativo e permette di specificare come gli oggetti vengono mappati nel database e viceversa, definendo implicitamente uno schema del database. In particolare, per il progetto CAMUS è stato utilizzato un ORM specifico per Node.js di nome \emph{mongoose}\footnote{MongooseJS: \url{http://mongoosejs.com/}}.
+
+Infine, per interfacciare Node.js con l'istanza di Redis in esecuzione viene utilizzato il modulo \emph{ioredis}\footnote{ioredis: \url{https://github.com/luin/ioredis}}.
+
 In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle classi di tutti i componenti che formano il backend del sistema. Nelle seguenti sottosezioni verranno analizzate nel dettaglio le attività svolte e i dettagli implementativi dei componenti principali del sistema.
 
 \subsection{Provider\label{sec:provider}}

@@ -1,8 +1,8 @@
-\textcolor{red}{Introduzione ...}
+Questo capitolo viene dedicato allo studio della progettazione relativa il prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito verrà approfondito il flusso di esecuzione delle richieste, partendo dalla \emph{mobile app} fino ad arrivare al \emph{backend}, analizzando tutti i passaggi che vengono eseguiti. Infine il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire meglio il flusso esposto nella sezione precedente.
 
 \section{Architettura e tecnologie utilizzate}
 
-\textcolor{red}{Introduzione ...}
+Questa sezione vuole fornire i dettagli riguardo l'architettura della piattaforma. Verranno spiegate le scelte che hanno portato alla realizzazione dell'architettura e messi in risalto le caratteristiche principali. La sezione viene divisa in due parti: la prima riguarda l'esposizione dell'architettura del \emph{backend} per poi passare all'analisi dell'architettura della \emph{mobile app}. La struttura interna delle due sezioni sarà molto simile: verrà inizialmente mostrato un diagramma dell'architettura per poi passare alla descrizione dei componenti che ne fanno parte. 
 
 \subsection{Backend\label{sec:architettura-backend}}
 
@@ -14,45 +14,35 @@ In questa sezione si vuole analizzare nel dettaglio l'architettura messa a punto
 	\caption{Architettura del backend}\label{fig:architettura-backend}
 \end{figure}
 
-L'architettura di CAMUS viene descritta schematicamente in Figura \ref{fig:architettura-backend}. Come si può notare è stata privilegiata la modularità dei vari componenti che formano il sistema, in modo che il compito di ognuno fosse ben circoscritto. Inoltre tutti i componenti mostrati sono \emph{stateless}, cioè non mantengono informazioni sullo stato di una sessione. Questa scelta architetturale permette di poter avviare diverse istanze del backend di CAMUS per poter soddisfare le molteplici richieste degli utenti. Questa scelta permette di selezionare quale nodo sia il miglior candidato per gestire una richiesta in coda in base a politiche che non riguardano lo stato della sessione (es.: disponibilità del nodo, basso carico sul sistema, ecc.).
+L'architettura di CAMUS viene descritta schematicamente in Figura \ref{fig:architettura-backend}. Come si può notare è stata privilegiata la modularità dei vari componenti che formano il sistema, in modo che il compito di ognuno fosse ben circoscritto. Inoltre tutti i componenti mostrati sono \emph{stateless}, cioè non mantengono informazioni sullo stato di una sessione. Questa scelta architetturale permette di poter avviare diverse istanze del \emph{backend} di CAMUS per poter soddisfare le molteplici richieste degli utenti. Questa scelta permette di selezionare quale nodo sia il miglior candidato per gestire una richiesta in coda in base a politiche che non riguardano lo stato della sessione (es.: disponibilità del nodo, basso carico sul sistema, ecc.).
 
 Il componente che coordina tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti e organizzare le chiamate secondo il flusso della richiesta (che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta-server}).
 
-Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile app e trasformarlo in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal client e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
+Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile \emph{app} e trasformarlo in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal \emph{client} e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
 
-Il compito del \emph{Primary Service Selection} è di andare a recuperare le associazioni tra l'albero di contesto e le operazioni dei servizi primari. \upe inoltre suo compito gestire le associazioni personalizzate, come quella relativa alla ricerca tramite \emph{località}. In seguito assegna un \emph{punteggio} a ogni operazione identificata ed emette in uscita le prime N operazioni con valutazione più elevata.
+L'attività del \emph{Primary Service Selection} è di andare a recuperare le associazioni tra l'albero di contesto e le operazioni dei servizi primari. \upe inoltre suo compito gestire le associazioni personalizzate, come quella relativa alla ricerca tramite \emph{località}. In seguito assegna un \emph{punteggio} a ogni operazione identificata ed emette in uscita le prime \emph{N} operazioni con valutazione più elevata.
 
-Un compito simile viene svolto dal \emph{Support Service Selection} per le operazioni di supporto. Sebbene lo scopo del componente sia lo stesso l'algoritmo di selezione è differente: in questo caso viene effettuato un \emph{conteggio} del numero di associazioni trovate e successivamente si verifica che soddisfi il minimo numero di associazioni.
+Un compito simile viene svolto dal \emph{Support Service Selection} per le operazioni di supporto. Sebbene lo scopo del componente sia lo stesso, l'algoritmo di selezione è differente: in questo caso viene effettuato un \emph{conteggio} del numero di associazioni trovate e successivamente si verifica che soddisfi il minimo numero di associazioni definito per ogni operazione. Infine, una volta che le operazioni idonee sono state selezionate, vengono composti gli indirizzi, che possono essere sia relativi a \emph{servizi web} oppure degli \emph{intent} verso applicazioni installate sul dispositivo dell'utente. Al \emph{client} sarà richiesto solamente di interrogare il servizio o aprire l'applicazione specificata.
 
-Il \emph{Query Handler} ha il compito di gestire le chiamate verso i servizi. Acquisisce la lista di operazioni scelte dal \emph{Primary Service Selection} e ne recupera i \emph{descrittori}, contenenti le informazioni per poterli interrogare. Successivamente organizza le chiamate ai servizi attraverso l'uso di \emph{bridge} specifici, scelti in base al \emph{protocollo} di comunicazione adottato dal servizio. Una volta ricevute le risposte, si occupa di interfacciarsi con il \emph{Response Parser} per trasformarle nella rappresentazione interna, che sfrutta dei \emph{termini semantici} come nome dei campi.
+Il \emph{Query Handler} ha il compito di gestire le chiamate verso i servizi primari. Acquisisce l'elenco di operazioni scelte dal \emph{Primary Service Selection} e ne recupera i \emph{descrittori}, contenenti le informazioni per poterli interrogare. Successivamente organizza le chiamate ai servizi attraverso l'uso di \emph{bridge} specifici, scelti in base al \emph{protocollo} di comunicazione adottato dal servizio. Una volta ricevute le risposte, si occupa di interfacciarsi con il \emph{Response Parser} per trasformarle nella rappresentazione interna, che utilizza dei \emph{termini semantici} per associare il rispettivo significato ai vari attributi che compongono la risposta.
 
-Infine il \emph{Response Aggregator} ha il compito di analizzare gli elementi ricevuti al fine di rimuovere i duplicati.
+Il \emph{Response Aggregator} riceve l'elenco dei risultati dal \emph{Query Handler} e si occupa di andare ad analizzarli per trovare e fondere assieme le entità duplicate e assegna un punteggio a ogni elemento in base alla rilevanza con i dati del contesto (es.: vicinanza del luogo rispetto alla posizione dell'utente, ecc.). Questa attività rende possibile l'ordinamento dei dati in base a criteri di idoneità rispetto alla situazione dell'utente.
 
-Il \emph{Session Helper} si occupa di gestire le richieste verso pagine successive alla prima, in quanto richiede una fase di preparazione aggiuntiva. Il componente analizza lo stato della richiesta e smista i dati quando sono disponibili altrimenti effettua nuove richieste verso i servizi per acquisire ulteriori informazioni.
+Il \emph{Session Helper} si occupa di gestire le richieste verso pagine successive alla prima, in quanto questa attività richiede una fase di preparazione aggiuntiva. Il componente analizza lo stato della richiesta e smista i dati quando sono disponibili altrimenti effettua nuove richieste verso i servizi per acquisire ulteriori informazioni.
 
-Per quanto riguarda l'esposizione dei metodi che possono essere richiamati dal client si è deciso di non utilizzare un approccio basato sull'esposizione di endpoint REST bensì di sperimentare GraphQL.
+Per quanto riguarda l'esposizione dei metodi che possono essere richiamati dal \emph{client} si è deciso di non utilizzare un approccio basato sull'esposizione di \emph{endpoint} \emph{REST} bensì di sperimentare \emph{GraphQL}.
 
 In questa sezione si è voluta dare una visione d'insieme sui compiti che spettano ai vari componenti. Un'analisi più approfondita delle attività di ognuno di essi verrà svolta nella Sezione \ref{sec:componenti-backend}.
 
-Ora che è stata presentata l'architettura si procede con la descrizione delle tecnologie che hanno permesso la realizzazione del backend. Una panoramica è già stata fornita nella Sezione \ref{sec:tecnologie-backend-background} mentre di seguito si vogliono descrivere quali sono i moduli specifici utilizzati per sviluppare alcune parti del sistema e per far comunicare i vari componenti.
-
-Per gestire le funzionalità del server viene utilizzato il web framework \emph{ExpressJS}\footnote{ExpressJS: \url{http://expressjs.com/}}. \emph{ExpressJS} è un framework molto leggero, che mette a disposizione le funzionalità base affinché un server sia operativo. Ha la potenzialità di avere un ottimo sistema di \emph{middleware}, che permette di utilizzare altre funzionalità più avanzate.
-
-Per \emph{GraphQL} viene utilizzata l'implementazione specifica per Javascript rilasciata da Facebook\footnote{GraphQL-js: \url{https://github.com/graphql/graphql-js}} e l'estensione di \emph{Relay}\footnote{Relay-GraphQL: \url{https://github.com/graphql/graphql-relay-js}} per gestire le connessioni. Affinché gli schemi di \emph{GraphQL} possano essere esposti dal server si sfrutta l'apposito middleware \emph{Express-GraphQL}\footnote{Express-GraphQL: \url{https://github.com/graphql/express-graphql}}.
-
-MongoDB non possiede una struttura dello schema del database definita a priori. Per garantire coerenza coi dati memorizzati si è scelto di utilizzare un Object Relational Mapping (ORM)\footnote{Object Relational Mapping: \url{https://it.wikipedia.org/wiki/Object-relational_mapping}}. Un ORM fornisce un livello di astrazione superiore a un driver nativo e permette di specificare come gli oggetti vengono mappati nel database e viceversa, definendo implicitamente uno schema del database. In particolare, per il progetto CAMUS è stato utilizzato un ORM specifico per Node.js di nome \emph{mongoose}\footnote{MongooseJS: \url{http://mongoosejs.com/}}.
-
-Infine, per interfacciare Node.js con l'istanza di Redis in esecuzione viene utilizzato il modulo \emph{ioredis}\footnote{ioredis: \url{https://github.com/luin/ioredis}}.
-
 \subsection {Mobile app}\label{sec:architettura-applicazione}
+
+E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:app-architecture}. Per una migliore comprensione dello schema nelle sezioni seguenti verranno analizzati nel dettaglio i singoli componenti che la compongono.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/app_architecture.pdf}
 	\caption{Architetture generale dell'app CAMUS}\label{fig:app-architecture}
 \end{figure}
-
-E’ possibile osservare l’architettura dell’app CAMUS in Figura \ref{fig:app-architecture}. Per una migliore comprensione dello schema nelle sezioni seguenti verranno analizzati nel dettaglio i singoli componenti che la compongono.
 
 \subsubsection{Pagine dell'applicazione}
 
@@ -109,6 +99,8 @@ Per questo motivo sono state create quattro tipologie di coppie \emph{Action-Sto
 Queste tipologie verranno spiegate nei dettagli nella Sezione \ref{sec:state-management}
 
 \section{Flusso di una richiesta}
+
+Questa sezione vuole mostrare al lettore il flusso di esecuzione delle attività all'interno della piattaforma. Questa analisi verrà scomposta in due fasi, per dare risalto alle particolarità di ognuna. Sarà analizzato il flusso delle attività relative il \emph{backend} per poi passare al flusso relativo alla \emph{mobile app}. Per ognuna saranno analizzati nel dettaglio tutti i passaggi necessari al completamento di una richiesta, mostrando nel dettaglio l'ordine col quale vengono eseguite le attività e descrivendo i componenti che vengono coinvolti.
 
 \subsection{Backend\label{sec:flusso-richiesta-server}}
 
