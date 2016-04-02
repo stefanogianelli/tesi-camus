@@ -160,7 +160,7 @@ Per ogni oggetto facente parte del CDT viene eseguita un'associazione a componen
 	Assume una grande importanza anche la gestione delle esclusioni tra le operazioni. Se viene selezionato \virgolette{With Car} non è corretto mostrare le possibili tipologie di trasporto pubblico, perché si conosce già a priori che l'utente non selezionerà mai nello stesso momento come mezzo di trasporto l'automobile e il bus. Per questo scopo viene utilizzato il parametro \emph{parents} presente in ogni elemento del CDT; se il valore è stato selezionato dall'utente, allora gli sono mostrate tutte le sottocategorie. Per esempio quando l'utente seleziona \virgolette{With Car} non gli sono proposte tipologie diverse di trasporto con l'auto, mentre se seleziona \virgolette{Public Transport} allora può scegliere una categoria ben definita di trasporto pubblico, a seconda delle sue esigenze
 \end{itemize}
 	
-\subsection{Rendering dei Risultati}\label{sec:view-risultati}
+\subsection{Rendering dei risultati}\label{sec:view-risultati}
 
 Per quanto concerne i risultati ottenuti dalle \textit{query} GraphQL entrano in gioco in maniera preponderante gli schemi di \textit{mashup}. Per i motivi spiegati in \ref{sec:mashup-design}, la risoluzione del problema necessita di un funzionamento più complesso rispetto alla visualizzazione del contesto. La funzione di \textit{rendering} per quanto riguarda i risultati è la medesima sia per la lista che per i dettagli, quello che cambia è il contenitore del componente \emph{View Builder}: per la lista è un figlio nel metodo di \emph{renderItem()} della ListView, mentre per i dettagli definisce l'intera pagina.
 Al componente \emph{View Render} sono necessari due oggetti: il file di \textit{mashup} e i dati del singolo risultato.
@@ -191,7 +191,7 @@ Nel Listato \ref{lst:stylesheet} viene mostrato un frammento del foglio di stile
 
 \begin{listing}[H]
 	\inputminted{js}{6-implementazione-app/Codice/stylesheet.js}
-	\caption{Frammento Foglio di Stile}
+	\caption{Esempio Foglio di Stile}
 	\label{lst:stylesheet}
 \end{listing}
 
@@ -216,7 +216,7 @@ Le query per gestire i dati necessitano di tutta una serie di operazioni prelimi
 	\item \textbf{Email}
 	Si tratta della mail dell'utente estratta dal database del server
 	\item \textbf{IdCdt}
-	Rappresenta l'identificativo del CDT. Come spiegato nelle sezioni precedenti questo identificativo appartiene a ogni singolo utente
+	Rappresenta l'identificativo del CDT, il quale appartiene a ogni singolo utente
 	\item \textbf{Context}
 	\upe l'oggetto che rappresenta il contesto attuale nel quale si trova l'utente. Quando l'utente ha terminato la compilazione del contesto nella \emph{Context Selection Page} i parametri e i valori sono registrati nella Context Store, ma per essere interpretati dal server necessitano di una conversione in un oggetto ben definito. Il problema di una query GraphQL è che l'oggetto in questione deve essere ulteriormente convertito in una stringa unica per poi venire collocato come \textit{payload} nella POST/HTTP. Per svolgere questo compito viene utilizzata una funzione personalizzata che permette di mantenere inalterata la chiave degli oggetti JavaScript e produce in uscita una stringa. Per poter convertire anche gli oggetti che sono innestati a un livello superiore viene utilizzata una ricorsione che richiama la prima funzione. \upe necessario risolvere anche un altro problema, cioè quello legato ai valori del CDT che possiedono il parametro \virgolette{Parents}. In questo caso non è corretto inviare entrambi i parametri, ma solamente quello figlio: è poi il server che ha la capacità di comprendere che è selezionato anche il parametro padre. Per esempio se si considera il parametro \virgolette{Public Transport}, si hanno due possibilità. La prima è che se l'utente non seleziona alcuna categoria allora l'applicazione invia l'oggetto così com'è nella \textit{query}, ma viene chiamato la \emph{Action} delle \emph{ContextActions} \virgolette{removeForbidden()} che, nel caso in cui sia stata selezionata in precedenza una tipologia che aveva come padre \virgolette{Public Transport}  . La seconda è che l'utente selezioni una tipologia specifica, come \virgolette{Bus}: l'applicazione chiama la \emph{Action} \virgolette{addForbidden()} e il valore \virgolette{Public Transport} viene inserito nell'elenco degli elementi da non considerare mentre viene costruita la \textit{query}. 
 	\item \textbf{Support}
