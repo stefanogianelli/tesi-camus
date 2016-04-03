@@ -1,4 +1,4 @@
-Questo capitolo illustra nel dettaglio la realizzazione del \emph{backend} della piattaforma CAMUS. Il capitolo si apre con l'esposizione e la descrizione delle entità principali. Alcune di queste entità meritano però una sezione a parte, data la loro complessità. In particolare vengono analizzate dettagliatamente il descrittore dell'albero del contesto e il descrittore dei servizi. Verrà fornita una descrizione degli attributi che li caratterizzano, con l'ausilio di esempi per chiarire meglio i concetti. Successivamente viene mostrato lo schema logico del \emph{backend} e vengono analizzati i dettagli implementativi dei singoli componenti. Una sezione verrà dedicata all'\emph{endpoint GraphQL}, che permette alle applicazioni esterne di eseguire le attività messe a disposizione dal \emph{backend}. Il capitolo termina con la documentazione relativa la configurazione del sistema, che permette la definizione di alcuni parametri utilizzati nella fase di esecuzione per modificarne il comportamento. Una configurazione può essere definita tramite variabili d'ambiente o file di configurazione. Verranno descritte entrambe le possibilità.
+Questo capitolo illustra nel dettaglio la realizzazione del \emph{backend} della piattaforma CAMUS. Il capitolo si apre con l'esposizione e la descrizione delle entità principali che compongono il database. Alcune di queste entità verranno analizzate nel dettaglio in una sezione a parte, data la loro complessità. In particolare vengono esposti dettagliatamente il \emph{descrittore dell'albero del contesto} e il \emph{descrittore dei servizi}. Verrà fornita una descrizione degli attributi che li caratterizzano, con l'ausilio di esempi per chiarire meglio i concetti. Successivamente viene mostrato lo schema logico del \emph{backend} e vengono analizzati i dettagli implementativi dei singoli componenti. Una sezione verrà dedicata all'\emph{endpoint} GraphQL, che permette alle applicazioni esterne di eseguire le attività messe a disposizione dal \emph{backend}. Il capitolo termina con la documentazione relativa la configurazione del sistema, che permette la definizione di alcuni parametri utilizzati in fase di esecuzione per modificarne il comportamento. Una configurazione può essere definita tramite variabili d'ambiente o file di configurazione. Verranno descritte entrambe le possibilità.
 
 \section{Schema del database\label{sec:schema-database}}
 
@@ -12,7 +12,7 @@ La base di dati viene utilizzata principalmente per garantire la persistenza di 
 
 Queste entità permettono al sistema di svolgere le attività principali. In quanto oggetti complessi verranno descritti nel dettaglio nelle sezioni successive, per metterne in risalto le caratteristiche e le peculiarità. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
 
-Sono presenti entità per la memorizzazione delle informazioni sull'u\-ten\-te. Un'altra entità importante riguarda i \emph{mashup}, che vengono associati all'utente per permettere la definizione di schemi personalizzati. I dettagli sulla composizione di questi schemi verranno esposti nella Sezione \ref{sec:struttura-schemi-mashup}.
+Sono presenti entità per la memorizzazione delle informazioni sull'u\-ten\-te. Un'al\-tra entità importante riguarda i \emph{mashup}, che vengono associati all'utente per permettere la definizione di schemi personalizzati. I dettagli sulla composizione di questi schemi verranno esposti nella Sezione \ref{sec:struttura-schemi-mashup}.
 
 Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
 
@@ -51,7 +51,7 @@ Questo oggetto rappresenta un nodo dell'albero. In particolare vengono rappresen
 	\item \textbf{Name}
 	Il nome del nodo dimensione
 	\item \textbf{For}
-	Descrive la tipologia di nodo, utilizzata per assegnare un peso utile nella fase di \emph{selezione delle operazioni} e per attribuire un valore ai parametri nella fase di \emph{invocazione dei servizi}. I valori ammessi sono \emph{filter}, \emph{parameter} o \emph{ranking}. Vengono inoltre ammesse le combinazioni \emph{filter}|\emph{parameter} e \emph{ranking}|\emph{parameter}: un nodo può essere solamente di tipo \emph{filter} o \emph{ranking}, al fine dell'assegnamento dei pesi, mentre può essere anche di tipo \emph{parameter}, in quanto indica che verrà utilizzato anche nella fase di composizione delle query. Se viene definito il tipo \emph{parameter} devono essere assegnati diversi \emph{parametri}, per specificarne le caratteristiche
+	Descrive la tipologia di nodo, utilizzata per assegnare un peso utile nella fase di \emph{selezione delle operazioni} e per attribuire un valore ai parametri nella fase di \emph{invocazione dei servizi}. I valori ammessi sono \emph{filter}, \emph{parameter} o \emph{ranking}. Vengono inoltre ammesse le combinazioni \emph{filter}|\emph{parameter} e \emph{ranking}|\emph{parameter}: un nodo può essere solamente di tipo \emph{filter} o \emph{ranking}, al fine dell'assegnamento dei pesi, mentre può essere anche di tipo \emph{parameter}, in quanto indica che verrà utilizzato anche nella fase di composizione delle \emph{query}. Se viene definito il tipo \emph{parameter} devono essere assegnati diversi \emph{parametri}, per specificarne le caratteristiche
 	\item \textbf{Values}
 	Elenca i possibili valori che può assumere il nodo. Questo elenco corrisponde ai nodi di tipo \emph{contesto} del modello del CDT
 	\item \textbf{Parameters}
@@ -91,7 +91,7 @@ Nel Listato \ref{lst:esempio-parametro-cdt} viene mostrato un esempio di paramet
 
 \section{Descrittore dei servizi\label{sec:descrittore-servizi}}
 
-Affinché il sistema possa effettuare le richieste è necessario che sia presente una formato per descrivere le caratteristiche di ogni servizio (es.: l'indirizzo verso il quale effettuare la richiesta, i parametri da inserire, ecc.). Per questo motivo è stato introdotto l'utilizzo di un \emph{descrittore dei servizi} in grado di specificare tutte le possibili configurazioni che i servizi possono richiedere. I \emph{descrittori} non sono altro che configurazioni dei servizi espressi tramite file JSON. Di seguito verranno analizzati nel dettaglio tutti i campi che compongono il descrittore. \upe stata separata la definizione delle informazioni generali del servizio dalle informazioni di dettaglio delle operazioni che espone. Il risultato sono due oggetti, uno di \virgolette{descrizione generale del servizio} e un \virgolette{descrittore delle operazioni}. Nelle seguenti sezioni verranno analizzati gli attributi di entrambi gli oggetti.
+Affinché il sistema possa effettuare le richieste è necessario che sia presente un formato per descrivere le caratteristiche di ogni servizio (es.: l'indirizzo verso il quale effettuare la richiesta, i parametri da inserire, ecc.). Per questo motivo è stato introdotto l'utilizzo di un \emph{descrittore dei servizi} in grado di specificare tutte le possibili configurazioni che i servizi possono richiedere. I \emph{descrittori} non sono altro che configurazioni dei servizi espressi tramite file JSON. Di seguito verranno analizzati nel dettaglio tutti i campi che compongono il descrittore. \upe stata separata la definizione delle informazioni generali del servizio dalle informazioni di dettaglio delle operazioni che espone. Il risultato sono due oggetti, uno di \virgolette{descrizione generale del servizio} e un \virgolette{descrittore delle operazioni}. Nelle seguenti sezioni verranno analizzati gli attributi di entrambi gli oggetti.
 
 \subsection{Descrizione generale del servizio\label{sec:oggetto-principale-servizi}}
 
@@ -105,7 +105,7 @@ Affinché il sistema possa effettuare le richieste è necessario che sia present
 	\item \textbf{Protocol}
 	Definisce la tipologia con la quale accedere al servizio. Può assumere i valori \virgolette{rest}, \virgolette{query} o \virgolette{custom}, per specificare rispettivamente che il servizio viene invocato secondo il protocollo REST, viene composta una query con parametri o è necessario invocare un metodo particolare per l'accesso
 	\item \textbf{Base Path}
-	Rappresenta l'indirizzo di base del servizio. A partire da questo indirizzo verrà composto quello completo aggiungendo in coda i percorsi specifici delle \emph{operazioni} richieste. Non deve essere inserita al termine nessuno slash (\virgolette{/})
+	Rappresenta l'indirizzo di base del servizio. A partire da questo indirizzo verrà composto quello completo aggiungendo in coda i percorsi specifici delle \emph{operazioni} richieste. Non deve essere inserito al termine nessuno \emph{slash} (\virgolette{/})
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-descrittore-servizio} viene mostrato un esempio di oggetto principale del servizio.
@@ -126,21 +126,21 @@ Rappresenta le operazioni che sono messe a disposizione dal servizio. Un'o\-pe\-
 	\item \textbf{Name}
 	Il nome dell'operazione
 	\item \textbf{Type}
-	Rappresenta la tipologia dell'operazione. Un'operazione può essere \emph{primaria} o di \emph{supporto}. Questa distinzione viene utilizzata principalmente per permettere la catalogazione delle operazioni da mostrare nelle web app
+	Rappresenta la tipologia dell'operazione. Un'operazione può essere \emph{primaria} o di \emph{supporto}. Questa distinzione viene utilizzata principalmente per permettere la catalogazione delle operazioni da mostrare nelle \emph{web app}
 	\item \textbf{Description}
 	La descrizione dell'attività svolta dall'operazione
 	\item \textbf{Path}
-	Il percorso specifico per richiamare l'operazione. Questo valore viene aggiunto al \emph{Base Path} del servizio. Deve essere sempre preceduto da una slash (\virgolette{/})
+	Il percorso specifico per richiamare l'operazione. Questo valore viene aggiunto al \emph{Base Path} del servizio. Deve essere sempre preceduto da una \emph{slash} (\virgolette{/})
 	\item \textbf{Protocol}
-	Permette di ridefinire il protocollo utilizzato esclusivamente per l'operazione corrente. \upe utile nei casi in cui un'operazione, per una qualsiasi ragione, utilizzi un paradigma di composizione della query diverso da quello specificato dal servizio. Per esempio, viene utilizzato per mappare gli \virgolette{intent} su diversi sistemi operativi dei dispositivi, che hanno diverse regole di composizione. Oltre alle tipologie definite per i \emph{servizi} supporta anche il protocollo \virgolette{android}
+	Permette di ridefinire il protocollo utilizzato esclusivamente per l'operazione corrente. \upe utile nei casi in cui un'operazione, per una qualsiasi ragione, utilizzi un paradigma di composizione della \emph{query} diverso da quello specificato dal servizio. Per esempio, viene utilizzato per mappare gli \virgolette{intent} su diversi sistemi operativi dei dispositivi, che hanno diverse regole di composizione. Oltre alle tipologie definite per i \emph{servizi} supporta anche il protocollo \virgolette{android}
 	\item \textbf{Store Link}
-	Utilizzato esclusivamente per i servizi di supporto, permette di definire il link nello store di riferimento per scaricare l'app necessaria a utilizzare l'intent associato
+	Utilizzato esclusivamente per i servizi di supporto, permette di definire il \emph{link} nello \emph{store} di riferimento per scaricare l'\emph{app} necessaria a utilizzare l'\emph{intent} associato
 	\item \textbf{Bridge Name}
-	Questo campo è opzionale, definisce il nome del bridge con la logica necessaria per invocare il servizio. \upe obbligatorio il suo utilizzo quando per il servizio viene utilizzato il protocollo \emph{custom}
+	Questo campo è opzionale, definisce il nome del \emph{bridge} con la logica necessaria per invocare il servizio. \upe obbligatorio il suo utilizzo quando per il servizio viene utilizzato il protocollo \emph{custom}
 	\item \textbf{Parameters}
 	Definisce l'elenco dei parametri accettati in ingresso dall'o\-pe\-ra\-zio\-ne. Per ulteriori dettagli su questo oggetto si fa riferimento alla Sezione \ref{sec:descrittore-parametri}
 	\item \textbf{Headers}
-	Permette di specificare gli attributi da aggiungere all'header della richiesta. Vengono utilizzati i campi \virgolette{name} per specificare il nome dell'at\-tri\-bu\-to e \virgolette{value} per specificarne il valore
+	Permette di specificare gli attributi da aggiungere all'\emph{header} della richiesta. Vengono utilizzati i campi \virgolette{name} per specificare il nome dell'at\-tri\-bu\-to e \virgolette{value} per specificarne il valore
 	\item \textbf{Response Mapping}
 	Serve per definire le regole di associazione per mappare la risposta del servizio coi termini semantici utilizzati dal sistema. Maggiori dettagli su questo oggetto vengono discussi nella Sezione \ref{sec:descrittore-risposta}
 	\item \textbf{Pagination}
@@ -157,11 +157,11 @@ Nel Listato \ref{lst:esempio-descrittore-operazione} viene mostrato un esempio d
 
 \subsection{Parametri delle operazioni\label{sec:descrittore-parametri}}
 
-Quest'oggetto definisce i parametri in ingresso di un'operazione. I parametri generalmente sono composti da due campi: uno ne definisce il \emph{nome} e l'altro il rispettivo \emph{valore}. In alcuni casi vengono accettati più valori, quindi il descrittore deve dunque essere in grado di gestire questa situazione. Un ulteriore compito affidato a questo oggetto è quello di acquisire il valore di un determinato parametro dal \emph{contesto}. Viene inoltre fornito un semplice sistema di traduzione dei dati acquisiti dal contesto, per permettere le trasformazioni verso un valore idoneo per l'operazione corrente. Infine, soprattutto per le operazioni di \emph{supporto}, viene permessa un'associazione del parametro verso uno o più \emph{termini semantici}, per permettere all'app mobile di conoscere l'attributo dove andare a recuperare il valore concreto a run-time. Nello specifico, l'oggetto è così composto:
+Quest'oggetto definisce i parametri in ingresso di un'operazione. I parametri generalmente sono composti da due campi: uno ne definisce il \emph{nome} e l'altro il rispettivo \emph{valore}. In alcuni casi vengono accettati più valori, quindi il descrittore deve dunque essere in grado di gestire questa situazione. Un ulteriore compito affidato a questo oggetto è quello di acquisire il valore di un determinato parametro dal \emph{contesto}. Viene inoltre fornito un semplice sistema di traduzione dei dati acquisiti dal contesto, per permettere le trasformazioni verso un valore idoneo per l'operazione corrente. Infine, soprattutto per le operazioni di \emph{supporto}, viene permessa un'associazione del parametro verso uno o più \emph{termini semantici}, per permettere all'\emph{app mobile} di conoscere l'attributo dove andare a recuperare il valore concreto a \emph{runtime}. Nello specifico, l'oggetto è così composto:
 
 \begin{itemize}
 	\item \textbf{Name}
-	Il nome del parametro. Questo campo è \emph{obbligatorio}, in quanto definisce il nome che verrà utilizzato per comporre la query per richiedere i dati
+	Il nome del parametro. Questo campo è \emph{obbligatorio}, in quanto definisce il nome che verrà utilizzato per comporre la \emph{query} per richiedere i dati
 	\item \textbf{Description}
 	La descrizione della tipologia del parametro
 	\item \textbf{Required}
@@ -169,18 +169,18 @@ Quest'oggetto definisce i parametri in ingresso di un'operazione. I parametri ge
 	\item \textbf{Type}
 	Definisce il \emph{tipo} di dato che l'operazione si aspetta di ricevere. Le principali tipologie di dato che vengono inviate verso i servizi sono \emph{stringhe}, \emph{numeri} o \emph{date}
 	\item \textbf{Default}
-	Indica un valore predefinito per il parametro. Questo campo è particolarmente utile per la web app relativa al \emph{Visual Mapping}, in quanto permette di ricevere degli esempi di risposta dei servizi da mostrare all'utente
+	Indica un valore predefinito per il parametro. Questo campo è particolarmente utile per la \emph{web app} relativa al \emph{Visual Mapping}, in quanto permette di ricevere degli esempi di risposta dei servizi da mostrare all'utente
 	\item \textbf{Collection Format}
-	Questo campo definisce il \emph{separatore} da utilizzare nel caso siano presenti più valori per il parametro. Sono accettati i seguenti quattro separatori: \emph{i)} csv, comma separated values; \emph{ii)} ssv, space separated values; \emph{iii)} tsv, tab separated values; \emph{iv)} pipes. Se non specificato viene utilizzato di default il tipo \emph{csv}
+	Questo campo definisce il \emph{separatore} da utilizzare nel caso siano presenti più valori per il parametro. Sono accettati i seguenti quattro separatori: \emph{i)} \virgolette{csv}, \emph{comma separated values}; \emph{ii)} \virgolette{ssv}, \emph{space separated values}; \emph{iii)} \virgolette{tsv}, \emph{tab separated values}; \emph{iv)} \virgolette{pipes}. Se non specificato viene utilizzato il tipo \emph{csv}
 	\item \textbf{Mapping CDT}
-	Definisce uno o più nodi dell'albero di contesto dove andare ad acquisire il valore ricevuto dalla mobile app. Nel caso vengano associati più di un nodo viene seguito l'ordine di definizione nella fase di composizione della query
+	Definisce uno o più nodi dell'albero di contesto dove andare ad acquisire il valore ricevuto dalla \emph{mobile app}. Nel caso vengano associati più di un nodo viene seguito l'ordine di definizione nella fase di composizione della \emph{query}
 	\item \textbf{Mapping Term}
-	Definisce uno o più termini semantici da associare al parametro. Questi termini vengono utilizzati a run-time per andare ad acquisire il valore del parametro dalle risposte ricevute dai servizi primari
+	Definisce uno o più termini semantici da associare al parametro. Questi termini vengono utilizzati a \emph{runtime} per andare ad acquisire il valore del parametro dalle risposte ricevute dai servizi primari
 	\item \textbf{Translate}
 	Permette delle semplici trasformazioni dei valori acquisiti dall'al\-be\-ro di contesto per renderli conformi a quelli accettati dal servizio. \upe formato dai campi \virgolette{from} e \virgolette{to}, che specificano rispettivamente il valore di \emph{origine} e quello \emph{tradotto}. Vengono definite tante traduzioni quanti sono i valori che può assumere il rispettivo nodo del CDT
 \end{itemize}
 
-Nel Listato \ref{lst:esempio-descrittore-parametro} viene mostrato un esempio di parametro.
+Nel Listato \ref{lst:esempio-descrittore-parametro} viene mostrato un esempio di parametro di un'operazione.
 
 \begin{listing}[H]
 	\inputminted{json}{5-implementazione-backend/Codice/esempio_descrittore_parametro.json}
@@ -196,7 +196,7 @@ In quest'oggetto sono definite le regole con le quali vengono trasformate le ris
 	\item \textbf{List}
 	Definisce l'attributo che contiene l'elenco dei risultati. \upe utile nei casi in cui la risposta, oltre ai risultati, contiene al suo interno anche dei metadati relativi l'interrogazione. Se non specificato si assume che l'elenco dei risultati si trovi nella radice della risposta
 	\item \textbf{Items}
-	Permette di mappare i vari campi che compongono ogni oggetto dei risultati. In particolare vengono definiti il \virgolette{percorso} dal quale recuperare il valore e il \virgolette{termine semantico} da associare. I campi senza un'associazione saranno ignorati dal processo di trasformazione e le relative informazioni andranno perdute. \upe necessario dunque effettuare l'operazione di mapping delle risposte con attenzione, in modo da non trascurare informazioni importanti
+	Permette di mappare i vari campi che compongono ogni oggetto dei risultati. In particolare vengono definiti il \virgolette{percorso} dal quale recuperare il valore e il \virgolette{termine semantico} da associare. I campi senza un'associazione saranno ignorati dal processo di trasformazione e le relative informazioni andranno perdute. \upe necessario dunque effettuare l'operazione di \emph{mapping} delle risposte con attenzione, in modo da non trascurare informazioni importanti
 	\item \textbf{Functions}
 	Viene permesso l'utilizzo di funzioni specifiche per trasformare i valori. Questa funzione riceve in ingresso il parametro \virgolette{value}, che rappresenta il valore corrente del campo, e deve restituire il nuovo valore che verrà sostituito a quello originale. Oltre alla funzione specifica è necessario definire anche l'\emph{attributo} sul quale eseguire questa trasformazione. L'attributo equivale al \emph{termine semantico} definito nel punto precedente
 \end{itemize}
@@ -215,11 +215,11 @@ In quest'oggetto vengono descritti gli attributi necessari per gestire la pagina
 
 \begin{itemize}
 	\item \textbf{Attribute Name}
-	Specifica il nome del parametro da aggiungere alla query per richiamare una specifica pagina
+	Specifica il nome del parametro da aggiungere alla \emph{query} per richiamare una specifica pagina
 	\item \textbf{Type}
-	Definisce il meccanismo di paginazione da utilizzare. Sono ammessi due valori: \virgolette{number}, per la paginazione basata sul numero di pagine, e \virgolette{token}, per quella che sfrutta i token per richiamare le pagine successive
+	Definisce il meccanismo di paginazione da utilizzare. Sono ammessi due valori: \virgolette{number}, per la paginazione basata sul numero di pagine, e \virgolette{token}, per quella che sfrutta i \emph{token} per richiamare le pagine successive
 	\item \textbf{Token Attribute}
-	Serve per definire dove andare a leggere nella risposta il token relativo alla pagina successiva
+	Serve per definire dove andare a leggere nella risposta il \emph{token} relativo alla pagina successiva
 	\item \textbf{Page Count Attribute}
 	Definisce l'attributo che fornisce l'informazione del numero di pagine totale che possono essere richieste
 \end{itemize}
@@ -240,11 +240,11 @@ Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio 
 	\caption{Diagramma delle classi del backend}\label{fig:class-diagram-backend}
 \end{figure}
 
-Come già evidenziato nella Sezione \ref{sec:architettura-backend}, l'architettura del backend è composta da diversi \emph{componenti}. Questa soluzione è stata adottata per via dell'elevata flessibilità che garantisce. Ogni componente è specializzato in un compito preciso e il concatenamento di più componenti permette di realizzare funzionalità più complesse per produrre il risultato desiderato. Per svolgere le principali attività vengono dunque create delle \emph{pipeline}, dove il risultato di un componente viene acquisito e ulteriormente elaborato dal successivo.
+Come già evidenziato nella Sezione \ref{sec:architettura-backend}, l'architettura del \emph{backend} è composta da diversi \emph{componenti}. Questa soluzione è stata adottata per via dell'elevata flessibilità che garantisce. Ogni componente è specializzato in un compito preciso e il concatenamento di più componenti permette di realizzare funzionalità più complesse per produrre il risultato desiderato. Per svolgere le principali attività vengono dunque create delle \emph{pipeline}, dove il risultato di un componente viene acquisito e ulteriormente elaborato dal successivo.
 
-Altra caratteristica importante è l'assenza di informazioni sullo stato in ogni componente. Una richiesta nasce nel momento in cui l'utente conferma l'attività e muore una volta che viene evasa. La ragione principale di questa scelta risiede nel fatto che sarebbe oneroso lato backend gestire tutte le informazioni della moltitudine di utenti che sono connessi al sistema. Inoltre mantenere uno stato limiterebbe la scalabilità del sistema, in quanto se un utente inizia la sessione su di un determinato server dovrà continuare sempre su quello, rendendo complicato il bilanciamento dei carichi tra le diverse macchine.
+Altra caratteristica importante è l'assenza di informazioni sullo stato in ogni componente. Una richiesta nasce nel momento in cui l'utente conferma l'attività e muore una volta che viene evasa. La ragione principale di questa scelta risiede nel fatto che sarebbe oneroso lato \emph{backend} gestire tutte le informazioni della moltitudine di utenti che sono connessi al sistema. Inoltre mantenere uno stato limiterebbe la scalabilità del sistema, in quanto se un utente inizia la sessione su di un determinato \emph{server} dovrà continuare sempre su quello, rendendo complicato il bilanciamento dei carichi tra le diverse macchine.
 
-A questo punto è necessaria una importante precisazione: per la gestione della paginazione è necessario l'utilizzo di alcune informazioni sullo stato. Questa affermazione può sembrare un controsenso rispetto a ciò che è stato esposto nel paragrafo precedente. \upe dunque essenziale definire in modo dettagliato cosa si intende per \emph{stato}. La principale differenza consiste nel \emph{dove} vengono salvate le informazioni. Nel paragrafo precedente, ogni volta che si menzionava il concetto di \emph{stato}, si intendevano tutte le informazioni relative l'utente salvate all'\emph{interno} dei componenti, sotto forma di variabile. Questa soluzione può essere un collo di bottiglia non indifferente, in quanto tutte le richieste che nascono in una determinata macchina dovranno essere gestite esclusivamente da essa. Si è adottata quindi una soluzione differente: i \emph{componenti} non mantengono al loro interno alcuna informazione riguardo lo stato, che verrà invece memorizzato e reso disponibile da un servizio esterno. Questa soluzione permette a tutti i componenti che ne hanno esigenza di andare a recuperare le informazioni sullo stato da una sorgente comune, che non limita la scalabilità del sistema. Questo servizio può a sua volta offrire dei sistemi di \emph{clustering} per aumentare le perfomance in situazioni di elevato carico.
+A questo punto è necessaria una importante precisazione: per la gestione della paginazione è necessario l'utilizzo di alcune informazioni sullo stato. Questa affermazione può sembrare un controsenso rispetto a ciò che è stato esposto nel paragrafo precedente. \upe dunque essenziale definire in modo dettagliato cosa si intende per \emph{stato}. La principale differenza consiste nel \emph{dove} vengono salvate le informazioni. Nel paragrafo precedente, ogni volta che si menzionava il concetto di \emph{stato}, si intendevano tutte le informazioni relative l'utente salvate all'\emph{interno} dei componenti, sotto forma di variabile. Questa soluzione può essere un collo di bottiglia non indifferente, in quanto tutte le richieste che nascono in una determinata macchina dovranno essere gestite esclusivamente da essa. Si è adottata quindi una soluzione differente: i \emph{componenti} non mantengono al loro interno alcuna informazione riguardo lo stato, che verrà invece memorizzato e reso disponibile da un servizio esterno. Questa soluzione permette a tutti i componenti che ne hanno esigenza di andare a recuperare le informazioni sullo stato da una sorgente comune, che non limita la scalabilità del sistema. Questo servizio può a sua volta offrire dei sistemi di \emph{clustering} per aumentare le \emph{perfomance} in situazioni di elevato carico.
 
 In CAMUS questa attività viene svolta da \emph{Redis}, che è stato selezionato per l'elevata rapidità nell'evadere le richieste e nella possibilità di associare un periodo di vita alle informazioni che vengono memorizzate. Viene ipotizzato che dopo un intervallo di tempo nel quale l'utente non effettua più interazione sulla sessione, essa può ritenersi estinta e i suoi dati eliminati.
 
@@ -256,11 +256,11 @@ Per \emph{GraphQL} viene utilizzata l'implementazione specifica per \emph{Javasc
 
 Infine, per interfacciare Node.js con l'istanza di Redis in esecuzione viene utilizzato il modulo \emph{ioredis}\footnote{ioredis: \url{https://github.com/luin/ioredis}}.
 
-In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle classi di tutti i componenti che formano il backend del sistema. Nelle seguenti sottosezioni verranno analizzate nel dettaglio le attività svolte e i dettagli implementativi dei componenti principali del sistema.
+In Figura \ref{fig:class-diagram-backend} viene mostrato il diagramma delle classi di tutti i componenti che formano il \emph{backend} del sistema. Nelle seguenti sottosezioni verranno analizzate nel dettaglio le attività svolte e i dettagli implementativi dei componenti principali del sistema.
 
 \subsection{Provider\label{sec:provider}}
 
-Il \emph{Provider} rappresenta il punto di accesso ai database. \upe realizzato seguendo il pattern \emph{singleton}, che prevede una singola istanza della classe in comune per tutti i componenti. Le varie classi che necessitano di accedere al database possono recuperare l'istanza corrente tramite il metodo statico \emph{getInstance()}. Durante l'inizializzazione si occupa di creare le connessioni verso MongoDB e Redis. Implementa tutti i metodi necessari per recuperare le informazioni dal database e centralizza tutte le query in un singolo punto, in modo che gli altri componenti del sistema non debbano preoccuparsi di comporre le clausole. Inoltre, visto che diversi metodi vengono utilizzati da più componenti, si evitano duplicazioni di codice che provocano una riduzione della manutenibilità del sistema, in quanto una modifica a un metodo dovrebbe essere ripetuta più volte.
+Il \emph{Provider} rappresenta il punto di accesso al database. \upe realizzato seguendo il pattern \emph{singleton}, che prevede una singola istanza della classe in comune per tutti i componenti. Le varie classi che necessitano di accedere al database possono recuperare l'istanza corrente tramite il metodo statico \emph{getInstance()}. Durante l'inizializzazione si occupa di creare le connessioni verso MongoDB e Redis. Implementa tutti i metodi necessari per recuperare le informazioni dal database e centralizza tutte le \emph{query} in un singolo punto, in modo che gli altri componenti del sistema non debbano preoccuparsi di comporre le clausole. Inoltre, visto che diversi metodi vengono utilizzati da più componenti, si evitano duplicazioni di codice che provocano una riduzione della manutenibilità del sistema, in quanto una modifica a un metodo dovrebbe essere ripetuta più volte.
 
 I metodi sono stati raggruppati in sei categorie, in base alla funzionalità:
 
@@ -270,33 +270,33 @@ I metodi sono stati raggruppati in sei categorie, in base alla funzionalità:
 	\item \textbf{Service Descriptor Methods}
 	Definisce le funzioni che vengono utilizzate per acquisire i descrittori dei servizi. I due oggetti, \virgolette{descrizione generale del servizio} e \virgolette{descrittore delle operazioni} vengono automaticamente integrati a formare un unico oggetto
 	\item \textbf{Primary Service Methods}
-	Fornisce le funzioni di ricerca delle associazioni tra i nodi del CDT e le operazioni primarie. Il metodo principale riguarda la ricerca delle coppie {<}dimensione, valore{>} definite dalle \emph{dimensioni} del contesto e i relativi \emph{valori}. Possono entrare a far parte di questa categoria anche i metodi di ricerca specializzati, cioè tutte le funzioni che necessitano di logiche particolari per recuperare le associazioni. Un esempio è fornito dalla \emph{ricerca tramite coordinate}: è presente un metodo che sfrutta le capacità di \emph{MongoDB} di eseguire \emph{query geospaziali}
+	Fornisce le funzioni di ricerca delle associazioni tra i nodi del CDT e le operazioni primarie. Il metodo principale riguarda la ricerca delle coppie {<}dimensione, valore{>} definite dalle \emph{dimensioni} del contesto e i relativi \emph{valori}. Possono entrare a far parte di questa categoria anche i metodi di ricerca specializzati, cioè tutte le funzioni che necessitano di logiche particolari per recuperare le associazioni. Un esempio è fornito dalla ricerca tramite coordinate: è presente un metodo che sfrutta le capacità di \emph{MongoDB} di eseguire \emph{query geospaziali}
 	\item \textbf{Support Service Methods}
 	Implementa i metodi di ricerca delle associazioni tra i nodi del CDT e le operazioni di supporto. Rispetta le stesse convenzioni descritte nel punto precedente
 	\item \textbf{User Methods}
 	Definisce i metodi che vengono utilizzati per l'autenticazione degli utenti e il recupero delle informazioni personali, quali il proprio \emph{albero di contesto} o i \emph{mashup}
 	\item \textbf{Redis Methods}
-	Vengono messi a disposizione i metodi per richiedere o salvare un oggetto in Redis in base alla chiave che si desidera utilizzare
+	Vengono messi a disposizione i metodi per richiedere o salvare un oggetto in \emph{Redis} in base alla chiave che si desidera utilizzare
 \end{enumerate}
 
 \subsection{Context Manager\label{sec:context-manager}}
 
-Il \emph{Context Manager} è il componente dedicato alla gestione del contesto. Riceve in ingresso il contesto dell'utente, composto dalle coppie $ {<}dimensione, valore{>} $, e i parametri relativi al proprio albero di contesto. La prima attività svolta è quella di \emph{unire} il contesto dell'utente e la descrizione del CDT presente nel database. Per unione si intende associare a ogni dimensione e parametro il relativo valore ricevuto.
+Il \emph{Context Manager} è il componente dedicato alla gestione del contesto. Riceve in ingresso il contesto dell'utente, composto dalle coppie {<}dimensione, valore{>}, e i parametri relativi al proprio albero di contesto. La prima attività svolta è quella di \emph{unire} il contesto dell'utente e la descrizione del CDT presente nel database. Per unione si intende associare a ogni dimensione e parametro il relativo valore ricevuto.
 
-In seguito inizia la fase di creazione del \emph{CDT decorato}. Questa rappresentazione sarà quella che verrà utilizzata da tutti i componenti che seguono il \emph{Context Manager} nella pipeline. Il \emph{CDT decorato} non è altro che il descrittore del CDT in una forma più comoda per essere utilizzata nelle elaborazioni, in quanto cataloga i nodi dell'albero in quattro categorie ben specifiche, che potranno essere semplicemente recuperate dai componenti che ne hanno bisogno senza la necessità di andare ogni volta a leggere l'intero contesto. In particolare, il CDT decorato è composto dalle seguenti categorie:
+In seguito inizia la fase di creazione del \emph{CDT decorato}. Questa rappresentazione sarà quella che verrà utilizzata da tutti i componenti che seguono il \emph{Context Manager} nella \emph{pipeline}. Il \emph{CDT decorato} non è altro che il descrittore del CDT in una forma più comoda per essere utilizzata nelle elaborazioni, in quanto cataloga i nodi dell'albero in quattro categorie ben specifiche, che potranno essere semplicemente recuperate dai componenti che ne hanno bisogno senza la necessità di andare ogni volta a leggere l'intero contesto. In particolare, il CDT decorato è composto dalle seguenti categorie:
 
 \begin{itemize}
 	\item \textbf{Filter Nodes}
 	Sono i nodi di tipo filtro che vengono utilizzati per selezionare le operazioni
 	\item \textbf{Ranking Nodes}
-	L'elenco dei nodi di tipo ranking che vengono utilizzati per selezionare le operazioni
+	L'elenco dei nodi di tipo \emph{ranking} che vengono utilizzati per selezionare le operazioni
 	\item \textbf{Specific Nodes}
-	Sono i nodi che non utilizzano la ricerca standard delle associazioni ma richiedono una ricerca specifica. La definizione di queste due tipologie verrà approfondita nella Sezione \ref{sec:primary-service-selection}
+	Sono i nodi che non utilizzano la ricerca standard delle associazioni ma richiedono una ricerca specifica. La definizione di entrambe le tipologie verrà approfondita nella Sezione \ref{sec:primary-service-selection}
 	\item \textbf{Parameter Nodes}
-	L'elenco dei nodi dai quali recuperare i valori da utilizzare per la composizione delle query
+	L'elenco dei nodi dai quali recuperare i valori da utilizzare per la composizione delle \emph{query}
 \end{itemize}
 
-\upe da tenere in considerazione, come precedentemente fatto notare nella Sezione \ref{sec:descrittore-albero-contesto}, che alcuni nodi possono appartenere a più categorie nello stesso tempo. Questa eventualità capita spesso per i nodi che vengono utilizzati sia per filtrare i servizi sia come parametro nella fase di composizione delle query.
+\upe da tenere in considerazione, come precedentemente fatto notare nella Sezione \ref{sec:descrittore-albero-contesto}, che alcuni nodi possono appartenere a più categorie nello stesso tempo. Questa eventualità capita spesso per i nodi che vengono utilizzati sia per filtrare i servizi sia come parametro nella fase di composizione delle \emph{query}.
 
 Un'altra attività svolta durante la composizione del \emph{CDT decorato} è la ricerca dei nodi figlio. Come definito nella Sezione \ref{sec:associazione-servizi-cdt} le associazioni possono essere specificate sia nei nodi foglia sia in quelli intermedi. \upe importante quindi verificare se un nodo attivo possieda dei figli perché in tal caso anch'essi possono dare un contributo nelle successive fasi di selezione. L'algoritmo per la selezione dei nodi figlio segue la logica esposta nella Sezione \ref{sec:selezione-operazioni}.
 
@@ -308,7 +308,7 @@ La prima attività svolta riguarda l'acquisizione delle operazioni che sono asso
 
 \begin{enumerate}
 	\item \textbf{Ricerca Standard}
-	Viene effettuata ricercando nel database tutte le operazioni che sono associate alle coppie $ {<}dimensione, valore{>} $ attive, ossia i nodi dell'albero selezionati dall'utente. Vengono utilizzati sia i nodi di tipo \emph{filtro} sia quelli di tipo \emph{ranking}, distinguendoli nella fase di assegnamento dei pesi
+	Viene effettuata ricercando nel database tutte le operazioni che sono associate alle coppie {<}dimensione, valore{>} attive, ossia i nodi dell'albero selezionati dall'utente. Vengono utilizzati sia i nodi di tipo \emph{filtro} sia quelli di tipo \emph{ranking}, distinguendoli nella fase di assegnamento dei pesi
 	\item \textbf{Ricerca Specifica}
 	Utilizza dei metodi specifici per ricercare le associazioni. Un esempio è la ricerca delle operazioni tramite \emph{coordinate}, che sfrutta le funzionalità di \emph{MongoDB} di effettuare \emph{query geospaziali}. Le associazioni identificate in questa fase vengono classificate come \emph{ranking}
 \end{enumerate}
@@ -323,13 +323,13 @@ Una volta disponibili può iniziare la fase di richiesta dei dati. Per svolgere 
 
 Quando riceve una risposta provvede a \emph{trasformarla} nel formato interno, basandosi sull'utilizzo di termini semantici che descrivono la semantica degli attributi. Il descrittore contiene al suo interno le informazioni necessarie per effettuare questa trasformazione. In particolare è necessario definire le associazioni per ogni \emph{attributo} rilevante della risposta e il relativo \emph{termine semantico} che lo descrive. Non è obbligatorio definire associazioni per tutti gli attributi di una risposta: se alcuni campi non sono utili possono essere omessi. Una volta terminata la trasformazione viene lasciata la flessibilità di eseguire delle funzioni personalizzate sui valori dei termini in modo da uniformare eventuali dati formattati in modo non idoneo.
 
-Una menzione va fatta alla gestione degli errori. Può capitare che alcuni servizi non siano raggiungibili a causa di problemi di rete. In tal caso il \emph{bridge} restituisce un messaggio di errore al posto della risposta. Il \emph{Query Handler} non tratta gli errori come eventi bloccanti, ma si limita a scrivere questi eventi in un \emph{log}. Infatti, se per esempio devono essere interrogati tre servizi e solo uno dei tre non risponde, non è conveniente interrompere l'intero processo, bensì verranno restituite le risposte ricevute dagli altri due servizi.
+Una menzione va fatta alla gestione degli errori. Può capitare che alcuni servizi non siano raggiungibili a causa di problemi di rete. In tal caso il \emph{bridge} restituisce un messaggio di errore al posto della risposta. Il \emph{Query Handler} non tratta gli errori come eventi bloccanti, ma si limita a registrare questi eventi in un \emph{log}. Infatti, se per esempio devono essere interrogati tre servizi e solo uno dei tre non risponde, non è conveniente interrompere l'intero processo, bensì verranno restituite le risposte ricevute dagli altri due servizi.
 
 Una volta ricevute le risposte dai servizi e terminata la fase di trasformazione, viene creata un'unica lista comprendente tutti gli elementi ricevuti. Vengono in pratica uniti i vettori ricevuti dai diversi servizi. Questo elenco rappresenta il risultato finale, che verrà dato in carico al componente successivo nella catena.
 
 \subsection{Bridge\label{sec:bridge}}
 
-Un \emph{Bridge} è il componente che si occupa di gestire le chiamate verso i servizi esterni e ricevere le risposte. \upe costituito da una classe astratta che deve essere estesa dalle implementazioni specifiche. In questo modo viene lasciata flessibilità di estensione ogni qual volta sia necessaria una logica diversa per invocare un servizio. In particolare viene forzata l'implementazione del metodo \emph{executeQuery()}, che riceve in ingresso il \emph{CDT Decorato} con tutte le informazioni necessarie per per completare i parametri richiesti dal servizio.
+Un \emph{Bridge} è il componente che si occupa di gestire le chiamate verso i servizi esterni e ricevere le risposte. \upe costituito da una classe astratta che deve essere estesa dalle implementazioni specifiche. In questo modo viene lasciata flessibilità di estensione ogni qual volta sia necessaria una logica diversa per invocare un servizio. In particolare viene forzata l'implementazione del metodo \emph{executeQuery()}, che riceve in ingresso il \emph{CDT Decorato} con tutte le informazioni necessarie per completare i parametri richiesti dal servizio.
 
 Nella sezione seguente viene analizzata l'unica implementazione specifica che viene fornita in dotazione col sistema, quella per l'utilizzo dei servizi di tipo REST.
 
@@ -353,11 +353,11 @@ Attualmente nel prototipo viene eseguita unicamente la \emph{ricerca dei duplica
 
 \subsection{Support Service Selection\label{sec:support-service-selection}}
 
-Il \emph{Support Service Selection} è il componente dedicato alla selezione delle operazioni di supporto o \emph{intent} per richiamare le \emph{app} del dispositivo. Riceve in ingresso il \emph{CDT Decorato} che, oltre a contenere le selezioni effettuate dall'utente, elenca anche le categorie di servizi che si desidera ricevere. Le categorie servono per raggruppare assieme più servizi che svolgono una funzione simile. ILa modalità di selezione delle operazioni adatte al contesto è stata analizzata nella Sezione \ref{sec:selezione-operazioni}. Questa attività viene ripetuta integralmente per ognuna delle categorie, in quanto si vuole ottenere almeno un riscontro per tutte le categorie elencate. Come nel caso del \emph{REST Bridge}, anche questo componente sfrutta il \emph{Query Composer} (Sezione \ref{sec:query-composer}) per comporre gli indirizzi che verranno poi restituiti all'\emph{app}.
+Il \emph{Support Service Selection} è il componente dedicato alla selezione delle operazioni di supporto o \emph{intent} per richiamare le \emph{app} del dispositivo. Riceve in ingresso il \emph{CDT Decorato} che, oltre a contenere le selezioni effettuate dall'utente, elenca anche le categorie di servizi che si desidera ricevere. Le categorie servono per raggruppare assieme più servizi che svolgono una funzione simile. La modalità di selezione delle operazioni adatte al contesto è stata analizzata nella Sezione \ref{sec:selezione-operazioni}. Questa attività viene ripetuta integralmente per ognuna delle categorie, in quanto si vuole ottenere almeno un riscontro per tutte le categorie elencate. Come nel caso del \emph{REST Bridge}, anche questo componente sfrutta il \emph{Query Composer} (Sezione \ref{sec:query-composer}) per comporre gli indirizzi che verranno poi restituiti all'\emph{app}.
 
 \subsection{Session Helper\label{sec:session-helper}}
 
-Il \emph{Session Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e l'\emph{app} mobile richiede ulteriori dati. Si occupa di gestire il salvataggio in \emph{cache} della sessione ed eventualmente, quando il primo \emph{result set} sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
+Il \emph{Session Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e l'\emph{app mobile} richiede ulteriori dati. Si occupa di gestire il salvataggio in \emph{cache} della sessione ed eventualmente, quando il primo \emph{result set} sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
 
 Per gestire la paginazione tra \emph{backend} e \emph{app mobile} vengono utilizzati due parametri:
 
@@ -389,7 +389,7 @@ Se l'equazione è rispettata vengono semplicemente restituiti i dati presenti in
 
 \subsection{Query Composer\label{sec:query-composer}}
 
-Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support-service-selection} è stato menzionato il processo di composizione delle query per interrogare i servizi. Si è scelto di creare un componente \emph{ad-hoc} in quanto le due attività hanno delle lievi differenze che però non giustificano l'utilizzo di due logiche differenti. Inoltre la composizione degli indirizzi per i servizi di supporto sfrutta alcune regole che vengono utilizzate per i servizi primari. Da qui l'esigenza di avere un unico metodo che si occupa di analizzare il descrittore dei servizi per comprendere come comporre tra loro i parametri e fornire una \emph{query} completa.
+Sia nella Sezione \ref{sec:primary-service-selection} che nella Sezione \ref{sec:support-service-selection} è stato menzionato il processo di composizione delle \emph{query} per interrogare i servizi. Si è scelto di creare un componente \emph{ad-hoc} in quanto le due attività hanno delle lievi differenze che però non giustificano l'utilizzo di due logiche differenti. Inoltre la composizione degli indirizzi per i servizi di supporto sfrutta alcune regole che vengono utilizzate per i servizi primari. Da qui l'esigenza di avere un unico metodo che si occupa di analizzare il descrittore dei servizi per comprendere come comporre tra loro i parametri e fornire una \emph{query} completa.
 
 \begin{algorithm}
 	\caption{Algoritmo di composizione degli indirizzi}
@@ -434,13 +434,13 @@ Sia nella Sezione \ref{sec:primary-service-selection} che nella \ref{sec:support
 	\end{algorithmic}
 \end{algorithm}
 
-Il primo passo riguarda la selezione dei simboli da utilizzare nella \emph{query}. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o necessita di \emph{query} parametriche. Viene innanzitutto composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio e il \emph{path specifico} dell'operazione. Ora inizia la vera attività, ovvero la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine di priorità. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base al valore assunto dall'attributo \emph{required}:
+Il primo passo riguarda la selezione dei simboli da utilizzare nella \emph{query}. Verranno utilizzati simboli diversi nel caso il servizio sia di tipo REST o necessita di \emph{query} parametriche. Viene innanzitutto composto l'indirizzo di base, ossia quello formato dal \emph{basePath} del servizio e il \emph{path specifico} dell'operazione. Ora inizia la vera attività, ovvero la composizione dei parametri. Questa fase ha il compito di scorrere l'elenco dei parametri definiti nel descrittore del servizio e verificare se è stato definito un valore. Il valore può essere recuperato dall'\emph{albero di contesto} o tramite i \emph{termini semantici}, in questo ordine di priorità. Ovviamente non tutti i parametri devono per forza essere compilati. Esistono due casi in base al valore assunto dall'attributo \virgolette{required}:
 
 \begin{enumerate}
 	\item \textbf{Parametro obbligatorio}
 	In questo caso deve per forza essere associato un valore. Se non è presente nessuna associazione né con il CDT né con i termini semantici verrà utilizzato il valore predefinito. Se non è stato definito nemmeno un valore predefinito verrà lanciata un'eccezione, in quanto il servizio senza un parametro obbligatorio non è utilizzabile
 	\item \textbf{Parametro facoltativo}
-	In questo caso viene cercato prima un valore nell'al\-be\-ro di contesto e in seguito tra i termini semantici. Se viene trovata una corrispondenza il rispettivo valore viene acquisito e il parametro entrerà a far parte della query
+	In questo caso viene cercato prima un valore nell'al\-be\-ro di contesto e in seguito tra i termini semantici. Se viene trovata una corrispondenza il rispettivo valore viene acquisito e il parametro entrerà a far parte della \emph{query}
 \end{enumerate}
 
 Durante la ricerca dei valori nell'albero di contesto viene anche eseguita la traduzione del valore, ove necessario. Se vengono trovate più di una corrispondenza, i valori sono concatenati assieme e divisi tramite il separatore definito nel descrittore. Una volta terminata l'acquisizione il nome del parametro e il/i valore/i entrano a far parte dell'indirizzo.
@@ -476,7 +476,7 @@ Il resto di questa sezione descriverà in dettaglio le varie attività che posso
 		\item \textbf{Value}
 		Contiene il valore selezionato dall'utente per la dimensione
 		\item \textbf{Parameters}
-		Elenca i parametri associati alla dimensioni. Ogni parametro è strutturato come di seguito:
+		Elenca i parametri associati alla dimensione. Ogni parametro è strutturato come di seguito:
 		\begin{itemize}
 			\item \textbf{Name}
 			Il nome del parametro
@@ -494,11 +494,11 @@ Una volta ricevuto l'oggetto col \emph{contesto}, tramite l'\emph{Execution Help
 
 \begin{itemize}
 	\item \textbf{Connection Id}
-	Identificativo univoco della sessione. Viene utilizzato per segnalare a chi effettua la query se la risposta fa parte di una sessione precedente o si tratta di una nuova
+	Identificativo univoco della sessione. Viene utilizzato per segnalare al \emph{client} se la risposta fa parte di una sessione precedente o si tratta di una nuova sessione
 	\item \textbf{Primary Connection}
-	Mette a disposizione l'elenco dei risultati integrati forniti dai servizi primari. La particolarità è che si tratta di una \emph{connessione}, che è una tipologia specifica di \emph{GraphQL} che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A \emph{GraphQL} viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal \emph{client}. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} \emph{first}, dove viene specificato un numero \emph{N} di elementi che si desidera ricevere; \emph{ii)} \emph{after}, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, \emph{GraphQL} restituisce i primi \emph{N} risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrati gli \emph{N} elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da \emph{GraphQL} per ogni elemento della risposta. Per permettere al \emph{client} di conoscere lo stato della paginazione oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} \emph{hasNextPage}, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} \emph{endCursor}, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al \emph{client} di gestire il numero di elementi da ricevere. Ogni oggetto che compone la risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
+	Mette a disposizione l'elenco dei risultati integrati forniti dai servizi primari. La particolarità è che si tratta di una \emph{connessione}, una tipologia specifica di \emph{GraphQL} che viene utilizzata quando si ha un elenco di elementi da mostrare. La caratteristica principale che mette a disposizione riguarda la paginazione dei dati. Una volta definita la connessione, sempre tramite l'\emph{Execution Helper}, viene avviato il flusso di richiesta delle informazioni. A \emph{GraphQL} viene restituito un vettore con i risultati. A partire da questo elenco sarà suo compito dividerlo in parti in base alla richiesta ricevuta dal \emph{client}. In particolare vengono utilizzati due parametri per specificare quali elementi si desiderano ricevere: \emph{i)} \emph{first}, dove viene specificato un numero \emph{N} di elementi che si desidera ricevere; \emph{ii)} \emph{after}, che definisce il cursore dell'ultimo elemento ricevuto nella richiesta precedente. Quando viene utilizzato unicamente il campo \virgolette{first}, \emph{GraphQL} restituisce i primi \emph{N} risultati. Se viene specificato anche il campo \virgolette{after} vengono mostrati gli \emph{N} elementi a partire dall'elemento successivo a quello definito dal cursore. Per cursore si intende un identificativo univoco che viene automaticamente calcolato da \emph{GraphQL} per ogni elemento della risposta. Per permettere al \emph{client} di conoscere lo stato della paginazione oltre all'elenco dei risultati viene restituito anche un oggetto di stato, contenente principalmente due attributi: \emph{i)} \emph{hasNextPage}, valore booleano che indica se può essere recuperata un'ulteriore pagina; \emph{ii)} \emph{endCursor}, che fornisce il cursore dell'ultimo elemento ricevuto nella richiesta corrente. In questo modo viene lasciata libertà al \emph{client} di gestire il numero di elementi da ricevere. Ogni oggetto che della risposta è composto dai \emph{termini semantici} che sono stati definiti nel sistema. Inoltre viene aggiunto un oggetto che indica da quali servizi, che possono essere più di uno nel caso di unione di elementi duplicati, è stato recuperato l'oggetto e il punteggio assegnato al servizio in fase di selezione
 	\item \textbf{Support Connection}
-	Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come nel caso dei risultati primari viene utilizzata una \emph{connessione} di \emph{GraphQL}. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
+	Fornisce l'elenco dei servizi di supporto che sono stati selezionati. Come nel caso dei risultati primari viene utilizzata una \emph{connessione} GraphQL. Ogni oggetto viene rappresentato dal \emph{nome} del servizio, la \emph{categoria} per la quale è stato selezionato e l'\emph{indirizzo} composto
 \end{itemize}
 
 Nel Listato \ref{lst:esempio-richiesta-execute-query} viene mostrato un esempio di richiesta per effettuare la ricerca di dati sia \emph{primari} sia di \emph{supporto}.
@@ -509,7 +509,7 @@ Questo \emph{endpoint} è dedicato all'autenticazione degli utenti. Riceve in in
 
 \subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
 
-Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'\emph{app} mobile può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
+Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'\emph{app mobile} può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
 
 \begin{itemize}
 	\item \textbf{Cdt}
@@ -541,7 +541,7 @@ Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che 
 		Elenco dei valori che non vengono mostrati nell'albero di contesto perché precedentemente selezionati. Questo oggetto è composto dagli attributi \virgolette{dimension}, che rappresenta il nome del nodo dimensione, e \virgolette{value}, che è il valore associato al nodo
 	\end{itemize}
 	\item \textbf{Mashup}
-	Rappresenta lo schema dei \emph{mashup}. Fornisce all'\emph{app} mobile le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di \emph{mashup} è composto dai seguenti campi:
+	Rappresenta lo schema dei \emph{mashup}. Fornisce all'\emph{app mobile} le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di \emph{mashup} è composto dai seguenti campi:
 	\begin{itemize}
 		\item \textbf{List}
 		Questo oggetto fornisce le regole per rappresentare la lista dei risultati, ossia la schermata di \emph{merge} o \emph{master}. In questa pagina viene mostrato l'elenco dei dati recuperati, descritti da un insieme ridotto di attributi. Per specificare quali dati devono essere mostrati e come vengono utilizzati i seguenti attributi:
@@ -583,16 +583,16 @@ Vengono messe a disposizione le seguenti variabili d'ambiente:
 
 \begin{itemize}
 	\item \textbf{NODE\_ENV}
-	Per definire l'ambiente nel quale avviare l'applicazione (es.: production, development, testing, ecc.)
+	Per definire l'ambiente nel quale avviare l'applicazione (es.: \emph{production}, \emph{development}, \emph{testing}, ecc.)
 	\item \textbf{PORT}
 	La porta che si vuole utilizzare per richiamare gli \emph{endpoint}
 	\item \textbf{MONGO\_URI}
-	L'indirizzo di \emph{MongoDB}. Può comprendere anche l'utente e la password di accesso al database
+	L'indirizzo di \emph{MongoDB}. Può comprendere anche l'utente e la \emph{password} di accesso al database
 	\item \textbf{REDIS\_URL}
-	L'indirizzo di \emph{Redis}. Può comprendere anche l'utente e la password di accesso al database
+	L'indirizzo di \emph{Redis}. Può comprendere anche l'utente e la \emph{password} di accesso al database
 \end{itemize}
 
-Nella cartella \virgolette{config} è possibile aggiungere dei file per configurare altri parametri. Possono essere creati più file di configurazione, che verranno caricati per i diversi ambienti nel quale può funzionare l'applicazione. Basta chiamare il file col nome dell'ambiente di destinazione (es.: production, development, qa, staging, ecc.) affinché venga selezionata la configurazione corretta. Viene fornita una configurazione di \virgolette{default}, utilizzata quando non è presente nessun file relativo all'ambiente corrente. Di seguito vengono elencati i parametri che possono essere configurati; tra parentesi sono indicati i valori predefiniti di ciascun campo:
+Nella cartella \virgolette{config} è possibile aggiungere dei file per configurare altri parametri. Possono essere creati più file di configurazione, che verranno caricati per i diversi ambienti nel quale può funzionare l'applicazione. Basta chiamare il file col nome dell'ambiente di destinazione (es.: \emph{production}, \emph{development}, \emph{qa}, \emph{staging}, ecc.) affinché venga selezionata la configurazione corretta. Viene fornita una configurazione di \virgolette{default}, utilizzata quando non è presente nessun file relativo all'ambiente corrente. Di seguito vengono elencati i parametri che possono essere configurati; tra parentesi sono indicati i valori predefiniti di ciascun campo:
 
 \begin{itemize}
 	\item \textbf{server}
@@ -611,13 +611,13 @@ Nella cartella \virgolette{config} è possibile aggiungere dei file per configur
 	Definisce la configurazione di \emph{Redis}
 	\begin{itemize}
 		\item \textbf{address}
-		(localhost:6379) Specifica l'indirizzo del database \emph{in-memory}. Possono essere incluse le informazioni di autenticazioni
+		(localhost:6379) Specifica l'indirizzo del database \emph{in-memory}. Possono essere incluse le informazioni di autenticazione
 	\end{itemize}
 	\item \textbf{rest}
-	Specifica la configurazione del bridge per i servizi REST
+	Specifica la configurazione del \emph{bridge} per i servizi REST
 	\begin{itemize}
 		\item \textbf{timeout}
-		Definisce i periodi di tempo dopo i quali scatta il timeout
+		Definisce i periodi di tempo dopo i quali scatta il \emph{timeout}
 		\begin{itemize}
 			\item \textbf{service}
 			(3000) Valore di \emph{timeout} dopo il quale una richiesta verso i servizi esterni scade. Il valore viene specificato in millisecondi (ms)
@@ -648,9 +648,9 @@ Nella cartella \virgolette{config} è possibile aggiungere dei file per configur
 	\item \textbf{paginationTTL}
 	(1800) Definisce il tempo per il quale rimane memorizzato lo stato di una connessione in \emph{cache}. Il tempo viene specificato in secondi (s)
 	\item \textbf{debug}
-	(false) Indicatore booleano che abilita o disabilita il \emph{logging} delle informazioni su console
+	(false) Indicatore booleano che abilita o disabilita il \emph{logging} delle informazioni su \emph{console}
 	\item \textbf{metrics}
 	(false) Valore booleano che abilita o disabilita la raccolta delle informazioni sui tempi di esecuzione dei metodi principali e delle chiamate verso i database
 \end{itemize}
 
-Nessun campo è obbligatorio, a eccezione dell'indirizzo di \emph{MongoDB}, se non specificato tramite \emph{variabili d'ambiente}. In assenza degli altri campi verranno utilizzati i rispettivi valori di default.
+Nessun campo è obbligatorio, a eccezione dell'indirizzo di \emph{MongoDB}, se non specificato tramite \emph{variabili d'ambiente}. In assenza degli altri campi verranno utilizzati i rispettivi valori di \emph{default}.
