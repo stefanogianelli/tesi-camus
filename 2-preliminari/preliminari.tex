@@ -87,7 +87,7 @@ Infine, dopo aver discusso del modello e di come vengono rappresentati i vari co
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-preliminari/Immagini/configuration-based-mapping.jpg}
-	\caption[Configuration-based mapping]{Configuration-based mapping (Fonte: \virgolette{And what can context do for data?}, 2009)}\label{fig:configuration-based-mapping}
+	\caption[Configuration-based mapping]{Configuration-based mapping (Fonte: \virgolette{And what can context do for data?}\cite{DBLP:journals/cacm/BolchiniCOQRST09}, 2009)}\label{fig:configuration-based-mapping}
 \end{figure}
 
 La strategia \emph{configuration-based mapping} prevede che il \emph{designer} definisca per ogni contesto possibile la relativa porzione del \emph{dataset} da mostrare. Questa operazione può essere effettuata definendo delle viste nel linguaggio specifico del database adottato. In Figura \ref{fig:configuration-based-mapping} viene mostrato un esempio per il contesto nel quale un manager è interessato alle informazioni relative le sue agenzie. In questo caso il designer specifica delle viste in linguaggio SQL relative al contesto specifico, mettendo in evidenza i dati del personale che lavora nelle agenzie gestite dal manager, i contratti di affitto e vendita e infine le informazioni relative alle proprietà.
@@ -97,7 +97,7 @@ Questa strategia ha il vantaggio di generare delle viste molto precise rispetto 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-preliminari/Immagini/value-based-mapping.jpg}
-	\caption[Value-based mapping]{Value-based mapping (Fonte: \virgolette{And what can context do for data?}, 2009)}\label{fig:value-based-mapping}
+	\caption[Value-based mapping]{Value-based mapping (Fonte: \virgolette{And what can context do for data?}\cite{DBLP:journals/cacm/BolchiniCOQRST09}, 2009)}\label{fig:value-based-mapping}
 \end{figure}
 
 La strategia \emph{value-based mapping} permette di superare i limiti evidenziati per la strategia precedente. Questa strategia prevede che il \emph{designer} definisca le viste parziali relative a un particolare elemento del contesto, indipendentemente dagli altri. Quindi, una volta selezionato un contesto, un algoritmo si occuperà di combinare assieme le varie viste parziali definite dai singoli elementi per formare la vista globale adatta allo specifico contesto. La Figura \ref{fig:value-based-mapping} mostra come il contesto dell'esempio precedente viene mappato tramite questa strategia. Le linee tratteggiate mostrano le viste parziali che vengono associate ai vari elementi del contesto, mentre nel riquadro in basso viene mostrata la vista globale generata dalla combinazione delle viste parziali. L'algoritmo di composizione delle \emph{view} parziali è basato sull'utilizzo di diverse \emph{policy} e operatori di composizione, tra i quali i più utilizzati sono \emph{double union}, \emph{double intersection} e \emph{double difference} \cite{DBLP:conf/er/BolchiniQR07}, operatori basati sull'algebra relazionale.
@@ -190,7 +190,7 @@ Non è detto che le informazioni grezze ottenute direttamente dai servizi estern
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.5\textwidth]{2-preliminari/Immagini/merge-union.png}
-	\caption{Esempio di merge e union}\label{fig:merge-union}
+	\caption[Esempio di merge e union]{Esempio di merge e union (Fonte: \virgolette{MobiMash: una piattaforma per lo sviluppo di mobile mashup}\cite{caio2011tesi}, 2011)}\label{fig:merge-union}
 \end{figure}
 
 \subsection{Web Services\label{sec:web-services}}
@@ -416,7 +416,7 @@ Il Context-ADDICT Server supporta la selezione dei dati online e l'invio dei ris
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{2-preliminari/Immagini/cadd.png}
-	\caption[CADD]{CADD (Fonte: \virgolette{CADD: a tool for context modeling and data tailoring}, 2007)}\label{fig:cadd}
+	\caption[CADD]{CADD (Fonte: \virgolette{CADD: a tool for context modeling and data tailoring}\cite{bolchini2007cadd}, 2007)}\label{fig:cadd}
 \end{figure}
 
 I componenti di CADD , come si può osservare in Figura  \ref{fig:cadd}, sono i seguenti:
