@@ -323,13 +323,13 @@ Come già evidenziato nella Sezione \ref{sec:associazione-servizi-cdt}, le assoc
 
 Come esposto nella Sezione \ref{sec:associazione-servizi-cdt}, ogni operazione viene associata a uno o più nodi dell'albero di contesto e a ognuna di queste associazioni viene assegnato un valore che rappresenta la \emph{priorità} che l'operazione assume all'interno del nodo. Il primo passo per la selezione delle operazioni è l'assegnazione di un \emph{punteggio} a ogni operazione che ha una o più corrispondenze all'interno dell'albero di contesto. 
 
-La ricerca delle associazioni fornisce come risultato un elenco delle operazioni che sono adatte all'utilizzo nello specifico contesto, assieme al relativo valore di priorità, per ogni associazione trovata. \upe necessario introdurre un ulteriore parametro che influisce nella formula per l'assegnamento del \emph{punteggio} alle operazioni: il \emph{peso} dei nodi. Come definito nella Sezione \ref{sec:modello-contesto}, vengono introdotte due nuove tipologie di nodo: \emph{filtro} e \emph{ranking}. Le associazioni trovate tramite funzioni personalizzate vengono sempre intese come nodi di tipo \emph{ranking}. Il \emph{peso} di un nodo viene assegnato in base alla \emph{tipologia} del nodo, rispettando il vincolo:
+La ricerca delle associazioni fornisce come risultato un elenco delle operazioni che sono adatte all'utilizzo nello specifico contesto, assieme al relativo valore di priorità, per ogni associazione trovata. \upe necessario introdurre un ulteriore parametro che influisce nella formula per l'assegnamento del \emph{punteggio} alle operazioni: il \emph{peso} dei nodi. Come definito nella Sezione \ref{sec:modello-contesto}, vengono introdotte tre nuove tipologie di nodo: \emph{filtro}, \emph{ranking} e \emph{interestTopic}. Le associazioni trovate tramite funzioni personalizzate vengono sempre intese come nodi di tipo \emph{ranking}. Il \emph{peso} di un nodo viene assegnato in base alla \emph{tipologia} del nodo, rispettando il vincolo:
 
 \begin{equation*}
-w_{FILTRO} < w_{RANKING} \quad \forall\ n \in CDT
+w_{FILTRO} < w_{RANKING} < w_{INTEREST\_TOPIC} \quad \forall\ n \in CDT
 \end{equation*}
 
-In pratica a ogni nodo \emph{filtro} deve essere assegnato un peso strettamente minore rispetto a un nodo \emph{ranking}. Il punteggio \emph{R} di ogni operazione \emph{o} viene calcolato tramite la funzione:
+In pratica a ogni nodo \emph{filtro} deve essere assegnato un peso strettamente minore rispetto a un nodo \emph{ranking}, che a sua volta deve essere inferiore al nodo relativo l'\emph{Interest Topic}. Quest'ultima tipologia viene utilizzata esclusivamente per il nodo che rappresenta l'\emph{Interest Topic}. La sua introduzione è stata necessaria per dare un punteggio base alle operazioni che hanno senso di essere selezionate: se non fosse presente alcune operazioni appartenenti a \emph{Interest Topic} differenti potrebbero essere scelte. Il punteggio \emph{R} di ogni operazione \emph{o} viene calcolato tramite la funzione:
 
 \begin{equation}\label{eq:primary-service-formula}
 R_o = \sum_{i \in SA(o)}{\frac{w_i}{p_i}}
@@ -343,12 +343,12 @@ dove \emph{SA(o)} rappresenta l'insieme dei nodi associati all'operazione \emph{
 	\caption{Esempio di assegnazione del punteggio per le operazioni primarie}\label{fig:esempio-punteggio-primari}
 \end{figure}
 
-I nodi \emph{Interest Topic} e \emph{Momento Giornata} sono di tipo \emph{filtro} mentre il nodo \emph{Località} è di tipo \emph{ranking} (come evidenziato dalla diversa forma utilizzata). I nodi foglia di colore grigio sono quelli selezionati, che corrispondono al contesto $ C = InterestTopic: Ristoranti\ \land\ Localit\acute{a}: Milano\ \land\ MomentoGiornata: Cena $. Dalla fase di ricerca vengono selezionate le operazioni dei servizi $ \{TripAdvisor, Zomato,\\ Yelp\} $. Considerando come pesi dei nodi $ w_{FILTER} = 1 $  e $ w_{RANKING} = 4 $, viene calcolato il punteggio per ogni operazione:
+Al nodo \virgolette{Interest Topic} viene assegnata la sua tipologia particolare, il nodo \virgolette{Momento Giornata} è di tipo \emph{filtro} mentre il nodo \virgolette{Località} è di tipo \emph{ranking} (come evidenziato dalla diversa forma utilizzata). I nodi foglia di colore grigio sono quelli selezionati, che corrispondono al contesto $ C = InterestTopic: Ristoranti\ \land\ Localit\acute{a}: Milano\ \land\ MomentoGiornata: Cena $. Dalla fase di ricerca vengono selezionate le operazioni dei servizi $ \{TripAdvisor, Zomato, Yelp\} $. Considerando come pesi dei nodi $ w_{FILTER} = 1 $, $ w_{RANKING} = 4 $ e\\ $ w_{INTEREST\_TOPIC} = 6 $, viene calcolato il punteggio per ogni operazione:
 
 \begin{align*}
-R_{TripAdvisor} &= \frac{1}{1} + \frac{1}{1} = 2 \\
-R_{Zomato} &= \frac{1}{2} + \frac{4}{1} = \frac{9}{2} = 4,5\\
-R_{Yelp} &= \frac{1}{3} + \frac{1}{2} = \frac{5}{6} \approx 0,83
+R_{TripAdvisor} &= \frac{5}{1} + \frac{1}{1} = 6 \\
+R_{Zomato} &= \frac{5}{2} + \frac{4}{1} = \frac{13}{2} = 6,5\\
+R_{Yelp} &= \frac{5}{3} + \frac{1}{2} = \frac{13}{6} \approx 2,16
 \end{align*} 
 
 Riordinando la lista si ottiene $ \{ Zomato, TripAdvisor, Yelp \} $ e scegliendo i top-2 risultati si ottiene la selezione finale $ \{ Zomato, TripAdvisor \} $.
