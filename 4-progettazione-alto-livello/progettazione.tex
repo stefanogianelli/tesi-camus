@@ -192,9 +192,9 @@ Nella Figura \ref{fig:app-dataflow} è rappresentato tutto il flusso dei dati al
 
 \section{Scenario d'uso}
 
-In questa sezione viene introdotto un esempio di caso d'uso reale, che vuole illustrare un flusso di esecuzione complessivo svolto da un utente, cercando di mostrare le attività svolte lato \emph{client} e lato \emph{backend}.
-Introduciamo l'utente Andrea, che sarà il nome di fantasia che utilizzeremo in questo esempio d'uso. Supponiamo che sia per un weekend a Milano con la sua fidanzata Barbara e prima di partire ha comunicato all'esperto CAMUS, Giovanni, di essere \upe interessato ad avere all'interno dell'applicazione alcuni \emph{Interest Topic}: \virgolette{Restaurant}, \virgolette{Cinema}, \virgolette{Theater}, \virgolette{Hotel}, \virgolette{Museum} ed \virgolette{Event}. Successivamente Giovanni ha compiuto tutte le associazioni delle operazioni dei servizi già registrati a CAMUS e le modifiche all'interfaccia grafica dell'applicazione di Andrea.
-Qualche giorno più tardi Andrea e Barbara si trovano a Milano in zona Centro e stanno cercando un posto dove poter andare a cena, dato che ormai sono quasi le 20.00. Allora apre la propria applicazione CAMUS sul suo \textit{smartphone} e inserisce le proprie credenziali di accesso, dato che è la prima volta che la apre (Figura \ref{fig:usecase-login}). 
+In questa sezione viene introdotto un esempio di caso d'uso reale, che vuole illustrare un flusso di esecuzione delle attività quando un utente effettua una richiesta. Verranno mostrate le attività inizialmente lato \emph{client}, mettendo in evidenza le attività svolte dall’utente, e lato \emph{backend}, descrivendo come viene elaborata la richiesta.
+Introduciamo l'utente Andrea, che sarà il nome di fantasia che utilizzeremo in questo esempio. Supponiamo che si deve recare per un weekend a Milano con la sua fidanzata Barbara. Prima di partire ha comunicato a Giovanni, l’esperto CAMUS, del suo progetto di viaggio. Giovanni configura l’applicazione CAMUS personalizzata per Andrea con le informazioni del contesto che gli saranno utili a Milano. Terminato questo lavoro, Giovanni ritiene inoltre che siano utili delle modifiche all'interfaccia grafica dell'applicazione di Andrea.
+Qualche giorno più tardi Andrea e Barbara si trovano a Milano in zona Centro e stanno cercando un posto dove poter andare a cena, dato che ormai sono quasi le 20:00. Andrea apre la propria applicazione CAMUS sul suo \textit{smartphone} e inserisce le proprie credenziali di accesso, dato che è la prima volta che la utilizza (Figura \ref{fig:usecase-login}). 
 
 \begin{figure}[H]
 	\centering
@@ -202,12 +202,12 @@ Qualche giorno più tardi Andrea e Barbara si trovano a Milano in zona Centro e 
 	\caption{Schermata di login dell'applicazioni con i dati di Andrea}\label{fig:usecase-login}
 \end{figure}
 
-Dopo qualche istante il server risponde all'applicazione che il login è avvenuto, mostrando la pagina principale associata ad Andrea, con la possibilità di scegliere l'\emph{Interest Topic} desiderato tra quelli disponibili (Figura \ref{fig:usecase-home}). La scelta ricade su quello più appropriato: \virgolette{Restaurants}
+Eseguita l’autenticazione con successo, ad Andrea viene mostrata la schermata principale con la possibilità di scegliere l'\emph{Interest Topic} desiderato tra quelli disponibili (Figura \ref{fig:usecase-home}). La scelta ricade su quello più appropriato: \virgolette{Restaurants}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/home_caso_d'uso.png}
-	\caption{Schermata Home di Andrea}\label{fig:usecase-home}
+	\caption{Schermata principale di Andrea}\label{fig:usecase-home}
 \end{figure}
 
 A questo punto è necessario completare il contesto per poter effettuare la richiesta dei ristoranti. Il sistema propone la schermata di selezione del contesto, permettendo nel loro caso di scegliere solamente i mezzi di trasporto, dato che gli altri parametri del profilo di Andrea erano già stati inseriti da Giovanni. Essendo arrivati a Milano utilizzando il treno, viene inserita la possibilità di raggiungere il ristorante con i mezzi pubblici, in particolare con i bus (Figura \ref{fig:usecase-contesto}). 
@@ -218,15 +218,16 @@ A questo punto è necessario completare il contesto per poter effettuare la rich
 	\caption{Selezione del contesto}\label{fig:usecase-contesto}
 \end{figure}
 
-Selezionando \virgolette{Query} viene costruita la query, prendendo i termini dagli schemi di \emph{mashup} e il contesto appena inserito, e inviata al server, il quale seleziona i servizi da invocare in base al contesto appena ricevuto, li interroga e costruisce l'insieme di risultati da restituire all'applicazione. Dopo qualche secondo Andrea riceve sul suo \emph{smartphone} la prima pagina dei risultati da lui richiesti (Figura \ref{fig:usecase-results}) \textcolor{red}{(cambio immagine)}.
+Selezionando \virgolette{Query} viene costruita la \emph{query}, prendendo i termini dagli schemi di \emph{mashup} e il contesto appena inserito, e inviata al \emph{server}, il quale seleziona i servizi da invocare in base al contesto appena ricevuto, li interroga e costruisce l'insieme di risultati da restituire all'applicazione. Dopo qualche secondo Andrea riceve sul suo \emph{smartphone} la prima pagina dei risultati da lui richiesti (Figura \ref{fig:usecase-results}) \textcolor{red}{(cambio immagine)}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/results_caso_d'uso.png}
-	\caption{Risultati dal server}\label{fig:usecase-results}
+	\caption{Risultati ricevuti}\label{fig:usecase-results}
 \end{figure} 
 
-Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \textcolor{red}{Aggiungere nome} per vedere dei dettagli in più. Convinti della scelta e scoprendo della raggiungibilità anche a piedi decidono di provare a telefonare per prenotare un tavolo per due persone, selezionando la cornetta (Figura \ref{fig:usecase-details}) \textcolor{red}{(devo mettere screen migliore)}. La risposta del ristoratore è affermativa, quindi Andrea e Barbara possono recarsi a cenare. %e a passare una piacevole serata.
+Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \textcolor{red}{Aggiungere nome} per vedere dei dettagli in più. Convinti della scelta e scoprendo che è raggiungibile anche a piedi, decidono di provare a telefonare per prenotare un tavolo per due persone, selezionando il simbolo della cornetta (Figura \ref{fig:usecase-details}) \textcolor{red}{(devo mettere screen migliore)}. Il ristoratore conferma la prenotazione quindi Andrea e Barbara possono recarsi a cena. %e a passare una piacevole serata.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/details_caso_d'uso.png}
