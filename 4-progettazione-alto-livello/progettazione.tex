@@ -2,7 +2,7 @@ Questo capitolo viene dedicato allo studio della progettazione relativa al proto
 
 \section{Architettura del sistema}
 
-Questa sezione vuole fornire i dettagli riguardo all'architettura della piattaforma. Verranno spiegate le scelte che hanno portato alla realizzazione dell'architettura e messi in risalto le caratteristiche principali. La sezione viene divisa in due parti: la prima riguarda l'esposizione dell'architettura del \emph{backend} per poi passare all'analisi dell'architettura della \emph{mobile app}. La struttura interna delle due sezioni sarà molto simile: verrà inizialmente mostrato un diagramma dell'architettura per poi passare alla descrizione dei componenti che ne fanno parte. 
+Al fine di validare la fattibilità della metodologia descritta nel capitolo precedente, abbiamo sviluppato il prototipo di una piattaforma che supporta la selezione e l'interrogazione \emph{context-aware} dei servizi, e la creazione dinamica di un'\textit{app mobile} in grado di presentare i risultati. Questa sezione illustra l'organizzazione dei moduli del \emph{backend} e di quelli dell'\emph{app mobile}, evidenziando anche le interazioni mirate \textcolor{red}{?} a soddisfare le richieste che l'utente formula tramite l'app.
 
 \subsection{Backend\label{sec:architettura-backend}}
 
@@ -46,7 +46,7 @@ In questa sezione è presentata l'architettura dell'applicazione mobile CAMUS, s
 
 \subsubsection{Pagine dell'applicazione}
 
-Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi possiede \emph{Login Page} e il \emph{secondary router}, che racchiude la navigazione effettiva dell'utente autenticato.
+Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi include \emph{Login Page} e il \emph{secondary router}, che racchiude il controllo della navigazione effettiva una volta che l'utente si è autenticato.
 
 \begin{figure}[H]
 	\centering
@@ -54,7 +54,7 @@ Essendo un progetto basato su JavaScript per poter controllare le diverse pagine
 	\caption{Schema delle pagine}\label{fig:screen-schema}
 \end{figure}
 \newpage
-Come si può notare nella Figura \ref{fig:screen-schema}, le pagine sono le seguenti:
+Come si può notare nella Figura \ref{fig:screen-schema}, le pagine attraverso cui è possibile navigare sono le seguenti:
 
 \begin{itemize}
 	\item \textbf{Login Page}
@@ -218,18 +218,18 @@ A questo punto è necessario completare il contesto per poter effettuare la rich
 	\caption{Selezione del contesto}\label{fig:usecase-contesto}
 \end{figure}
 
-Selezionando \virgolette{Query} viene costruita la \emph{query}, prendendo i termini dagli schemi di \emph{mashup} e il contesto appena inserito, e inviata al \emph{server}, il quale seleziona i servizi da invocare in base al contesto appena ricevuto, li interroga e costruisce l'insieme di risultati da restituire all'applicazione. Dopo qualche secondo Andrea riceve sul suo \emph{smartphone} la prima pagina dei risultati da lui richiesti (Figura \ref{fig:usecase-results}) \textcolor{red}{(cambio immagine)}.
+Selezionando \virgolette{Query} viene costruita la \emph{query}, prendendo i termini dagli schemi di \emph{mashup} e il contesto appena inserito, e inviata al \emph{server}, il quale seleziona i servizi da invocare in base al contesto appena ricevuto, li interroga e costruisce l'insieme di risultati da restituire all'applicazione. Dopo qualche secondo Andrea riceve sul suo \emph{smartphone} la prima pagina dei risultati da lui richiesti, cioè la \textit{view} \emph{ResultsPage} (Figura \ref{fig:usecase-results}).
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/results_caso_d'uso.png}
-	\caption{Risultati ricevuti}\label{fig:usecase-results}
+	\caption{Risultati ricevuti, mostrati nella \emph{view ResultsPage}}\label{fig:usecase-results}
 \end{figure} 
 
-Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \virgolette{Caruso} per vedere dei dettagli in più. Convinti della scelta e scoprendo che è raggiungibile anche a piedi, decidono di provare a telefonare per prenotare un tavolo per due persone, selezionando il simbolo della cornetta (Figura \ref{fig:usecase-details}). Il ristoratore conferma la prenotazione quindi Andrea e Barbara possono recarsi a cena. %e a passare una piacevole serata.
+Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \virgolette{Caruso} per vedere dei dettagli in più. Quindi, viene create dinamicamente la pagina \emph{DetailsPage} Convinti della scelta e scoprendo che è raggiungibile anche a piedi, decidono di provare a telefonare per prenotare un tavolo per due persone, selezionando il simbolo della cornetta (Figura \ref{fig:usecase-details}). Il ristoratore conferma la prenotazione quindi Andrea e Barbara possono recarsi a cena. %e a passare una piacevole serata.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/details_caso_d'uso.png}
-	\caption{Dettagli oggetto selezionato}\label{fig:usecase-details}
+	\caption{Dettagli oggetto selezionato (\emph{view DetailsPage})}\label{fig:usecase-details}
 \end{figure} 
