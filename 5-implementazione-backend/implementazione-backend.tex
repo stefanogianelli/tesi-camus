@@ -1,29 +1,5 @@
 Questo capitolo illustra nel dettaglio la realizzazione del \emph{backend} della piattaforma CAMUS. Il capitolo si apre con l'esposizione e la descrizione delle entità principali che compongono il database. Alcune di queste entità verranno analizzate nel dettaglio in una sezione a parte, data la loro complessità. In particolare vengono esposti dettagliatamente il \emph{descrittore dell'albero del contesto} e il \emph{descrittore dei servizi}. Verrà fornita una descrizione degli attributi che li caratterizzano, con l'ausilio di esempi per chiarire meglio i concetti. Successivamente viene mostrato lo schema logico del \emph{backend} e vengono analizzati i dettagli implementativi dei singoli componenti. Una sezione verrà dedicata all'\emph{endpoint} GraphQL, che permette alle applicazioni esterne di eseguire le attività messe a disposizione dal \emph{backend}. Il capitolo termina con la documentazione relativa la configurazione del sistema, che permette la definizione di alcuni parametri utilizzati in fase di esecuzione per modificarne il comportamento. Una configurazione può essere definita tramite variabili d'ambiente o file di configurazione. Verranno descritte entrambe le possibilità.
 
-\section{Schema del database\label{sec:schema-database}}
-
-\begin{figure}[p]
-	\centering
-	\includegraphics[height=\textwidth, angle=90]{5-implementazione-backend/Immagini/schema_er_db.png}
-	\caption{Diagramma ER del database}\label{fig:schema-er-db}
-\end{figure}
-
-La base di dati viene utilizzata principalmente per garantire la persistenza di tre elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto e \emph{iii)} le associazioni tra operazioni e nodi del CDT.
-
-Queste entità permettono al sistema di svolgere le attività principali. In quanto oggetti complessi verranno descritti nel dettaglio nelle sezioni successive, per metterne in risalto le caratteristiche e le peculiarità. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
-
-Sono presenti entità per la memorizzazione delle informazioni sull'u\-ten\-te. Un'al\-tra entità importante riguarda i \emph{mashup}, che vengono associati all'utente per permettere la definizione di schemi personalizzati. I dettagli sulla composizione di questi schemi verranno esposti nella Sezione \ref{sec:struttura-schemi-mashup}.
-
-Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
-
-In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
-
-\begin{figure}[!b]
-	\centering
-	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_logico_db.png}
-	\caption{Schema logico del database}\label{fig:schema-logico-db}
-\end{figure}
-
 \section{Descrittore dell'albero di contesto\label{sec:descrittore-albero-contesto}}
 
 Nella Sezione \ref{sec:context-dimension-model} è stato esposto il modello teorico del \emph{Context Dimension Tree} mentre in questa sezione si vuole mettere in risalto come l'albero di contesto viene descritto nel sistema. Sono state effettuate diverse semplificazioni per agevolare la memorizzazione e il recupero delle informazioni dai vari nodi che compongono l'albero. Nelle seguenti sottosezioni vengono analizzati nel dettaglio i singoli oggetti che formano un albero di contesto.
@@ -157,7 +133,7 @@ Nel Listato \ref{lst:esempio-descrittore-operazione} viene mostrato un esempio d
 
 \subsection{Parametri delle operazioni\label{sec:descrittore-parametri}}
 
-Quest'oggetto definisce i parametri in ingresso di un'operazione. I parametri generalmente sono composti da due campi: uno ne definisce il \emph{nome} e l'altro il rispettivo \emph{valore}. In alcuni casi vengono accettati più valori, quindi il descrittore deve dunque essere in grado di gestire questa situazione. Un ulteriore compito affidato a questo oggetto è quello di acquisire il valore di un determinato parametro dal \emph{contesto}. Viene inoltre fornito un semplice sistema di traduzione dei dati acquisiti dal contesto, per permettere le trasformazioni verso un valore idoneo per l'operazione corrente. Infine, soprattutto per le operazioni di \emph{supporto}, viene permessa un'associazione del parametro verso uno o più \emph{termini semantici}, per permettere all'\emph{app mobile} di conoscere l'attributo dove andare a recuperare il valore concreto a \emph{runtime}. Nello specifico, l'oggetto è così composto:
+Quest'oggetto definisce i parametri in ingresso di un'operazione. I parametri generalmente sono composti da due campi: uno ne definisce il \emph{nome} e l'altro il rispettivo \emph{valore}. In alcuni casi vengono accettati più valori, quindi il descrittore deve dunque essere in grado di gestire questa situazione. Un ulteriore compito affidato a questo oggetto è quello di acquisire il valore di un determinato parametro dal \emph{contesto}. Viene inoltre fornito un semplice sistema di traduzione dei dati acquisiti dal contesto, per permettere le trasformazioni verso un valore idoneo per l'operazione corrente. Infine, soprattutto per le operazioni di \emph{supporto}, viene permessa un'associazione del parametro verso uno o più \emph{termini semantici}, per permettere alla \emph{mobile app} di conoscere l'attributo dove andare a recuperare il valore concreto a \emph{runtime}. Nello specifico, l'oggetto è così composto:
 
 \begin{itemize}
 	\item \textbf{Name}
@@ -232,11 +208,33 @@ Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio 
 	\label{lst:esempio-descrittore-paginazione}
 \end{listing}
 
+\section{Schema del database\label{sec:schema-database}}
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[height=\textwidth, angle=90]{5-implementazione-backend/Immagini/schema_er_db.pdf}
+	\caption{Diagramma ER del database}\label{fig:schema-er-db}
+\end{figure}
+
+La base di dati viene utilizzata principalmente per garantire la persistenza di cinque elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto, \emph{iii)} le associazioni tra operazioni e nodi del CDT, \emph{iv)} le informazioni sugli utenti e \emph{v)} gli schemi di \emph{mashup}. In Figura \ref{fig:schema-er-db} è possibile osservare il modello \emph{Entità-Relazione} utilizzato per la piattaforma CAMUS.
+
+Queste entità permettono al sistema di svolgere le attività principali. Le prime tre entità sono state esposte nelle precedenti sezioni, in quanto si tratta di oggetti complessi che richiedono di una spiegazione dettagliata. Le entità riguardanti i \emph{mashup} vengono associate all'utente per permettere la definizione di schemi personalizzati. Anch'esse necessitano di una descrizione dettagliata, per metterne in risalto le caratteristiche. La loro composizione verrà esposta nella Sezione \ref{sec:struttura-schemi-mashup}.
+
+Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
+
+In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_logico_db.pdf}
+	\caption{Schema logico del database}\label{fig:schema-logico-db}
+\end{figure}
+
 \section{Componenti\label{sec:componenti-backend}}
 
 \begin{figure}[p]
 	\centering
-	\includegraphics[height=\textwidth, width=\textheight, angle=90]{5-implementazione-backend/Immagini/diagramma_classi_backend.png}
+	\includegraphics[height=\textwidth, width=\textheight, angle=90]{5-implementazione-backend/Immagini/diagramma_classi_backend.pdf}
 	\caption{Diagramma delle classi del backend}\label{fig:class-diagram-backend}
 \end{figure}
 
@@ -357,9 +355,9 @@ Il \emph{Support Service Selection} è il componente dedicato alla selezione del
 
 \subsection{Session Helper\label{sec:session-helper}}
 
-Il \emph{Session Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e l'\emph{app mobile} richiede ulteriori dati. Si occupa di gestire il salvataggio in \emph{cache} della sessione ed eventualmente, quando il primo \emph{result set} sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
+Il \emph{Session Helper} viene utilizzato quando è stata effettuata una prima richiesta ai servizi e la \emph{mobile app} richiede ulteriori dati. Si occupa di gestire il salvataggio in \emph{cache} della sessione ed eventualmente, quando il primo \emph{result set} sta per terminare, richiama un'altra volta i servizi richiedendo la pagina successiva.
 
-Per gestire la paginazione tra \emph{backend} e \emph{app mobile} vengono utilizzati due parametri:
+Per gestire la paginazione tra \emph{backend} e \emph{mobile app} vengono utilizzati due parametri:
 
 \begin{itemize}
 	\item \textbf{First}
@@ -509,7 +507,7 @@ Questo \emph{endpoint} è dedicato all'autenticazione degli utenti. Riceve in in
 
 \subsection{Get Personal Data\label{sec:get-personal-data-endpoint}}
 
-Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo l'\emph{app mobile} può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
+Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che possono essere gli \emph{alberi di contesto} e i \emph{mashup} che gli sono stati associati dall'esperto di settore. In questo modo la \emph{mobile app} può recuperare le versioni più aggiornate degli schemi relativi all'utente. In ingresso vengono richiesti l'\emph{indirizzo mail} dell'utente e il \emph{token} ricevuto nella fase di autenticazione. Se i due valori corrispondono, vengono restituiti i dati richiesti. Il formato della risposta viene composto come segue:
 
 \begin{itemize}
 	\item \textbf{Cdt}
@@ -541,7 +539,7 @@ Questo \emph{endpoint} provvede a fornire all'utente i suoi dati personali, che 
 		Elenco dei valori che non vengono mostrati nell'albero di contesto perché precedentemente selezionati. Questo oggetto è composto dagli attributi \virgolette{dimension}, che rappresenta il nome del nodo dimensione, e \virgolette{value}, che è il valore associato al nodo
 	\end{itemize}
 	\item \textbf{Mashup}
-	Rappresenta lo schema dei \emph{mashup}. Fornisce all'\emph{app mobile} le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di \emph{mashup} è composto dai seguenti campi:
+	Rappresenta lo schema dei \emph{mashup}. Fornisce alla \emph{mobile app} le regole per comporre l'interfaccia grafica nelle diverse situazioni. Uno schema di \emph{mashup} è composto dai seguenti campi:
 	\begin{itemize}
 		\item \textbf{List}
 		Questo oggetto fornisce le regole per rappresentare la lista dei risultati, ossia la schermata di \emph{merge} o \emph{master}. In questa pagina viene mostrato l'elenco dei dati recuperati, descritti da un insieme ridotto di attributi. Per specificare quali dati devono essere mostrati e come vengono utilizzati i seguenti attributi:

@@ -2,79 +2,15 @@ Questo capitolo fornisce una panoramica sulle caratteristiche e le metodologie a
 
 Nelle sezioni seguenti verrà fornita inizialmente una panoramica del progetto e verranno illustrati gli obiettivi che si vogliono prendere in considerazione e per i quali verrà proposta una soluzione. Successivamente verrà analizzato l'approccio seguito per integrare i precedenti lavori sul contesto e sui \emph{mashup}, al fine di sfruttarne i rispettivi vantaggi. Si passerà poi alle motivazioni che hanno spinto all'utilizzo dei servizi come fonte di acquisizione dati e all'organizzazione operativa del \emph{framework}. Una volta definito il contesto saranno analizzate le tecniche operative utilizzate, come l'estensione del modello del contesto, la creazione dell'ecosistema dei servizi che possono essere interrogati, l'associazione dei servizi al contesto e le relative procedure di selezione, l'algoritmo di integrazione dei dati e, per finire, l'approccio per la definizione degli schemi di \emph{mashup}.
 
-\section{Panoramica del progetto\label{sec:panoramica-progetto}}
+\section{Organizzazione del framework\label{sec:panoramica-progetto}}
 
-CAMUS è l'acronimo di \emph{Context-Aware Mobile mashUpS} e, come si può intuire dal nome, il principale obiettivo del progetto è quello di proporre un \emph{framework} per la realizzazione di \emph{mashup mobile} che sfruttino il contesto nel quale si trova l'utente al fine di proporgli informazioni che sono di suo interesse.
-
-Ai giorni nostri si sente sempre più spesso parlare di \emph{Big Data}. Il termine di per sè è abbastanza fuorviante. La traduzione letterale \virgolette{grandi dati} o \virgolette{grossi dati} cattura solo l'aspetto di avere un'enorme quantità di informazioni a disposizione. L'altro aspetto, che è anche quello più importante, riguarda l'analisi di queste informazioni, che possono essere ricevute da diverse fonti e nei modi più disparati, al fine di comprendere come trattarle e capire cosa significano. Senza questa fase di \emph{comprensione}, avere a disposizione tutti questi dati porta al fenomeno del \emph{sovraccarico cognitivo}, o \emph{information overload}, cioè la difficoltà che una persona ha nel comprendere un problema e nel prendere una decisione quando ha a disposizione un'eccessiva quantità di informazioni. Questa enorme mole di dati permette sì di avere una conoscenza praticamente completa riguardo qualsiasi tematica, ma d'altro canto provoca anche dei problemi sulla scelta di \emph{quali} siano le informazioni effettivamente necessarie. 
+CAMUS è l'acronimo di \emph{Context-Aware Mobile mashUpS} e, come si può intuire dal nome, il principale obiettivo del progetto è quello di proporre un \emph{framework} per la realizzazione di \emph{mashup} per dispositivi mobili che sfruttino il contesto nel quale si trova l'utente al fine di proporre informazioni di interesse e pertinenti alla situazione d'uso.
  
- Il progetto CAMUS vuole proporsi come una soluzione \emph{user-friendly} a questo problema e in particolare sfrutta due filoni di ricerca che a loro volta propongono una metodologia per attenuare questo problema, utilizzando approcci differenti. Questi due ambiti sono relativi agli studi sul \emph{contesto} e sui \emph{mashup}. Viene utilizzato il \emph{contesto} per raccogliere informazioni sull'utente e sull'ambiente nel quale si trova, al fine di selezionare i servizi più idonei alla situazione e filtrare le informazioni che sono di maggior interesse. Oltre a questo aspetto, si vuole sfruttare la dinamicità di presentazione che caratterizza i \emph{mashup} per adattare la modalità nella quale queste informazioni vengono mostrate e la flessibilità di integrazione dei dati provenienti da diverse fonti.
+ Il progetto CAMUS vuole proporsi come una soluzione \emph{user-friendly} al problema del \emph{sovraccarico cognitivo}, o \emph{information overload}, cioè la difficoltà che una persona ha nel comprendere un problema e nel prendere una decisione quando ha a disposizione un'eccessiva quantità di informazioni. In particolare sfrutta due filoni di ricerca che a loro volta propongono una metodologia per attenuare questo problema, utilizzando approcci differenti. Questi due ambiti sono relativi agli studi sul \emph{contesto} e sui \emph{mashup}. Viene utilizzato il \emph{contesto} per raccogliere informazioni sull'utente e sull'ambiente nel quale si trova, al fine di selezionare i servizi più idonei alla situazione e filtrare le informazioni che sono di maggior interesse. Oltre a questo aspetto, si vuole sfruttare la dinamicità di presentazione che caratterizza i \emph{mashup} per adattare la modalità nella quale queste informazioni vengono mostrate e la flessibilità di integrazione dei dati provenienti da diverse fonti.
 
-In particolare, come precedentemente citato nella Sezione \ref{sec:mobile-mashup}, viene applicato il concetto dei \emph{mashup} al mondo \emph{mobile}: il risultato finale consiste in un'\emph{app} per \emph{smartphone} o \emph{tablet} che adatta il proprio aspetto in base a delle regole di visualizzazione definite a priori. Questa caratteristica permette di ottenere un'estrema flessibilità, in quanto non è necessario rilasciare versioni diverse per ogni modifica nell'aspetto grafico. Viene lasciata massima libertà di variare l'interfaccia grafica in modo che si adatti a diverse situazioni di utilizzo.
+In particolare il concetto dei \emph{mashup} è applicato al mondo dei dispositivi mobili: il risultato finale consiste in un'\emph{app} per \emph{smartphone} o \emph{tablet} che adatta la propria struttura e i dati mostrati in base a regole di interrogazione dei dati e visualizzazione delle \emph{view} definite a priori. Questa caratteristica permette di ottenere un'estrema flessibilità, in quanto non è necessario rilasciare versioni diverse se i servizi interrogati sono diversi. Viene lasciata massima libertà di variare l'interfaccia grafica in modo che si adatti a diverse situazioni di utilizzo.
 
-CAMUS è strutturato in modo da garantire modularità e disaccoppiamento tra i vari componenti che ne fanno parte. I componenti principali del \emph{framework} sono il \emph{server} e la \emph{mobile app}. Il \emph{server} è il cuore del sistema e orchestra la comunicazione tra gli altri componenti. Il suo compito primario è quello di fornire le informazioni idonee all'\emph{app mobile}, a partire dal contesto che quest'ultima gli invia. La \emph{mobile app} viene utilizzata dall'utente finale e contiene il motore di \emph{rendering} che interpreta le regole definite sul come mostrare i componenti e li disegna in modo da essere fruibili.
-CAMUS prevede l'integrazione di alcune \emph{web app}, con lo scopo di permettere la realizzazione intuitiva della rappresentazione del contesto e dell'interfaccia grafica assunta dall'\emph{app}. Le \emph{web app} principali sono due: \emph{i)} la prima si propone di comporre il \emph{contesto}, che viene rappresentato tramite un modello idoneo alla visualizzazione grafica; \emph{ii)} la seconda riguarda la composizione degli elementi che formano l'interfaccia grafica della \emph{mobile app}.
-
-\section{Obiettivi del progetto\label{sec:obiettivi-progetto}}
-
-L'obiettivo principale del progetto CAMUS è definire la metodologia con la quale è possibile creare \emph{app} sfruttando i \emph{mashup} e il contesto, al fine di mostrare all'utente le informazioni che sono più pertinenti alla situazione in cui si trova.
-
-Per la creazione del \emph{framework} sono state rispettate le seguenti linee guida:
-
-\begin{itemize}
-	\item \textbf{Creazione visuale}
-	Questo punto è relativo alla modalità di realizzazione delle \emph{app}. Si vuole ideare un sistema che permetta la composizione dell'interfaccia grafica interamente in modo visuale, senza la necessità di scrivere codice
-	\item \textbf{Contestualità}
-	Si vuole sfruttare il contesto dell'utente per comprendere quali siano le sue esigenze e mostrargli così le informazioni maggiormente pertinenti alla situazione. In questo modo è possibile utilizzare anche diverse fonti per acquisire dati più precisi e variegati, che verranno filtrati adeguatamente in modo da mostrare le informazioni più rilevanti e nascondere quelle che porterebbero solamente a una maggior confusione
-	\item \textbf{Semplicità}
-	Ogni operazione deve essere facile, in modo che anche persone non pratiche di informatica possano creare delle \emph{app} CAMUS. Qualsiasi attività di creazione e modifica viene dunque effettuata tramite un'interfaccia grafica, in modo da aiutare l'utente nella composizione dell'applicazione. Inoltre sono stati scelti dei modelli concettuali semplici, di facile comprensione ma sufficientemente potenti da creare schemi di una certa complessità
-	\item \textbf{Automazione}
-	Si vuole far ripetere all'utente il minor numero di azioni possibile; in quest'ottica vengono sfruttati i sensori disponibili sui dispositivi per acquisire in maniera automatica determinate informazioni, sgravando l'utente da questo compito
-	\item \textbf{Uniformità dell'accesso ai dati}
-	Il \emph{framework} non prevede l'interfacciamento con un database per il recupero delle informazioni, bensì i dati vengono acquisiti tramite l'utilizzo dei \emph{servizi}. Questa soluzione rende più flessibile l'accesso ai dati, in quanto viene fornita un'interfaccia comune per servizi sia interni, cioè gestiti direttamente dal creatore dell'\emph{app}, sia esterni, cioè mantenuti da terzi. Inoltre apre la strada all'utilizzo dei servizi di supporto, che forniscono dati complementari per arricchire le informazioni primarie
-	\item \textbf{Personalizzazione}
-	Una delle principali caratteristiche del \emph{framework} è la possibilità di modificare l'aspetto dell'\emph{app} in modo intuitivo. Viene dunque agevolata la personalizzazione dell'interfaccia grafica non solo in base alla situazione di utilizzo ma anche tenendo conto del profilo dell'utente. Ogni utilizzatore dell'\emph{app} può così avere una visualizzazione delle informazioni adatta alle sue esigenze, cosicché si possa concentrare esclusivamente sulla fruizione dei contenuti. Verrà dunque preferito uno schema flessibile che permetta la generazione dinamica delle schermate da mostrare all'utente e soprattutto verrà privilegiato un metodo semplice e visuale per la creazione di questi schemi
-	\item \textbf{Universalità}
-	CAMUS deve essere utilizzabile in ambiti diversi. Si vuole realizzare un modello che sia valido e in grado di essere applicato in contesti anche molto diversi tra loro. Per questo motivo il \emph{framework} non viene costruito con elementi specifici di un determinato settore, proprio per evitare perdite di generalità
-\end{itemize}
-
-\section{Integrazione del contesto con i mashup\label{sec:integrazione-contesto-mashup}}
-
-Come evidenziato nella Sezione \ref{sec:panoramica-progetto}, il progetto CAMUS consiste nell'unione delle ricerche effettuate nell'ambito della \emph{context-awareness} e dei \emph{mashup}. Il \emph{framework} mira all'integrazione tra questi due filoni di ricerca, in modo da catturare le potenzialità di entrambi. I \emph{mashup} permettono di utilizzare diverse fonti per acquisire una maggior quantità di informazioni e ottenere dei dati che sono complementari, finalizzati all'arricchimento delle descrizioni degli elementi. Inoltre mettono a disposizione una logica di creazione dinamica delle interfacce grafiche: permettono di sfruttare la conoscenza acquisita dalle diverse fonti per visualizzare i dati che sono di maggior interesse. Il problema nasce quando si ha a che fare con una quantità enorme di informazioni. \upe sì un bene avere a disposizione una moltitudine di dati, ma esiste il rischio concreto che questa mole di dati generi unicamente confusione e renda difficoltoso il lavoro di ricerca delle informazioni che sono di reale interesse. Proprio per mitigare questo problema viene introdotto l'utilizzo del \emph{contesto}. Quest'ultimo permette di filtrare le informazioni che sono rilevanti in una particolare situazione. Vengono dunque nascosti o messi in secondo piano tutti i dati che non sono di alcun interesse per la situazione corrente, permettendo così all'utente di concentrarsi unicamente su un sottoinsieme dei risultati più attinenti al contesto nel quale si trova.
-
-Rispetto al paradigma di composizione presentato nella Sezione \ref{sec:mobile-mashup}, in CAMUS vengono separate la attività di \emph{acquisizione dati} e \emph{creazione dell'interfaccia grafica}. Questo disaccoppiamento permette di modificare l'aspetto delle \emph{app} in modo molto flessibile, in quanto non è necessaria a priori la conoscenza della fonte esatta dalla quale proverranno le informazioni. Viene così fornita un'estrema libertà al \emph{designer} nella scelta di \emph{come} comporre l'interfaccia grafica, in modo che possa concentrarsi solo su questo aspetto e non si debba preoccupare di come i dati vengano integrati tra loro.
-
-Un'altra parte del \emph{framework} viene dunque dedicata all'integrazione dei dati. \upe in questa attività che entra in gioco il \emph{contesto}. Grazie alle informazioni sulla situazione nella quale si trova l'utente, è possibile selezionare \emph{quali} sono i servizi che forniscono i migliori risultati e, una volta acquisiti i dati, possono fornire le informazioni necessarie per assegnare un \emph{punteggio} ai vari elementi, in modo da portare in primo piano quelli più rilevanti. Quest'attività viene divisa in tre parti principali:
-
-\begin{enumerate}
-	\item \textbf{Selezione dei servizi}
-	Vengono selezionati, grazie alle informazioni di contesto, i servizi che sono più idonei per la situazione corrente
-	\item \textbf{Acquisizione dei dati}
-	Vengono interrogati i servizi scelti per acquisire i dati
-	\item \textbf{Integrazione delle informazioni}
-	I dati ricevuti dai vari servizi vengono integrati in modo da formare un unico \emph{dataset}. Quest'operazione prevede tre fasi: \emph{i)} trasformazione delle risposte in una rappresentazione comune; \emph{ii)} fusione degli elementi duplicati; \emph{iii)} assegnamento di un punteggio agli elementi, tenendo conto delle informazioni fornite dal contesto
-\end{enumerate}
-
-\section{Utilizzo dei servizi\label{sec:utilizzo-servizi}}
-
-Uno dei punti chiave del \emph{framework}, seguendo la filosofia dei \emph{mashup}, è di non essere limitati a una singola fonte per l'acquisizione dei dati, bensì si vuole essere in grado di recuperare le informazioni da diverse sorgenti. In questo modo è possibile ottenere diversi vantaggi, come l'acquisizione di una maggiore quantità di risultati, ottenere informazioni più complete, ecc. Presenta però anche degli svantaggi: avere molti dati a disposizione può essere dispersivo ed esiste il rischio di ottenere entità ridondanti. Per fornire un'elevata flessibilità, il \emph{framework} prevede il disaccoppiamento della logica di accesso ai dati: per l'acquisizione delle informazioni viene fornita un'unica interfaccia, rappresentata dai \emph{servizi}. Questo metodo permette di avere una descrizione unica sul come recuperare i dati, indipendentemente dal fornitore che li mette a disposizione. L'utilizzo dei servizi porta i seguenti vantaggi:
-
-\begin{itemize}
-	\item \textbf{Varietà}
-	L'utilizzo di un'interfaccia generica per l'accesso ai dati favorisce l'acquisizione di informazioni da fonti diverse. In questo modo è possibile ottenere dei \emph{dataset} più ampi
-	\item \textbf{Integrabilità}
-	Ogni servizio restituisce i dati secondo una propria rappresentazione. Avere un unico metodo di accesso ai dati permette anche di descrivere come queste informazioni devono essere trattate una volta ricevute. Questo passaggio permette di uniformare le rappresentazioni fornite in ingresso, in modo tale che siano trasformate in una forma più idonea per le future elaborazioni
-	\item \textbf{Completezza}
-	Acquisendo informazioni da diverse fonti è possibile ottenere degli elementi duplicati. Questa caratteristica potrebbe sembrare un difetto mentre in realtà fornisce una risorsa molto importante: la possibilità di ottenere degli elementi più completi. Diverse fonti possono essere utilizzate per acquisire informazioni di tipologia diversa, in modo da generare un elemento descritto in maniera più precisa e che colga maggiori aspetti
-\end{itemize}
-
-Questa scelta permette inoltre di dividere l'acquisizione dei dati in due passaggi: \emph{i)} acquisizione delle informazioni principali; \emph{ii)} acquisizione di dati che vanno ad arricchire le informazioni principali. 
-
-In particolare verrà utilizzato uno schema che permette di descrivere come accedere alle risorse messe a disposizione da un servizio e come interpretare le risposte ricevute. Questo formalismo possiede il vantaggio di essere utilizzabile per entrambe le casistiche presentate.
-
-\section{Organizzazione generale del framework CAMUS\label{sec:architettura-sistema}}
-
-I fattori discriminanti nella scelta dell'architettura più idonea riguardano quale componente del sistema avrà il compito di interrogare i servizi per acquisire le informazioni da mostrare all'utente e l'integrazione dei dati.
+I fattori che hanno guidato la scelta dell'architettura più idonea riguardano quale componente del sistema avrà il compito di interrogare i servizi per acquisire le informazioni da mostrare all'utente e l'integrazione dei dati.
 Per quanto riguarda l'interrogazione dei servizi sono state valutate due possibilità diametralmente opposte:
 
 \begin{itemize}
@@ -145,15 +81,72 @@ Di seguito vengono elencati i tre componenti principali del sistema CAMUS:
 	Il \emph{server} è il punto in cui si interfaccia l'\emph{amministratore} di sistema ed è il punto dal quale è possibile avere una visione sulla complessità del sistema senza astrazioni. L'\emph{amministratore} ha i compiti di registrare i nuovi servizi e di configurare i termini per la trasformazione dei risultati ricevuti dai servizi. Inoltre definisce l'albero di contesto globale, che verrà utilizzato come base per la creazione di quelli personalizzati per gli utenti, e di associare le operazioni ai vari nodi che compongono l'albero
 	\item \textbf{Web App}
 	Le \emph{web app} sono collegate all'\emph{esperto di settore} che compone l'applicazione mobile. Questo attore non è necessariamente un esperto di informatica e della tecnologia utilizzata, quindi ha bisogno di un astrazione maggiore rispetto all'amministratore. Sono disponibili due funzionalità di base: una permette di creare dei CDT personalizzati per gli utenti e di modificare le associazioni dei servizi, mentre l'altra permette di creare i \emph{mashup} per le pagine dell'applicazione, collegando i termini con i componenti che verranno poi renderizzati in fase di esecuzione
-	\item \textbf{App Mobile}
+	\item \textbf{Mobile App}
 	La \emph{mobile app} è l'interfaccia dell'\emph{utente} finale con il sistema. Essa ha il compito di renderizzare i \emph{mashup} definiti dall'esperto e di permettere all'utente di specificare il proprio contesto per richiedere al \emph{server} i risultati inerenti a esso. Oltre alle informazioni richieste all'utente vengono inoltre sfruttati i sensori messi a disposizione dal dispositivo (es.: coordinate geografiche, orario, ecc.) per migliorare la precisione del contesto, in modo trasparente all'utente.
 	Una volta che l'utente finale ha effettuato l'accesso, vengono caricati gli schemi di \emph{mashup} e l'albero di contesto specifico dell'utente. L'\emph{app} si occuperà di renderizzare gli schemi ricevuti generando dinamicamente delle schermate che verranno utilizzate dall'utente per effettuare tutte le operazioni che desidera.
-	I risultati vengono mostrati seguendo il pattern \emph{master-detail} \cite{molina2002user}: in prima istanza viene generato un elenco (\emph{master}) dei risultati ottenuti, mostrando poche informazioni riguardo il singolo elemento; successivamente l'utente può selezionare uno o più elementi della lista per visualizzare i dettagli (\emph{detail}) dell'elemento. In questa fase entrano in gioco i servizi di supporto: una volta che l'utente decide di visualizzare i dettagli di un elemento, l'\emph{app} si occupa, in base allo schema di mashup corrente, di interrogare i servizi di supporto necessari per arricchire le informazioni che ha precedentemente ricevuto.
+	I risultati vengono mostrati seguendo il pattern \emph{master-detail} \cite{molina2002user}: in prima istanza viene generato un elenco (\emph{master}) dei risultati ottenuti, mostrando poche informazioni riguardo il singolo elemento; successivamente l'utente può selezionare uno o più elementi della lista per visualizzare i dettagli (\emph{detail}) dell'elemento. In questa fase entrano in gioco i servizi di supporto: una volta che l'utente decide di visualizzare i dettagli di un elemento, l'\emph{app} si occupa, in base allo schema di mashup corrente, di interrogare i servizi di supporto necessari per arricchire le informazioni che ha precedentemente ricevuto
 \end{enumerate}
+
+\section{Obiettivi del progetto\label{sec:obiettivi-progetto}}
+
+L'obiettivo principale del progetto CAMUS è definire la metodologia con la quale è possibile creare \emph{app} sfruttando i \emph{mashup} e il contesto, al fine di mostrare all'utente le informazioni che sono più pertinenti alla situazione in cui si trova.
+
+Per la creazione del \emph{framework} sono state rispettate le seguenti linee guida:
+
+\begin{itemize}
+	\item \textbf{Creazione visuale}
+	Questo punto è relativo alla modalità di realizzazione delle \emph{app}. Si vuole ideare un sistema che permetta la composizione dell'interfaccia grafica interamente in modo visuale, senza la necessità di scrivere codice
+	\item \textbf{Contestualità}
+	Si vuole sfruttare il contesto dell'utente per comprendere quali siano le sue esigenze e mostrargli così le informazioni maggiormente pertinenti alla situazione. In questo modo è possibile utilizzare anche diverse fonti per acquisire dati più precisi e variegati, che verranno filtrati adeguatamente in modo da mostrare le informazioni più rilevanti e nascondere quelle che porterebbero solamente a una maggior confusione
+	\item \textbf{Semplicità}
+	Ogni operazione deve essere facile, in modo che anche persone non pratiche di informatica possano creare delle \emph{app} CAMUS. Qualsiasi attività di creazione e modifica viene dunque effettuata tramite un'interfaccia grafica, in modo da aiutare l'utente nella composizione dell'applicazione. Inoltre sono stati scelti dei modelli concettuali semplici, di facile comprensione ma sufficientemente potenti da creare schemi di una certa complessità
+	\item \textbf{Automazione}
+	Si vuole far ripetere all'utente il minor numero di azioni possibile; in quest'ottica vengono sfruttati i sensori disponibili sui dispositivi per acquisire in maniera automatica determinate informazioni, sgravando l'utente da questo compito
+	\item \textbf{Uniformità dell'accesso ai dati}
+	Il \emph{framework} non prevede l'interfacciamento con un database per il recupero delle informazioni, bensì i dati vengono acquisiti tramite l'utilizzo dei \emph{servizi}. Questa soluzione rende più flessibile l'accesso ai dati, in quanto viene fornita un'interfaccia comune per servizi sia interni, cioè gestiti direttamente dal creatore dell'\emph{app}, sia esterni, cioè mantenuti da terzi. Inoltre apre la strada all'utilizzo dei servizi di supporto, che forniscono dati complementari per arricchire le informazioni primarie
+	\item \textbf{Personalizzazione}
+	Una delle principali caratteristiche del \emph{framework} è la possibilità di modificare l'aspetto dell'\emph{app} in modo intuitivo. Viene dunque agevolata la personalizzazione dell'interfaccia grafica non solo in base alla situazione di utilizzo ma anche tenendo conto del profilo dell'utente. Ogni utilizzatore dell'\emph{app} può così avere una visualizzazione delle informazioni adatta alle sue esigenze, cosicché si possa concentrare esclusivamente sulla fruizione dei contenuti. Verrà dunque preferito uno schema flessibile che permetta la generazione dinamica delle schermate da mostrare all'utente e soprattutto verrà privilegiato un metodo semplice e visuale per la creazione di questi schemi
+	\item \textbf{Universalità}
+	CAMUS deve essere utilizzabile in ambiti diversi. Si vuole realizzare un modello che sia valido e in grado di essere applicato in contesti anche molto diversi tra loro. Per questo motivo il \emph{framework} non viene costruito con elementi specifici di un determinato settore, proprio per evitare perdite di generalità
+\end{itemize}
+
+\section{Integrazione del contesto con i mashup\label{sec:integrazione-contesto-mashup}}
+
+Come evidenziato nella Sezione \ref{sec:panoramica-progetto}, il progetto CAMUS consiste nell'unione delle ricerche effettuate nell'ambito della \emph{context-awareness} e dei \emph{mashup}. Il \emph{framework} mira all'integrazione tra questi due filoni di ricerca, in modo da catturare le potenzialità di entrambi. I \emph{mashup} permettono di utilizzare diverse fonti per acquisire una maggior quantità di informazioni e ottenere dei dati che sono complementari, finalizzati all'arricchimento delle descrizioni degli elementi. Inoltre mettono a disposizione una logica di creazione dinamica delle interfacce grafiche: permettono di sfruttare la conoscenza acquisita dalle diverse fonti per visualizzare i dati che sono di maggior interesse. Il problema nasce quando si ha a che fare con una quantità enorme di informazioni. \upe sì un bene avere a disposizione una moltitudine di dati, ma esiste il rischio concreto che questa mole di dati generi unicamente confusione e renda difficoltoso il lavoro di ricerca delle informazioni che sono di reale interesse. Proprio per mitigare questo problema viene introdotto l'utilizzo del \emph{contesto}. Quest'ultimo permette di filtrare le informazioni che sono rilevanti in una particolare situazione. Vengono dunque nascosti o messi in secondo piano tutti i dati che non sono di alcun interesse per la situazione corrente, permettendo così all'utente di concentrarsi unicamente su un sottoinsieme dei risultati più attinenti al contesto nel quale si trova.
+
+Rispetto al paradigma di composizione presentato nella Sezione \ref{sec:mobile-mashup}, in CAMUS vengono separate la attività di \emph{acquisizione dati} e \emph{creazione dell'interfaccia grafica}. Questo disaccoppiamento permette di modificare l'aspetto delle \emph{app} in modo molto flessibile, in quanto non è necessaria a priori la conoscenza della fonte esatta dalla quale proverranno le informazioni. Viene così fornita un'estrema libertà al \emph{designer} nella scelta di \emph{come} comporre l'interfaccia grafica, in modo che possa concentrarsi solo su questo aspetto e non si debba preoccupare di come i dati vengano integrati tra loro.
+
+Un'altra parte del \emph{framework} viene dunque dedicata all'integrazione dei dati. \upe in questa attività che entra in gioco il \emph{contesto}. Grazie alle informazioni sulla situazione nella quale si trova l'utente, è possibile selezionare \emph{quali} sono i servizi che forniscono i migliori risultati e, una volta acquisiti i dati, possono fornire le informazioni necessarie per assegnare un \emph{punteggio} ai vari elementi, in modo da portare in primo piano quelli più rilevanti. Quest'attività viene divisa in tre parti principali:
+
+\begin{enumerate}
+	\item \textbf{Selezione dei servizi}
+	Vengono selezionati, grazie alle informazioni di contesto, i servizi che sono più idonei per la situazione corrente
+	\item \textbf{Acquisizione dei dati}
+	Vengono interrogati i servizi scelti per acquisire i dati
+	\item \textbf{Integrazione delle informazioni}
+	I dati ricevuti dai vari servizi vengono integrati in modo da formare un unico \emph{dataset}. Quest'operazione prevede tre fasi: \emph{i)} trasformazione delle risposte in una rappresentazione comune; \emph{ii)} fusione degli elementi duplicati; \emph{iii)} assegnamento di un punteggio agli elementi, tenendo conto delle informazioni fornite dal contesto
+\end{enumerate}
+
+\section{Utilizzo dei servizi\label{sec:utilizzo-servizi}}
+
+Uno dei punti chiave del \emph{framework}, seguendo la filosofia dei \emph{mashup}, è di non essere limitati a una singola fonte per l'acquisizione dei dati, bensì si vuole essere in grado di recuperare le informazioni da diverse sorgenti. In questo modo è possibile ottenere diversi vantaggi, come l'acquisizione di una maggiore quantità di risultati, ottenere informazioni più complete, ecc. Presenta però anche degli svantaggi: avere molti dati a disposizione può essere dispersivo ed esiste il rischio di ottenere entità ridondanti. Per fornire un'elevata flessibilità, il \emph{framework} prevede il disaccoppiamento della logica di accesso ai dati: per l'acquisizione delle informazioni viene fornita un'unica interfaccia, rappresentata dai \emph{servizi}. Questo metodo permette di avere una descrizione unica sul come recuperare i dati, indipendentemente dal fornitore che li mette a disposizione. L'utilizzo dei servizi porta i seguenti vantaggi:
+
+\begin{itemize}
+	\item \textbf{Varietà}
+	L'utilizzo di un'interfaccia generica per l'accesso ai dati favorisce l'acquisizione di informazioni da fonti diverse. In questo modo è possibile ottenere dei \emph{dataset} più ampi
+	\item \textbf{Integrabilità}
+	Ogni servizio restituisce i dati secondo una propria rappresentazione. Avere un unico metodo di accesso ai dati permette anche di descrivere come queste informazioni devono essere trattate una volta ricevute. Questo passaggio permette di uniformare le rappresentazioni fornite in ingresso, in modo tale che siano trasformate in una forma più idonea per le future elaborazioni
+	\item \textbf{Completezza}
+	Acquisendo informazioni da diverse fonti è possibile ottenere degli elementi duplicati. Questa caratteristica potrebbe sembrare un difetto mentre in realtà fornisce una risorsa molto importante: la possibilità di ottenere degli elementi più completi. Diverse fonti possono essere utilizzate per acquisire informazioni di tipologia diversa, in modo da generare un elemento descritto in maniera più precisa e che colga maggiori aspetti
+\end{itemize}
+
+Questa scelta permette inoltre di dividere l'acquisizione dei dati in due passaggi: \emph{i)} acquisizione delle informazioni principali; \emph{ii)} acquisizione di dati che vanno ad arricchire le informazioni principali. 
+
+In particolare verrà utilizzato uno schema che permette di descrivere come accedere alle risorse messe a disposizione da un servizio e come interpretare le risposte ricevute. Questo formalismo possiede il vantaggio di essere utilizzabile per entrambe le casistiche presentate.
 
 \section{Modello del contesto\label{sec:modello-contesto}}
 
-Come illustrato nella Sezione \ref{sec:context-awareness}, per il progetto CAMUS viene utilizzato il \emph{Context Dimension Tree} come modello per la rappresentazione del contesto. In questa sezione si vogliono mettere in evidenza le modifiche rese necessarie per adattare il modello alle esigenze del progetto. In particolare, oltre alla classificazione dei nodi originale del CDT, viene aggiunta un'ulteriore divisione in base al ruolo che un nodo può assumere durante la fase di selezione dei servizi:
+Il progetto CAMUS usa il \emph{Context Dimension Tree} come modello per la rappresentazione del contesto. In questa sezione si vogliono mettere in evidenza le modifiche rese necessarie per adattare il modello alle esigenze del progetto. In particolare, oltre alla classificazione dei nodi originale del CDT, viene aggiunta un'ulteriore divisione in base al ruolo che un nodo può assumere durante la fase di selezione dei servizi:
 
 \begin{itemize}
 	\item \textbf{Nodo filtro}
@@ -384,7 +377,7 @@ I nodi attivi sono evidenziati in grigio ed equivalgono al contesto $ C = Tipolo
 
 \section{Integrazione dei dati\label{sec:integrazione-dati}}
 
-Una volta selezionati i servizi che più si adattano al contesto dell'utente, il passo successivo è interrogarli per acquisire le risposte. Dopo che sono state ricevute le informazioni si presenta un nuovo problema: ogni servizio ha il proprio formato di risposta. \upe necessario dunque fare sì che tutte le risposte vengano trasformate in una rappresentazione comune tale che sia utilizzabile dall'\emph{app mobile}. Al fine di effettuare questa trasformazione vengono utilizzati una serie di \emph{termini semantici}: questi termini permettono di identificare univocamente una risorsa all'interno delle varie rappresentazioni ricevute, associando a ogni attributo il rispettivo valore semantico. Come precedentemente introdotto nella Sezione \ref{sec:ecosistema-servizi}, le associazioni tra gli elementi di una risposta e il termine di riferimento viene definito nel descrittore del servizio. In seguito alla trasformazione viene creato un set di risposte unificato, composto da tutti i dati ricevuti dai servizi.
+Una volta selezionati i servizi che più si adattano al contesto dell'utente, il passo successivo è interrogarli per acquisire le risposte. Dopo che sono state ricevute le informazioni si presenta un nuovo problema: ogni servizio ha il proprio formato di risposta. \upe necessario dunque fare sì che tutte le risposte vengano trasformate in una rappresentazione comune tale che sia utilizzabile dalla \emph{mobile app}. Al fine di effettuare questa trasformazione vengono utilizzati una serie di \emph{termini semantici}: questi termini permettono di identificare univocamente una risorsa all'interno delle varie rappresentazioni ricevute, associando a ogni attributo il rispettivo valore semantico. Come precedentemente introdotto nella Sezione \ref{sec:ecosistema-servizi}, le associazioni tra gli elementi di una risposta e il termine di riferimento viene definito nel descrittore del servizio. In seguito alla trasformazione viene creato un set di risposte unificato, composto da tutti i dati ricevuti dai servizi.
 
 Un ulteriore problema che si è dovuto affrontare riguarda gli elementi duplicati: può accadere che due o più servizi restituiscano dati relativi a una stessa entità. Questi dati duplicati devono essere fusi assieme a formare una singola istanza. Il termine \virgolette{fondere} viene usato di proposito, in quanto anche gli elementi duplicati possono essere utilizzati per arricchire le informazioni ottenute. Si prenda per esempio due servizi che restituiscono il medesimo ristorante: il primo fornisce informazioni sul \emph{nome} del ristorante, l'\emph{indirizzo} e il \emph{numero di telefono} mentre il secondo mette a disposizione sempre il \emph{nome}, l'\emph{indirizzo}, l'\emph{url} del sito web e l'\emph{indirizzo email}. Come si può notare non è conveniente semplicemente ignorare uno dei due risultati in quanto si perderebbero alcuni informazioni che possono essere rilevanti. La procedura che viene adottata in questi casi è quella appunto di \emph{fondere} i due elementi. Resta da definire come comportarsi nel caso dei dati in comune tra gli elementi. Nell'esempio precedente si tratta del \emph{nome} del ristorante e del suo \emph{indirizzo}. In questa situazione entra in gioco il \emph{punteggio} del servizio calcolato come descritto nella Sezione \ref{sec:selezione-operazioni}. Vengono mantenute solamente le informazioni in comune fornite dal servizio col punteggio più elevato. Questa scelta ha una semplice spiegazione: si ipotizza che il servizio col punteggio migliore fornisca i dati più affidabili rispetto a un altro servizio con un punteggio inferiore.
 
@@ -439,11 +432,11 @@ Una volta che i \emph{bucket} sono stati creati, è necessario effettuare una co
 	\end{algorithmic}
 \end{algorithm}
 
-Analizzando la struttura di questo algoritmo risulta però che la complessità temporale resta sempre pari a $ O(n^2) $, in quanto se tutti gli elementi hanno il medesimo codice fonetico verrebbero aggiunti in un singolo \emph{bucket}, costringendo a eseguire tutti i confronti. Questa situazione è un caso molto raro: si assume che gli elementi vengano distribuiti in modo uniforme all'interno dei \emph{bucket}. In genere i \emph{bucket} saranno composti al massimo da un numero di elementi pari al numero di servizi interrogati. Infatti generalmente gli elementi duplicati appartengono a servizi diversi. Questo valore può variare leggermente in alcuni casi particolari. Può capitare per esempio che elementi distinti tra loro possano essere aggiunti allo stesso \emph{bucket} a causa della loro pronuncia fonetica simile. Nel caso medio si ottiene che questo algoritmo abbia una complessità $ \Omega(nm^2) $, dove \emph{n} rappresenta il numero di elementi e \emph{m} la lunghezza massima di un \emph{bucket}, con $ m \ll n $. In Figura \ref{fig:tempo-esecuzione-algoritmo-duplicati} viene confrontata la versione \virgolette{vecchia} dell'algoritmo, dove venivano effettuati i controlli coppia a coppia per tutti gli elementi, e quella \virgolette{nuova}, con le ottimizzazioni attive. \upe stato utilizzato un \emph{dataset} composto dall'elenco dei ristoranti di Milano proveniente da quattro diversi servizi e con un elevato numero di elementi simili ($ 81\% $). Come si può notare il nuovo algoritmo ha un incremento lineare dei tempi di esecuzione all'aumentare del numero di elementi, come ci si poteva aspettare.
+Analizzando la struttura di questo algoritmo risulta che nel caso pessimo la complessità temporale resta sempre pari a $ O(n^2) $, in quanto se tutti gli elementi hanno il medesimo codice fonetico verrebbero aggiunti in un singolo \emph{bucket}, costringendo a eseguire tutti i confronti. Questa situazione è un caso limite: si assume infatti che gli elementi vengano distribuiti in modo uniforme all'interno dei \emph{bucket}. In genere i \emph{bucket} saranno composti al massimo da un numero di elementi pari al numero di servizi interrogati. Infatti generalmente gli elementi duplicati appartengono a servizi diversi. Questo valore può variare leggermente in alcuni casi particolari. Può capitare per esempio che elementi distinti tra loro possano essere aggiunti allo stesso \emph{bucket} a causa della loro pronuncia fonetica simile. Nel caso medio si ottiene che questo algoritmo abbia una complessità $ \Omega(nm^2) $, dove \emph{n} rappresenta il numero di elementi e \emph{m} la lunghezza massima di un \emph{bucket}, con $ m \ll n $. In Figura \ref{fig:tempo-esecuzione-algoritmo-duplicati} viene confrontata la versione \virgolette{base} dell'algoritmo, in cui venivano effettuati i controlli coppia a coppia per tutti gli elementi, e quella \virgolette{nuova}, con le ottimizzazioni attive. \upe stato utilizzato un \emph{dataset} composto dall'elenco dei ristoranti di Milano proveniente da quattro diversi servizi e con un elevato numero di elementi simili ($ 81\% $). Come si può notare il nuovo algoritmo ha un incremento lineare dei tempi di esecuzione all'aumentare del numero di elementi, come ci si poteva aspettare.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{3-metodologia-camus/Immagini/similarity_time_analysis.png}
+	\includegraphics[width=\textwidth]{3-metodologia-camus/Immagini/similarity_time_analysis.pdf}
 	\caption{Tempi di esecuzione algoritmo di ricerca duplicati}\label{fig:tempo-esecuzione-algoritmo-duplicati}
 \end{figure}
 
@@ -489,7 +482,7 @@ Per il caso in analisi i \emph{True Positive} sono gli elementi correttamente id
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{3-metodologia-camus/Immagini/similarity_precision_recall.png}
+	\includegraphics[width=\textwidth]{3-metodologia-camus/Immagini/similarity_precision_recall.pdf}
 	\caption{Prestazioni dell'algoritmo di ricerca dei duplicati}\label{fig:prestazioni-algoritmo-duplicati}
 \end{figure}
 
@@ -499,7 +492,7 @@ Alti valori del \emph{threshold} permettono di avere una \emph{precision} del $ 
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{3-metodologia-camus/Immagini/visual-mapping-nuovo.png}
+	\includegraphics[width=\textwidth]{3-metodologia-camus/Immagini/visual_mapping_nuovo.pdf}
 	\caption{Web App di Visual Mapping}\label{fig:visual-mapping}
 \end{figure}
 
@@ -515,27 +508,27 @@ Gli schemi generati possono essere ulteriormente differenziati per due motivi pr
 	\item
 	Il secondo aspetto è la possibilità di differenziare i dati da mostrare a livello di utente, dato che non a tutti possono interessare le stesse informazioni oppure può essere preferibile mostrare i dati e le \emph{view} in maniera differente in stili grafici e componenti. Infatti, una volta generato, lo schema dei \emph{mashup} viene associato allo specifico utente, in modo da essere disponibile su richiesta della \emph{mobile app} dopo che è stato effettuato l'accesso.
 	Nella \emph{web app} l'esperto seleziona l'utente per il quale deve generare l'applicazione e, in aggiunta alle modifiche al CDT evidenziate nella Sezione \ref{sec:cdt-su-misura}, carica gli schemi predefiniti che verranno utilizzati come base per lo schema personalizzato per l'utente. In questo modo ogni utente dell'applicazione può avere i propri \emph{mashup} personalizzati.
-	Oltre alla definizione dei termini nei \emph{mashup}, è possibile aggiungere le proprietà stilistiche relative al singolo schema, se diverse da quelle definite globalmente
+	Oltre alla definizione dei termini nei \emph{mashup}, è possibile aggiungere le proprietà stilistiche la presentazione dei dati nelle \emph{view} relative al singolo schema, se diverse da quelle definite globalmente
 \end{enumerate}
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.4\textwidth]{3-metodologia-camus/Immagini/view-schema.png}
+	\includegraphics[width=0.4\textwidth]{3-metodologia-camus/Immagini/view_schema.pdf}
 	\caption{Schema delle views}\label{fig:view-schema}
 \end{figure}
 
-Lo schema delle \emph{view} che è stato adottato è raffigurato nella Figura \ref{fig:view-schema}. A ogni pagina definita vengono associati uno o più valori di \virgolette{Interest Topic}, perché può essere che uno schema venga utilizzato in più ambiti. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che servirà all'\emph{app} per renderizzare il componente associato. Per esempio se il \emph{designer} desidera mostrare il titolo nei dettagli con una dimensione maggiore di quella di default e con un colore rosso, può impostare questi parametri nel campo \virgolette{Styles}. Nella fase di elaborazione dinamica delle \emph{view} sarà l'applicazione ad applicare questo stile se presente, sostituendo quello di default. Per quanto riguarda la tipologia del dato \virgolette{titolo} in questo caso è necessario specificare che è di tipo \virgolette{Text}. Per componenti più complessi come una mappa è sufficiente fornire come tipologia \virgolette{Map} e come contenuti i parametri di latitudine e longitudine per ottenere la visualizzazione desiderata.
+Lo schema delle \emph{view} che è stato adottato è raffigurato nella Figura \ref{fig:view-schema}. A ogni pagina definita vengono associati uno o più valori di \virgolette{Interest Topic}, perché può essere che uno schema venga utilizzato in più ambiti. Ogni pagina può avere più di un contenuto al quale è associato opzionalmente uno stile e la tipologia del contenuto, che servirà all'\emph{app} per visualizzare i dati. Per esempio se il \emph{designer} desidera mostrare il titolo nei dettagli con una dimensione maggiore di quella di default e con un colore rosso, può impostare questi parametri nel campo \virgolette{Styles}. Nella fase di elaborazione dinamica delle \emph{view} sarà l'applicazione ad applicare questo stile se presente, sostituendo quello di default. Per quanto riguarda la tipologia del dato \virgolette{titolo} in questo caso è necessario specificare che è di tipo \virgolette{Text}. Per componenti più complessi come una mappa è sufficiente fornire come tipologia \virgolette{Map} e come contenuti i parametri di latitudine e longitudine per ottenere la visualizzazione desiderata.
 
 Per personalizzare uno schema, al \emph{designer} spettano i seguenti passaggi:
 
 \begin{itemize}
 	\item \textbf{Associazione dei termini} 
-	L'associazione dei termini agli elementi visuali viene effettuata mediante \emph{drag} \& \emph{drop}. I singoli termini sono collegati allo specifico elemento della \emph{view}. 
+	L'associazione dei termini agli elementi visuali viene effettuata mediante \emph{drag} \& \emph{drop}. I singoli termini, che corrispondono a \virgolette{categorie semantiche} di dati, sono collegati allo specifico elemento della \emph{view}. 
 	I termini possono essere acquisiti da una \emph{repository} mantenuta sul \emph{server} o da una \emph{knowledge base}\footnote{Schema.org: \url{http://schema.org/}}, che permette di associare un significato semantico a ogni termine in modo da agevolare l'interoperabilità dei dati. Il \emph{designer} può scegliere se utilizzarli tutti o solo una parte nella creazione dello schema, in modo che a \emph{runtime} l'applicazione possa richiedere solamente i dati necessari alla popolazione della \emph{view}.
 	Nella Figura \ref{fig:visual-mapping} viene mostrata la sequenza di operazioni che deve compiere il designer e che vengono elencate di seguito:
 	\begin{enumerate}
 		\item
-		Selezione dell'elemento visuale da inserire (es.: \emph{text field}, mappa, galleria foto, ecc.) nella schermata del telefono e modifica dello stile a seconda delle opzioni disponibili
+		Selezione dell'elemento visuale da inserire (es.: \emph{text field}, mappa, galleria foto, ecc.) nella \emph{view} dell'\emph{app} e modifica dello stile a seconda delle opzioni disponibili
 		\item
 		Associazione del termine tra l'elenco di tutti quelli disponibili
 	\end{enumerate}
