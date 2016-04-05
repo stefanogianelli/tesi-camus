@@ -10,13 +10,13 @@ In questa sezione si vuole analizzare nel dettaglio l'architettura messa a punto
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/camus-architecture-backend.png}
+	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/camus-architecture-backend.pdf}
 	\caption{Architettura del backend}\label{fig:architettura-backend}
 \end{figure}
 
 L'architettura di CAMUS viene descritta schematicamente in Figura \ref{fig:architettura-backend}. Come si può notare è stata privilegiata la modularità dei vari componenti che formano il sistema, in modo che il compito di ognuno fosse ben circoscritto. Inoltre tutti i componenti mostrati sono \emph{stateless}, cioè non mantengono informazioni sullo stato di una sessione. Questa scelta architetturale permette di poter avviare diverse istanze del \emph{backend} di CAMUS per poter soddisfare le molteplici richieste degli utenti. Questa scelta permette di selezionare quale nodo sia il miglior candidato per gestire una richiesta in coda in base a politiche che non riguardano lo stato della sessione (es.: disponibilità del nodo, basso carico sul sistema, ecc.).
 
-Il componente che coordina tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti e organizzare le chiamate secondo il flusso della richiesta (che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta-server}).
+Il componente che coordina tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti e organizzare le chiamate secondo il flusso della richiesta (che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta}).
 
 Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile \emph{app} e trasformarlo in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal \emph{client} e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
 
@@ -139,7 +139,7 @@ Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \virgo
 
 %L'attività più importante riguarda invece l'\emph{endpoint} \virgolette{executeQuery} (Sezione \ref{sec:execute-query-endpoint}), che è dedicato all'invio delle informazioni trovate in base al contesto dell'utente. In Figura \ref{fig:flusso-nuova-richiesta} vengono mostrati i componenti coinvolti in questa fase e l'ordine col quale sono eseguiti.
 
-\section{Flusso di una richiesta}
+\section{Flusso di una richiesta\label{sec:flusso-richiesta}}
 
 Questa sezione vuole mostrare al lettore il flusso di esecuzione delle attività all'interno della piattaforma. Nella sezione precedente si è parlato di un caso d'uso reale mentre ora si vuole entrare nel dettaglio delle attività svolte dal prototipo. Nelle Figure \ref{fig:app-dataflow} e \ref{fig:flusso-nuova-richiesta} vengono mostrati i diagrammi delle attività svolte rispettivamente dalla \emph{mobile app} e dal server, che sono stati separati per mostrare con maggiore chiarezza tutti i passaggi.
 
@@ -164,7 +164,7 @@ Questa sezione vuole mostrare al lettore il flusso di esecuzione delle attività
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/flusso-richiesta-backend.png}
+	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/flusso-richiesta-backend.pdf}
 	\caption{Flusso di una nuova richiesta\label{fig:flusso-nuova-richiesta}}
 \end{figure}
 
@@ -184,13 +184,13 @@ La prima attività che viene eseguita è la creazione del CDT decorato, della qu
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.43\textwidth]{4-progettazione-alto-livello/Immagini/diagramma_flusso_decoratedCdt.png}
+	\includegraphics[width=0.43\textwidth]{4-progettazione-alto-livello/Immagini/diagramma_flusso_decoratedCdt.pdf}
 	\caption{Flusso di creazione del CDT decorato\label{fig:flusso-decorated-cdt}}
 \end{figure}
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/diagramma_flusso_servizi_primari.png}
+	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/diagramma_flusso_servizi_primari.pdf}
 	\caption{Flusso di richiesta dei risultati primari\label{fig:flusso-servizi-primari}}
 \end{figure}
 
