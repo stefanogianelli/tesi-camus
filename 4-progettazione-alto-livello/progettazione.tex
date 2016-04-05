@@ -1,12 +1,12 @@
-Questo capitolo viene dedicato allo studio della progettazione relativa al prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito verrà approfondito il flusso di esecuzione delle richieste, partendo dalla \emph{mobile app} fino ad arrivare al \emph{backend}, analizzando tutti i passaggi che vengono eseguiti. Infine il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire meglio il flusso esposto nella sezione precedente.
+Questo capitolo viene dedicato allo studio della progettazione relativa al prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire l'utilizzo dell'applicazione. Infine verranno approfondite le attività eseguite dalla \emph{mobile app} e le interazioni con il \emph{backend}, analizzando tutti i passaggi che vengono svolti.
 
 \section{Architettura del sistema\label{sec:architettura-sistema}}
 
-Al fine di validare la fattibilità della metodologia descritta nel capitolo precedente, abbiamo sviluppato il prototipo di una piattaforma che supporta la selezione e l'interrogazione \emph{context-aware} dei servizi, e la creazione dinamica di un'\textit{app mobile} in grado di presentare i risultati. Questa sezione illustra l'organizzazione dei moduli del \emph{backend} e di quelli dell'\emph{app mobile}, evidenziando anche le interazioni necessarie a soddisfare le richieste che l'utente formula tramite l'app.
+Al fine di validare la fattibilità della metodologia descritta nel capitolo precedente, è stato sviluppato il prototipo di una piattaforma che supporta la selezione e l'interrogazione \emph{context-aware} dei servizi, e la creazione dinamica di un'\textit{mobile app} in grado di presentare i risultati. Questa sezione illustra l'organizzazione dei moduli del \emph{backend} e di quelli dell'\emph{mobile app}, evidenziando anche le interazioni necessarie a soddisfare le richieste che l'utente formula tramite l'\emph{app}.
 
 \subsection{Backend\label{sec:architettura-backend}}
 
-In questa sezione si vuole analizzare nel dettaglio l'architettura messa a punto per il backend di CAMUS, specificando le motivazioni che hanno portato alla sua realizzazione, e la descrizione delle tecnologie che hanno permesso lo sviluppo della soluzione.
+In questa sezione si vuole analizzare nel dettaglio l'architettura messa a punto per il \emph{backend} di CAMUS, specificando le motivazioni che hanno portato alla sua realizzazione, e la descrizione delle tecnologie che hanno permesso lo sviluppo della soluzione.
 
 \begin{figure}[ht]
 	\centering
@@ -46,7 +46,7 @@ In questa sezione è presentata l'architettura dell'applicazione mobile CAMUS, s
 
 \subsubsection{Pagine dell'applicazione}
 
-Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è loggato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi include \emph{Login Page} e il \emph{secondary router}, che racchiude il controllo della navigazione effettiva una volta che l'utente si è autenticato.
+Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è autenticato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi include \emph{Login Page} e il \emph{secondary router}, che racchiude il controllo della navigazione effettiva una volta che l'utente si è autenticato.
 
 \begin{figure}[H]
 	\centering
@@ -92,7 +92,7 @@ Per questo motivo sono state create quattro tipologie di coppie \emph{Action-Sto
 \begin{enumerate}
 	\item \textbf{User} Ha il compito di gestire tutti i dati anagrafici legati all'utente
 	\item \textbf{Data} Memorizza tutto quello che riguarda i dati per l'applicazione, come il CDT e i risultati che provengono dal \emph{server}
-	\item \textbf{View} Gestisce gli schemi di \emph{mashup} e il loro aggiornamento all'interno dell'applicazione
+	\item \textbf{View} Gestisce gli schemi di \emph{mashup} e il loro aggiornamento all'interno dell'ap\-pli\-ca\-zio\-ne
 	\item \textbf{Context} Ha il compito di memorizzare le scelte in base al contesto fatte dall'utente, permettendo di guidarlo nella definizione della propria situazione
 \end{enumerate}
 
@@ -139,7 +139,7 @@ Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \virgo
 
 %L'attività più importante riguarda invece l'\emph{endpoint} \virgolette{executeQuery} (Sezione \ref{sec:execute-query-endpoint}), che è dedicato all'invio delle informazioni trovate in base al contesto dell'utente. In Figura \ref{fig:flusso-nuova-richiesta} vengono mostrati i componenti coinvolti in questa fase e l'ordine col quale sono eseguiti.
 
-\section{Flusso di una richiesta\label{sec:flusso-richiesta}}
+\section{Flusso di esecuzione\label{sec:flusso-richiesta}}
 
 Questa sezione vuole mostrare al lettore il flusso di esecuzione delle attività all'interno della piattaforma. Nella sezione precedente si è parlato di un caso d'uso reale mentre ora si vuole entrare nel dettaglio delle attività svolte dal prototipo. Nelle Figure \ref{fig:app-dataflow} e \ref{fig:flusso-nuova-richiesta} vengono mostrati i diagrammi delle attività svolte rispettivamente dalla \emph{mobile app} e dal server, che sono stati separati per mostrare con maggiore chiarezza tutti i passaggi.
 
