@@ -1,29 +1,5 @@
 Questo capitolo illustra nel dettaglio la realizzazione del \emph{backend} della piattaforma CAMUS. Il capitolo si apre con l'esposizione e la descrizione delle entità principali che compongono il database. Alcune di queste entità verranno analizzate nel dettaglio in una sezione a parte, data la loro complessità. In particolare vengono esposti dettagliatamente il \emph{descrittore dell'albero del contesto} e il \emph{descrittore dei servizi}. Verrà fornita una descrizione degli attributi che li caratterizzano, con l'ausilio di esempi per chiarire meglio i concetti. Successivamente viene mostrato lo schema logico del \emph{backend} e vengono analizzati i dettagli implementativi dei singoli componenti. Una sezione verrà dedicata all'\emph{endpoint} GraphQL, che permette alle applicazioni esterne di eseguire le attività messe a disposizione dal \emph{backend}. Il capitolo termina con la documentazione relativa la configurazione del sistema, che permette la definizione di alcuni parametri utilizzati in fase di esecuzione per modificarne il comportamento. Una configurazione può essere definita tramite variabili d'ambiente o file di configurazione. Verranno descritte entrambe le possibilità.
 
-\section{Schema del database\label{sec:schema-database}}
-
-\begin{figure}[p]
-	\centering
-	\includegraphics[height=\textwidth, angle=90]{5-implementazione-backend/Immagini/schema_er_db.pdf}
-	\caption{Diagramma ER del database}\label{fig:schema-er-db}
-\end{figure}
-
-La base di dati viene utilizzata principalmente per garantire la persistenza di tre elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto e \emph{iii)} le associazioni tra operazioni e nodi del CDT.
-
-Queste entità permettono al sistema di svolgere le attività principali. In quanto oggetti complessi verranno descritti nel dettaglio nelle sezioni successive, per metterne in risalto le caratteristiche e le peculiarità. In Figura \ref{fig:schema-er-db} viene mostrato il modello \emph{Entità-Relazione} che sta alla base di CAMUS.
-
-Sono presenti entità per la memorizzazione delle informazioni sull'u\-ten\-te. Un'al\-tra entità importante riguarda i \emph{mashup}, che vengono associati all'utente per permettere la definizione di schemi personalizzati. I dettagli sulla composizione di questi schemi verranno esposti nella Sezione \ref{sec:struttura-schemi-mashup}.
-
-Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
-
-In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
-
-\begin{figure}[!b]
-	\centering
-	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_logico_db.pdf}
-	\caption{Schema logico del database}\label{fig:schema-logico-db}
-\end{figure}
-
 \section{Descrittore dell'albero di contesto\label{sec:descrittore-albero-contesto}}
 
 Nella Sezione \ref{sec:context-dimension-model} è stato esposto il modello teorico del \emph{Context Dimension Tree} mentre in questa sezione si vuole mettere in risalto come l'albero di contesto viene descritto nel sistema. Sono state effettuate diverse semplificazioni per agevolare la memorizzazione e il recupero delle informazioni dai vari nodi che compongono l'albero. Nelle seguenti sottosezioni vengono analizzati nel dettaglio i singoli oggetti che formano un albero di contesto.
@@ -231,6 +207,28 @@ Nel Listato \ref{lst:esempio-descrittore-paginazione} viene mostrato un esempio 
 	\caption{Esempio di descrittore della paginazione}
 	\label{lst:esempio-descrittore-paginazione}
 \end{listing}
+
+\section{Schema del database\label{sec:schema-database}}
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[height=\textwidth, angle=90]{5-implementazione-backend/Immagini/schema_er_db.pdf}
+	\caption{Diagramma ER del database}\label{fig:schema-er-db}
+\end{figure}
+
+La base di dati viene utilizzata principalmente per garantire la persistenza di cinque elementi: \emph{i)} il descrittore dei servizi, \emph{ii)} l'albero del contesto, \emph{iii)} le associazioni tra operazioni e nodi del CDT, \emph{iv)} le informazioni sugli utenti e \emph{v)} gli schemi di \emph{mashup}. In Figura \ref{fig:schema-er-db} è possibile osservare il modello \emph{Entità-Relazione} utilizzato per la piattaforma CAMUS.
+
+Queste entità permettono al sistema di svolgere le attività principali. Le prime tre entità sono state esposte nelle precedenti sezioni, in quanto si tratta di oggetti complessi che richiedono di una spiegazione dettagliata. Le entità riguardanti i \emph{mashup} vengono associate all'utente per permettere la definizione di schemi personalizzati. Anch'esse necessitano di una descrizione dettagliata, per metterne in risalto le caratteristiche. La loro composizione verrà esposta nella Sezione \ref{sec:struttura-schemi-mashup}.
+
+Una volta definito il modello ER è necessario passare alla realizzazione dello \emph{schema logico} del database, quello che verrà effettivamente utilizzato nell'im\-ple\-men\-ta\-zio\-ne. Non esistendo uno standard per realizzare uno schema di questo tipo per i database non relazionali è stato scelto di utilizzare un \emph{diagramma delle classi} per rappresentare i \emph{documenti} che compongono il database. Ogni classe viene intesa come un documento e i collegamenti evidenziati con una linea continua rappresentano i sottodocumenti. Le linee tratteggiate indicano le referenze tra i vari documenti.
+
+In Figura \ref{fig:schema-logico-db} viene mostrato lo schema logico utilizzato per CAMUS.
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=\textwidth]{5-implementazione-backend/Immagini/schema_logico_db.pdf}
+	\caption{Schema logico del database}\label{fig:schema-logico-db}
+\end{figure}
 
 \section{Componenti\label{sec:componenti-backend}}
 
