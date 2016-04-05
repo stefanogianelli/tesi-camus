@@ -1,9 +1,4 @@
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    marginTop: 20
-  },
   iosContainer: {
     backgroundColor: 'white',
     marginTop: 70
@@ -20,6 +15,6 @@ var styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
-  }
-  //altri elementi di stile
-})   
+  },
+  [ ... ]
+})

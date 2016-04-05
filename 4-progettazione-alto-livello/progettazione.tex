@@ -46,14 +46,14 @@ In questa sezione è presentata l'architettura dell'applicazione mobile CAMUS, s
 
 \subsubsection{Pagine dell'applicazione}
 
-Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è autenticato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi include \emph{Login Page} e il \emph{secondary router}, che racchiude il controllo della navigazione effettiva una volta che l'utente si è autenticato.
-
-\begin{figure}[H]
+\begin{figure}[p]
 	\centering
 	\includegraphics[height=\textwidth, angle=90]{4-progettazione-alto-livello/Immagini/screen_schema.pdf}
 	\caption{Schema delle pagine}\label{fig:screen-schema}
 \end{figure}
-\newpage
+
+Essendo un progetto basato su JavaScript per poter controllare le diverse pagine dell'applicazione è necessario utilizzare un \emph{router}. Si è scelto di sfruttare due \emph{router} diversi, uno per gestire il \emph{login} e un altro per la navigazione all'interno dell'applicazione. Il \emph{router} per il \emph{login} controlla solamente se l'utente è autenticato e ha lo scopo di non permettere l'accesso alle pagine che necessitano di autenticazione. Come percorsi include \emph{Login Page} e il \emph{secondary router}, che racchiude il controllo della navigazione effettiva una volta che l'utente si è autenticato.
+
 Come si può notare nella Figura \ref{fig:screen-schema}, le pagine attraverso cui è possibile navigare sono le seguenti:
 
 \begin{itemize}
@@ -103,43 +103,45 @@ Viene introdotto un esempio di caso d'uso reale, che vuole il flusso di esecuzio
 Introduciamo l'utente Andrea, che sarà il nome di fantasia che utilizzeremo in questo esempio. Supponiamo che si deve recare per un weekend a Milano con la sua fidanzata Barbara. Prima di partire ha comunicato a Giovanni, l’esperto CAMUS, del suo progetto di viaggio. Giovanni configura l’applicazione CAMUS personalizzata per Andrea con le informazioni del contesto che gli saranno utili a Milano. Terminato questo lavoro, Giovanni ritiene inoltre che siano utili delle modifiche all'interfaccia grafica dell'applicazione di Andrea.
 Qualche giorno più tardi Andrea e Barbara si trovano a Milano in zona Centro e stanno cercando un posto dove poter andare a cena, dato che ormai sono quasi le 20:00. Andrea apre la propria applicazione CAMUS sul suo \textit{smartphone} e inserisce le proprie credenziali di accesso, dato che è la prima volta che la utilizza (Figura \ref{fig:usecase-login}). 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/login_caso_d'uso.png}
-	\caption{Pagina di autenticazione}\label{fig:usecase-login}
+\begin{figure}[h]
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.48\textwidth]{4-progettazione-alto-livello/Immagini/login_caso_d'uso.png}
+		\caption{Pagina di autenticazione}\label{fig:usecase-login}
+	\end{minipage}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.48\textwidth]{4-progettazione-alto-livello/Immagini/home_caso_d'uso.png}
+		\caption{Schermata principale}\label{fig:usecase-home}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.48\textwidth]{4-progettazione-alto-livello/Immagini/contesto_caso_d'uso.png}
+		\caption{Selezione del contesto}\label{fig:usecase-contesto}
+	\end{minipage}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.48\textwidth]{4-progettazione-alto-livello/Immagini/results_caso_d'uso.png}
+		\caption{Risultati ricevuti}\label{fig:usecase-results}
+	\end{minipage}
 \end{figure}
 
 Eseguita l'autenticazione con successo, ad Andrea viene mostrata la schermata principale con la possibilità di scegliere l'\emph{Interest Topic} desiderato tra quelli disponibili (Figura \ref{fig:usecase-home}). La scelta ricade su quello più appropriato: \virgolette{Restaurants}.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/home_caso_d'uso.png}
-	\caption{Schermata principale}\label{fig:usecase-home}
-\end{figure}
-
-A questo punto è necessario completare il contesto per poter effettuare la richiesta dei ristoranti. Il sistema propone la schermata di selezione del contesto, permettendo nel loro caso di scegliere solamente i mezzi di trasporto, dato che gli altri parametri del profilo di Andrea erano già stati inseriti da Giovanni. Essendo arrivati a Milano utilizzando il treno, viene inserita la possibilità di raggiungere il ristorante con i mezzi pubblici, in particolare con i bus (Figura \ref{fig:usecase-contesto}). 
+A questo punto è necessario completare il contesto per poter effettuare la richiesta dei ristoranti. Il sistema propone la schermata di selezione del contesto, permettendo nel loro caso di scegliere solamente i mezzi di trasporto, dato che gli altri parametri del profilo di Andrea erano già stati inseriti da Giovanni. Essendo arrivati a Milano utilizzando il treno, viene inserita la possibilità di raggiungere il ristorante con i mezzi pubblici, in particolare con i bus (Figura \ref{fig:usecase-contesto}).
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/contesto_caso_d'uso.png}
-	\caption{Selezione del contesto}\label{fig:usecase-contesto}
-\end{figure}
+	\includegraphics[width=0.35\textwidth, angle=-1]{4-progettazione-alto-livello/Immagini/details_caso_d'uso.pdf}
+	\caption{Dettagli oggetto selezionato nella view DetailsPage}\label{fig:usecase-details}
+\end{figure} 
 
 Selezionando \virgolette{Query} viene costruita la \emph{query}, prendendo i termini dagli schemi di \emph{mashup} e il contesto appena inserito, e inviata al \emph{server}, il quale seleziona i servizi da invocare in base al contesto appena ricevuto, li interroga e costruisce l'insieme di risultati da restituire all'applicazione. Dopo qualche secondo Andrea riceve sul suo \emph{smartphone} la prima pagina dei risultati da lui richiesti, cioè la \textit{view} \emph{ResultsPage} (Figura \ref{fig:usecase-results}).
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/results_caso_d'uso.png}
-	\caption{Risultati ricevuti, mostrati nella \emph{view ResultsPage}}\label{fig:usecase-results}
-\end{figure} 
-
 Dopo una rapida consultazione con Barbara, Andrea seleziona il ristorante \virgolette{Caruso} per vedere dei dettagli in più. Quindi, viene create dinamicamente la pagina \emph{DetailsPage} Convinti della scelta e scoprendo che è raggiungibile anche a piedi, decidono di provare a telefonare per prenotare un tavolo per due persone, selezionando il simbolo della cornetta (Figura \ref{fig:usecase-details}). Il ristoratore conferma la prenotazione quindi Andrea e Barbara possono recarsi a cena. %e a passare una piacevole serata.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.35\textwidth]{4-progettazione-alto-livello/Immagini/details_caso_d'uso.pdf}
-	\caption{Dettagli oggetto selezionato (\emph{view DetailsPage})}\label{fig:usecase-details}
-\end{figure} 
 
 %In questa sezione viene analizzato il flusso di esecuzione principale del sistema, quello che riguarda le richieste proveniente dalla \emph{mobile app}. Le prime attività che svolge sono il \emph{login} dell'utente, tramite l'\emph{endpoint} \virgolette{login} (Sezione \ref{sec:login-endpoint}), e l'acquisizione dei dati personali dell'utente, tramite l'\emph{endpoint} \virgolette{getPersonalData} (Sezione \ref{sec:get-personal-data-endpoint}).
 
