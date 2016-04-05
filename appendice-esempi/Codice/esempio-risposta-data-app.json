@@ -15,7 +15,7 @@
               "rank": 1
             }
           },
-          // altri risultati
+          [ ... ]
         ],
         "pageInfo": {
             "hasNextPage": true,
