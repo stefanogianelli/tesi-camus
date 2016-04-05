@@ -106,7 +106,7 @@ Nel caso della \emph{list} sono definiti gli elementi da mostrare quando è pres
 Nella tipologia \emph{details} sono disponibili tutti i dettagli dell'\emph{item} selezionato e sono definiti tutti i termini necessari a identificare l'elemento per l'utente.
 Considerando l'esempio dei ristoranti, per la lista sono associati i termini che servono a identificare l'oggetto, come il nome e l'indirizzo. Se poi l'utente vuole vedere la mappa e visualizzare gli estremi per contattare il ristorante deve aprire la pagina dei dettagli, dove acquisendo i termini dal file di \emph{mashup}, sono visualizzati tutti i dettagli necessari per l'utente. Inoltre è specificata la tipologia dell'elemento da visualizzare, in modo da permettere all'\emph{app} di utilizzare le librerie di collegamento con le applicazioni specifiche del sistema operativo.
 
-Nel Listato \ref{lst:mashup-schema} viene mostrato un esempio del file JSON di \emph{mashup} della pagina di dettaglio e nelle Figura \ref{fig:schermate-app-mashup} la sua traduzione nelle due versioni dell'applicazione.
+Nel Listato \ref{lst:mashup-schema} viene mostrato un esempio del file JSON di \emph{mashup} della pagina di dettaglio e in Figura \ref{fig:schermate-app-mashup} la sua traduzione nelle due versioni dell'applicazione.
 
 \begin{listing}[H]
 	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-example-app.json}
@@ -115,17 +115,17 @@ Nel Listato \ref{lst:mashup-schema} viene mostrato un esempio del file JSON di \
 \end{listing}
 
 \begin{figure}[ht]
-	\begin{minipage}[t]{0.49\textwidth}
+	\begin{subfigure}{0.5\textwidth}
 		\centering
-		\includegraphics[scale=0.1]{6-implementazione-app/immagini/details_android.png}
-		\caption{Dettagli in Android}
-	\end{minipage}%
-	\hspace{2mm}%
-	\begin{minipage}[t]{0.49\textwidth}
+		\includegraphics[width=0.48\textwidth]{6-implementazione-app/immagini/details_android.png}
+		\caption{Versione Android}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
 		\centering
-		\includegraphics[scale=0.1]{6-implementazione-app/immagini/details_ios.pdf}
-		\caption{Dettagli in iOS}
-	\end{minipage}	
+		\includegraphics[width=0.48\textwidth]{6-implementazione-app/immagini/details_ios.pdf}
+		\caption{Versione iOS}
+	\end{subfigure}	
+	\caption{Schermata dei dettagli}
 	\label{fig:schermate-app-mashup}
 \end{figure}
 
@@ -243,7 +243,7 @@ Considerando sempre il Listato \ref{lst:esempio-risposta-data-app}, viene mostra
 
 \section{Servizi di supporto}\label{sec:servizi-supporto-app}
 
-Come spiegato nella Sezione \ref{sec:architettura-sistema}, i servizi di supporto sono utilizzati esclusivamente nell'applicazione. Quando viene effettuata una richiesta viene inserita la tipologia desiderata di servizi di supporto e il \emph{server} restituisce un indirizzo che l'applicazione può gestire in diversi modi:
+I servizi di supporto sono utilizzati esclusivamente nell'applicazione. Quando viene effettuata una richiesta viene inserita la tipologia desiderata di servizi di supporto e il \emph{server} restituisce un indirizzo che l'applicazione può gestire in diversi modi:
 
 \begin{itemize}
 	\item \textbf{Web Linking}

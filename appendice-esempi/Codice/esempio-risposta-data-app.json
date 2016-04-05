@@ -1,0 +1,30 @@
+{
+  "data": {
+    "executeQuery": {
+      "primaryResults": {
+        "data": [
+          {
+            "title": "Peck",
+            "address": "Via Spadari, 9, Milano",
+            "latitude": "45.4635272",
+            "longitude": "9.187005400000002",
+            "meta": {
+              "name": [
+                "GooglePlaces"
+              ],
+              "rank": 1
+            }
+          },
+          // altri risultati
+        ],
+        "pageInfo": {
+            "hasNextPage": true,
+            "endCursor": "YXJyYXljb25uZWN0aW9uOjQ="
+        }
+      },
+      "supportResults": {
+        "data": []
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 Questo capitolo viene dedicato allo studio della progettazione relativa al prototipo implementato. Si andrà a definire l'architettura scelta sia per il \emph{backend} sia per la \emph{mobile app}, descrivendone le funzionalità e le scelte che hanno portato alla sua realizzazione. In seguito verrà approfondito il flusso di esecuzione delle richieste, partendo dalla \emph{mobile app} fino ad arrivare al \emph{backend}, analizzando tutti i passaggi che vengono eseguiti. Infine il capitolo fornirà uno scenario relativo ad un caso d'uso reale, in modo da chiarire meglio il flusso esposto nella sezione precedente.
 
-\section{Architettura del sistema}
+\section{Architettura del sistema\label{sec:architettura-sistema}}
 
 Al fine di validare la fattibilità della metodologia descritta nel capitolo precedente, abbiamo sviluppato il prototipo di una piattaforma che supporta la selezione e l'interrogazione \emph{context-aware} dei servizi, e la creazione dinamica di un'\textit{app mobile} in grado di presentare i risultati. Questa sezione illustra l'organizzazione dei moduli del \emph{backend} e di quelli dell'\emph{app mobile}, evidenziando anche le interazioni necessarie a soddisfare le richieste che l'utente formula tramite l'app.
 
@@ -86,7 +86,7 @@ Le pagine descritte nella sezione precedente utilizzano alcuni componenti che so
 	Si tratta del foglio di stile nel quale sono impostati tutti i parametri predefiniti per la visualizzazione dei componenti dell'applicazione
 \end{itemize}
 
-\subsubsection{Actions e Stores}
+\subsubsection{Actions e Stores\label{sec:action-store}}
 Per quanto riguarda la gestione dello stato dell'applicazione si è scelto di seguire in modo piuttosto rigoroso le linee guida fornite da \emph{Alt.js}: le \emph{Action} e le \emph{Store} devono essere collegate tra di loro e riguardare delle funzionalità specifiche.
 Per questo motivo sono state create quattro tipologie di coppie \emph{Action-Store} che hanno il compito di gestire il salvataggio dei diversi dati dello stato dell'applicazione: 
 \begin{enumerate}
