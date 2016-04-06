@@ -3,6 +3,6 @@
     "category": "Transport",
     "service": "Google Maps",
     "url": "google.navigation:q={value}",
-    "storeLink": "market://details?id=com.google.android.apps.maps&hl=it"
+    "storeLink": "market://details?id=com.google.android.apps.maps"
   }
 }

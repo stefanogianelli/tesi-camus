@@ -68,6 +68,12 @@ Le \emph{Actions} implementate nell'applicazione sono le seguenti:
 
 \subsection{Stores\label{sec:stores}}
 
+\begin{listing}[p]
+	\inputminted{json}{4-progettazione-alto-livello/Codice/store-two-topics.json}
+	\caption{Esempio Data Store Mashup}
+	\label{lst:store-two-topics}
+\end{listing}
+
 Le \emph{Stores} salvano lo stato dell'applicazione e forniscono alle \emph{view} nuovi dati ogni volta che sono aggiornate. 
 Per ogni interazione sui dati dell'ap\-pli\-ca\-zio\-ne che necessitano di rimanere persistenti viene invocata una \emph{action} dal componente e dalla \emph{view} che si propaga prima nelle \emph{store} e successivamente aggiorna nuovamente la \emph{view}.
 Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato trattata:
@@ -90,13 +96,13 @@ Si è scelto di suddividere le \emph{Store} per tipologia di operazione e dato t
 	Questa operazione è necessaria per poter gestire il fatto di avere comunque dei dati in memoria in condizioni di assenza di rete, anche per tipi diversi di risultati provenienti dal \emph{server} e per essere in grado di gestire una cardinalità variabile di tipologie di dati. Nel Listato \ref{lst:store-two-topics} è mostrato come viene rappresentato lo stato nel caso in cui l'utente abbia a disposizione due \emph{Interest Topic} e la suddivisione dei risultati per le due tipologie, in questo caso \emph{Restaurants} ed \emph{Event}. Si noti che oltre ai risultati sono salvati anche i parametri con lo stato della paginazione, per lasciare la possibilità di riprendere la visione di nuovi risultati.
 \end{itemize}
 
-\begin{listing}[H]
-	\inputminted{json}{4-progettazione-alto-livello/Codice/store-two-topics.json}
-	\caption{Esempio Data Store Mashup}
-	\label{lst:store-two-topics}
-\end{listing}
-
 \section{Struttura dello schema di mashup\label{sec:struttura-schemi-mashup}}
+
+\begin{listing}[t]
+	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-example-app.json}
+	\caption{Esempio Schema Mashup}
+	\label{lst:mashup-schema}
+\end{listing}
 
 Per poter permettere una dinamicità nella struttura delle schermate che formano l'applicazione si è scelto di utilizzare uno schema di \emph{mashup} molto semplice e allo stesso tempo in grado di fornire i parametri necessari all'applicazione per costruire le viste in tempo reale. Si è scelto di utilizzare una rappresentazione in JSON in modo da essere facilmente interpretabile all'interno del motore JavaScript di React Native. 
 Nel caso di CAMUS sono considerate due tipologie di schema di \emph{mashup}: la \emph{list} e la \emph{details}. 
@@ -108,11 +114,18 @@ Considerando l'esempio dei ristoranti, per la lista sono associati i termini che
 
 Nel Listato \ref{lst:mashup-schema} viene mostrato un esempio del file JSON di \emph{mashup} della pagina di dettaglio e in Figura \ref{fig:schermate-app-mashup} la sua traduzione nelle due versioni dell'applicazione.
 
-\begin{listing}[H]
-	\inputminted{json}{6-implementazione-app/Codice/mashup-schema-example-app.json}
-	\caption{Esempio Schema Mashup}
-	\label{lst:mashup-schema}
-\end{listing}
+Di seguito sono elencate le diverse tipologie di dato che compongono l'oggetto che rappresenta i file di \emph{mashup}:
+
+\begin{itemize}
+	\item \textbf{Type}
+	Il termine \emph{type} indica la tipologia dell'elemento da visualizzare nella \emph{view}. È associato a un componente React Native, che verrà richiamato nella fase di costruzione dell'interfaccia grafica
+	\item \textbf{Topic}
+	Si tratta di un \emph{array} di stringhe che indica tutte le aree di interesse associate allo schema in questione. Si è scelto di utilizzare una struttura basata su \emph{tag}: una volta che l’utente sceglie l’\emph{interest topic} viene utilizzato lo schema che lo possiede nei suoi \emph{tag} 
+	\item \textbf{Contents}
+	Indicano i termini del \emph{mashup} o dei nuovi componenti innestati. Se nell'oggetto padre è specificato un tipo gli elementi in \emph{contents} rappresentano i termini da richiedere nella \emph{query} GraphQL. In caso contrario questo campo indica che in \emph{contents} è presente un nuovo livello di annidamento. Ci possono essere tanti annidamenti, fino a quando non si arriva ad avere un oggetto che possiede il campo \emph{type}
+	\item \textbf{Style}
+	Questo campo serve per definire uno stile da assegnare al componente. Permette di personalizzare l’aspetto del componente, andando a ridefinire lo stile predefinito. Viene utilizzato Flexbox per la specifica degli stili
+\end{itemize}
 
 \begin{figure}[ht]
 	\begin{subfigure}{0.5\textwidth}
@@ -128,19 +141,6 @@ Nel Listato \ref{lst:mashup-schema} viene mostrato un esempio del file JSON di \
 	\caption{Schermata dei dettagli}
 	\label{fig:schermate-app-mashup}
 \end{figure}
-
-Di seguito sono elencate le diverse tipologie di dato che compongono l'oggetto che rappresenta i file di \emph{mashup}:
-
-\begin{itemize}
-	\item \textbf{Type}
-	Il termine \emph{type} indica la tipologia dell'elemento da visualizzare nella \emph{view}. È associato a un componente React Native, che verrà richiamato nella fase di costruzione dell'interfaccia grafica
-	\item \textbf{Topic}
-	Si tratta di un \emph{array} di stringhe che indica tutte le aree di interesse associate allo schema in questione. Si è scelto di utilizzare una struttura basata su \emph{tag}: una volta che l’utente sceglie l’\emph{interest topic} viene utilizzato lo schema che lo possiede nei suoi \emph{tag} 
-	\item \textbf{Contents}
-	Indicano i termini del \emph{mashup} o dei nuovi componenti innestati. Se nell'oggetto padre è specificato un tipo gli elementi in \emph{contents} rappresentano i termini da richiedere nella \emph{query} GraphQL. In caso contrario questo campo indica che in \emph{contents} è presente un nuovo livello di annidamento. Ci possono essere tanti annidamenti, fino a quando non si arriva ad avere un oggetto che possiede il campo \emph{type}
-	\item \textbf{Style}
-	Questo campo serve per definire uno stile da assegnare al componente. Permette di personalizzare l’aspetto del componente, andando a ridefinire lo stile predefinito. Viene utilizzato Flexbox per la specifica degli stili
-\end{itemize}
 
 \section{Rendering delle view}\label{sec:rendering-view}
 
@@ -189,7 +189,7 @@ Nell'oggetto \emph{styles} sono impostati tutti gli stili di ogni componente gra
 I due attributi per la gestione dei colori sono risultati indispensabili in particolare per alcuni componenti, come la \emph{StatusBar} di Android, che hanno come elemento impostabile solo il colore e non lo stile completo. Ovviamente la modifica all'interno dello \emph{StyleSheet} dei parametri di colore è necessaria solo in un punto del codice, in modo da propagarsi in modo coerente per l'intera applicazione.
 Nel Listato \ref{lst:stylesheet} viene mostrato un esempio del foglio di stile utilizzato nell'applicazione. Si noti come i parametri che definiscono ogni singolo elemento sono abbastanza autoesplicativi, fornendo allo sviluppatore una maggiore semplicità di programmazione. Diversi parametri sono stati ripetuti, per permettere la visualizzazione del componente in modo ottimale sia in Android che in iOS.
 
-\begin{listing}[H]
+\begin{listing}[h]
 	\inputminted{js}{6-implementazione-app/Codice/stylesheet.js}
 	\caption{Esempio Foglio di Stile}
 	\label{lst:stylesheet}
@@ -197,7 +197,7 @@ Nel Listato \ref{lst:stylesheet} viene mostrato un esempio del foglio di stile u
 
 \section{Query GraphQL}\label{sec:utilizzo-dati-app}
 
-In questa sezione si vuole affrontare la gestione dei dati all'interno dell'applicazione, partendo dagli algoritmi per costruire le \emph{query} GraphQL per poi parlare della gestione della paginazione.
+In questa sezione si vuole affrontare la gestione dei dati all'interno dell'ap\-pli\-ca\-zio\-ne, partendo dagli algoritmi per costruire le \emph{query} GraphQL per poi parlare della gestione della paginazione.
 Tutto lo scambio di dati tra l'applicazione e il \emph{server} viene svolto utilizzando \emph{query} GraphQL, come spiegato nella Sezione \ref{sec:architettura-backend}. Per implementare il modulo di gestione delle connessioni si è scelto di utilizzare \emph{Lokka}\footnote{Lokka: \url{https://github.com/kadirahq/lokka}}, un \emph{client} compatibile con GraphQL che permette di gestire le \emph{query} come se fossero normali \emph{fetch()} di JavaScript e lasciare una configurazione più libera e adattabile alle esigenze del sistema. Questo si sposa bene con il paradigma Flux, in quanto permette il salvataggio della maggior parte del contenuto della risposta nella \emph{Data Store} con le modalità esposte nella Sezione \ref{sec:action-store} e rendendolo quindi disponibile per tutti i componenti dell'applicazione. Di seguito sono spiegate le due tipologie principali di \emph{query} gestite con GraphQL, ossia le \emph{query} di login e le \emph{query} per accedere ai dati.
 
 \subsection{Login Query}
@@ -265,7 +265,7 @@ In generale il funzionamento di queste tipologie di collegamenti è gestito dall
 	Rappresenta il \emph{link} nello \emph{store} di sistema per scaricare l'ap\-pli\-ca\-zio\-ne se non è installata sul dispositivo  
 \end{itemize}
 
-\begin{listing}[H]
+\begin{listing}[h]
 	\inputminted{json}{6-implementazione-app/Codice/esempio_supporto_app.json}
 	\caption{Esempio di servizi di supporto con intent}
 	\label{lst:esempio-support-app}
