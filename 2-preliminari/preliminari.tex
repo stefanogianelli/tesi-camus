@@ -580,24 +580,24 @@ Le applicazioni Flux, come si vede nella medesima figura, hanno quattro tipologi
 
 \begin{enumerate}
 	\item \textbf{Dispatcher}
-	Il \emph{Dispatcher} è l'\emph{hub} centrale che controlla tutto il flusso dei dati dell'applicazione. \upe essenzialmente un registro di \emph{callback} alle \emph{Store} e possiede un meccanismo semplice per distribuire le \emph{Action} verso le \emph{Store}. Man mano che l'applicazione cresce di dimensioni, il \emph{Dispatcher} assume un'importanza sempre maggiore, perché può essere sfruttato per gestire le dipendenze tra le \emph{Store} invocando le \emph{callback} registrate in un ordine specifico, talvolta anche attendendo la conclusione dell'aggiornamento delle altre \emph{Store} 
+	Il \emph{Dispatcher} è l'\emph{hub} centrale che controlla tutto il flusso dei dati dell'applicazione. \upe essenzialmente un registro di \emph{callback} agli \emph{Store} e possiede un meccanismo semplice per distribuire le \emph{Action} verso gli \emph{Store}. Man mano che l'applicazione cresce di dimensioni, il \emph{Dispatcher} assume un'importanza sempre maggiore, perché può essere sfruttato per gestire le dipendenze tra gli \emph{Store} invocando le \emph{callback} registrate in un ordine specifico, talvolta anche attendendo la conclusione dell'aggiornamento degli altri \emph{Store} 
 	\item \textbf{Store}
-	Le \emph{Store} contengono lo stato dell'applicazione e la logica, e il loro ruolo è molto simile al modello nel pattern MVC, ma in Flux hanno il compito di modellare lo stato per un particolare dominio all'interno dell'applicazione
+	Gli \emph{Store} contengono lo stato dell'applicazione e la logica, e il loro ruolo è molto simile al modello nel pattern MVC, ma in Flux hanno il compito di modellare lo stato per un particolare dominio all'interno dell'applicazione
 	\item \textbf{View}
-	L'implementazione delle \emph{view} proposta da React si sposa perfettamente con quella necessaria per Flux. Si tratta di un misto tra la \emph{view} e il \emph{controller} in MVC, perché permette al codice di ricevere i dati dalle \emph{store} e passare questi dati direttamente ai discendenti per creare ogni singola sezione della pagina. Quando riceve un evento dalle \emph{store}, richiede i nuovi dati attraverso i \emph{getter} delle \emph{store}, per poi aggiornare il proprio stato interno e renderizzarlo a cascata utilizzando tutti i sottocomponenti
+	L'implementazione delle \emph{view} proposta da React si sposa perfettamente con quella necessaria per Flux. Si tratta di un misto tra la \emph{view} e il \emph{controller} in MVC, perché permette al codice di ricevere i dati dagli \emph{store} e passare questi dati direttamente ai discendenti per creare ogni singola sezione della pagina. Quando riceve un evento dagli \emph{store}, richiede i nuovi dati attraverso i \emph{getter} dagli \emph{store}, per poi aggiornare il proprio stato interno e renderizzarlo a cascata utilizzando tutti i sottocomponenti
 	\item \textbf{Action}
-	Con il termine \emph{Action} si intende il \emph{payload} di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati alle \emph{store}
+	Con il termine \emph{Action} si intende il \emph{payload} di dati che viene mandato al metodo esposto dal \emph{dispatcher}, il quale come espresso nella sua spiegazione, poi si occupa di inviare i dati agli \emph{store}
 \end{enumerate} 
 
 Nell'applicazione è stato scelto di utilizzare \emph{Alt.js}\footnote{Alt.JS: \url{http://alt.js.org/}}, una libreria diversa da quella originale di Flux creata da Facebook, che, pur mantenendo un'ar\-chi\-tet\-tu\-ra funzionale simile, presenta alcune semplificazioni:
 
 \begin{itemize}
 	\item
-	Non è necessario implementare il \emph{Dispatcher}, componente che viene fornito con la libreria. È necessario fornire soltanto le \emph{Actions}  e le \emph{Stores}
+	Non è necessario implementare il \emph{Dispatcher}, componente che viene fornito con la libreria. È necessario fornire soltanto le \emph{Actions}  e gli \emph{Stores}
 	\item
 	Le \emph{Action} sono molto simili a quelle di Flux. Nel metodo che le definisce il dato ritornato alla fine viene automaticamente inviato al \emph{Dispatcher} di \emph{Alt}
 	\item
-	Nelle \emph{Store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le \emph{Actions} corrispondenti
+	Negli \emph{Store} è necessario mappare l'operazione che controlla il corretto aggiornamento dei dati con le \emph{Actions} corrispondenti
 	\item
-	Il posizionamento delle operazioni preliminari come il controllo sui dati o delle trasformazioni sui dati è indifferente se sia posta nelle \emph{Actions} o nelle \emph{Stores} e possono essere svolte prima o dopo l'operazione di \emph{dispatch} di Alt
+	Il posizionamento delle operazioni preliminari come il controllo sui dati o delle trasformazioni sui dati è indifferente se sia posta nelle \emph{Actions} o negli \emph{Stores} e possono essere svolte prima o dopo l'operazione di \emph{dispatch} di Alt
 \end{itemize}

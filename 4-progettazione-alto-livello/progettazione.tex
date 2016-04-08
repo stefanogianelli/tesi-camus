@@ -18,7 +18,7 @@ L'architettura di CAMUS viene descritta schematicamente in Figura \ref{fig:archi
 
 Il componente che coordina tutti gli altri è l'\emph{Execution Helper}. Il suo compito è quello di inizializzare tutti gli altri componenti e organizzare le chiamate secondo il flusso della richiesta (che verrà analizzato nel dettaglio nella Sezione \ref{sec:flusso-richiesta}).
 
-Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla mobile \emph{app} e trasformarlo in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal \emph{client} e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
+Il \emph{Context Manager} è il componente che si occupa di ricevere il contesto inviato dalla \emph{mobile app} e trasformarlo in una versione \virgolette{decorata}, eseguendo un'unione tra le informazioni ricevute dal \emph{client} e quelle del descrittore completo del CDT. In questo modo viene agevolata l'esecuzione dei componenti successivi, in quanto le informazioni necessarie all'elaborazione sono già state catalogate e definite in modo corretto.
 
 L'attività del \emph{Primary Service Selection} è di andare a recuperare le associazioni tra l'albero di contesto e le operazioni dei servizi primari. \upe inoltre suo compito gestire le associazioni personalizzate, come quella relativa alla ricerca tramite \emph{località}. In seguito assegna un \emph{punteggio} a ogni operazione identificata ed emette in uscita le prime \emph{N} operazioni con valutazione più elevata.
 
@@ -41,7 +41,7 @@ In questa sezione è presentata l'architettura dell'applicazione mobile CAMUS, s
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{4-progettazione-alto-livello/Immagini/app_architecture.pdf}
-	\caption{Architettura della mobile app}\label{fig:app-architecture}
+	\caption{Architettura dell'applicazione mobile}\label{fig:app-architecture}
 \end{figure}
 
 \subsubsection{Pagine dell'applicazione}
@@ -87,7 +87,7 @@ Le pagine descritte nella sezione precedente utilizzano alcuni componenti che so
 \end{itemize}
 
 \subsubsection{Actions e Stores\label{sec:action-store}}
-Per quanto riguarda la gestione dello stato dell'applicazione si è scelto di seguire in modo piuttosto rigoroso le linee guida fornite da \emph{Alt.js}: le \emph{Action} e le \emph{Store} devono essere collegate tra di loro e riguardare delle funzionalità specifiche.
+Per quanto riguarda la gestione dello stato dell'applicazione si è scelto di seguire in modo piuttosto rigoroso le linee guida fornite da \emph{Alt.js}: le \emph{Action} e gli \emph{Store} devono essere collegati tra di loro e riguardare delle funzionalità specifiche.
 Per questo motivo sono state create quattro tipologie di coppie \emph{Action-Store} che hanno il compito di gestire il salvataggio dei diversi dati dello stato dell'applicazione: 
 \begin{enumerate}
 	\item \textbf{User} Ha il compito di gestire tutti i dati anagrafici legati all'utente
