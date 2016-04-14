@@ -336,7 +336,7 @@ dove \emph{SA(o)} rappresenta l'insieme dei nodi associati all'operazione \emph{
 	\caption{Esempio di assegnazione del punteggio per le operazioni primarie}\label{fig:esempio-punteggio-primari}
 \end{figure}
 
-Al nodo \virgolette{Interest Topic} viene assegnata la sua tipologia particolare, il nodo \virgolette{Momento Giornata} è di tipo \emph{filtro} mentre il nodo \virgolette{Località} è di tipo \emph{ranking} (come evidenziato dalla diversa forma utilizzata). I nodi foglia di colore grigio sono quelli selezionati, che corrispondono al contesto $ C = InterestTopic: Ristoranti\ \land\ Localit\acute{a}: Milano\ \land\ MomentoGiornata: Cena $. Dalla fase di ricerca vengono selezionate le operazioni dei servizi $ \{TripAdvisor, Zomato, Yelp\} $. Considerando come pesi dei nodi $ w_{FILTER} = 1 $, $ w_{RANKING} = 4 $ e\\ $ w_{INTEREST\_TOPIC} = 6 $, viene calcolato il punteggio per ogni operazione:
+Al nodo \virgolette{Interest Topic} viene assegnata la sua tipologia particolare, il nodo \virgolette{Momento Giornata} è di tipo \emph{filtro} mentre il nodo \virgolette{Località} è di tipo \emph{ranking} (come evidenziato dalla diversa forma utilizzata). I nodi foglia di colore grigio sono quelli selezionati, che corrispondono al contesto $ C = InterestTopic: Ristoranti\ \land\ Localit\acute{a}: Milano\ \land\ MomentoGiornata: Cena $. Dalla fase di ricerca vengono selezionate le operazioni dei servizi $ \{TripAdvisor, Zomato, Yelp\} $. Considerando come pesi dei nodi $ w_{FILTER} = 1 $, $ w_{RANKING} = 4 $ e\\ $ w_{INTEREST\_TOPIC} = 5 $, viene calcolato il punteggio per ogni operazione:
 
 \begin{align*}
 R_{TripAdvisor} &= \frac{5}{1} + \frac{1}{1} = 6 \\
